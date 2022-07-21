@@ -1,0 +1,90 @@
+<!--  -->
+<header class="header">
+  <div class="header__content">
+    <div class="header__content-menu">
+      <div class="menu-logo">
+        <div class="logo">
+          <a routerLink="/" class="logo__link">
+            <img src="../../../../assets/img/globe.png" alt="" />
+            <h1>&nbsp;Globe Site</h1>
+          </a>
+        </div>
+      </div>
+      <div class="menu-catalog">
+        <button class="menu-catalog--button">
+          <span class="icon__img"
+            ><img src="../../../../assets/img/tiles.png"
+          /></span>
+          Каталог
+        </button>
+      </div>
+    </div>
+    <div class="header__content-search">
+      <div class="search">
+        <form
+          action=""
+          method="get"
+          [formGroup]="form"
+          (ngSubmit)="getBySearch(searchSite.value)"
+        >
+          <input
+            type="text"
+            name=""
+            id="searchSite"
+            formControlName="search"
+            #searchSite
+            class="search__site"
+            placeholder="Пошук..."
+            [ngClass]="{
+              'input-disabled':
+                form.controls['search'].invalid &&
+                form.controls['search'].touched
+            }"
+          />
+          <span
+            class="help__text"
+            *ngIf="form.controls['search'].errors?.['minlength'] && form.controls['search'].touched"
+            >Мінімальна кількість символів для запиту 4.</span
+          >
+          <button
+            type="submit"
+            class="button__search"
+            [disabled]="form.invalid || form.disabled"
+          >
+            Найти
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="header__content-user">
+      <div class="menu"></div>
+      <div class="user">
+        <ul class="user__list">
+          <li class="user__list-link" *ngIf="potentialToken">
+            <a routerLink="/account" routerLinkActive="" class="link-item">
+              <img src="../../../../assets/img/user.png" alt="user" />
+            </a>
+          </li>
+          <li class="user__list-link" *ngIf="!potentialToken">
+            <a routerLink="/login" routerLinkActive="" class="link-item">
+              <img src="../../../../assets/img/enter.png" alt="user" />
+            </a>
+          </li>
+          <li class="user__list-link" *ngIf="potentialToken">
+            <a routerLink="/like" routerLinkActive="" class="link-item">
+              <img src="../../../../assets/img/love.png" alt="love" />
+            </a>
+          </li>
+          <li class="user__list-link" *ngIf="potentialToken">
+            <a routerLink="/cart" routerLinkActive="" class="link-item">
+              <img
+                src="../../../../assets/img/shopping-cart.png"
+                alt="shopping-cart"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

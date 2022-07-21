@@ -1,0 +1,374 @@
+<!--  -->
+<div class="new">
+  <div class="form">
+    <input
+      type="file"
+      #inputFile
+      class="input__file product__input"
+      (change)="onFileUpload($event)"
+      accept="image/jpeg,image/png"
+    />
+    <!--  -->
+    <div class="product__content">
+      <!--  -->
+      <div class="product__content-body">
+        <!--  -->
+        <div class="new__photo">
+          <a (click)="triggerClick()" class="new__photo-button" #newPhoto>
+            Завантажити фото
+            <img src="../../../../assets/img/download-circular-button.png" />
+          </a>
+          <span class="error__input" *ngIf="validImages"
+            >Фото товара є обов'язковим.</span
+          >
+        </div>
+
+        <div class="new__name">
+          <div class="box">
+            <input
+              type="text"
+              class="box__input box__input-width"
+              required
+              #inputTitle
+              id="name"
+              [(ngModel)]="nameProduct"
+              [ngClass]="{
+                'input-disabled': formControlName
+              }"
+            />
+            <span class="box__line box__line-width"></span>
+            <label
+              class="box__label"
+              [ngClass]="{
+                'label-disabled': formControlName
+              }"
+            >
+              Назва товару*</label
+            >
+            <!-- <span class="error__input">Ім'я товару є обов'язковим.</span>
+            <span class="error__input">Мінімальна кількість символів 6.</span> -->
+          </div>
+        </div>
+
+        <div class="new__price">
+          <!--  -->
+          <div class="box">
+            <input
+              type="number"
+              class="box__input box__input-width"
+              required
+              #inputPrice
+              minlength="6"
+              [(ngModel)]="priceProduct"
+              [ngClass]="{
+                'input-disabled': formControlPrice
+              }"
+            />
+            <span class="box__line box__line-width"></span>
+            <label
+              class="box__label"
+              [ngClass]="{
+                'label-disabled': formControlPrice
+              }"
+              >Ціна товару*</label
+            >
+            <!-- <span class="error__input">Ціна товару є обов'язковою.</span> -->
+          </div>
+          <!--  -->
+        </div>
+
+        <div class="new__category">
+          <!--  -->
+          <p class="new__category-title">Виберіть категорію*</p>
+          <!--  -->
+          <div class="new__category-block" (click)="popuapOpen()">
+            <!--  -->
+            <div class="category__select" *ngIf="!categorySelected">
+              <h2 class="category__title">Категорія не вибрана</h2>
+            </div>
+            <!--  -->
+            <div class="category" *ngIf="categorySelected">
+              <h2 class="category__title">
+                {{ categoryList[oneIndex].nameCategory }}
+              </h2>
+              <span>&nbsp;/&nbsp;</span>
+              <h2 class="category__title">
+                {{
+                  categoryList[oneIndex].nameListCategory[twoIndex]
+                    .subNameCategory
+                }}
+              </h2>
+              <span>&nbsp;/&nbsp;</span>
+              <h2 class="category__title">
+                {{
+                  categoryList[oneIndex].nameListCategory[twoIndex]
+                    .subNameListCategory[threeIndex].titleSubNameListCategory
+                }}
+              </h2>
+            </div>
+            <!--  -->
+          </div>
+          <!--  -->
+          <div class="category__error" *ngIf="categoryErrorShow">
+            <span class="error__category"> Виберіть категорію товара </span>
+          </div>
+          <!--  -->
+        </div>
+
+        <div class="new__words">
+          <!--  -->
+          <p class="new__words-title">
+            Введіть ключові слова для товару через пробіл, не більше 200
+            символів (не обов'язково)
+          </p>
+          <!--  -->
+          <div class="box">
+            <textarea
+              type="text"
+              class="box__input textarea__style box__input-textarea-width box__input-textarea-keywords-height"
+              required
+              [(ngModel)]="stringKeysWords"
+              #inputKeyWords
+              (keyup)="keyWordsInput(inputKeyWords.value)"
+            ></textarea>
+            <span class="box__line box__line-textarea-width"></span>
+            <label class="box__label">Ключові слова</label>
+          </div>
+          <!--  -->
+          <div class="symbol">
+            <span [ngClass]="{ error__input: lengthKeyWords > 200 }"
+              >Символів <span>{{ lengthKeyWords }}</span> <span>/</span>
+              <span>200</span></span
+            >
+          </div>
+          <!--  -->
+          <div class="display__symbol">
+            <ng-container *ngFor="let word of keyWords">
+              <div
+                class="display__symbol-word"
+                *ngIf="word.length >= 1"
+                [ngClass]="{
+                  error__keywords: word.length <= 1 || word.length > 10
+                }"
+                [title]="
+                  word.length <= 1
+                    ? 'Мінімальна кількість символів 2'
+                    : word.length > 10
+                    ? 'Максимальна кількість символів 10'
+                    : ''
+                "
+              >
+                <p class="word__title">#{{ word }}</p>
+              </div>
+            </ng-container>
+          </div>
+          <!--  -->
+          <div class="error__symbol" *ngIf="checkKeyWords">
+            <p
+              class="error__symbol-title"
+              (click)="
+                deleteKeyWords();
+                inputKeyWords.value = this.keyWords.join(' ');
+                keyWordsInput(inputKeyWords.value)
+              "
+            >
+              <span>Видалити всі не правильні кілючові слова.</span>
+            </p>
+          </div>
+          <!--  -->
+        </div>
+        <!--  -->
+        <div class="new__description">
+          <!--  -->
+          <div class="box">
+            <textarea
+              type="text"
+              class="box__input textarea__style box__input-textarea-width box__input-textarea-description-height"
+              required
+              #inputDescription
+              [(ngModel)]="description"
+              [ngClass]="{
+                'input-disabled': formControlDescription
+              }"
+            ></textarea>
+            <span class="box__line box__line-textarea-width"></span>
+            <label
+              class="box__label"
+              [ngClass]="{
+                'label-disabled': formControlDescription
+              }"
+              >Опис товару*</label
+            >
+            <!-- description.length < 60 || description.length > 5000 -->
+          </div>
+          <div class="new__description-symbol">
+            <span
+              class="span__description"
+              [ngClass]="{
+                try__input:
+                  description.length >= 60 && description.length <= 5000,
+                error__input: description.length > 5000
+              }"
+            >
+              Кількість символів {{ description.length }} / 5000
+            </span>
+          </div>
+          <!-- <span class="error__input">Опис товару є обов'язковим.</span>
+          <span class="error__input">Мінімальна кількість символів 60.</span> -->
+          <!--  -->
+        </div>
+        <!--  -->
+      </div>
+      <!--  -->
+      <div class="product__content-photo">
+        <div class="img__preview">
+          <img
+            src="../../../../assets/img/placeholder__img.webp"
+            *ngIf="imagePreview === undefined && update === false"
+          />
+          <img
+            [src]="imagePreview"
+            *ngIf="imagePreview !== undefined && update === false"
+          />
+          <img
+            [src]="'http://localhost:5000/' + updateProduct?.imageSrc"
+            *ngIf="imagePreview === undefined && update === true"
+          />
+          <img
+            [src]="imagePreview"
+            *ngIf="imagePreview !== undefined && update === true"
+          />
+        </div>
+      </div>
+      <!--  -->
+    </div>
+    <!--  -->
+    <div class="new__create">
+      <button
+        type="submit"
+        class="new__create-button"
+        *ngIf="!update"
+        (click)="createProduct()"
+        [disabled]="
+          !images ||
+          nameProduct.length <= 5 ||
+          !priceProduct ||
+          categoryNumber.length <= 1 ||
+          lengthKeyWords > 200 ||
+          description.length < 60 ||
+          description.length > 5000
+        "
+      >
+        Створити
+      </button>
+
+      <button
+        type="submit"
+        class="new__create-button"
+        *ngIf="update"
+        (click)="upProduct()"
+        [disabled]="
+          nameProduct.length <= 5 ||
+          !priceProduct ||
+          categoryNumber.length <= 1 ||
+          lengthKeyWords > 200 ||
+          description.length < 60 ||
+          description.length > 5000
+        "
+      >
+        Зберегти
+      </button>
+    </div>
+    <!--  -->
+  </div>
+</div>
+
+<div class="select__popuap" *ngIf="popuapOnOff">
+  <div class="select__popuap-content">
+    <a (click)="popuapClose(0)" class="close">&Cross;</a>
+    <!--  -->
+    <div class="category" *ngIf="oneCategory">
+      <div class="category-block">
+        <ng-container *ngIf="oneCategory">
+          <div
+            class="block"
+            *ngFor="let category of categoryList; let idx = index"
+            [ngClass]="{ active__block: oneIndex === idx }"
+            (click)="editOneCategory(idx)"
+          >
+            <h2 class="block__title">{{ category.nameCategory }}</h2>
+          </div>
+        </ng-container>
+      </div>
+      <!-- --- -->
+      <div class="category-block-sub">
+        <ng-container *ngIf="twoCategory">
+          <div
+            class="block-sub"
+            *ngFor="
+              let category of categoryList[oneIndex].nameListCategory;
+              let idx = index
+            "
+            (click)="editTwoCategory(idx)"
+            [ngClass]="{ active__block__sub: twoIndex === idx }"
+          >
+            <h2 class="block-sub__title">{{ category.subNameCategory }}</h2>
+          </div>
+        </ng-container>
+      </div>
+      <!-- --- -->
+      <div class="category-block-sub-list">
+        <ng-container *ngIf="threeCategory">
+          <div
+            class="block-sub-list"
+            *ngFor="
+              let category of categoryList[oneIndex].nameListCategory[twoIndex]
+                .subNameListCategory;
+              let idx = index
+            "
+            (click)="editThreeCategory(idx)"
+            [ngClass]="{
+              active__block__sub__list: threeIndex === idx
+            }"
+          >
+            <h2 class="block-sub-list__title">
+              {{ category.titleSubNameListCategory }}
+            </h2>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <div class="category__select-item" *ngIf="!oneCategory">
+      <div class="category__title">
+        <h2>Виберіть категорію</h2>
+      </div>
+      <div class="category__content">
+        <div
+          class="category__select-item-box"
+          *ngFor="let categoryItem of categoryList; let idx = index"
+          [ngClass]="{
+            one__Box: 0 === idx,
+            two__Box: 1 === idx,
+            three__Box: 2 === idx,
+            four__Box: 3 === idx,
+            five__Box: 4 === idx,
+            six__Box: 5 === idx,
+            seven__Box: 6 === idx,
+            eight__Box: 7 === idx,
+            nine__Box: 8 === idx,
+            ten__Box: 9 === idx,
+            eleven__Box: 10 === idx,
+            twelve__Box: 11 === idx
+          }"
+          (click)="selectCategoryPopuapStart(idx)"
+        >
+          <h2 class="box__title">{{ categoryItem.nameCategory }}</h2>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+  </div>
+</div>

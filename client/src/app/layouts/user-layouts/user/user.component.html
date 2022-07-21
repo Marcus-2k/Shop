@@ -1,0 +1,222 @@
+<!--  -->
+<div class="user">
+  <div class="user__content">
+    <!--  -->
+    <div
+      class="user__content-hello"
+      [ngClass]="{
+        morning__day: time >= 4 && time < 10,
+        light__day: time >= 10 && time < 18,
+        evening__day: time >= 18 && time < 23,
+        night__day: (time >= 23 && time < 25) || (time > 0 && time < 4)
+      }"
+    >
+      <h2
+        class="hello__title"
+        [ngClass]="{
+          hello__title__night:
+            (time >= 0 && time < 4) || (time >= 23 && time < 25)
+        }"
+      >
+        {{
+          time >= 0 && time < 4
+            ? "Доброї ночі"
+            : time >= 4 && time < 10
+            ? "Доброго ранку"
+            : time >= 10 && time < 18
+            ? "Доброго дня"
+            : time >= 18 && time < 23
+            ? "Доброго вечора"
+            : time >= 23 && time < 25
+            ? "Доброї ночі"
+            : ""
+        }}
+      </h2>
+      <h2
+        class="hello__title"
+        [ngClass]="{
+          hello__title__night:
+            (time >= 0 && time < 4) || (time >= 23 && time < 25)
+        }"
+      >
+        &nbsp;{{ user.name }}
+      </h2>
+      <h2
+        class="hello__title"
+        [ngClass]="{
+          hello__title__night:
+            (time >= 0 && time < 4) || (time >= 23 && time < 25)
+        }"
+        *ngIf="user.lastName"
+      >
+        &nbsp;{{ user.lastName }}
+      </h2>
+      <h2
+        [ngClass]="{
+          hello__title__night:
+            (time >= 0 && time < 4) || (time >= 23 && time < 25)
+        }"
+      >
+        !
+      </h2>
+    </div>
+    <!--  -->
+    <div class="user__content-info">
+      <div class="params">
+        <div class="params__title">
+          <h2 class="title">Інформація про користувача</h2>
+          <hr />
+        </div>
+        <div class="params__user">
+          <div class="params__user-list user__avatar">
+            <div class="info">
+              <p class="info__title">Аватар</p>
+            </div>
+            <div class="user__avatar-box">
+              <input
+                type="file"
+                class="file__avatar"
+                style="display: none"
+                #fileAvatar
+                (change)="onFileUpload($event)"
+              />
+              <img
+                [src]="
+                  UrlServer + imagePreview ||
+                  '../../../../assets/img/placeholder__avatar.webp'
+                "
+                class="placeholder__avatar"
+                (click)="addAvatar()"
+              />
+              <div>
+                <span>В розробці*</span>
+              </div>
+              <div>
+                <button (click)="resetAvatar()" class="user__avatar-box--reset">
+                  Зкинути аватар
+                </button>
+                <button
+                  (click)="deleteAvatar()"
+                  class="user__avatar-box--reset"
+                >
+                  Видалити аватар
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="params__user-list user__name">
+            <div class="info">
+              <p class="info__title">Ім'я*</p>
+            </div>
+            <div class="user__name-content">
+              <input
+                type="text"
+                class="user__name-content-input"
+                placeholder="Ім'я"
+                [(ngModel)]="user.name"
+                maxlength="20"
+                minlength="4"
+              />
+            </div>
+          </div>
+          <div class="params__user-list user__lastname">
+            <div class="info">
+              <p class="info__title">Прізвище</p>
+            </div>
+            <div class="user__lastname-content">
+              <input
+                type="text"
+                class="user__lastname-content-input"
+                placeholder="Прізвище"
+                [(ngModel)]="user.lastName"
+                maxlength="20"
+                minlength="4"
+              />
+            </div>
+          </div>
+          <div class="params__user-list user__email">
+            <div class="info">
+              <p class="info__title">Пошта*</p>
+            </div>
+            <div class="user__email-content">
+              <h2 class="user__email-content-info">{{ user.email }}</h2>
+            </div>
+          </div>
+          <div class="params__user-list user__birthday">
+            <div class="info">
+              <p class="info__title">Дата народеження</p>
+            </div>
+            <div class="user__birthday-content">
+              <h2
+                class="user__birthday-content-info info-birthday"
+                *ngIf="user.birthday && !editDate"
+              >
+                {{ user.birthday | date }}
+              </h2>
+              <input
+                type="date"
+                class="user__birthday-content-input"
+                min="1970-01-01"
+                [max]="maxInputDate"
+                [(ngModel)]="user.birthday"
+                *ngIf="editDate"
+              />
+              <button
+                class="user__birthday-content-button user__birthday-button--edit"
+                (click)="editDateBtn()"
+                *ngIf="!editDate"
+              >
+                {{ user.birthday ? "Змінити" : "Додати" }} дату народеження
+              </button>
+              <button
+                class="user__birthday-content-button user__birthday-button--reset"
+                *ngIf="editDate"
+                (click)="resetDate()"
+              >
+                Зкинути дату
+              </button>
+            </div>
+          </div>
+          <div class="params__user-list user__country">
+            <div class="info">
+              <p class="info__title">Країна</p>
+            </div>
+            <div class="user__country-content">
+              <select
+                name=""
+                id=""
+                #selectCountry
+                [(ngModel)]="user.country"
+                class="user__country-content-select"
+              >
+                <ng-container
+                  *ngFor="let country of countryList; let idx = index"
+                >
+                  <option [value]="idx">
+                    {{ country }}
+                  </option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+          <div class="params__user-list user__save">
+            <button
+              (click)="saveInfo()"
+              class="user__save-button"
+              [disabled]="
+                !images &&
+                oldUser.name === user.name &&
+                oldUser.lastName === user.lastName &&
+                oldUser.birthday === user.birthday &&
+                oldUser.country === user.country
+              "
+            >
+              Зберегти
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+  </div>
+</div>
