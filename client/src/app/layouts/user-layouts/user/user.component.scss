@@ -1,0 +1,240 @@
+.user {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  height: 1000px;
+  &__content {
+    margin-top: 25px;
+    &-hello {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 150px;
+      // background-size: cover;
+      border-radius: 5px;
+      &.morning__day {
+        background-image: url("../../../../assets/img/day__morning.webp");
+      }
+      &.light__day {
+        background-image: url("../../../../assets/img/day__light.webp");
+      }
+      &.evening__day {
+        background-size: cover;
+        background-image: url("../../../../assets/img/day__evening.webp");
+      }
+      &.night__day {
+        background-image: url("../../../../assets/img/day__night.webp");
+      }
+      .hello__title {
+      }
+      .hello__title__night {
+        color: #fff;
+      }
+    }
+    &-info {
+      margin-top: 25px;
+      .params {
+        &__title {
+          font-size: 24px;
+          color: #535353;
+        }
+        &__user {
+          &-list {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            .info {
+              width: 320px;
+              &__title {
+                font-size: 20px;
+                font-weight: 600;
+                margin-right: 10px;
+                width: 300px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+              }
+            }
+          }
+          .user__avatar {
+            &-box {
+              display: flex;
+              flex-direction: column;
+              .file__avatar {
+                display: none;
+              }
+              .placeholder__avatar {
+                width: 240px;
+                height: 240px;
+                border-radius: 10px;
+                cursor: pointer;
+                // background-size: cover;
+              }
+              &--reset {
+                margin-top: 5px;
+                padding: 5px 5px;
+                font-family: "Mont";
+                font-size: 12px;
+                text-transform: uppercase;
+                border: none;
+                border-radius: 5px;
+                background-color: #faa627;
+                color: #fff;
+                cursor: pointer;
+                transition: 0.4s;
+                &:hover {
+                  transition: 0.4s;
+                  background-color: #d48d21;
+                }
+                &:nth-child(1) {
+                  margin: 0 5px 0 0;
+                }
+              }
+            }
+          }
+          .user__name {
+            &-content {
+              &-input {
+                border: 2px solid #b1b1b1;
+                padding: 5px 5px 5px 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                font-family: "Mont";
+                transition: 0.4s;
+                width: 320px;
+                height: 40px;
+                &:focus {
+                  transition: 0.4s;
+                  border: 2px solid rgb(62, 108, 194);
+                  box-shadow: rgba(62, 108, 194, 0.2) 0px 8px 24px;
+                }
+              }
+            }
+          }
+          .user__lastname {
+            &-content {
+              &-input {
+                border: 2px solid #b1b1b1;
+                padding: 5px 5px 5px 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                font-family: "Mont";
+                transition: 0.4s;
+                width: 320px;
+                height: 40px;
+                &:focus {
+                  transition: 0.4s;
+                  border: 2px solid rgb(62, 108, 194);
+                  box-shadow: rgba(62, 108, 194, 0.2) 0px 8px 24px;
+                }
+              }
+            }
+          }
+          .user__email {
+            &-content {
+              &-info {
+                font-size: 20px;
+                font-weight: 600;
+              }
+            }
+          }
+          .user__birthday {
+            &-content {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              &-info {
+                font-size: 16px;
+                font-weight: 600;
+                margin-right: 5px;
+              }
+              &-input {
+                border: 2px solid #b1b1b1;
+                padding: 5px 5px 5px 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                font-family: "Mont";
+                transition: 0.4s;
+                width: 320px;
+                margin-right: 5px;
+                height: 40px;
+                cursor: pointer;
+                &:hover {
+                  transition: 0.4s;
+                  border: 2px solid rgb(62, 108, 194);
+                  box-shadow: rgba(62, 108, 194, 0.2) 0px 8px 24px;
+                }
+              }
+              &-button {
+                padding: 5px 5px;
+                font-family: "Mont";
+                font-size: 12px;
+                text-transform: uppercase;
+                border: 2px solid #b1b1b1;
+                border-radius: 5px;
+                height: 40px;
+                cursor: pointer;
+                transition: 0.4s;
+                &:hover {
+                  transition: 0.4s;
+                  color: #fff;
+                  background-color: #b1b1b1;
+                }
+              }
+              &-button--edit {
+              }
+              &-button--reset {
+                margin-left: 5px;
+              }
+            }
+          }
+          .user__country {
+            &-content {
+              &-select {
+                border: 2px solid #b1b1b1;
+                padding: 5px 5px 5px 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                font-family: "Mont";
+                transition: 0.4s;
+                width: 320px;
+                cursor: pointer;
+                &:focus {
+                  transition: 0.4s;
+                  border: 2px solid rgb(62, 108, 194);
+                  box-shadow: rgba(62, 108, 194, 0.2) 0px 8px 24px;
+                }
+                // option {}
+              }
+            }
+          }
+          .user__save {
+            &-button {
+              padding: 10px 30px;
+              font-family: "Mont";
+              font-size: 16px;
+              text-transform: uppercase;
+              border: none;
+              border-radius: 5px;
+              background-color: #faa627;
+              color: #fff;
+              cursor: pointer;
+              transition: 0.4s;
+              &:hover {
+                transition: 0.4s;
+                background-color: #d48d21;
+              }
+              &:disabled {
+                cursor: auto;
+                opacity: 0.5;
+                background-color: #535353;
+                transition: 0.4s;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

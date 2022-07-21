@@ -1,0 +1,39 @@
+.account {
+  max-width: 1600px;
+  margin: 0 auto;
+  &__content {
+    margin-top: 10px;
+    .tabs {
+      &__list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &-link {
+          position: relative;
+          cursor: pointer;
+          margin: 0 10px;
+          font-size: 26px;
+          font-weight: 700;
+          color: #535353;
+          transition: 0.4s;
+          &:hover {
+            transition: 0.4s;
+            color: #349948;
+          }
+        }
+        .active__link {
+          &:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            border-radius: 5px;
+            background-color: #349948;
+            bottom: -4px;
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+}

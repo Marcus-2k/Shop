@@ -1,0 +1,29 @@
+// Адаптив c 1920 до 360px
+// @include adaptiv-font(20, 10);
+@mixin adaptiv-font($pcSize, $mobSize) {
+  $addSize: $pcSize - $mobSize;
+  $maxWidth: $maxWidth - 360;
+  font-size: calc(
+    #{$mobSize + px} + #{$addSize} * ((100vw - 360px) / #{$maxWidth})
+  );
+}
+
+// Адаптив c 1920 до 768px
+// @include adaptiv-font2(20, 10);
+@mixin adaptiv-font2($pcSize2, $mobSize2) {
+  $addSize2: $pcSize2 - $mobSize2;
+  $maxWidth2: $maxWidth2 - 768;
+  font-size: calc(
+    #{$mobSize2 + px} + #{$addSize2} * ((100vw - 768px) / #{$maxWidth2})
+  );
+}
+
+// Адаптив c 768 до 360px
+// @include adaptiv-font3(18, 16);
+@mixin adaptiv-font3($pcSize3, $mobSize3) {
+  $addSize3: $pcSize3 - $mobSize3;
+  $maxWidth3: $maxWidth3 - 360;
+  font-size: calc(
+    #{$mobSize3 + px} + #{$addSize3} * ((100vw - 360px) / #{$maxWidth3})
+  );
+}
