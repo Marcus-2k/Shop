@@ -1,0 +1,255 @@
+paths:
+  # Login
+  /api/auth/login:
+    post:
+      summary: Login in account
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userLoginRes"
+      responses:
+        200:
+          description: Користувача створено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userLoginReq"
+        401:
+          description: Введено не вірно пароль або пошта.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        404:
+          description: Користувача з такою поштою не знайдено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: Сталася помилка на серверові. Спробуйте пізніше.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  # Register
+  /api/auth/register:
+    post:
+      summary: Register new user
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userRegisterRes"
+      responses:
+        201:
+          description: Користувача створено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userRegisterReq"
+        409:
+          description: Цей емейл уже занятий, виберіть другий.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: Сталася помилка на серверові. Спробуйте пізніше.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  # Logout site
+  /api/auth/logout:
+    post:
+      summary: Register new user
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/logoutSite"
+      responses:
+        200:
+          description: Користувача створено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        500:
+          description: Сталася помилка на серверові. Спробуйте пізніше.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    #
+    userAdmin:
+      type: object
+      required:
+        - _id
+        - password
+      properties:
+        _id:
+          type: string
+          example: 62d42d800c347b86156dbefb
+        password:
+          type: string
+          example: admin12
+    #
+    logoutSite:
+      type: object
+      required:
+        - _id
+        - token
+      properties:
+        _id:
+          type: string
+          example: 62d42d800c347b86156dbefb
+        token:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluMTJAZ21haWwuY29tIiwidXNlcklkIjoiNjJkNTZiZDk3Mzk2ZjYzMTlkMmZkYjE3IiwidG9rZW5JZCI6IjYyZDU3OGFhNzY1MGNiYWYwYjk4NzA5OCIsImlhdCI6MTY1ODE1NzIyNiwiZXhwIjoxNjU4NzYyMDI2fQ.SxdIJsN03HN77ADZ6Mk-4Rdo_UmRFWQ0uR3oYreHEAc
+    #
+    userLoginRes:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: email@gmail.com
+        password:
+          type: string
+          example: admin12
+    #
+    userLoginReq:
+      type: object
+      required:
+        - _id
+        - token
+      properties:
+        _id:
+          type: string
+          example: 62d3006ad8b0f214ab115f3d
+        token:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    #
+    userRegisterRes:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          example: accountName
+        email:
+          type: string
+          example: email1@gmail.com
+        password:
+          type: string
+          example: admin12
+    #
+    userRegisterReq:
+      type: object
+      required:
+        - _id
+        - email
+        - password
+        - name
+        - admin
+        - __v
+      properties:
+        _id:
+          type: string
+          example: 62d3006ad8b0f214ab115f3d
+        email:
+          type: string
+          example: email1@gmail.com
+        password:
+          type: string
+          example: $2a$10$jEt5teYz/9YtiBbCgSOPYeQoFd7erxVQvl1.thn/4OG7mb3bgJ1Bi
+        name:
+          type: string
+          example: accountName
+        admin:
+          type: boolean
+          example: false
+        __v:
+          type: number
+          example: 0
+    #
+    userListItem:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          example: accountName
+        email:
+          type: string
+          example: email1@gmail.com
+    #
+    userList:
+      type: array
+      items:
+        $ref: "#/components/schemas/userListItem"
+    #
+    infoUser:
+      type: object
+      required:
+        - name
+        - email
+        - admin
+        # інші дані про користувача
+      properties:
+        name:
+          type: string
+          example: accountName
+        email:
+          type: string
+          example: email@gmail.com
+        admin:
+          type: boolean
+          example: true
+    #
+    Token:
+      type: object
+      required: true
+        - token
+      properties:
+        token:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    #
+    Error:
+      type: object
+      required: true
+        - message
+      properties:
+        message:
+          type: string
+          example: Текст помилки
+    #
+    Success:
+      type: object
+      required: true
+        - message
+      properties:
+        message:
+          type: string
+          example: Текст успіху

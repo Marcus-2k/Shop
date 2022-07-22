@@ -4,16 +4,16 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Category, Product } from 'src/app/shared/interface/interfaces';
-import { CategoryNameService } from 'src/app/shared/service/category-name.service';
-import { RequestSearchService } from 'src/app/shared/service/request-search.service';
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Category, Product } from "src/app/shared/interface/interfaces";
+import { CategoryNameService } from "src/app/shared/service/category-name.service";
+import { RequestSearchService } from "src/app/shared/service/request-search.service";
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
+  selector: "app-search",
+  templateUrl: "./search.component.html",
+  styleUrls: ["./search.component.scss"],
 })
 export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   constructor(
@@ -23,14 +23,13 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   ) {}
 
   // Params for req
-  reqSearch: string = '';
+  reqSearch: string = "";
 
   async ngOnInit() {
     this.route.queryParams.subscribe((queryParam: any) => {
-      this.reqSearch = queryParam['search_text'];
+      this.reqSearch = queryParam["search_text"];
     });
 
-    // this.searchService.getBySearch(this.reqSearch);
     await this.searchService.getBySearch(this.reqSearch).subscribe(
       (res) => {
         this.listProduct = res.resProduct;
@@ -44,7 +43,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       }
     );
     this.listCategory = this.catagoryName.categoryList;
-    // console.log(this.listCategory);
   }
 
   ngDoCheck(): void {}
@@ -54,7 +52,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   // Develope Mode === START
-  UrlServer: string = 'http://localhost:5000/';
+  UrlServer: string = "http://localhost:5000/";
   // Develope Mode === END
 
   // Loader Component

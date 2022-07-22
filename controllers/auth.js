@@ -5,6 +5,8 @@ const keys = require("../config/keys");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.login = async function (req, res) {
+  console.log("Server login");
+
   const candidate = await User.findOne({ email: req.body.email });
   if (candidate) {
     const passwordResult = bcrypt.compareSync(
@@ -36,6 +38,7 @@ module.exports.login = async function (req, res) {
 };
 
 module.exports.register = async function (req, res) {
+  console.log("Server register");
   const candidate = await User.findOne({ email: req.body.email });
   if (candidate) {
     res.status(409).json({
@@ -59,5 +62,16 @@ module.exports.register = async function (req, res) {
     } catch (error) {
       errorHandler(res, e);
     }
+  }
+};
+
+module.exports.logout = async function (req, res) {
+  console.log("Server logout");
+  try {
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
   }
 };
