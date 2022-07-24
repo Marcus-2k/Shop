@@ -10,8 +10,8 @@
     "dev": "concurrently \"npm run server\"  \"npm run client\""
   },
   "keywords": [
-    "Express",
-    "Angular"
+    "Angular",
+    "Express"
   ],
   "author": "TOP_ARENA",
   "license": "ISC",

@@ -4,28 +4,21 @@ const upload = require("../middleware/upload");
 const controller = require("../controllers/product");
 const router = express.Router();
 
-// Get all product, for authorized users.
+// Get all product
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
-  controller.getAllUser
+  controller.getAllProduct
 );
 
-// Get by id product, for authorized users.
+// Get by id product
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   controller.getById
 );
 
-// Delete product, for authorized users.
-router.delete(
-  "/:id",
-  passport.authenticate("jwt", { session: false }),
-  controller.delete
-);
-
-// Update product, for authorized users.
+// Update product
 router.patch(
   "/:id",
   passport.authenticate("jwt", { session: false }),
@@ -33,12 +26,11 @@ router.patch(
   controller.update
 );
 
-// Create product, for authorized users.
-router.post(
-  "/",
+// Delete product
+router.delete(
+  "/:id",
   passport.authenticate("jwt", { session: false }),
-  upload.single("image"),
-  controller.create
+  controller.delete
 );
 
 module.exports = router;

@@ -29,7 +29,7 @@ const options = {
     ],
   },
   apis: ["./docs/swagger.yml"],
-}; // options Swagger
+}; // Options Swagger
 const specs = swaggerJsDoc(options);
 
 mongoose
