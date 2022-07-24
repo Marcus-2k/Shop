@@ -1,10 +1,10 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'price',
+  name: "price",
 })
 export class PricePipe implements PipeTransform {
   transform(value: string | number): any {
-    return value.toLocaleString('ru-RU');
+    return value.toLocaleString("ru-RU");
   }
 }

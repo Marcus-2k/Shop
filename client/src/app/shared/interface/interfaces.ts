@@ -53,17 +53,3 @@ export interface CategorList {
 export interface CategorListSub {
   titleSubNameListCategory: string;
 }
-
-// export interface Category {
-//   nameCategory: string;
-//   nameListCategory: [
-//     {
-//       subNameCategory: string;
-//       subNameListCategory: [
-//         {
-//           titleSubNameListCategory: string;
-//         }
-//       ];
-//     }
-//   ];
-// }
