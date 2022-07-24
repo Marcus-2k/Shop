@@ -1,11 +1,11 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, DoCheck, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit, DoCheck {
   constructor(private router: Router) {}
@@ -13,11 +13,11 @@ export class HeaderComponent implements OnInit, DoCheck {
   ngOnInit(): void {}
 
   ngDoCheck(): void {
-    this.potentialToken = localStorage.getItem('auth-token');
+    this.potentialToken = localStorage.getItem("auth-token");
   }
 
   // Щоб показувати відповідні іконки, (вхід / акаунт, вподобані, корзина)
-  potentialToken = localStorage.getItem('auth-token');
+  potentialToken = localStorage.getItem("auth-token");
 
   // FormGroup
   form: FormGroup = new FormGroup({

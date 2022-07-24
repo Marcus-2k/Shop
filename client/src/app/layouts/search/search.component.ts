@@ -30,18 +30,18 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       this.reqSearch = queryParam["search_text"];
     });
 
-    await this.searchService.getBySearch(this.reqSearch).subscribe(
-      (res) => {
-        this.listProduct = res.resProduct;
-        this.listNumberCategory = res.resCategory;
+    // await this.searchService.getBySearch(this.reqSearch).subscribe(
+    //   (res) => {
+    //     this.listProduct = res.resProduct;
+    //     this.listNumberCategory = res.resCategory;
 
-        this.loaderProduct = false;
-        this.loaderSelect = false;
-      },
-      (e) => {
-        console.log(e);
-      }
-    );
+    //     this.loaderProduct = false;
+    //     this.loaderSelect = false;
+    //   },
+    //   (e) => {
+    //     console.log(e);
+    //   }
+    // );
     this.listCategory = this.catagoryName.categoryList;
   }
 

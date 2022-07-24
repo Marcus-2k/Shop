@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/service/auth.service';
+import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { AuthService } from "src/app/shared/service/auth.service";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  selector: "app-register",
+  templateUrl: "./register.component.html",
+  styleUrls: ["./register.component.scss"],
 })
 export class RegisterComponent implements OnInit {
   constructor(private auth: AuthService, private router: Router) {}
@@ -15,7 +15,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.isAuthenticated()) {
-      this.router.navigate(['/account'], {
+      this.router.navigate(["/account"], {
         queryParams: {
           registered: true,
         },
@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
   }
 
   closePopuap() {
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
   }
 
   onSubmit() {
@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
     this.auth.register(this.form.value).subscribe(
       (res) => {
         console.log(res);
-        this.router.navigate(['/login'], {
+        this.router.navigate(["/login"], {
           queryParams: {
             registered: true,
           },

@@ -7,18 +7,18 @@ import {
   ElementRef,
   OnInit,
   ViewChild,
-} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Product } from 'src/app/shared/interface/interfaces';
-import { CategoryNameService } from 'src/app/shared/service/category-name.service';
-import { RequestProductService } from 'src/app/shared/service/request-product.service';
-import { ShowErrorService } from 'src/app/shared/service/show-error.service';
+} from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { Product } from "src/app/shared/interface/interfaces";
+import { CategoryNameService } from "src/app/shared/service/category-name.service";
+import { RequestProductService } from "src/app/shared/service/request-product.service";
+import { ShowErrorService } from "src/app/shared/service/show-error.service";
 
 @Component({
-  selector: 'app-product-new',
-  templateUrl: './product-new.component.html',
-  styleUrls: ['./product-new.component.scss'],
+  selector: "app-product-new",
+  templateUrl: "./product-new.component.html",
+  styleUrls: ["./product-new.component.scss"],
 })
 export class ProductNewComponent
   implements OnInit, DoCheck, AfterContentInit, AfterViewInit
@@ -33,7 +33,7 @@ export class ProductNewComponent
   ngOnInit(): void {
     this.categoryList = this.categoryName.categoryList;
     this.route.queryParams.subscribe((queryParam: any) => {
-      this.reqParams = queryParam['id'];
+      this.reqParams = queryParam["id"];
       if (this.reqParams) {
         this.update = true;
       } else {
@@ -88,8 +88,8 @@ export class ProductNewComponent
       this.description = this.updateProduct.description;
       // Присвоєння ключових слів товару
       if (this.updateProduct.keyWords) {
-        this.stringKeysWords = this.updateProduct.keyWords.join(' ');
-        this.keyWordsInput(this.updateProduct.keyWords.join(' '));
+        this.stringKeysWords = this.updateProduct.keyWords.join(" ");
+        this.keyWordsInput(this.updateProduct.keyWords.join(" "));
       }
       // console.log(this.updateProduct.keyWords?.join(' '));
     }
@@ -97,12 +97,12 @@ export class ProductNewComponent
 
   // Update product END ====
 
-  @ViewChild('inputFile') inputFile?: ElementRef;
-  @ViewChild('inputTitle') inputTitle?: ElementRef;
-  @ViewChild('inputPrice') inputPrice?: ElementRef;
-  @ViewChild('inputKeyWords') inputKeyWords?: ElementRef;
+  @ViewChild("inputFile") inputFile?: ElementRef;
+  @ViewChild("inputTitle") inputTitle?: ElementRef;
+  @ViewChild("inputPrice") inputPrice?: ElementRef;
+  @ViewChild("inputKeyWords") inputKeyWords?: ElementRef;
 
-  body = document.getElementById('body');
+  body = document.getElementById("body");
 
   formControlFile: boolean = false;
   formControlName: boolean = false;
@@ -135,7 +135,7 @@ export class ProductNewComponent
   // File END ====
 
   // Name Start ====
-  nameProduct: string = '';
+  nameProduct: string = "";
   // Name END ====
 
   // Price Start ====
@@ -145,20 +145,20 @@ export class ProductNewComponent
   // Popuap Select Category START ====
   categoryList = [
     {
-      nameCategory: 'Допомога',
+      nameCategory: "Допомога",
       nameListCategory: [
         {
-          subNameCategory: 'Потрібна допомога',
+          subNameCategory: "Потрібна допомога",
           subNameListCategory: [
-            { titleSubNameListCategory: 'Ліки та Гігієнічні засоби' },
-            { titleSubNameListCategory: 'Ліки та Гігієнічні засоби' },
+            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
+            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
           ],
         },
         {
-          subNameCategory: 'Пропоную допомогу',
+          subNameCategory: "Пропоную допомогу",
           subNameListCategory: [
-            { titleSubNameListCategory: 'Ліки та Гігієнічні засоби' },
-            { titleSubNameListCategory: 'Ліки та Гігієнічні засоби' },
+            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
+            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
           ],
         },
       ],
@@ -201,7 +201,7 @@ export class ProductNewComponent
     this.threeIndex = index;
     this.categorySelected = true; // Відобразить вибрані категорії в form вибір категорії
     this.popuapOnOff = false; // Close popuap
-    this.body?.classList.remove('active'); // For body style overflow: auto;
+    this.body?.classList.remove("active"); // For body style overflow: auto;
     this.createCategoryNumber();
   }
 
@@ -234,7 +234,7 @@ export class ProductNewComponent
 
   popuapOpen() {
     this.popuapOnOff = true; // Open Popuap
-    this.body?.classList.add('active'); // For body style overflow: hidden;
+    this.body?.classList.add("active"); // For body style overflow: hidden;
     this.categorySelected = false;
     this.resetCategoryBlockAndIndex(); // Reset
     this.categoryErrorShow = false;
@@ -244,7 +244,7 @@ export class ProductNewComponent
     if (idx === 0) {
       this.popuapOnOff = false; // Close Popuap
 
-      this.body?.classList.remove('active'); // For body style overflow: auto;
+      this.body?.classList.remove("active"); // For body style overflow: auto;
 
       this.resetCategoryBlockAndIndex();
     }
@@ -253,14 +253,14 @@ export class ProductNewComponent
 
   // Key Words START ====
   keyWords: string[] = []; // Ключові слова.
-  stringKeysWords = ''; // Ключові слова в одному рядку. Для відправки на сервер.
+  stringKeysWords = ""; // Ключові слова в одному рядку. Для відправки на сервер.
   lengthKeyWords: number = 0; // Кількість символів ключових слів.
   checkKeyWords: boolean = false; // Для блока видалення не правильних ключових слів.
 
   keyWordsInput(value: string) {
-    this.keyWords = value.replace(/ +/g, ' ').trim().split(' ');
-    this.lengthKeyWords = value.replace(/\s+/g, '').length;
-    if (this.keyWords[0] === '') {
+    this.keyWords = value.replace(/ +/g, " ").trim().split(" ");
+    this.lengthKeyWords = value.replace(/\s+/g, "").length;
+    if (this.keyWords[0] === "") {
       this.keyWords = [];
     }
 
@@ -291,20 +291,20 @@ export class ProductNewComponent
   // Key Words END ====
 
   // Description Start ====
-  description: string = ''; // Description
+  description: string = ""; // Description
   // Description END ====
 
   // Create product Start ====
   createProduct() {
-    console.log('Кнопка Створити');
+    console.log("Кнопка Створити");
     for (let index = 0; index < this.keyWords.length; index++) {
-      console.log('Старт циклу');
+      console.log("Старт циклу");
       if (
         this.keyWords[index].length <= 1 ||
         this.keyWords[index].length > 10
       ) {
         this.showError.toasts(
-          'В ключових словах, є слова в яких кількість символів меньше двох (2), або більше десяти (10).'
+          "В ключових словах, є слова в яких кількість символів меньше двох (2), або більше десяти (10)."
         );
         this.checkKeyWords = true;
         break;
@@ -321,49 +321,49 @@ export class ProductNewComponent
       this.description.length >= 60 &&
       this.description.length <= 5000
     ) {
-      console.log('Створили FromData');
+      console.log("Створили FromData");
 
       const formData = new FormData();
       if (this.images) {
-        formData.append('image', this.images, this.images.name); // Add photo product
+        formData.append("image", this.images, this.images.name); // Add photo product
       }
-      formData.append('name', this.nameProduct); // Add name product
-      formData.append('price', String(this.priceProduct)); // Add price product
-      formData.append('category', this.categoryNumber.join(' ')); // Add category number
-      formData.append('keyWords', this.keyWords.join(' ')); // Add key word (string format)
-      formData.append('description', this.description); // Add description (string format)
+      formData.append("name", this.nameProduct); // Add name product
+      formData.append("price", String(this.priceProduct)); // Add price product
+      formData.append("category", this.categoryNumber.join(" ")); // Add category number
+      formData.append("keyWords", this.keyWords.join(" ")); // Add key word (string format)
+      formData.append("description", this.description); // Add description (string format)
 
-      console.log('Відправили FromData');
+      console.log("Відправили FromData");
 
       this.requestProduct.createProduct(formData).subscribe(
         (res) => {
-          this.showError.toasts('Товар створено успішно.');
+          this.showError.toasts("Товар створено успішно.");
         },
         (e) => {
           console.log(e);
           this.showError.toasts(
-            'Товар не було створено, дані заповнено не коректно'
+            "Товар не було створено, дані заповнено не коректно"
           );
         }
       ); //Відправили на сервер
     } else {
       this.showError.toasts(
-        'Товар не було створено, дані заповнено не коректно'
+        "Товар не було створено, дані заповнено не коректно"
       );
     }
   }
 
   upProduct() {
-    console.log('Кнопка Зберегти');
+    console.log("Кнопка Зберегти");
 
     for (let index = 0; index < this.keyWords.length; index++) {
-      console.log('Старт циклу');
+      console.log("Старт циклу");
       if (
         this.keyWords[index].length <= 1 ||
         this.keyWords[index].length > 10
       ) {
         this.showError.toasts(
-          'В ключових словах, є слова в яких кількість символів меньше двох (2), або більше десяти (10).'
+          "В ключових словах, є слова в яких кількість символів меньше двох (2), або більше десяти (10)."
         );
         this.checkKeyWords = true;
         break;
@@ -382,36 +382,36 @@ export class ProductNewComponent
       this.description.length >= 60 &&
       this.description.length <= 5000
     ) {
-      console.log('Створили FromData');
+      console.log("Створили FromData");
 
       const formData = new FormData();
       if (this.images) {
-        formData.append('image', this.images, this.images.name); // Add photo product
+        formData.append("image", this.images, this.images.name); // Add photo product
       }
 
-      formData.append('name', this.nameProduct); // Add name product
-      formData.append('price', String(this.priceProduct)); // Add price product
-      formData.append('category', this.categoryNumber.join(' ')); // Add category number
-      formData.append('keyWords', this.keyWords.join(' ')); // Add key word (string format)
-      formData.append('description', this.description); // Add description (string format)
+      formData.append("name", this.nameProduct); // Add name product
+      formData.append("price", String(this.priceProduct)); // Add price product
+      formData.append("category", this.categoryNumber.join(" ")); // Add category number
+      formData.append("keyWords", this.keyWords.join(" ")); // Add key word (string format)
+      formData.append("description", this.description); // Add description (string format)
 
-      console.log('Відправили FromData');
+      console.log("Відправили FromData");
 
       const id = this.updateProduct._id;
       this.requestProduct.updateById(formData, id).subscribe(
         (res) => {
-          this.showError.toasts('Товар збережено успішно.');
+          this.showError.toasts("Товар збережено успішно.");
         },
         (e) => {
           console.log(e);
           this.showError.toasts(
-            'Товар не було змінено, дані заповнено не коректно'
+            "Товар не було змінено, дані заповнено не коректно"
           );
         }
       ); //Відправили на сервер
     } else {
       this.showError.toasts(
-        'Товар не було збережено, дані заповнено не коректно'
+        "Товар не було збережено, дані заповнено не коректно"
       );
     }
   } // Update product END ====

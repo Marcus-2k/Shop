@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Product } from '../interface/interfaces';
+import { Injectable } from "@angular/core";
+import { Product } from "../interface/interfaces";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ProductService {
   constructor() {}

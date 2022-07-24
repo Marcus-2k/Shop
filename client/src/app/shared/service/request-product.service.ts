@@ -1,15 +1,15 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Product } from '../interface/interfaces';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { Product } from "../interface/interfaces";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class RequestProductService {
   constructor(private http: HttpClient) {}
 
-  UrlServer: string = 'http://localhost:5000/api';
+  UrlServer: string = "http://localhost:5000/api";
 
   getUserProduct(): Observable<any> {
     return this.http.get<Product>(`${this.UrlServer}/product`);

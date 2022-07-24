@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 declare var M: any;
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ShowErrorService {
   toasts(message: string) {

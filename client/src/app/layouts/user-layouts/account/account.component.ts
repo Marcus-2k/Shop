@@ -1,12 +1,12 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/service/auth.service';
-import { ShowErrorService } from 'src/app/shared/service/show-error.service';
+import { Component, DoCheck, OnInit } from "@angular/core";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+import { AuthService } from "src/app/shared/service/auth.service";
+import { ShowErrorService } from "src/app/shared/service/show-error.service";
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss'],
+  selector: "app-account",
+  templateUrl: "./account.component.html",
+  styleUrls: ["./account.component.scss"],
 })
 export class AccountComponent implements OnInit, DoCheck {
   constructor(
@@ -17,13 +17,13 @@ export class AccountComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
-    this.router.navigate(['account/user']);
+    this.router.navigate(["account/user"]);
     this.route.queryParams.subscribe((params: Params) => {
-      if (params['login']) {
-        this.showError.toasts('Ви вже авторизовані в системі.');
-      } else if (params['registered']) {
+      if (params["login"]) {
+        this.showError.toasts("Ви вже авторизовані в системі.");
+      } else if (params["registered"]) {
         this.showError.toasts(
-          'Щоб створити новий акаунт, потрібно завершити сесію.'
+          "Щоб створити новий акаунт, потрібно завершити сесію."
         );
       }
     });
@@ -31,7 +31,7 @@ export class AccountComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['/login'], {
+      this.router.navigate(["/login"], {
         queryParams: {
           sessionFail: true,
         },
@@ -41,7 +41,7 @@ export class AccountComponent implements OnInit, DoCheck {
 
   logout() {
     this.auth.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
   }
 
   //
