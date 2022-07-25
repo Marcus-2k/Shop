@@ -80,14 +80,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     console.log(input);
     console.log(category);
 
-    // this.router.
-
-    // ([`search`], {
-    //   queryParams: {
-    //     search_text: 'sdsd',
-    //   },
-    // });
-
     // this.searchService.getByFilterSearch(title, categoryId).subscribe(
     //   (res) => {
     //     console.log(res);
