@@ -14,11 +14,11 @@ export interface Product {
   imageSrc: string;
   price: number;
   category: number[];
-  keyWords?: [string];
+  keyWords?: [string]; // no required
   description: string;
   action: boolean;
-  _id?: string;
-  user?: string;
+  _id?: string; // server
+  user?: string; // server
 }
 
 export interface userResponse {
@@ -39,17 +39,16 @@ export interface oldUserResponse {
   country: number;
 }
 
-// Не дороблено
-export interface Category {
-  nameCategory: string;
-  nameListCategory: CategorList[];
+// Category List for component /account/product/new
+export interface CategorListSub {
+  titleSubNameListCategory: string;
 }
-
 export interface CategorList {
   subNameCategory: string;
   subNameListCategory: CategorListSub[];
 }
-
-export interface CategorListSub {
-  titleSubNameListCategory: string;
+export interface Category {
+  nameCategory: string;
+  nameListCategory: CategorList[];
 }
+//

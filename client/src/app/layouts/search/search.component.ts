@@ -5,10 +5,12 @@ import {
   OnDestroy,
   OnInit,
 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
+import { Router } from "express";
 import { Category, Product } from "src/app/shared/interface/interfaces";
 import { CategoryNameService } from "src/app/shared/service/category-name.service";
 import { RequestSearchService } from "src/app/shared/service/request-search.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-search",
@@ -18,60 +20,73 @@ import { RequestSearchService } from "src/app/shared/service/request-search.serv
 export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private searchService: RequestSearchService,
     private catagoryName: CategoryNameService
   ) {}
 
-  // Params for req
-  reqSearch: string = "";
+  titleSearch?: string; // Params for req
 
   async ngOnInit() {
-    this.route.queryParams.subscribe((queryParam: any) => {
-      this.reqSearch = queryParam["search_text"];
+    this.route.queryParams.subscribe((queryParam: Params) => {
+      this.titleSearch = queryParam["search_text"];
     });
-
-    // await this.searchService.getBySearch(this.reqSearch).subscribe(
-    //   (res) => {
-    //     this.listProduct = res.resProduct;
-    //     this.listNumberCategory = res.resCategory;
-
-    //     this.loaderProduct = false;
-    //     this.loaderSelect = false;
-    //   },
-    //   (e) => {
-    //     console.log(e);
-    //   }
-    // );
-    this.listCategory = this.catagoryName.categoryList;
+    if (this.titleSearch) {
+      await this.searchService.search(this.titleSearch).subscribe(
+        (res) => {
+          console.log(res);
+          this.listProduct = res;
+          //
+          this.loaderProduct = false;
+          this.loaderSelect = false;
+          //
+          res.forEach((item: Product) => {
+            this.categoryListNumber.push(item.category);
+          });
+          this.categoryList = this.catagoryName.categoryList;
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
+    }
   }
 
   ngDoCheck(): void {}
 
   ngOnDestroy(): void {
-    // this.productS.productList = [];
+    this.listProduct = [];
+    this.categoryList = [];
+    this.categoryListNumber = [];
   }
 
-  // Develope Mode === START
-  UrlServer: string = "http://localhost:5000/";
-  // Develope Mode === END
+  // Other === START
 
-  // Loader Component
-  loaderProduct: boolean = true;
-  loaderSelect: boolean = true;
+  url_server_img: string = `http://${environment.HOST}${environment.PORT}/`; // Link to server folder
+
+  loaderSelect: boolean = true; // Loader block Select
+  loaderProduct: boolean = true; // Loader block Product
+
+  // Other === END
 
   /* Sidebar */
 
-  listNumberCategory = []; // Category List
+  categoryListNumber: number[][] = []; // Category List
 
-  listCategory: Category[] = []; // All Category
+  categoryList: Category[] = []; // All Category
 
-  filterSearch(checked: boolean, input: HTMLInputElement, category: object) {
+  filterSearch(checked: boolean, input: HTMLInputElement, category: number[]) {
     console.log(checked);
     console.log(input);
-    const title = this.reqSearch;
-    const categoryId = category;
-    console.log(title);
-    console.log(categoryId);
+    console.log(category);
+
+    // this.router.
+
+    // ([`search`], {
+    //   queryParams: {
+    //     search_text: 'sdsd',
+    //   },
+    // });
 
     // this.searchService.getByFilterSearch(title, categoryId).subscribe(
     //   (res) => {
@@ -87,7 +102,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
   /* Body */
 
-  listProduct: Product[] = []; // Product List
+  listProduct: Product[] = []; // List Product
 
   /* Body */
 }

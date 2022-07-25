@@ -1,6 +1,7 @@
 <!--  -->
 <header class="header">
   <div class="header__content">
+    <!--  -->
     <div class="header__content-menu">
       <div class="menu-logo">
         <div class="logo">
@@ -19,55 +20,35 @@
         </button>
       </div>
     </div>
+    <!--  -->
     <div class="header__content-search">
       <div class="search">
-        <form
-          action=""
-          method="get"
-          [formGroup]="form"
-          (ngSubmit)="getBySearch(searchSite.value)"
-        >
+        <form action="" method="get" (ngSubmit)="search(searchSite.value)">
           <input
             type="text"
             name=""
             id="searchSite"
-            formControlName="search"
             #searchSite
             class="search__site"
             placeholder="Пошук..."
-            [ngClass]="{
-              'input-disabled':
-                form.controls['search'].invalid &&
-                form.controls['search'].touched
-            }"
           />
-          <span
-            class="help__text"
-            *ngIf="form.controls['search'].errors?.['minlength'] && form.controls['search'].touched"
-            >Мінімальна кількість символів для запиту 4.</span
-          >
-          <button
-            type="submit"
-            class="button__search"
-            [disabled]="form.invalid || form.disabled"
-          >
-            Найти
-          </button>
+          <button type="submit" class="button__search">Найти</button>
         </form>
       </div>
     </div>
+    <!--  -->
     <div class="header__content-user">
       <div class="menu"></div>
       <div class="user">
         <ul class="user__list">
+          <li class="user__list-link" *ngIf="!potentialToken">
+            <a routerLink="/login" routerLinkActive="" class="link-item">
+              <img src="../../../../assets/img/enter.png" alt="enter" />
+            </a>
+          </li>
           <li class="user__list-link" *ngIf="potentialToken">
             <a routerLink="/account" routerLinkActive="" class="link-item">
               <img src="../../../../assets/img/user.png" alt="user" />
-            </a>
-          </li>
-          <li class="user__list-link" *ngIf="!potentialToken">
-            <a routerLink="/login" routerLinkActive="" class="link-item">
-              <img src="../../../../assets/img/enter.png" alt="user" />
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
@@ -83,8 +64,19 @@
               />
             </a>
           </li>
+          <li class="user__list-link" *ngIf="potentialToken">
+            <a
+              routerLink="/"
+              routerLinkActive=""
+              class="link-item"
+              (click)="logout()"
+            >
+              <img src="../../../../assets/img/logout.png" alt="logout" />
+            </a>
+          </li>
         </ul>
       </div>
     </div>
+    <!--  -->
   </div>
 </header>

@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const tokenSchema = new Schema({
-  _id_user: {
-    type: Schema.Types.ObjectId,
+  user_id: {
     ref: "users",
+    type: Schema.Types.ObjectId,
     required: true,
   },
 });

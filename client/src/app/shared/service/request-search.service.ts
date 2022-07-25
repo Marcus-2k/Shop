@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Product } from "../interface/interfaces";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -9,13 +9,9 @@ import { Product } from "../interface/interfaces";
 export class RequestSearchService {
   constructor(private http: HttpClient) {}
 
-  UrlServer: string = "http://localhost:5000/api";
+  private url_server = `http://${environment.HOST}${environment.PORT}/api`;
 
-  // getBySearch(
-  //   title: string
-  // ): Observable<{ resProduct: Product[]; resCategory: [] }> {
-  //   return this.http.get<{ resProduct: Product[]; resCategory: [] }>(
-  //     `http://localhost:5000/api/search/1231232?search=value`
-  //   );
-  // }
+  search(title: string): Observable<any> {
+    return this.http.get<any>(`${this.url_server}/search?search_text=${title}`);
+  }
 }

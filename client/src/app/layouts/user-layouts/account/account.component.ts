@@ -40,9 +40,15 @@ export class AccountComponent implements OnInit, DoCheck {
   }
 
   logout() {
-    this.auth.logout();
-    this.router.navigate(["/"]);
-  }
-
-  //
+    this.auth.logout().subscribe(
+      (res) => {
+        console.log(res.message);
+        this.auth.setToken(null); // Delete token client
+        localStorage.clear(); // Delete token localStorage
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
+  } // logout
 }

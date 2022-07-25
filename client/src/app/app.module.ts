@@ -36,6 +36,7 @@ import { ProductNewComponent } from "./layouts/user-layouts/product-new/product-
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
 import { UserComponent } from "./layouts/user-layouts/user/user.component";
 import { PricePipe } from "./shared/pipe/price.pipe";
+import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newsletters.component";
 
 // Routing Link
 const appRoutes: Routes = [
@@ -77,6 +78,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard],
         component: SettingsComponent,
       },
+      {
+        path: "newsletters",
+        canActivate: [AuthGuard],
+        component: NewslettersComponent,
+      },
     ],
   },
   { path: "like", canActivate: [AuthGuard], component: LikeComponent },
@@ -106,6 +112,7 @@ const appRoutes: Routes = [
     ProductNewComponent,
     UserComponent,
     PricePipe,
+    NewslettersComponent,
   ],
   imports: [
     BrowserModule,

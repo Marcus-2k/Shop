@@ -1,37 +1,40 @@
-import { Component, DoCheck, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Component, DoCheck } from "@angular/core";
 import { Router } from "@angular/router";
+import { AuthService } from "src/app/shared/service/auth.service";
 
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.scss"],
 })
-export class HeaderComponent implements OnInit, DoCheck {
-  constructor(private router: Router) {}
-
-  ngOnInit(): void {}
+export class HeaderComponent implements DoCheck {
+  constructor(private router: Router, private auth: AuthService) {}
 
   ngDoCheck(): void {
     this.potentialToken = localStorage.getItem("auth-token");
   }
 
-  // Щоб показувати відповідні іконки, (вхід / акаунт, вподобані, корзина)
+  // Щоб показувати відповідні іконки, (login / exit, account, like, basket)
   potentialToken = localStorage.getItem("auth-token");
 
-  // FormGroup
-  form: FormGroup = new FormGroup({
-    search: new FormControl(null, [
-      Validators.required,
-      Validators.minLength(4),
-    ]),
-  });
-
-  getBySearch(title: string) {
+  search(title: string) {
     this.router.navigate([`search`], {
       queryParams: {
         search_text: title,
       },
     });
-  }
+  } // search title >> redirect >> /search
+
+  logout() {
+    this.auth.logout().subscribe(
+      (res) => {
+        console.log(res.message);
+        this.auth.setToken(null); // Delete token client
+        localStorage.clear(); // Delete token localStorage
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
+  } // logout site
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "./shared/service/auth.service";
+import { CategoryNameService } from "./shared/service/category-name.service";
 
 @Component({
   selector: "app-root",
@@ -14,5 +15,13 @@ export class AppComponent implements OnInit {
     if (potentialToken !== null) {
       this.auth.setToken(potentialToken);
     }
+    // this.auth.category().subscribe(
+    //   (res) => {
+    //     console.log(res);
+    //   },
+    //   (e) => {
+    //     console.log(e);
+    //   }
+    // );
   }
 }

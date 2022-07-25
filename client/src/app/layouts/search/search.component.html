@@ -24,7 +24,7 @@
           <div class="select__conten-category">
             <hr />
             <div
-              *ngFor="let category of listNumberCategory; let idx = index"
+              *ngFor="let category of categoryListNumber; let idx = index"
               class="category"
             >
               <input
@@ -38,7 +38,7 @@
               />
               <label [for]="idx" class="category__title">
                 {{
-                  listCategory[category[0]].nameListCategory[category[1]]
+                  categoryList[category[0]].nameListCategory[category[1]]
                     .subNameListCategory[category[2]].titleSubNameListCategory
                 }}</label
               >
@@ -72,7 +72,7 @@
             <div class="body__preview">
               <img
                 class="preview__img"
-                [src]="UrlServer + product.imageSrc"
+                [src]="url_server_img + product.imageSrc"
                 alt=""
               />
             </div>

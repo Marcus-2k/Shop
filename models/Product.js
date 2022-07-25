@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { array } = require("../middleware/upload");
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
@@ -35,5 +34,7 @@ const productSchema = new Schema({
     type: Schema.Types.ObjectId,
   },
 });
+
+productSchema.index({ name: "text" });
 
 module.exports = mongoose.model("product", productSchema);

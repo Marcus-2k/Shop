@@ -6,7 +6,8 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/accountUser");
-const searchSite = require("./routes/searchSite");
+const categoryRoutes = require("./routes/category");
+const searchRoutes = require("./routes/search");
 // Router END
 // Swagger START
 const swaggerUI = require("swagger-ui-express");
@@ -57,8 +58,12 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)); // link to swagge
 
 // Router function
 app.use("/api/auth", authRoutes);
+
 app.use("/api/product", productRoutes);
 app.use("/api/account/user", userRoutes);
-app.use("/api/search", searchSite);
 
+app.use("/api/category", categoryRoutes);
+app.use("/api/search", searchRoutes);
+
+//
 module.exports = app;

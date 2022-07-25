@@ -7,6 +7,7 @@ import { Category } from "../interface/interfaces";
 export class CategoryNameService {
   constructor() {}
 
+  // categoryList = [
   categoryList: Category[] = [
     {
       nameCategory: "Допомога",
