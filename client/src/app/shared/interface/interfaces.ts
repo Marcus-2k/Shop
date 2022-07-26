@@ -44,16 +44,14 @@ export interface ActiveCategory {
   active: boolean;
 }
 
-// Category Product
-export interface CategorSubList {
-  titleSubNameListCategory: string;
+export interface CategoryProduct {
+  nameCategory: string;
+  nameListCategory: CategorList[];
 }
 export interface CategorList {
   subNameCategory: string;
   subNameListCategory: CategorSubList[];
 }
-export interface CategoryProduct {
-  nameCategory: string;
-  nameListCategory: CategorList[];
+export interface CategorSubList {
+  titleSubNameListCategory: string;
 }
-//

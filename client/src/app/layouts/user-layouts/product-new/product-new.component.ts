@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Product } from "src/app/shared/interface/interfaces";
+import { CategoryProduct, Product } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
@@ -19,9 +19,7 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
   templateUrl: "./product-new.component.html",
   styleUrls: ["./product-new.component.scss"],
 })
-export class ProductNewComponent
-  implements OnInit, DoCheck, AfterContentInit, AfterViewInit
-{
+export class ProductNewComponent implements OnInit, DoCheck {
   constructor(
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
@@ -43,7 +41,6 @@ export class ProductNewComponent
       if (this.reqParams) {
         this.requestProduct.getByIdforUpdate(this.reqParams).subscribe(
           (res) => {
-            console.log(res);
             this.updateProduct = res;
             this.updateOnInit();
           },
@@ -58,15 +55,8 @@ export class ProductNewComponent
   textareaClick: boolean = false;
   ngDoCheck(): void {}
 
-  ngAfterContentInit(): void {}
-  ngAfterViewInit(): void {
-    // document.addEventListener('blur', function (event) {
-    //   console.log('blur: ', event.target.id, document.activeElement.id)
-    // }, true)
-  }
-
   // Update product START ====
-  update: boolean = false; // ProductNewComponent в якому стан
+  update: boolean = false; // Режим update true/false
   reqParams: string | undefined = undefined;
   updateProduct: Product | undefined = undefined;
 
@@ -90,7 +80,6 @@ export class ProductNewComponent
         this.stringKeysWords = this.updateProduct.keyWords.join(" ");
         this.keyWordsInput(this.updateProduct.keyWords.join(" "));
       }
-      // console.log(this.updateProduct.keyWords?.join(' '));
     }
   }
 
@@ -102,11 +91,6 @@ export class ProductNewComponent
   @ViewChild("inputKeyWords") inputKeyWords?: ElementRef;
 
   body = document.getElementById("body");
-
-  formControlFile: boolean = false;
-  formControlName: boolean = false;
-  formControlPrice: boolean = false;
-  formControlDescription: boolean = false;
 
   // File Start ====
   validImages = false; // Якщо фото не завантажено, але було нажато кнопку завантажити, для вивидення помилки"потрібно вибрати фото"
@@ -142,27 +126,7 @@ export class ProductNewComponent
   // Price END ====
 
   // Popuap Select Category START ====
-  categoryList = [
-    {
-      nameCategory: "Допомога",
-      nameListCategory: [
-        {
-          subNameCategory: "Потрібна допомога",
-          subNameListCategory: [
-            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
-            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
-          ],
-        },
-        {
-          subNameCategory: "Пропоную допомогу",
-          subNameListCategory: [
-            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
-            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
-          ],
-        },
-      ],
-    },
-  ]; // Category List
+  categoryList: CategoryProduct[] = []; // Category List
 
   oneIndex: number = -1; // Перша цифра категорії для categoryList
   twoIndex: number = -1; // Друга цифра категорії для categoryList
@@ -172,7 +136,7 @@ export class ProductNewComponent
   twoCategory: boolean = false; // Відображає блок для вибору категорії другого рівня.
   threeCategory: boolean = false; // Відображає блок для вибору категорії третього рівня.
 
-  categoryNumber: number[] = [-1]; // Перша цифра - це номер обєкта в масиві categoryList, друга цифра це номер массива в середені списку під першою цифрою...
+  categoryNumber: number[] = []; // Перша цифра - це номер обєкта в масиві categoryList, друга цифра це номер массива в середені списку під першою цифрою...
 
   categoryErrorShow: boolean = false; // True в тому випадку якщо категорія не вибрана, і при умові що було відкрите вікно вибору.
 
@@ -286,7 +250,6 @@ export class ProductNewComponent
       }
     }
   }
-
   // Key Words END ====
 
   // Description Start ====
@@ -413,5 +376,6 @@ export class ProductNewComponent
         "Товар не було збережено, дані заповнено не коректно"
       );
     }
-  } // Update product END ====
+  }
+  // Create product END ====
 }

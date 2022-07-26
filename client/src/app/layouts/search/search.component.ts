@@ -31,16 +31,16 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     private showNotice: ShowNoticeService
   ) {}
 
-  titleSearch?: string; // Params for req
+  titleSearch?: string;
   categorySearch?: string;
+
   async ngOnInit() {
-    console.log("Start ngOnInit");
+    console.log("Start ngOnInit Search");
     this.route.queryParams.subscribe((queryParam: Params) => {
       this.titleSearch = queryParam["search_text"];
       this.categorySearch = queryParam["category"];
     });
-    // console.log(this.titleSearch);
-    // console.log(this.categorySearch);
+
     if (this.titleSearch) {
       await this.searchService
         .search(this.titleSearch, this.categorySearch)
@@ -54,8 +54,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
               activeCategoryInQuery = this.categorySearch.split(",");
 
               activeCategoryInQuery.forEach((element, idx) => {
-                // let newElement = ("" + Number(element)).split("").map(Number);
-                // activeCategoryInQuery[idx] = newElement;
                 activeCategoryInQuery[idx] = Number(element);
               });
             }
