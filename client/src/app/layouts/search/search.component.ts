@@ -5,11 +5,16 @@ import {
   OnDestroy,
   OnInit,
 } from "@angular/core";
-import { ActivatedRoute, Params } from "@angular/router";
-import { Router } from "express";
-import { Category, Product } from "src/app/shared/interface/interfaces";
-import { CategoryNameService } from "src/app/shared/service/category-name.service";
-import { RequestSearchService } from "src/app/shared/service/request-search.service";
+import { ActivatedRoute, Params, Router } from "@angular/router";
+
+import {
+  CategoryProduct,
+  Product,
+  ActiveCategory,
+} from "src/app/shared/interface/interfaces";
+import { CategoryProductService } from "src/app/shared/service/category-product.service";
+import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
+import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -22,33 +27,65 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private searchService: RequestSearchService,
-    private catagoryName: CategoryNameService
+    private catagoryName: CategoryProductService,
+    private showNotice: ShowNoticeService
   ) {}
 
   titleSearch?: string; // Params for req
-
+  categorySearch?: string;
   async ngOnInit() {
+    console.log("Start ngOnInit");
     this.route.queryParams.subscribe((queryParam: Params) => {
       this.titleSearch = queryParam["search_text"];
+      this.categorySearch = queryParam["category"];
     });
+    // console.log(this.titleSearch);
+    // console.log(this.categorySearch);
     if (this.titleSearch) {
-      await this.searchService.search(this.titleSearch).subscribe(
-        (res) => {
-          console.log(res);
-          this.listProduct = res;
-          //
-          this.loaderProduct = false;
-          this.loaderSelect = false;
-          //
-          res.forEach((item: Product) => {
-            this.categoryListNumber.push(item.category);
-          });
-          this.categoryList = this.catagoryName.categoryList;
-        },
-        (e) => {
-          console.log(e);
-        }
-      );
+      await this.searchService
+        .search(this.titleSearch, this.categorySearch)
+        .subscribe(
+          (res) => {
+            this.listProduct = res.product; // List Product
+            //
+            let activeCategoryInQuery: number[][] | string[] | number[] = [];
+
+            if (this.categorySearch) {
+              activeCategoryInQuery = this.categorySearch.split(",");
+
+              activeCategoryInQuery.forEach((element, idx) => {
+                // let newElement = ("" + Number(element)).split("").map(Number);
+                // activeCategoryInQuery[idx] = newElement;
+                activeCategoryInQuery[idx] = Number(element);
+              });
+            }
+            //
+            res.productCategory.forEach((element: number[] | any, idx) => {
+              const filterOneCategory = { category: element, active: false };
+
+              activeCategoryInQuery.forEach((item) => {
+                let newElement = Number(element.join(""));
+                if (newElement === item) {
+                  filterOneCategory.active = true;
+                }
+              });
+              this.listFilter.push(filterOneCategory);
+              this.categoryListNumber.push(element);
+            });
+            //
+            this.loaderProduct = false; // Loader Main
+            this.loaderSelect = false; // Loader SideBar
+            this.categoryList = this.catagoryName.categoryList; // List Category
+            console.log(this.listFilter);
+            //
+          },
+          (e) => {
+            console.log(e);
+          }
+        );
+    } else if (this.titleSearch === undefined) {
+      this.router.navigate([""]);
+      this.showNotice.message("Не коректний запит");
     }
   }
 
@@ -73,21 +110,57 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
   categoryListNumber: number[][] = []; // Category List
 
-  categoryList: Category[] = []; // All Category
+  categoryList: CategoryProduct[] = []; // All Category, import from category-name.service.ts
 
-  filterSearch(checked: boolean, input: HTMLInputElement, category: number[]) {
-    console.log(checked);
-    console.log(input);
-    console.log(category);
+  // Server Request
+  listFilter: ActiveCategory[] = [];
 
-    // this.searchService.getByFilterSearch(title, categoryId).subscribe(
-    //   (res) => {
-    //     console.log(res);
-    //   },
-    //   (e) => {
-    //     console.log(e);
-    //   }
-    // );
+  filterSearch(checked: boolean, category: number[], idx: number) {
+    if (checked === true) {
+      this.listFilter[idx].active = true; // true >> will be added to the request list
+      console.log(this.listFilter);
+
+      let categoryQuery = ""; // Список фільтрів які будуть в запиті.
+      this.listFilter.forEach((element) => {
+        if (element.active === true) {
+          if (categoryQuery.length === 0) {
+            categoryQuery = `${element.category.join("")}`;
+          } else {
+            categoryQuery = `${categoryQuery},${element.category.join("")}`;
+          }
+        }
+      });
+      // Reques with new query params
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      // this.router.onSameUrlNavigation = "reload";
+      this.router.navigate([`search`], {
+        queryParams: {
+          search_text: this.titleSearch,
+          category: categoryQuery,
+        },
+      });
+    } else if (checked === false) {
+      this.listFilter[idx].active = false; // false >> will NOT be added to the request list
+
+      let categoryQuery = "";
+      this.listFilter.forEach((element) => {
+        if (element.active === true) {
+          if (categoryQuery.length === 0) {
+            categoryQuery = `${element.category.join("")}`;
+          } else {
+            categoryQuery = `${categoryQuery},${element.category.join("")}`;
+          }
+        }
+      });
+      // Reques with new query params
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.navigate([`search`], {
+        queryParams: {
+          search_text: this.titleSearch,
+          category: categoryQuery ? categoryQuery : null,
+        },
+      });
+    }
   }
 
   /* Sidebar */

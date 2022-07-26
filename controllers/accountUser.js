@@ -1,4 +1,3 @@
-//
 const User = require("../models/User");
 const fs = require("fs");
 
@@ -19,6 +18,7 @@ module.exports.getUserAccount = async function (req, res) {
     console.log(error);
   }
 };
+
 module.exports.userUpInfo = async function (req, res) {
   console.log("Сервер userUpInfo");
   // console.log(req.params.id);

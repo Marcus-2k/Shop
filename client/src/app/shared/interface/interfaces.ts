@@ -39,15 +39,20 @@ export interface oldUserResponse {
   country: number;
 }
 
-// Category List for component /account/product/new
-export interface CategorListSub {
+export interface ActiveCategory {
+  category: number[];
+  active: boolean;
+}
+
+// Category Product
+export interface CategorSubList {
   titleSubNameListCategory: string;
 }
 export interface CategorList {
   subNameCategory: string;
-  subNameListCategory: CategorListSub[];
+  subNameListCategory: CategorSubList[];
 }
-export interface Category {
+export interface CategoryProduct {
   nameCategory: string;
   nameListCategory: CategorList[];
 }

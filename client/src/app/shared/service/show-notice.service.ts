@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 
-declare var M: any;
+declare const M: any;
+
 @Injectable({
   providedIn: "root",
 })
-export class ShowErrorService {
-  toasts(message: string) {
+export class ShowNoticeService {
+  message(message: string) {
     M.toast({ html: message });
   }
 }

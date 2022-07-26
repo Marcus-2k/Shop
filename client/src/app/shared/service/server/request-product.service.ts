@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Product } from "../interface/interfaces";
+import { environment } from "src/environments/environment";
+import { Product } from "src/app/shared/interface/interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -9,27 +10,27 @@ import { Product } from "../interface/interfaces";
 export class RequestProductService {
   constructor(private http: HttpClient) {}
 
-  UrlServer: string = "http://localhost:5000/api";
+  private url_server: string = `http://${environment.HOST}${environment.PORT}/api/account`;
 
   getUserProduct(): Observable<any> {
-    return this.http.get<Product>(`${this.UrlServer}/product`);
+    return this.http.get<Product>(`${this.url_server}/product`);
   }
 
   getByIdforUpdate(id: string): Observable<Product> {
-    return this.http.get<Product>(`${this.UrlServer}/product/${id}`);
+    return this.http.get<Product>(`${this.url_server}/product/${id}`);
   }
 
   updateById(upProduct: any, id: any): Observable<any> {
-    return this.http.patch<any>(`${this.UrlServer}/product/${id}`, upProduct);
+    return this.http.patch<any>(`${this.url_server}/product/${id}`, upProduct);
   }
 
   deleteById(id: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(
-      `${this.UrlServer}/product/${id}`
+      `${this.url_server}/product/${id}`
     );
   }
 
   createProduct(product: any): Observable<Product> {
-    return this.http.post<any>(`${this.UrlServer}/product`, product);
+    return this.http.post<any>(`${this.url_server}/product`, product);
   }
 }

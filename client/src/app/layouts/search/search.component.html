@@ -27,12 +27,14 @@
               *ngFor="let category of categoryListNumber; let idx = index"
               class="category"
             >
+              <!-- class="custom-checkbox category__input" -->
               <input
                 type="checkbox"
-                class="custom-checkbox category__input"
                 [id]="idx"
+                class="custom-checkbox category__input"
                 #checkbox
-                (click)="filterSearch(checkbox.checked, checkbox, category)"
+                [checked]="listFilter[idx].active"
+                (click)="filterSearch(checkbox.checked, category, idx)"
                 name="happy"
                 value="yes"
               />

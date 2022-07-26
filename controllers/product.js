@@ -22,7 +22,7 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-  console.log("Сервер create");
+  console.log("Server create");
   try {
     const keyWords = req.body.keyWords.split(" ");
     let category = req.body.category.split(" ");
@@ -38,7 +38,7 @@ module.exports.create = async function (req, res) {
       category,
       keyWords,
       description: req.body.description,
-      action: req.body.action,
+      action: req.body.action ? req.body.action : false,
       user: req.user.id,
     });
 

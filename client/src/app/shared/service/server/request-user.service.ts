@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { userResponse } from "../interface/interfaces";
+import { environment } from "src/environments/environment";
+import { userResponse } from "src/app/shared/interface/interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -9,15 +10,15 @@ import { userResponse } from "../interface/interfaces";
 export class RequestUserService {
   constructor(private http: HttpClient) {}
 
-  UrlServer: string = "http://localhost:5000/api";
+  private url_server: string = `http://${environment.HOST}${environment.PORT}/api`;
 
   getInfoAccountUser(): Observable<userResponse> {
-    return this.http.get<userResponse>(`${this.UrlServer}/account/user`);
+    return this.http.get<userResponse>(`${this.url_server}/account/user`);
   }
 
   userUpInfo(newUser: FormData, id: string): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(
-      `${this.UrlServer}/account/user/${id}`,
+      `${this.url_server}/account/user/${id}`,
       newUser
     );
   }

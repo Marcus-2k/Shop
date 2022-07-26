@@ -4,37 +4,39 @@ import {
   ElementRef,
   OnInit,
   ViewChild,
-} from '@angular/core';
+} from "@angular/core";
 
-import { ErrorHandlerService } from 'src/app/shared/error/error-handler.service';
+import { ErrorHandlerService } from "src/app/shared/error/error-handler.service";
 import {
   oldUserResponse,
   userResponse,
-} from 'src/app/shared/interface/interfaces';
-import { RequestUserService } from 'src/app/shared/service/request-user.service';
-import { ShowErrorService } from 'src/app/shared/service/show-error.service';
+} from "src/app/shared/interface/interfaces";
+import { RequestUserService } from "src/app/shared/service/server/request-user.service";
+import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { environment } from "src/environments/environment";
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss'],
+  selector: "app-user",
+  templateUrl: "./user.component.html",
+  styleUrls: ["./user.component.scss"],
 })
 export class UserComponent implements OnInit, DoCheck {
   constructor(
     private requestUser: RequestUserService,
     private error: ErrorHandlerService,
-    private showError: ShowErrorService
+    private showNotice: ShowNoticeService
   ) {}
 
   ngOnInit(): void {
+    console.log("ngOnInit USER");
     this.requestUser.getInfoAccountUser().subscribe(
       (res) => {
         // ID
         this.user._id = res._id;
         // Avatar
-        this.imagePreview = res.avatar.replace(/\\/g, '/');
-        this.user.avatar = res.avatar.replace(/\\/g, '/');
-        this.oldUser.avatar = res.avatar.replace(/\\/g, '/');
+        this.imagePreview = res.avatar.replace(/\\/g, "/");
+        this.user.avatar = res.avatar.replace(/\\/g, "/");
+        this.oldUser.avatar = res.avatar.replace(/\\/g, "/");
         // Name
         this.user.name = res.name;
         this.oldUser.name = res.name;
@@ -56,17 +58,12 @@ export class UserComponent implements OnInit, DoCheck {
     );
   }
 
-  ngDoCheck(): void {
-    // console.log(this.selectCountry);
-    // console.log(this.selectCountry?.nativeElement.value);
-    // console.log(this.user.name === this.oldUser.name);
-    // console.log(!this.images);
-  }
+  ngDoCheck(): void {}
 
   // User  === START
   user: userResponse = {
     _id: null,
-    avatar: '',
+    avatar: "",
     name: null,
     lastName: null,
     email: null,
@@ -75,7 +72,7 @@ export class UserComponent implements OnInit, DoCheck {
   };
 
   oldUser: oldUserResponse = {
-    avatar: '',
+    avatar: "",
     name: null,
     lastName: null,
     birthday: null,
@@ -86,7 +83,7 @@ export class UserComponent implements OnInit, DoCheck {
   time: number = this.date.getHours();
 
   // Developer mode === START
-  UrlServer = 'http://localhost:5000/';
+  url_server: string = `http://${environment.HOST}${environment.PORT}/`;
   // Developer mode === END
 
   // Avatar user === START
@@ -99,21 +96,15 @@ export class UserComponent implements OnInit, DoCheck {
       console.log(typeof this.images);
       console.log(this.oldUser);
       console.log(this.user);
-      this.UrlServer = 'http://localhost:5000/';
+      this.url_server = `http://${environment.HOST}${environment.PORT}/`;
       this.images = undefined;
       this.imagePreview = this.oldUser.avatar;
     }
   } // Reset Avatar user
 
-  deleteAvatar() {
-    // this.deleteImg = true;
-    // this.oldUser.avatar = '';
-    // this.UrlServer = '';
-    // this.images = undefined;
-    // this.imagePreview = '';
-  } // Delete Avatar user
+  deleteAvatar() {} // Delete Avatar user
 
-  @ViewChild('fileAvatar') fileAvatar?: ElementRef;
+  @ViewChild("fileAvatar") fileAvatar?: ElementRef;
 
   images?: File;
   imagePreview: any;
@@ -134,7 +125,7 @@ export class UserComponent implements OnInit, DoCheck {
 
     reader.readAsDataURL(file);
     // Othe
-    this.UrlServer = '';
+    this.url_server = "";
   } // Avatar user === END
 
   // Max-date birthday for user === START
@@ -167,20 +158,20 @@ export class UserComponent implements OnInit, DoCheck {
 
   // Select country === START
   countryList: string[] = [
-    'No country',
-    'Ukraine',
-    'Poland',
-    'United Kingdom',
-    'France',
-    'Germany',
-    'Italy',
-    'Spain',
-    'Netherlands',
-    'USA',
-    'Turkey',
-    'Japan',
-    'China',
-    'Mexico',
+    "No country",
+    "Ukraine",
+    "Poland",
+    "United Kingdom",
+    "France",
+    "Germany",
+    "Italy",
+    "Spain",
+    "Netherlands",
+    "USA",
+    "Turkey",
+    "Japan",
+    "China",
+    "Mexico",
   ]; // Select country === END
 
   // Save info about user === START
@@ -191,43 +182,43 @@ export class UserComponent implements OnInit, DoCheck {
       const id = this.user._id; // Which user to edit
 
       if (this.images) {
-        newUser.append('image', this.images, this.images.name);
+        newUser.append("image", this.images, this.images.name);
       }
       // else if (this.oldUser.avatar !== this.user.avatar) {
       // console.log('sdsdsdsdsdsadasdasdadadadasd');
       // } // Add Avatar
 
       if (this.user.birthday) {
-        newUser.append('birthday', this.user.birthday);
+        newUser.append("birthday", this.user.birthday);
       } // Add Birthday
 
       if (
         (this.user.name && this.user.name.length >= 4) ||
         (this.user.name && this.user.name.length == 0)
       ) {
-        newUser.append('name', this.user.name);
+        newUser.append("name", this.user.name);
       } else {
-        this.showError.toasts("Не корректне Ім'я");
+        this.showNotice.message("Не корректне Ім'я");
         return;
       } // Add Name
 
       if (this.user.lastName && this.user.lastName.length >= 4) {
-        newUser.append('lastName', this.user.lastName);
+        newUser.append("lastName", this.user.lastName);
       } else {
-        this.showError.toasts('Не корректне Прізвище');
+        this.showNotice.message("Не корректне Прізвище");
         return;
       } // Add Last Name
 
       if (this.user.country) {
-        newUser.append('country', String(this.user.country));
+        newUser.append("country", String(this.user.country));
       } // Add Country
 
       this.requestUser.userUpInfo(newUser, id).subscribe(
         (res) => {
-          this.showError.toasts(res.message);
+          this.showNotice.message(res.message);
         },
         (e) => {
-          this.showError.toasts(e.message);
+          this.showNotice.message(e.message);
         }
       );
     }

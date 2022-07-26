@@ -8,12 +8,11 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { Product } from "src/app/shared/interface/interfaces";
-import { CategoryNameService } from "src/app/shared/service/category-name.service";
-import { RequestProductService } from "src/app/shared/service/request-product.service";
-import { ShowErrorService } from "src/app/shared/service/show-error.service";
+import { CategoryProductService } from "src/app/shared/service/category-product.service";
+import { RequestProductService } from "src/app/shared/service/server/request-product.service";
+import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
   selector: "app-product-new",
@@ -24,9 +23,9 @@ export class ProductNewComponent
   implements OnInit, DoCheck, AfterContentInit, AfterViewInit
 {
   constructor(
+    private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
-    private showError: ShowErrorService,
-    private categoryName: CategoryNameService,
+    private categoryName: CategoryProductService,
     private route: ActivatedRoute
   ) {}
 
@@ -303,7 +302,7 @@ export class ProductNewComponent
         this.keyWords[index].length <= 1 ||
         this.keyWords[index].length > 10
       ) {
-        this.showError.toasts(
+        this.showNotice.message(
           "В ключових словах, є слова в яких кількість символів меньше двох (2), або більше десяти (10)."
         );
         this.checkKeyWords = true;
@@ -337,17 +336,17 @@ export class ProductNewComponent
 
       this.requestProduct.createProduct(formData).subscribe(
         (res) => {
-          this.showError.toasts("Товар створено успішно.");
+          this.showNotice.message("Товар створено успішно.");
         },
         (e) => {
           console.log(e);
-          this.showError.toasts(
+          this.showNotice.message(
             "Товар не було створено, дані заповнено не коректно"
           );
         }
       ); //Відправили на сервер
     } else {
-      this.showError.toasts(
+      this.showNotice.message(
         "Товар не було створено, дані заповнено не коректно"
       );
     }
@@ -362,7 +361,7 @@ export class ProductNewComponent
         this.keyWords[index].length <= 1 ||
         this.keyWords[index].length > 10
       ) {
-        this.showError.toasts(
+        this.showNotice.message(
           "В ключових словах, є слова в яких кількість символів меньше двох (2), або більше десяти (10)."
         );
         this.checkKeyWords = true;
@@ -400,17 +399,17 @@ export class ProductNewComponent
       const id = this.updateProduct._id;
       this.requestProduct.updateById(formData, id).subscribe(
         (res) => {
-          this.showError.toasts("Товар збережено успішно.");
+          this.showNotice.message("Товар збережено успішно.");
         },
         (e) => {
           console.log(e);
-          this.showError.toasts(
+          this.showNotice.message(
             "Товар не було змінено, дані заповнено не коректно"
           );
         }
       ); //Відправили на сервер
     } else {
-      this.showError.toasts(
+      this.showNotice.message(
         "Товар не було збережено, дані заповнено не коректно"
       );
     }

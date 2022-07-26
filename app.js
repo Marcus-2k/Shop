@@ -59,7 +59,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)); // link to swagge
 // Router function
 app.use("/api/auth", authRoutes);
 
-app.use("/api/product", productRoutes);
+app.use("/api/account/product", productRoutes);
 app.use("/api/account/user", userRoutes);
 
 app.use("/api/category", categoryRoutes);

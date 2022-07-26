@@ -14,17 +14,13 @@ export class AuthService {
 
   private url_server = `http://${environment.HOST}${environment.PORT}/api`;
 
-  category(): Observable<any> {
-    return this.http.get<any>(`${this.url_server}/category`);
-  }
-
   register(user: UserRegister): Observable<any> {
     return this.http.post<any>(`${this.url_server}/auth/register`, user);
   }
 
   login(user: UserLogin): Observable<{ token: string }> {
     return this.http
-      .post<{ token: string }>(`${this.url_server}/auth/auth/login`, user)
+      .post<{ token: string }>(`${this.url_server}/auth/login`, user)
       .pipe(
         tap(({ token }) => {
           localStorage.setItem("auth-token", token);
@@ -34,9 +30,7 @@ export class AuthService {
   }
 
   logout(): Observable<{ message: string }> {
-    return this.http.get<{ message: string }>(
-      `${this.url_server}/auth/auth/logout`
-    );
+    return this.http.get<{ message: string }>(`${this.url_server}/auth/logout`);
   }
 
   setToken(token: string | null) {

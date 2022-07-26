@@ -9,7 +9,6 @@ const router = express.Router();
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
-  // upload.single("image"),
   controller.getUserAccount
 );
 

@@ -4,21 +4,18 @@ const upload = require("../middleware/upload");
 const controller = require("../controllers/product");
 const router = express.Router();
 
-// Get all product
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   controller.getAllProduct
 );
 
-// Get by id product
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   controller.getById
 );
 
-// Update product
 router.patch(
   "/:id",
   passport.authenticate("jwt", { session: false }),
@@ -26,7 +23,13 @@ router.patch(
   controller.update
 );
 
-// Delete product
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  controller.create
+);
+
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),

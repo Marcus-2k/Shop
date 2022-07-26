@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 // Service, Pipe, Guard, Token, Class.
 import { AuthGuard } from "./shared/guard/auth.guard";
+import { PricePipe } from "./shared/pipe/price.pipe";
 import { TokenInterceptor } from "./shared/classes/toke.interseptor";
 
 // Lead Component
@@ -35,7 +36,6 @@ import { ProductComponent } from "./layouts/user-layouts/product/product.compone
 import { ProductNewComponent } from "./layouts/user-layouts/product-new/product-new.component";
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
 import { UserComponent } from "./layouts/user-layouts/user/user.component";
-import { PricePipe } from "./shared/pipe/price.pipe";
 import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newsletters.component";
 
 // Routing Link

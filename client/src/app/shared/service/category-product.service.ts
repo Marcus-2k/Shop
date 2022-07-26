@@ -1,49 +1,54 @@
 import { Injectable } from "@angular/core";
-import { Category } from "../interface/interfaces";
+import { CategoryProduct } from "../interface/interfaces";
 
 @Injectable({
   providedIn: "root",
 })
-export class CategoryNameService {
+export class CategoryProductService {
   constructor() {}
 
-  // categoryList = [
-  categoryList: Category[] = [
+  categoryList: CategoryProduct[] = [
     {
-      nameCategory: "Допомога",
+      nameCategory: "Ноутбуки та комп'ютери",
       nameListCategory: [
         {
-          subNameCategory: "Пропоную допомогу",
+          subNameCategory: "Ноутбуки",
           subNameListCategory: [
-            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
-            { titleSubNameListCategory: "Житло" },
-            { titleSubNameListCategory: "Транспорт" },
-            { titleSubNameListCategory: "Для дітей" },
-            { titleSubNameListCategory: "Одяг та взуття" },
-            { titleSubNameListCategory: "Для тварин" },
-            { titleSubNameListCategory: "Медична допомога" },
-            { titleSubNameListCategory: "Їжа / Продукти" },
-            { titleSubNameListCategory: "Інше" },
+            { titleSubNameListCategory: "Asus" },
+            { titleSubNameListCategory: "Acer" },
+            { titleSubNameListCategory: "HP (Hewlett Packard)" },
+            { titleSubNameListCategory: "Lenove" },
+            { titleSubNameListCategory: "Dell" },
+            { titleSubNameListCategory: "Apple" },
           ],
         },
         {
-          subNameCategory: "Потрібна допомога",
+          subNameCategory: "Аксесуари для ноутбуків і ПК",
           subNameListCategory: [
-            { titleSubNameListCategory: "Ліки та Гігієнічні засоби" },
-            { titleSubNameListCategory: "Житло" },
-            { titleSubNameListCategory: "Транспорт" },
-            { titleSubNameListCategory: "Для дітей" },
-            { titleSubNameListCategory: "Одяг та взуття" },
-            { titleSubNameListCategory: "Для тварин" },
-            { titleSubNameListCategory: "Медична допомога" },
-            { titleSubNameListCategory: "Їжа / Продукти" },
-            { titleSubNameListCategory: "Інше" },
+            { titleSubNameListCategory: "Флеш пам'ять USB" },
+            { titleSubNameListCategory: "Сумки та рюкзаки для ноутбуків" },
+            { titleSubNameListCategory: "Підставки та столики для ноутбуків" },
+            { titleSubNameListCategory: "Веб-камери" },
+            { titleSubNameListCategory: "Універсальні мобільні батареї" },
+            { titleSubNameListCategory: "Кабелі та перехідники" },
+          ],
+        },
+        {
+          subNameCategory: "Планшети",
+          subNameListCategory: [
+            { titleSubNameListCategory: "....................." },
+          ],
+        },
+        {
+          subNameCategory: "Планшети",
+          subNameListCategory: [
+            { titleSubNameListCategory: "....................." },
           ],
         },
       ],
     },
     {
-      nameCategory: "Дитячий світ",
+      nameCategory: "Смартфони ТВ і електроніка",
       nameListCategory: [
         {
           subNameCategory: "Дитячий одяг",
@@ -56,7 +61,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Нерухомість",
+      nameCategory: "Товари для геймерів",
       nameListCategory: [
         {
           subNameCategory: "Квартира",
@@ -114,7 +119,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Авто",
+      nameCategory: "Побутова техніка",
       nameListCategory: [
         {
           subNameCategory: "Легкові автомобілі",
@@ -297,7 +302,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Запчастини для транспорту",
+      nameCategory: "Товари для дому",
       nameListCategory: [
         {
           subNameCategory: "Автозапчастини та аксесуари",
@@ -333,7 +338,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Робота",
+      nameCategory: "Інструменти та автотовари",
       nameListCategory: [
         {
           subNameCategory: "Роздрібна торгівля / продажі / закупки",
@@ -358,7 +363,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Тварини",
+      nameCategory: "Сантахніка та ремонт",
       nameListCategory: [
         {
           subNameCategory: "Собаки",
@@ -367,7 +372,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Дім і сад",
+      nameCategory: "Дача, сад і город",
       nameListCategory: [
         {
           subNameCategory: "Меблі",
@@ -424,7 +429,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Електроніка",
+      nameCategory: "Спорт і захоплення",
       nameListCategory: [
         {
           subNameCategory: "Телефони та аксесуари",
@@ -559,7 +564,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Бізнес та послуги",
+      nameCategory: "Одяг взуття та прикраси",
       nameListCategory: [
         {
           subNameCategory: "Будівництво / ремонт / прибирання",
@@ -606,7 +611,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Мода і стиль",
+      nameCategory: "Краса та здоров'я",
       nameListCategory: [
         {
           subNameCategory: "Одяг / взуття",
@@ -653,7 +658,7 @@ export class CategoryNameService {
       ],
     },
     {
-      nameCategory: "Хобі, відпочинок і спорт",
+      nameCategory: "Дитячі товари",
       nameListCategory: [
         {
           subNameCategory: "Антикваріант / колекції",
