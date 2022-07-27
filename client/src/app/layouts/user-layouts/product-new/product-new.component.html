@@ -74,11 +74,11 @@
                     .subNameCategory
                 }}
               </h2>
-              <span>&nbsp;/&nbsp;</span>
-              <h2 class="category__title">
+              <span *ngIf="categoryNumber.length === 3">&nbsp;/&nbsp;</span>
+              <h2 class="category__title" *ngIf="categoryNumber.length === 3">
                 {{
                   categoryList[oneIndex].nameListCategory[twoIndex]
-                    .subNameListCategory[threeIndex].titleSubNameListCategory
+                    .subNameListCategory[0].titleSubNameListCategory
                 }}
               </h2>
             </div>
@@ -247,6 +247,36 @@
   <div class="select__popuap-content">
     <a (click)="popuapClose(0)" class="close">&Cross;</a>
     <!--  -->
+    <div class="category__select-item" *ngIf="!oneCategory">
+      <div class="category__title">
+        <h2>Виберіть категорію</h2>
+      </div>
+      <!--  -->
+      <div class="category__content">
+        <div
+          class="category__select-item-box"
+          *ngFor="let categoryItem of categoryList; let idx = index"
+          [ngClass]="{
+            one__Box: 0 === idx,
+            two__Box: 1 === idx,
+            three__Box: 2 === idx,
+            four__Box: 3 === idx,
+            five__Box: 4 === idx,
+            six__Box: 5 === idx,
+            seven__Box: 6 === idx,
+            eight__Box: 7 === idx,
+            nine__Box: 8 === idx,
+            ten__Box: 9 === idx,
+            eleven__Box: 10 === idx,
+            twelve__Box: 11 === idx
+          }"
+          (click)="selectCategoryPopuapStart(idx)"
+        >
+          <h2 class="box__title">{{ categoryItem.nameCategory }}</h2>
+        </div>
+      </div>
+    </div>
+    <!--  -->
     <div class="category" *ngIf="oneCategory">
       <div class="category-block">
         <ng-container *ngIf="oneCategory">
@@ -278,7 +308,15 @@
       </div>
       <!--  -->
       <div class="category-block-sub-list">
-        <ng-container *ngIf="threeCategory">
+        <ng-container
+          *ngIf="
+            threeCategory &&
+            categoryList[oneIndex].nameListCategory[
+              twoIndex === -1 ? 0 : twoIndex
+            ].subNameListCategory[threeIndex === -1 ? 0 : threeIndex]
+              .titleSubNameListCategory !== undefined
+          "
+        >
           <div
             class="block-sub-list"
             *ngFor="
@@ -299,34 +337,17 @@
       </div>
     </div>
     <!--  -->
-    <div class="category__select-item" *ngIf="!oneCategory">
-      <div class="category__title">
-        <h2>Виберіть категорію</h2>
-      </div>
-      <!--  -->
-      <div class="category__content">
-        <div
-          class="category__select-item-box"
-          *ngFor="let categoryItem of categoryList; let idx = index"
-          [ngClass]="{
-            one__Box: 0 === idx,
-            two__Box: 1 === idx,
-            three__Box: 2 === idx,
-            four__Box: 3 === idx,
-            five__Box: 4 === idx,
-            six__Box: 5 === idx,
-            seven__Box: 6 === idx,
-            eight__Box: 7 === idx,
-            nine__Box: 8 === idx,
-            ten__Box: 9 === idx,
-            eleven__Box: 10 === idx,
-            twelve__Box: 11 === idx
-          }"
-          (click)="selectCategoryPopuapStart(idx)"
-        >
-          <h2 class="box__title">{{ categoryItem.nameCategory }}</h2>
-        </div>
-      </div>
-    </div>
+    <button
+      class="select__category-this"
+      *ngIf="oneCategory"
+      [disabled]="
+        categoryList[oneIndex].nameListCategory[twoIndex === -1 ? 0 : twoIndex]
+          .subNameListCategory[threeIndex === -1 ? 0 : threeIndex]
+          .titleSubNameListCategory !== undefined && threeIndex === -1
+      "
+      (click)="buttonSelectThisCategory()"
+    >
+      Вибрати категорію
+    </button>
   </div>
 </div>

@@ -1,0 +1,18 @@
+{
+  "Category": {
+    "subNameCategory": "Аксесуари для мобільних телефонів",
+    "subNameListCategory": [
+      { "titleSubNameListCategory": "Універсальні мобільні батареї" },
+      { "titleSubNameListCategory": "Картри пам'яті" },
+      { "titleSubNameListCategory": "Чохли для мобільних телефонів" },
+      { "titleSubNameListCategory": "Захисні плівки та скло" },
+      { "titleSubNameListCategory": "Монопади для селфі" },
+      { "titleSubNameListCategory": "Гарнітури" },
+      { "titleSubNameListCategory": "3D і VR окуляри" },
+      { "titleSubNameListCategory": "Тримачі" },
+      { "titleSubNameListCategory": "Кабелі синхронізації" },
+      { "titleSubNameListCategory": "Гарнітури Bluetooth" },
+      { "titleSubNameListCategory": "Мобільний зв'язок та інтернет" }
+    ]
+  }
+}

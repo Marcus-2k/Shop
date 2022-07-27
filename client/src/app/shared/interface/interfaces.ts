@@ -53,5 +53,5 @@ export interface CategorList {
   subNameListCategory: CategorSubList[];
 }
 export interface CategorSubList {
-  titleSubNameListCategory: string;
+  titleSubNameListCategory: string | undefined;
 }

@@ -152,20 +152,30 @@ export class ProductNewComponent implements OnInit, DoCheck {
     this.threeCategory = false;
     this.twoIndex = -1;
     this.threeIndex = -1;
+    console.log(this.oneIndex, this.twoIndex, this.threeIndex);
   }
   // Select and reselect for sub category
   editTwoCategory(index: number) {
     this.twoIndex = index;
     this.threeCategory = true;
     this.threeIndex = -1;
+    console.log(this.oneIndex, this.twoIndex, this.threeIndex);
   }
   // Select and reselect for sub list category
   editThreeCategory(index: number) {
     this.threeIndex = index;
     this.categorySelected = true; // Відобразить вибрані категорії в form вибір категорії
-    this.popuapOnOff = false; // Close popuap
     this.body?.classList.remove("active"); // For body style overflow: auto;
+    console.log(this.oneIndex, this.twoIndex, this.threeIndex);
+  }
+
+  buttonSelectThisCategory() {
+    this.body?.classList.remove("active");
     this.createCategoryNumber();
+    this.popuapOnOff = false; // Close popuap
+    this.categoryErrorShow = false;
+    this.categorySelected = true;
+    console.log(this.categoryNumber);
   }
 
   resetCategoryBlockAndIndex() {
@@ -188,9 +198,10 @@ export class ProductNewComponent implements OnInit, DoCheck {
   createCategoryNumber() {
     this.categoryNumber[0] = this.oneIndex;
     this.categoryNumber.push(this.twoIndex);
-    this.categoryNumber.push(this.threeIndex);
-    this.categoryErrorShow = false;
-  } // Для categoryNumber задасть номер.
+    if (this.threeIndex !== -1) {
+      this.categoryNumber.push(this.threeIndex);
+    }
+  } // Для categoryNumber задати номер.
 
   popuapOnOff: boolean = false; // Popuap On/Off
   categorySelected: boolean = false; // Category in form visibility
