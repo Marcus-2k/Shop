@@ -25,17 +25,23 @@ module.exports.create = async function (req, res) {
   console.log("Server create");
   try {
     const keyWords = req.body.keyWords.split(" ");
-    let category = req.body.category.split(" ");
-    category[0] = Number(category[0]);
-    category[1] = Number(category[1]);
-    if (category.length > 2) {
-      category[2] = Number(category[2]);
-    }
+
+    let category = req.body.category.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
+    category.forEach((element, idx) => {
+      category[idx] = Number(element);
+    }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
+
+    let characteristics = req.body.characteristics.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
+    characteristics.forEach((element, idx) => {
+      characteristics[idx] = Number(element);
+    }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
+
     const product = new Product({
       name: req.body.name,
       imageSrc: req.file.path,
       price: req.body.price,
       category,
+      characteristics,
       keyWords,
       description: req.body.description,
       action: req.body.action ? req.body.action : false,

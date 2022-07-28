@@ -22,7 +22,6 @@
               }
               &__title {
                 display: flex;
-                // font-size: 16px;
                 color: #535353;
                 margin-top: 5px;
                 cursor: pointer;
@@ -44,7 +43,6 @@
       }
       .cart {
         display: flex;
-
         flex-wrap: wrap;
         &__box {
           width: 100%;
@@ -55,7 +53,7 @@
           margin-top: 20px;
           border: 1px solid #b1b1b1;
           cursor: pointer;
-          &:nth-child(-1n + 5) {
+          &:nth-child(-1n + 3) {
             margin-top: 0;
           }
           &-body {

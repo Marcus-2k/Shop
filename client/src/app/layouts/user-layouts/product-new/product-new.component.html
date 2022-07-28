@@ -45,7 +45,6 @@
               class="box__input box__input-width"
               required
               #inputPrice
-              minlength="6"
               [(ngModel)]="priceProduct"
             />
             <span class="box__line box__line-width"></span>
@@ -87,6 +86,33 @@
           <!--  -->
           <div class="category__error" *ngIf="categoryErrorShow">
             <span class="error__category"> Виберіть категорію товара </span>
+          </div>
+        </div>
+        <!--  -->
+        <div class="new__characteristics">
+          <p class="new__characteristics-title">Характеристики товару*</p>
+          <!--  -->
+          <div class="new__characteristics-block">
+            <ng-container
+              *ngFor="let options of characteristics; let idx = index"
+            >
+              <div class="item">
+                <p class="item__title">№{{ idx }}&nbsp;{{ options.name }}</p>
+                <select
+                  name=""
+                  [id]="'select_' + idx"
+                  class="item__select select__params"
+                  value="0"
+                >
+                  <option value="-1">Виберіть параметр</option>
+                  <ng-container
+                    *ngFor="let option of options.select; let i = index"
+                  >
+                    <option [value]="i">{{ option }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </ng-container>
           </div>
         </div>
         <!--  -->
@@ -209,7 +235,8 @@
         class="new__create-button"
         *ngIf="!update"
         (click)="createProduct()"
-        [disabled]="
+      >
+        <!-- [disabled]="
           !images ||
           nameProduct.length <= 5 ||
           !priceProduct ||
@@ -217,8 +244,7 @@
           lengthKeyWords > 200 ||
           description.length < 60 ||
           description.length > 5000
-        "
-      >
+        " -->
         Створити
       </button>
       <!--  -->

@@ -39,8 +39,9 @@ export interface oldUserResponse {
   country: number;
 }
 
-export interface ActiveCategory {
-  category: number[];
+export interface ActiveFilter {
+  // category: number[];
+  params: number[];
   active: boolean;
 }
 
@@ -54,4 +55,25 @@ export interface CategorList {
 }
 export interface CategorSubList {
   titleSubNameListCategory: string | undefined;
+  options: options[];
+  // options: optionsSelect | optionsInput;
+  // options: {}
 }
+
+export interface options {
+  name: string; // example Operating System
+  htmlElement: "select";
+  select: string[];
+}
+
+// export interface optionsInput {
+//   name: string;
+//   element: "input";
+//   type: "text" | "number" | "date";
+// }
+
+// export interface optionsSelect {
+//   name: string;
+//   element: "select";
+//   select: string[];
+// }

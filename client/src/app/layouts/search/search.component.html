@@ -23,28 +23,38 @@
           <!-- Category STR -->
           <div class="select__conten-category">
             <hr />
-            <div
+            <ul
               *ngFor="let category of categoryListNumber; let idx = index"
               class="category"
+              style="display: flex; flex-direction: column"
             >
-              <!-- class="custom-checkbox category__input" -->
-              <input
-                type="checkbox"
-                [id]="idx"
-                class="custom-checkbox category__input"
-                #checkbox
-                [checked]="listFilter[idx].active"
-                (click)="filterSearch(checkbox.checked, category, idx)"
-                name="happy"
-                value="yes"
-              />
-              <!-- <label [for]="idx" class="category__title">
-                {{
-                  categoryList[category[0]].nameListCategory[category[1]]
-                    .subNameListCategory[category[2]].titleSubNameListCategory
-                }}</label
-              > -->
-            </div>
+              <ng-container
+                *ngFor="
+                  let params of characteristicsListNumber[idx];
+                  let i = index
+                "
+              >
+                <li>
+                  <input
+                    type="checkbox"
+                    [id]="idx"
+                    class="custom-checkbox category__input"
+                    #checkbox
+                    (click)="filterSearch(checkbox.checked, category, idx)"
+                  />
+                  <label [for]="idx" class="category__title">
+                    {{
+                      categoryList[category[0]].nameListCategory[category[1]]
+                        .subNameListCategory[category[2]].options[i].select[
+                        params
+                      ]
+                    }}
+                  </label>
+                </li>
+              </ng-container>
+              <li>==================</li>
+              <!-- [checked]="listFilter[idx].active" -->
+            </ul>
           </div>
           <!-- Category END -->
         </div>

@@ -15,9 +15,17 @@ export class RequestSearchService {
   search(
     title: string,
     queryParam?: string
-  ): Observable<{ product: Product[]; productCategory: number[][] }> {
+  ): Observable<{
+    product: Product[];
+    productCharacteristics: number[][];
+    productCategory: number[][];
+  }> {
     if (queryParam) {
-      return this.http.get<any>(
+      return this.http.get<{
+        product: Product[];
+        productCharacteristics: number[][];
+        productCategory: number[][];
+      }>(
         `${this.url_server}/search?search_text=${title}&category=${queryParam}`
       );
     } else {

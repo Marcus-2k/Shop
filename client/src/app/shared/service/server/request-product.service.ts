@@ -13,7 +13,7 @@ export class RequestProductService {
   private url_server: string = `http://${environment.HOST}${environment.PORT}/api/account`;
 
   getUserProduct(): Observable<any> {
-    return this.http.get<Product>(`${this.url_server}/product`);
+    return this.http.get<Product>(`${this.url_server}/product/`);
   }
 
   getByIdforUpdate(id: string): Observable<Product> {
@@ -31,6 +31,6 @@ export class RequestProductService {
   }
 
   createProduct(product: any): Observable<Product> {
-    return this.http.post<any>(`${this.url_server}/product`, product);
+    return this.http.post<any>(`${this.url_server}/product/`, product);
   }
 }

@@ -4,8 +4,6 @@ const upload = require("../middleware/upload");
 const controller = require("../controllers/accountUser");
 const router = express.Router();
 
-// Get user account info
-
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),

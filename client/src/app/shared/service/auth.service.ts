@@ -14,6 +14,11 @@ export class AuthService {
 
   private url_server = `http://${environment.HOST}${environment.PORT}/api`;
 
+  getTest(): Observable<any> {
+    return this.http.get<any>("");
+    // return
+  }
+
   register(user: UserRegister): Observable<any> {
     return this.http.post<any>(`${this.url_server}/auth/register`, user);
   }
