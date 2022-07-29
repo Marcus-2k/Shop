@@ -47,9 +47,10 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
         .subscribe(
           (res) => {
             // console.log("=======================");
+            // console.log(res);
             // console.log(res.product);
             // console.log(res.productCategory);
-            // console.log(res.productCharacteristics);
+            // console.log(res.productCharacteristics);s
             //
             this.listProduct = res.product; // List Product
             this.categoryListNumber = res.productCategory; // List Product Category
@@ -59,104 +60,110 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
             this.loaderSelect = false; // Loader SideBar
             this.categoryList = this.catagoryName.categoryList; // List Category
             //
-            const noUniqueArray: number[] = [];
+            const noUniqueCategory: number[] = [];
             this.categoryListNumber.forEach((element) => {
-              noUniqueArray.push(Number(element.join("")));
+              noUniqueCategory.push(Number(element.join("")));
             });
-            console.log(noUniqueArray);
+            // console.log(noUniqueCategory);
             //
-            const arrayUnique: number[] = []; // Определяем временный массив
-            for (let idx = 0; idx < noUniqueArray.length; idx++) {
-              if (arrayUnique.indexOf(noUniqueArray[idx]) === -1) {
-                arrayUnique.push(noUniqueArray[idx]);
+            const uniqueCategory: number[] = []; // Определяем временный массив
+            for (let idx = 0; idx < noUniqueCategory.length; idx++) {
+              if (uniqueCategory.indexOf(noUniqueCategory[idx]) === -1) {
+                uniqueCategory.push(noUniqueCategory[idx]);
               }
             }
-            console.log(arrayUnique);
+            // console.log(uniqueCategory);
             //
-            const arrayUniqueForFilter: number[][] = [];
-            arrayUnique.forEach((element) => {
+            const uniqueCategoryFilter: number[][] = [];
+            uniqueCategory.forEach((element) => {
               if (element === 0) {
-                arrayUniqueForFilter.push([0, 0, 0]);
+                uniqueCategoryFilter.push([0, 0, 0]);
               } else if (element === 10) {
-                arrayUniqueForFilter.push([0, 1, 0]);
+                uniqueCategoryFilter.push([0, 1, 0]);
               } else {
                 let numberToArray = ("" + element).split("").map(Number);
-                arrayUniqueForFilter.push(numberToArray);
+                uniqueCategoryFilter.push(numberToArray);
               }
             });
-            console.log(arrayUniqueForFilter);
+            // console.log(uniqueCategoryFilter);
             //
-            arrayUniqueForFilter.forEach((element, idx) => {
-              console.log(element);
+            uniqueCategoryFilter.forEach((element, idx) => {
               this.optionsProduct.push(
                 this.categoryList[element[0]].nameListCategory[element[1]]
                   .subNameListCategory[element[2]].options
               );
             });
-            console.log(this.optionsProduct);
+            // console.log(this.optionsProduct);
+            //
+            //
+            //
+            const filter: ActiveFilter[][] = [];
+            //
+            let count = Object.create(null);
+            let used = new Set();
+            // console.log(this.optionsProduct);
+            this.optionsProduct.forEach((item: options[], i) => {
+              item.forEach((subItem: options, idx) => {
+                const filterBlock: ActiveFilter[] = [];
+                this.characteristicsListNumber.forEach((element, k) => {
+                  const filterItem = {
+                    // block: subItem.name,
+                    name: subItem.select[element[idx]],
+                    counter: 0,
+                    active: false,
+                  };
+                  filterBlock.push(filterItem);
+                  // if (idx === k) {
+                  //   const filterItem = {
+                  //     // block: subItem.name,
+                  //     name: subItem.select[element[idx]],
+                  //     counter: 0,
+                  //     active: false,
+                  //   };
+                  //   filterBlock.push(filterItem);
+                  //   used.add(subItem.select[element[idx]]);
+                  // } else {
+                  //   // console.log("else");
+                  //   if (used.has(subItem.select[element[idx]])) {
+                  //     // console.log("повтор");
+                  //     // filterBlock.forEach((iteration) => {
+                  //     //   // console.log(iteration);
+                  //     // });
+                  //   } else {
+                  //     const filterItem = {
+                  //       // block: subItem.name,
+                  //       name: subItem.select[element[idx]],
+                  //       counter: 0,
+                  //       active: false,
+                  //     };
+                  //     filterBlock.push(filterItem);
+                  //     used.add(subItem.select[element[idx]]);
+                  //   }
+                  // }
+                });
+                filter.push(filterBlock);
+              });
+            });
+            console.log(filter);
+            //
+            filter.forEach((item, idx) => {
+              item.forEach((element: ActiveFilter, index) => {
+                console.log(element);
+                // for (let { name } of item) {
+                //   if ((count[name] = ~~count[name] + 1) == 2) {
+                //     used.add(name);
+                //   }
+                // }
+              });
 
-            // const testsArrayFilter: ActiveFilter[] = [];
-            // this.categoryListNumber.forEach((item, idx) => {
-            // const activeFilter: ActiveFilter = {
-            //   params: this.characteristicsListNumber[idx],
-            //   active: false,
-            // };
-
-            // testsArrayFilter.push(activeFilter);
-            // if (idx === 0) {
-            //   console.log("перший раз");
-            //   console.log(this.optionsProduct);
-            // } else {
-            //   console.log("====");
-            //   console.log(testsArrayFilter[idx].params);
-            // console.log("====");
-            // console.log(testsArrayFilter[idx].params);
-            // testsArrayFilter.forEach((element, i) => {});
-            // }
-            // });
+              console.log("============================");
+            });
+            // console.log(count);
+            // console.log(used);
 
             //
-            // const filter = {};
-            // arrayFilter.forEach((element, idx) => {
-            //   console.log(element);
-            // });
 
-            //
-            // let activeCategoryInQuery: number[][] | string[] | number[] = [];
-
-            // if (this.categorySearch) {
-            //   activeCategoryInQuery = this.categorySearch.split(",");
-
-            //   activeCategoryInQuery.forEach((element, idx) => {
-            //     activeCategoryInQuery[idx] = Number(element);
-            //   });
-            // }
-            //
-            // res.productCategory.forEach((element: number[] | any, idx) => {
-            //   const filterOneCategory = { category: element, active: false };
-
-            //   activeCategoryInQuery.forEach((item) => {
-            //     let newElement = Number(element.join(""));
-            //     if (newElement === item) {
-            //       filterOneCategory.active = true;
-            //     }
-            //   });
-            //   this.listFilter.push(filterOneCategory);
-            //   this.categoryListNumber.push(element);
-            // });
-            //
-            // this.loaderProduct = false; // Loader Main
-            // this.loaderSelect = false; // Loader SideBar
-            // this.categoryList = this.catagoryName.categoryList; // List Category
-            //
-            // for (let idx = 0; idx < this.categoryListNumber.length; idx++) {
-            //
-            // for (let i = 0; i < this.categoryListNumber[idx].length; i++) {
-            //   console.log(this.categoryList[this.categoryListNumber[idx][i]]);
-            // }
-            //
-            // }
-            //
+            this.listFilter = filter;
           },
           (e) => {
             console.log(e);
@@ -171,9 +178,9 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   ngDoCheck(): void {}
 
   ngOnDestroy(): void {
-    this.listProduct = [];
-    this.categoryList = [];
-    this.characteristicsListNumber = [];
+    // this.listProduct = [];
+    // this.categoryList = [];
+    // this.characteristicsListNumber = [];
   }
 
   // Other === START
@@ -189,16 +196,13 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
   characteristicsListNumber: number[][] = []; // Characteristics List
 
-  characteristicsList: options[] = [];
-
   categoryListNumber: number[][] = []; // Category List
 
   categoryList: CategoryProduct[] = []; // All Category, import from category-name.service.ts
 
   optionsProduct: options[][] = [];
 
-  // Server Request
-  listFilter: ActiveFilter[] = [];
+  listFilter: ActiveFilter[][] = [];
 
   filterSearch(checked: boolean, category: number[], idx: number) {
     // console.log(this.categoryList);

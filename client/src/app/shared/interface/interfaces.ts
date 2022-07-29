@@ -40,8 +40,8 @@ export interface oldUserResponse {
 }
 
 export interface ActiveFilter {
-  // category: number[];
-  params: number[];
+  name: string;
+  counter: number;
   active: boolean;
 }
 

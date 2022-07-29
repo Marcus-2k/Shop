@@ -16,8 +16,9 @@
         &__content {
           .select__conten-category {
             .category {
-              display: flex;
-              align-items: center;
+              // display: flex;
+              // align-items: center;
+              // flex-direction: column;
               &__input {
               }
               &__title {
@@ -59,7 +60,6 @@
           &-body {
             position: relative;
             height: 55%;
-
             .body__preview {
               display: flex;
               padding-top: 10px;

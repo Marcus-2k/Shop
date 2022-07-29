@@ -22,39 +22,19 @@
           <!-- Loader END -->
           <!-- Category STR -->
           <div class="select__conten-category">
-            <hr />
-            <ul
-              *ngFor="let category of categoryListNumber; let idx = index"
-              class="category"
-              style="display: flex; flex-direction: column"
-            >
-              <ng-container
-                *ngFor="
-                  let params of characteristicsListNumber[idx];
-                  let i = index
-                "
-              >
-                <li>
-                  <input
-                    type="checkbox"
-                    [id]="idx"
-                    class="custom-checkbox category__input"
-                    #checkbox
-                    (click)="filterSearch(checkbox.checked, category, idx)"
-                  />
-                  <label [for]="idx" class="category__title">
-                    {{
-                      categoryList[category[0]].nameListCategory[category[1]]
-                        .subNameListCategory[category[2]].options[i].select[
-                        params
-                      ]
-                    }}
-                  </label>
-                </li>
+            <ng-container *ngFor="let filter of listFilter; let idx = index">
+              <ng-container *ngFor="let item of filter; let i = index">
+                <input
+                  type="checkbox"
+                  [id]="i"
+                  class="custom-checkbox category__input"
+                  #checkbox
+                />
+                <label [for]="idx" class="category__title"
+                  >{{ idx }}&nbsp;&nbsp;&nbsp;{{ item.name }}</label
+                >
               </ng-container>
-              <li>==================</li>
-              <!-- [checked]="listFilter[idx].active" -->
-            </ul>
+            </ng-container>
           </div>
           <!-- Category END -->
         </div>

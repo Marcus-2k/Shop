@@ -16,13 +16,13 @@ export class AppComponent implements OnInit {
       this.auth.setToken(potentialToken);
     }
 
-    this.auth.getTest().subscribe(
-      (res) => {
-        console.log(res);
-      },
-      (e) => {
-        console.log(e);
-      }
-    );
+    // this.auth.getTest().subscribe(
+    //   (res) => {
+    //     console.log(res);
+    //   },
+    //   (e) => {
+    //     console.log(e);
+    //   }
+    // );
   }
 }
