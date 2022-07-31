@@ -15,7 +15,6 @@ import {
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
-import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-search",
@@ -149,7 +148,9 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
   // Other === START
 
-  url_server_img: string = `http://${environment.HOST}${environment.PORT}/`; // Link to server folder
+  private HOST: string = "localhost";
+  private PORT: string = ":5000";
+  url_server_img: string = `http://${this.HOST}${this.PORT}/`; // Link to server folder
 
   loaderSelect: boolean = true; // Loader block Select
   loaderProduct: boolean = true; // Loader block Product

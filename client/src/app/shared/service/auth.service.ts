@@ -1,7 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
-import { environment } from "src/environments/environment";
 import { UserLogin, UserRegister } from "../interface/interfaces";
 
 @Injectable({
@@ -12,12 +11,9 @@ export class AuthService {
 
   private token: string | null = null;
 
-  private url_server = `http://${environment.HOST}${environment.PORT}/api`;
-
-  getTest(): Observable<any> {
-    return this.http.get<any>("");
-    // return
-  }
+  private HOST: string = "localhost";
+  private PORT: string = ":5000";
+  private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
   register(user: UserRegister): Observable<any> {
     return this.http.post<any>(`${this.url_server}/auth/register`, user);

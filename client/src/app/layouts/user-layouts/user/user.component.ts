@@ -13,7 +13,6 @@ import {
 } from "src/app/shared/interface/interfaces";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
-import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-user",
@@ -83,7 +82,9 @@ export class UserComponent implements OnInit, DoCheck {
   time: number = this.date.getHours();
 
   // Developer mode === START
-  url_server: string = `http://${environment.HOST}${environment.PORT}/`;
+  private HOST: string = "localhost";
+  private PORT: string = ":5000";
+  url_server: string = `http://${this.HOST}${this.PORT}/`;
   // Developer mode === END
 
   // Avatar user === START
@@ -96,7 +97,7 @@ export class UserComponent implements OnInit, DoCheck {
       console.log(typeof this.images);
       console.log(this.oldUser);
       console.log(this.user);
-      this.url_server = `http://${environment.HOST}${environment.PORT}/`;
+      this.url_server = `http://${this.HOST}${this.PORT}/`;
       this.images = undefined;
       this.imagePreview = this.oldUser.avatar;
     }

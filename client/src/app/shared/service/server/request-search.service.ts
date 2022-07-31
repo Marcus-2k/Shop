@@ -1,7 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
 import { Product } from "src/app/shared/interface/interfaces";
 
 @Injectable({
@@ -10,7 +9,9 @@ import { Product } from "src/app/shared/interface/interfaces";
 export class RequestSearchService {
   constructor(private http: HttpClient) {}
 
-  private url_server: string = `http://${environment.HOST}${environment.PORT}/api`;
+  private HOST: string = "localhost";
+  private PORT: string = ":5000";
+  private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
   search(
     title: string,

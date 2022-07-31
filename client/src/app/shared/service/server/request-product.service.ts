@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
 import { Product } from "src/app/shared/interface/interfaces";
 
 @Injectable({
@@ -10,7 +9,9 @@ import { Product } from "src/app/shared/interface/interfaces";
 export class RequestProductService {
   constructor(private http: HttpClient) {}
 
-  private url_server: string = `http://${environment.HOST}${environment.PORT}/api/account`;
+  private HOST: string = "localhost";
+  private PORT: string = ":5000";
+  private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
   getUserProduct(): Observable<any> {
     return this.http.get<Product>(`${this.url_server}/product/`);

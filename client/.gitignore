@@ -4,3 +4,6 @@
 
 # Angular
 .angular
+
+# Other
+/dist

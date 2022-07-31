@@ -1,7 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
 import { userResponse } from "src/app/shared/interface/interfaces";
 
 @Injectable({
@@ -10,7 +9,9 @@ import { userResponse } from "src/app/shared/interface/interfaces";
 export class RequestUserService {
   constructor(private http: HttpClient) {}
 
-  private url_server: string = `http://${environment.HOST}${environment.PORT}/api`;
+  private HOST: string = "localhost";
+  private PORT: string = ":5000";
+  private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
   getInfoAccountUser(): Observable<userResponse> {
     return this.http.get<userResponse>(`${this.url_server}/account/user`);
