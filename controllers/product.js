@@ -26,14 +26,14 @@ module.exports.create = async function (req, res) {
   try {
     const keyWords = req.body.keyWords.split(" ");
 
-    let category = req.body.category.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
+    const category = req.body.category.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
     category.forEach((element, idx) => {
       category[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
 
-    let characteristics = req.body.characteristics.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
-    characteristics.forEach((element, idx) => {
-      characteristics[idx] = Number(element);
+    const options = req.body.options.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
+    options.forEach((element, idx) => {
+      options[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
 
     const product = new Product({
@@ -41,7 +41,7 @@ module.exports.create = async function (req, res) {
       imageSrc: req.file.path,
       price: req.body.price,
       category,
-      characteristics,
+      options,
       keyWords,
       description: req.body.description,
       action: req.body.action ? req.body.action : false,
@@ -49,9 +49,11 @@ module.exports.create = async function (req, res) {
     });
 
     await product.save();
-    res.status(201).json(product);
+    res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
-    res.status(400).json("Виникла помилка, спробуйте ще раз пізніше.");
+    res
+      .status(400)
+      .json({ message: "Виникла помилка, спробуйте ще раз пізніше." });
     console.log(error);
   }
 };
@@ -75,8 +77,9 @@ module.exports.update = async function (req, res) {
     const productImg = await Product.findById(req.params.id);
 
     fs.unlink(productImg.imageSrc, (err) => {
-      if (err) console.log(err);
-      else {
+      if (err) {
+        console.log(err);
+      } else {
         console.log("\nDeleted file: file.txt");
       }
     }); // Delete img, in folder

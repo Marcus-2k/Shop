@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CategoryProduct, options } from "../interface/interfaces";
+import { CategoryProduct, Options } from "../interface/interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -7,25 +7,7 @@ import { CategoryProduct, options } from "../interface/interfaces";
 export class CategoryProductService {
   constructor() {}
 
-  // options: options{} = {
-  //   OperatingSystem: {
-  //     name: "Операційна система",
-  //     htmlElement: "select",
-  //     select: [
-  //       "Без ОС",
-  //       "Mac OS",
-  //       "Linux",
-  //       "Windows 7",
-  //       "Windows 8.x",
-  //       "Windows 10 Home",
-  //       "Windows 11 Home",
-  //       "Chrome OS",
-  //       "Endles OS",
-  //     ]
-  //   }
-  // }
-
-  optionOperatingSystem: options = {
+  optionOperatingSystem: Options = {
     name: "Операційна система",
     htmlElement: "select",
     select: [
@@ -40,7 +22,7 @@ export class CategoryProductService {
       "Endles OS",
     ],
   };
-  optionCPU_PC: options = {
+  optionCPU_PC: Options = {
     name: "Процесор",
     htmlElement: "select",
     select: [
@@ -63,7 +45,7 @@ export class CategoryProductService {
       "AMD Ryzen 9",
     ],
   };
-  optionGraphics: options = {
+  optionGraphics: Options = {
     name: "Відеокарта",
     htmlElement: "select",
     select: [
@@ -87,17 +69,17 @@ export class CategoryProductService {
       "GeForce",
     ],
   };
-  optionScreenDiagonal: options = {
+  optionScreenDiagonal: Options = {
     name: "Діагональ екрана",
     htmlElement: "select",
     select: ["9", "12.5", "13", "14", "15", "15.6", "16", "17", "18", "20"],
   };
-  optionTypeMemory: options = {
+  optionTypeMemory: Options = {
     name: "Тип накопичувача",
     htmlElement: "select",
     select: ["HDD", "SSD", "SSD + HDD", "eMMC"],
   };
-  optionRAM: options = {
+  optionRAM: Options = {
     name: "Обсяг оперативної пам'яті",
     htmlElement: "select",
     select: [
@@ -115,7 +97,7 @@ export class CategoryProductService {
       "64 ГБ",
     ],
   };
-  optionColor: options = {
+  optionColor: Options = {
     name: "Колір",
     htmlElement: "select",
     select: [
@@ -134,17 +116,17 @@ export class CategoryProductService {
       "Чорний",
     ],
   };
-  optionNewUsed: options = {
+  optionNewUsed: Options = {
     name: "Новий - б/в",
     htmlElement: "select",
     select: ["Новий", "Б/в"],
   };
-  optionGuarantee: options = {
+  optionGuarantee: Options = {
     name: "Гарантія",
     htmlElement: "select",
     select: ["Немає", "1 рік", "2 роки"],
   };
-  optionSizeSSD: options = {
+  optionSizeSSD: Options = {
     name: "Обсяг SSD",
     htmlElement: "select",
     select: [
@@ -166,7 +148,7 @@ export class CategoryProductService {
       "8 Т",
     ],
   };
-  optionSizeHDD: options = {
+  optionSizeHDD: Options = {
     name: "Обсяг HDD",
     htmlElement: "select",
     select: [
@@ -188,24 +170,23 @@ export class CategoryProductService {
       "8 Т",
     ],
   };
+  // option:Options = {}
 
-  // option:options = {}
-
-  optionsLaptop: options[] = [
+  optionsLaptop: Options[] = [
     this.optionOperatingSystem,
     this.optionCPU_PC,
     this.optionGraphics,
     this.optionScreenDiagonal,
-    this.optionTypeMemory,
+    // this.optionTypeMemory,
     this.optionRAM,
     this.optionColor,
     this.optionNewUsed,
-    this.optionGuarantee,
-    this.optionSizeSSD,
-    this.optionSizeHDD,
+    // this.optionGuarantee,
+    // this.optionSizeSSD,
+    // this.optionSizeHDD,
   ];
 
-  optionsSmartphone: options[] = [
+  optionsSmartphone: Options[] = [
     this.optionRAM,
     this.optionColor,
     this.optionGuarantee,

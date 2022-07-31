@@ -17,14 +17,14 @@ export class RequestSearchService {
     queryParam?: string
   ): Observable<{
     product: Product[];
-    productCharacteristics: number[][];
-    productCategory: number[][];
+    uniqueProductCategory: number[][];
+    productOptionsBlock: number[][][];
   }> {
     if (queryParam) {
       return this.http.get<{
         product: Product[];
-        productCharacteristics: number[][];
-        productCategory: number[][];
+        uniqueProductCategory: number[][];
+        productOptionsBlock: number[][][];
       }>(
         `${this.url_server}/search?search_text=${title}&category=${queryParam}`
       );

@@ -9,7 +9,7 @@ import {
 import { ActivatedRoute } from "@angular/router";
 import {
   CategoryProduct,
-  options,
+  Options,
   Product,
 } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
@@ -226,7 +226,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
   // Popuap Select Category END ====
 
   // Characteristics START ====
-  characteristics: options[] = [];
+  characteristics: Options[] = [];
 
   allSelectParams: HTMLCollection =
     document.getElementsByClassName("select__params");
@@ -344,10 +344,9 @@ export class ProductNewComponent implements OnInit, DoCheck {
       formData.append("name", this.nameProduct); // Add name product
       formData.append("price", String(this.priceProduct)); // Add price product (type string)
       formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
-      formData.append("characteristics", optionsNumber.join(" ")); // Add characteristics (type string)
+      formData.append("options", optionsNumber.join(" ")); // Add characteristics (type string)
       formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
       formData.append("description", this.description); // Add description (type string)
-      // formData.append("description", String(action)); // Add action (type string)
 
       console.log("Send FormDate");
       this.requestProduct.createProduct(formData).subscribe(
@@ -355,10 +354,8 @@ export class ProductNewComponent implements OnInit, DoCheck {
           this.showNotice.message("Товар створено успішно.");
         },
         (e) => {
-          console.log(e);
-          this.showNotice.message(
-            "Товар не було створено, дані заповнено не коректно"
-          );
+          // console.log(e);
+          this.showNotice.message(e.message);
         }
       ); //Відправили на сервер
     } else {

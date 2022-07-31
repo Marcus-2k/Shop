@@ -1,51 +1,80 @@
 const Product = require("../models/Product");
 
-module.exports.searchSite = async function (req, res) {
-  console.log("Server searchSite");
+module.exports.search = async function (req, res) {
+  console.log("Server search");
+  // const product = await Product.find({
+  //   name: { $regex: search_text, $options: "i" },
+  //   category: { $in: categoryFilter },
+  // });
   try {
     console.log(req.query);
 
-    const search_text = req.query.search_text; // Requst Text search
-    // let category; // Reques Category
+    const search_text = req.query.search_text; // Назва товару пошуку
 
-    // let categoryFilter = [];
-
-    // if (req.query.category) {
-    //   category = req.query.category.split(",");
-
-    //   category.forEach((element, idx) => {
-    //     let numberArray = ("" + Number(element)).split("").map(Number);
-    //     categoryFilter.push(numberArray);
-    //   }); // Перетворюємо массив строкових чисел в, масив масивів з числами
-    // }
-
-    let productCategory = [];
-    let productCharacteristics = [];
+    let categoryNoUnique = [];
+    let productOptions = [];
 
     if (req.query.search_text) {
+      // Пошук в БД всіх продуктів за словами з пошуку
       const product = await Product.find({
         name: { $regex: search_text, $options: "i" },
       }); // $regex >> partial keyWords, options "i" >> case insensitivity
 
-      product.forEach((element) => {
-        productCharacteristics.push(element.characteristics);
-        productCategory.push(element.category);
-      }); // Характеристики в знайдених товарів по ключовому слові
+      product.sort((item, itemTwo) =>
+        item.category < itemTwo.category ? 1 : -1
+      );
+      // product.sort((item, itemTwo) => (item.price > itemTwo.price ? 1 : -1));
+      // Пошук в БД всіх продуктів за словами з пошуку
 
-      if (req.query.category) {
-        // delete product;
-        // const product = await Product.find({
-        //   name: { $regex: search_text, $options: "i" },
-        //   category: { $in: categoryFilter },
-        // });
-        res
-          .status(200)
-          .json({ product, productCharacteristics, productCategory });
-      } else {
-        res
-          .status(200)
-          .json({ product, productCharacteristics, productCategory });
-      }
+      //======================================================================================
+      product.forEach((element) => {
+        categoryNoUnique.push(element.category);
+        productOptions.push(element.options);
+      });
+      //======================================================================================
+
+      // Delete dublicate category === Start
+      categoryNoUnique.forEach((element, i) => {
+        categoryNoUnique[i] = element.join("");
+      }); // [ [1,0,5] ... ] >>> [ '105' ...]
+      const uniqueProductCategory = Array.from(new Set(categoryNoUnique));
+      uniqueProductCategory.forEach((element, i) => {
+        uniqueProductCategory[i] = ("" + element).split("").map(Number);
+      }); // [ '105' ... ] >>> [ [1,0,5] ... ]
+      // Delete dublicate category === End
+
+      // Counter product in category === START
+      let counterOptionsInCategory = []; // Кількість категорій, і товарів в них
+      let uniqueCategory = [];
+
+      uniqueProductCategory.forEach((element, i) => {
+        uniqueCategory[i] = element.join(""); // uniqueCategory = [ '100', '105' ]
+        counterOptionsInCategory.push([0]); // [ [ 0 ], [ 0 ], [ 0 ] ]
+      });
+
+      categoryNoUnique.forEach((element, i) => {
+        uniqueCategory.forEach((item, idx) => {
+          if (element === item) {
+            counterOptionsInCategory[idx][0]++;
+          }
+        });
+      }); // counterOptionsInCategory = [ [ 1 ], [ 6 ], [ 10 ] ]
+
+      // Counter product in category === END
+
+      // Параметри товарів поблочно до категорій
+      const productOptionsBlock = [];
+      counterOptionsInCategory.forEach((element, idx) => {
+        let optionsBlock = productOptions.splice(0, element[0]);
+        productOptionsBlock.push(optionsBlock);
+      });
+      // Параметри товарів поблочно до категорій
+      // ===========================================================================
+      res.status(200).json({
+        product,
+        uniqueProductCategory,
+        productOptionsBlock,
+      });
     } else {
       res.status(404).json({ message: "Помилка запуту" });
     }
@@ -55,8 +84,8 @@ module.exports.searchSite = async function (req, res) {
   }
 };
 
-module.exports.filterSearchSite = async function (req, res) {
-  console.log("Server filterSearchSite");
+module.exports.filterSearch = async function (req, res) {
+  console.log("Server filterSearch");
   try {
   } catch (error) {
     console.log(error);

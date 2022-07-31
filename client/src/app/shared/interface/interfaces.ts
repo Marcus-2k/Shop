@@ -39,12 +39,7 @@ export interface oldUserResponse {
   country: number;
 }
 
-export interface ActiveFilter {
-  name: string;
-  counter: number;
-  active: boolean;
-}
-
+// ==================================
 export interface CategoryProduct {
   nameCategory: string;
   nameListCategory: CategorList[];
@@ -55,25 +50,22 @@ export interface CategorList {
 }
 export interface CategorSubList {
   titleSubNameListCategory: string | undefined;
-  options: options[];
-  // options: optionsSelect | optionsInput;
-  // options: {}
+  options: Options[];
 }
-
-export interface options {
+export interface Options {
   name: string; // example Operating System
-  htmlElement: "select";
-  select: string[];
+  htmlElement: "select"; // html tag
+  select: string[]; // field for option select
 }
 
-// export interface optionsInput {
-//   name: string;
-//   element: "input";
-//   type: "text" | "number" | "date";
+// ==================================
+// export interface CategoryNameAndFilter {
+//   block: string; // example name uniqueCategory
+//   filters: ActiveFilter[];
 // }
 
-// export interface optionsSelect {
-//   name: string;
-//   element: "select";
-//   select: string[];
-// }
+export interface ActiveFilter {
+  name: string;
+  counter: number;
+  active: boolean;
+}

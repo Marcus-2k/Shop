@@ -22,19 +22,25 @@
           <!-- Loader END -->
           <!-- Category STR -->
           <div class="select__conten-category">
-            <ng-container *ngFor="let filter of listFilter; let idx = index">
-              <ng-container *ngFor="let item of filter; let i = index">
+            <!-- <ng-container *ngFor="let filter of listFilter; let i = index">
+              <hr />
+              <p>{{ filter[0] }}</p>
+              <div *ngFor="let item of filter; let idx = index">
                 <input
                   type="checkbox"
-                  [id]="i"
+                  [id]="generatorNmbreForLabel(i, idx)"
                   class="custom-checkbox category__input"
                   #checkbox
                 />
-                <label [for]="idx" class="category__title"
-                  >{{ idx }}&nbsp;&nbsp;&nbsp;{{ item.name }}</label
+                <label
+                  [for]="generatorNmbreForLabel(i, idx)"
+                  class="category__title"
+                  >{{ generatorNmbreForLabel(i, idx) }}&nbsp;&nbsp;&nbsp;{{
+                    item.name
+                  }}</label
                 >
-              </ng-container>
-            </ng-container>
+              </div>
+            </ng-container> -->
           </div>
           <!-- Category END -->
         </div>
@@ -64,8 +70,8 @@
             <div class="body__preview">
               <img
                 class="preview__img"
-                [src]="url_server_img + product.imageSrc"
                 alt=""
+                [src]="url_server_img + product.imageSrc"
               />
             </div>
             <!-- <div class="body__discount" *ngIf="product.action">
