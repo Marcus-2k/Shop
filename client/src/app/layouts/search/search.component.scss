@@ -29,6 +29,14 @@
                 &::before {
                   margin-right: 10px;
                 }
+
+                .counter {
+                  display: flex;
+                  align-content: start;
+
+                  color: grey;
+                  font-size: 12px;
+                }
               }
             }
           }

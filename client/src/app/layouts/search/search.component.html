@@ -22,25 +22,23 @@
           <!-- Loader END -->
           <!-- Category STR -->
           <div class="select__conten-category">
-            <!-- <ng-container *ngFor="let filter of listFilter; let i = index">
+            <ng-container *ngFor="let filter of listFilter; let i = index">
               <hr />
-              <p>{{ filter[0] }}</p>
-              <div *ngFor="let item of filter; let idx = index">
-                <input
-                  type="checkbox"
-                  [id]="generatorNmbreForLabel(i, idx)"
-                  class="custom-checkbox category__input"
-                  #checkbox
-                />
-                <label
-                  [for]="generatorNmbreForLabel(i, idx)"
-                  class="category__title"
-                  >{{ generatorNmbreForLabel(i, idx) }}&nbsp;&nbsp;&nbsp;{{
-                    item.name
-                  }}</label
-                >
-              </div>
-            </ng-container> -->
+              <!-- <p>{{ filter[0] }}</p> -->
+              <!-- <div *ngFor="let item of filter; let idx = index"> -->
+              <input
+                type="checkbox"
+                [id]="i"
+                class="custom-checkbox category__input"
+                #checkbox
+              />
+              <label [for]="i" class="category__title"
+                >{{ i }}&nbsp;&nbsp;&nbsp;{{ filter.name }}
+
+                <span class="counter">&nbsp;( {{ filter.counter }} )</span>
+              </label>
+              <!-- </div> -->
+            </ng-container>
           </div>
           <!-- Category END -->
         </div>

@@ -14,7 +14,7 @@ export class RequestProductService {
   private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
   getUserProduct(): Observable<any> {
-    return this.http.get<Product>(`${this.url_server}/product/`);
+    return this.http.get<Product>(`${this.url_server}/account/product/`);
   }
 
   getByIdforUpdate(id: string): Observable<Product> {

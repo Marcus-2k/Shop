@@ -71,66 +71,56 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
             //
 
-            // console.log(this.optionsListBlockCategory);
-            // console.log(this.productOptionsBlock);
-
             const filter: string[] = [];
-            // const filter: ActiveFilter[] = [];
-            // const filter: ActiveFilter[][] = [];
-            this.uniqueCategory.forEach((uniqueCategory: number[], i) => {
-              // console.log("========", uniqueCategory, "========");
-              this.productOptionsBlock[i].forEach((item: number[], idx) => {
-                // console.log(item);
+            // this.uniqueCategory.forEach((uniqueCategory: number[], i:number) => {
+            //   // console.log("========", uniqueCategory, "========");
+            //   this.productOptionsBlock[i].forEach((item: number[], idx:number) => {
+            //     this.optionsListBlockCategory[i].forEach(
+            //       (element: Options, k:number) => {
+            //         filter.push(element.select[item[k]]);
+            //       }
+            //     );
+            //     console.log("============");
+            //   });
+            //   console.log("=============================================");
+            // });
 
-                const blockFilter: ActiveFilter[] = [];
-
-                this.optionsListBlockCategory[i].forEach(
-                  (element: Options, k) => {
-                    // const itemBlockFilter: ActiveFilter = {
-                    //   name: element.select[item[k]],
-                    //   counter: 0,
-                    //   active: false,
-                    // };
-                    filter.push(element.select[item[k]]);
-                    // blockFilter.push(itemBlockFilter);
-                  }
-                );
-
-                // filter.push(blockFilter);
-              });
-              console.log("=============================================");
+            this.uniqueCategory.forEach((category: number[], i: number) => {
+              // console.log(category);
             });
+
             console.log(filter);
 
             //
-            const set = new Set(filter);
-            const setFilter: ActiveFilter[] = [];
 
-            filter.forEach((element: string, i) => {
-              let counter = 0;
-              for (let idx = 0; idx < filter.length; idx++) {
-                if (element === filter[idx]) {
-                  console.log("повтор");
-                  counter += 1;
-                  filter.splice(idx, 1);
-                }
-              }
-              // filter.forEach((item: string, idx) => {});
+            const set = Array.from(new Set(filter));
+            const uniqueFilter: ActiveFilter[] = [];
 
-              const itemSetFilter: ActiveFilter = {
-                name: element,
-                counter: counter,
-                active: false,
-              };
-              setFilter.push(itemSetFilter);
-            });
+            // set.forEach((element: string, i) => {
+            //   let counter = 0;
+            //   filter.forEach((item: string, idx) => {
+            //     if (element === item) {
+            //       counter++;
+            //     }
+            //   });
+            //   const itemBlockFilter: ActiveFilter = {
+            //     name: element,
+            //     counter,
+            //     active: false,
+            //   };
+            //   uniqueFilter.push(itemBlockFilter);
+            // });
 
-            console.log(setFilter);
-            console.log(set);
+            this.listFilter = uniqueFilter;
+
             //
 
             this.loaderProduct = false; // Loader Main
             this.loaderSelect = false; // Loader SideBar
+
+            //
+
+            //
           },
           (e) => {
             console.log(e);
