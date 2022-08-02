@@ -24,20 +24,26 @@
           <div class="select__conten-category">
             <ng-container *ngFor="let filter of listFilter; let i = index">
               <hr />
-              <!-- <p>{{ filter[0] }}</p> -->
-              <!-- <div *ngFor="let item of filter; let idx = index"> -->
-              <input
-                type="checkbox"
-                [id]="i"
-                class="custom-checkbox category__input"
-                #checkbox
-              />
-              <label [for]="i" class="category__title"
-                >{{ i }}&nbsp;&nbsp;&nbsp;{{ filter.name }}
-
-                <span class="counter">&nbsp;( {{ filter.counter }} )</span>
-              </label>
-              <!-- </div> -->
+              <p>{{ filter.name }}</p>
+              <ng-container
+                *ngFor="let filterItem of filter.inputActive; let idx = index"
+              >
+                <input
+                  type="checkbox"
+                  [id]="i + '' + '0' + idx"
+                  class="custom-checkbox category__input"
+                  (click)="filterSearch(filterItem.name)"
+                  #checkbox
+                />
+                <label [for]="i + '' + '0' + idx" class="category__title"
+                  >ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp;{{
+                    filterItem.name
+                  }}
+                  <span class="counter"
+                    >&nbsp;( {{ filterItem.counter }} )</span
+                  >
+                </label>
+              </ng-container>
             </ng-container>
           </div>
           <!-- Category END -->

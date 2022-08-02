@@ -11,6 +11,8 @@ import {
   Product,
   ActiveFilter,
   Options,
+  FilterNameParams,
+  FilterParamsBlock,
 } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
@@ -71,30 +73,27 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
             //
 
-            const filter: string[] = [];
-            // this.uniqueCategory.forEach((uniqueCategory: number[], i:number) => {
-            //   // console.log("========", uniqueCategory, "========");
-            //   this.productOptionsBlock[i].forEach((item: number[], idx:number) => {
-            //     this.optionsListBlockCategory[i].forEach(
-            //       (element: Options, k:number) => {
-            //         filter.push(element.select[item[k]]);
+            // ==============================================================================================
+            // const filter: string[] = [];
+            // this.uniqueCategory.forEach(
+            //   (uniqueCategory: number[], i: number) => {
+            //     //
+            //     this.productOptionsBlock[i].forEach(
+            //       (item: number[], idx: number) => {
+            //         //
+            //         this.optionsListBlockCategory[i].forEach(
+            //           (element: Options, k: number) => {
+            //             //
+            //             filter.push(element.select[item[k]]);
+            //           }
+            //         );
             //       }
             //     );
-            //     console.log("============");
-            //   });
-            //   console.log("=============================================");
-            // });
+            //   }
+            // );
 
-            this.uniqueCategory.forEach((category: number[], i: number) => {
-              // console.log(category);
-            });
-
-            console.log(filter);
-
-            //
-
-            const set = Array.from(new Set(filter));
-            const uniqueFilter: ActiveFilter[] = [];
+            // const set = Array.from(new Set(filter));
+            // const uniqueFilter: ActiveFilter[] = [];
 
             // set.forEach((element: string, i) => {
             //   let counter = 0;
@@ -110,16 +109,93 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
             //   };
             //   uniqueFilter.push(itemBlockFilter);
             // });
+            // this.listFilter = uniqueFilter;
+            // ==============================================================================================
+            let filter: FilterNameParams[] = [];
+            this.uniqueCategory.forEach((category: number[], i: number) => {
+              //
+              this.optionsListBlockCategory[i].forEach((element, idx) => {
+                //
+                let filterBlock: FilterNameParams = {
+                  name: element.name,
+                  params: [],
+                };
+                this.productOptionsBlock[i].forEach((item, k) => {
+                  filterBlock.params.push(element.select[item[idx]]);
+                });
+                filter.push(filterBlock);
+                //
+              });
+            });
 
-            this.listFilter = uniqueFilter;
+            let filterItem: any = {};
+            filter = filter.filter((entry: FilterNameParams) => {
+              let previous: any;
 
-            //
+              // Have we filterItem this label before?
+              if (filterItem.hasOwnProperty(entry.name)) {
+                // Yes, grab it and add this data to it
+                previous = filterItem[entry.name];
+                entry.params.forEach((name) => {
+                  previous.params.push(name);
+                });
+                // Don't keep this entry, we've merged it into the previous one
+                return false;
+              }
+
+              // entry.data probably isn't an array; make it one for consistency
+              if (!Array.isArray(entry.params)) {
+                entry.params = [entry.params];
+              }
+
+              // Remember that we've filterItem it
+              filterItem[entry.name] = entry;
+
+              // Keep this one, we'll merge any others that match into it
+              return true;
+            });
+            console.log(filter);
+
+            let filterActive: FilterParamsBlock[] = [];
+            filter.forEach((element: FilterNameParams) => {
+              console.log(element.params);
+
+              let setParams = Array.from(new Set(element.params));
+              // console.log(setParams);
+              //
+              let filterParamsBlock: FilterParamsBlock = {
+                name: element.name,
+                inputActive: [],
+              };
+              setParams.forEach((item) => {
+                let counter = 0;
+                // console.log(item);
+                element.params.forEach((arrayItem: string) => {
+                  // console.log(arrayItem);
+                  if (item === arrayItem) {
+                    counter++;
+                  }
+                });
+                let filterParams: ActiveFilter = {
+                  name: item,
+                  counter,
+                  active: false,
+                };
+                // console.log(filterParams);
+                filterParamsBlock.inputActive.push(filterParams);
+              });
+              filterActive.push(filterParamsBlock);
+            });
+
+            console.log(filterActive);
+            this.listFilter = filterActive;
+            // ==============================================================================================
 
             this.loaderProduct = false; // Loader Main
             this.loaderSelect = false; // Loader SideBar
 
             //
-
+            // this.listFilter = filter;
             //
           },
           (e) => {
@@ -158,13 +234,11 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
   productOptionsBlock: number[][][] = [];
 
-  listFilter: ActiveFilter[] = [];
+  listFilter: FilterParamsBlock[] = [];
 
-  filterSearch() {}
-
-  // generatorNmbreForLabel(i: number, idx: number) {
-  //   return `${i}${idx}`;
-  // }
+  filterSearch(name: string) {
+    console.log(name);
+  }
 
   /* Sidebar */
 

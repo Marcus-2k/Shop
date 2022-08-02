@@ -59,10 +59,15 @@ export interface Options {
 }
 
 // ==================================
-// export interface CategoryNameAndFilter {
-//   block: string; // example name uniqueCategory
-//   filters: ActiveFilter[];
-// }
+export interface FilterNameParams {
+  name: string; // example name uniqueCategory
+  params: string[];
+}
+
+export interface FilterParamsBlock {
+  name: string; // example name uniqueCategory
+  inputActive: ActiveFilter[];
+}
 
 export interface ActiveFilter {
   name: string;
