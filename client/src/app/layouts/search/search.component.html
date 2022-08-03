@@ -1,4 +1,5 @@
 <!--  -->
+<div class="loader-line" *ngIf="loaderLine"></div>
 <div class="search">
   <div class="search__content">
     <div class="search__content-sidebar">
@@ -28,12 +29,22 @@
               <ng-container
                 *ngFor="let filterItem of filter.inputActive; let idx = index"
               >
+                <!-- [checked] -->
                 <input
                   type="checkbox"
                   [id]="i + '' + '0' + idx"
                   class="custom-checkbox category__input"
-                  (click)="filterSearch(filterItem.name)"
-                  #checkbox
+                  (click)="
+                    filterSearch(
+                      filterItem.name,
+                      filter.name,
+                      i,
+                      checkboxInput.checked
+                    )
+                  "
+                  [routerLink]="['/search']"
+                  [queryParams]="{ filter: 'new' }"
+                  #checkboxInput
                 />
                 <label [for]="i + '' + '0' + idx" class="category__title"
                   >ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp;{{

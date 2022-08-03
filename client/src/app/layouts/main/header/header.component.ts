@@ -8,7 +8,6 @@ import { AuthService } from "src/app/shared/service/auth.service";
   styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements DoCheck {
-  // constructor(private router: Router, private auth: AuthService) {}
   constructor(private router: Router, private auth: AuthService) {}
 
   ngDoCheck(): void {

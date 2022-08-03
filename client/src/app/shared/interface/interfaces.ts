@@ -73,4 +73,11 @@ export interface ActiveFilter {
   name: string;
   counter: number;
   active: boolean;
+  // queryName: string;
+  // queryParams: string[];
+}
+
+export interface QueryParams {
+  name: string;
+  query: string[];
 }
