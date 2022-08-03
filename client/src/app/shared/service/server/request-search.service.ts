@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Params } from "@angular/router";
 import { Observable } from "rxjs";
 import { Product } from "src/app/shared/interface/interfaces";
 
@@ -15,20 +16,22 @@ export class RequestSearchService {
 
   search(
     title: string,
-    queryParam?: string
+    queryParams?: Params
   ): Observable<{
     product: Product[];
     uniqueProductCategory: number[][];
     productOptionsBlock: number[][][];
   }> {
-    if (queryParam) {
+    if (queryParams) {
+      //
+      let query = new URLSearchParams(queryParams);
+      console.log(query.toString());
+      //
       return this.http.get<{
         product: Product[];
         uniqueProductCategory: number[][];
         productOptionsBlock: number[][][];
-      }>(
-        `${this.url_server}/search?search_text=${title}&category=${queryParam}`
-      );
+      }>(`${this.url_server}/search?${query.toString()}`);
     } else {
       return this.http.get<any>(
         `${this.url_server}/search?search_text=${title}`

@@ -70,6 +70,13 @@ module.exports.search = async function (req, res) {
       });
       // Параметри товарів поблочно до категорій
       // ===========================================================================
+      delete product;
+      if (req.query.ram) {
+        const product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        });
+      }
+      // ===========================================================================
       res.status(200).json({
         product,
         uniqueProductCategory,

@@ -22,6 +22,10 @@ const productSchema = new Schema({
     type: [Number],
     required: true,
   },
+  optionsToString: {
+    type: [String],
+    required: true,
+  },
   keyWords: {
     type: [String],
   },

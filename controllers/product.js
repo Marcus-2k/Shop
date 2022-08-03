@@ -35,6 +35,7 @@ module.exports.create = async function (req, res) {
     options.forEach((element, idx) => {
       options[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
+    const optionsToString = req.body.optionsToString.split(" ");
 
     const product = new Product({
       name: req.body.name,
@@ -42,13 +43,16 @@ module.exports.create = async function (req, res) {
       price: req.body.price,
       category,
       options,
+      optionsToString: req.body.optionsToString,
       keyWords,
       description: req.body.description,
-      action: req.body.action ? req.body.action : false,
+      // action: req.body.action ? Boolean(req.body.action) : false,
+      action: false,
       user: req.user.id,
     });
 
-    await product.save();
+    console.log(product);
+    // await product.save();
     res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
     res

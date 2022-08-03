@@ -2,7 +2,6 @@ import {
   Component,
   DoCheck,
   ElementRef,
-  Input,
   OnInit,
   ViewChild,
 } from "@angular/core";
@@ -225,7 +224,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
   } // Close popuap
   // Popuap Select Category END ====
 
-  // Characteristics START ====
+  // Options START ====
   characteristics: Options[] = [];
 
   allSelectParams: HTMLCollection =
@@ -242,7 +241,11 @@ export class ProductNewComponent implements OnInit, DoCheck {
   resetOptions() {
     this.characteristics = [];
   } // Видалення характеристик
-  // Characteristics END ====
+  // Options END ====
+
+  // OptionsToString START ====
+  optionsToString: string[] = [];
+  // OptionsToString END ====
 
   // Key Words START ====
   keyWords: string[] = []; // Ключові слова.
@@ -287,30 +290,32 @@ export class ProductNewComponent implements OnInit, DoCheck {
   // Description END ====
 
   // Create product Start ====
-  createProduct(value?: any) {
+  createProduct() {
     console.log("Кнопка Створити");
-    // console.log(this.characteristics);
 
     let allSelectParamsArray = Array.prototype.slice.call(this.allSelectParams);
     let optionsNumber: number[] = [];
 
-    allSelectParamsArray.forEach((element: HTMLSelectElement) => {
+    allSelectParamsArray.forEach((element: HTMLSelectElement, idx) => {
+      console.log(idx);
+
       optionsNumber.push(Number(element.value));
-    }); // Запусуємо номера вибраних параметрів в масив
+
+      this.optionsToString.push(
+        this.characteristics[idx].select[Number(element.value)]
+      );
+    }); // Записуємо номера вибраних параметрів в масив
+    console.log(this.optionsToString);
 
     for (let idx = 0; idx < optionsNumber.length; idx++) {
       if (optionsNumber[idx] <= -1) {
-        // console.log('')
         this.showNotice.message("Не всі параметри заповненні правильно");
         optionsNumber = [];
         break;
       }
     } // Якщо в масиві один з параметрів -1 то значить якийсь параметр був не вибраний
-    console.log(optionsNumber);
-    console.log(this.characteristics);
 
     for (let index = 0; index < this.keyWords.length; index++) {
-      console.log("Старт циклу");
       if (
         this.keyWords[index].length <= 1 ||
         this.keyWords[index].length > 10
@@ -322,7 +327,9 @@ export class ProductNewComponent implements OnInit, DoCheck {
         break;
       }
       this.checkKeyWords = false;
-    } // Перевірка чи всі ключові слова введено корректно
+    } // Перевірка чи всі ключові слова введено правильно
+
+    let action = false;
 
     if (
       this.images &&
@@ -336,17 +343,17 @@ export class ProductNewComponent implements OnInit, DoCheck {
     ) {
       console.log("Create FormData");
 
-      // if (this.images) {}
       const formData = new FormData();
-      // let action = false;
 
       formData.append("image", this.images, this.images.name); // Add photo product
       formData.append("name", this.nameProduct); // Add name product
       formData.append("price", String(this.priceProduct)); // Add price product (type string)
       formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
-      formData.append("options", optionsNumber.join(" ")); // Add characteristics (type string)
+      formData.append("options", optionsNumber.join(" ")); // Add option (type string)
+      formData.append("optionsToString", this.optionsToString.join(" ")); // Add optionsToString (type string)
       formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
       formData.append("description", this.description); // Add description (type string)
+      formData.append("action", action.toString()); // Add action (type string)
 
       console.log("Send FormDate");
       this.requestProduct.createProduct(formData).subscribe(
@@ -362,6 +369,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
       this.showNotice.message(
         "Товар не було створено, дані заповнено не коректно"
       );
+      this.optionsToString = [];
     }
   }
 
@@ -383,7 +391,6 @@ export class ProductNewComponent implements OnInit, DoCheck {
       this.checkKeyWords = false;
     } // Перевірка чи всі ключові слова введено корректно
 
-    // this.images &&
     if (
       this.update &&
       this.updateProduct &&

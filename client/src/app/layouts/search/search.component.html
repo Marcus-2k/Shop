@@ -42,8 +42,6 @@
                       checkboxInput.checked
                     )
                   "
-                  [routerLink]="['/search']"
-                  [queryParams]="{ filter: 'new' }"
                   #checkboxInput
                 />
                 <label [for]="i + '' + '0' + idx" class="category__title"
@@ -83,15 +81,12 @@
         <div class="cart__box cart__item" *ngFor="let product of listProduct">
           <div class="cart__box-body">
             <div class="body__preview">
-              <img
-                class="preview__img"
-                alt=""
-                [src]="url_server_img + product.imageSrc"
-              />
+              <!-- [src]="url_server_img + product.imageSrc" -->
+              <img class="preview__img" alt="" />
             </div>
-            <!-- <div class="body__discount" *ngIf="product.action">
+            <div class="body__discount" *ngIf="product.action">
               <p class="disount__text">Акція</p>
-            </div> -->
+            </div>
             <div class="body__action">
               <div class="like">
                 <img src="../../../assets/img/like.png" alt="" />
