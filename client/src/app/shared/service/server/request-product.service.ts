@@ -11,10 +11,10 @@ export class RequestProductService {
 
   private HOST: string = "localhost";
   private PORT: string = ":5000";
-  private url_server: string = `http://${this.HOST}${this.PORT}/api`;
+  private url_server: string = `http://${this.HOST}${this.PORT}/api/account`;
 
   getUserProduct(): Observable<any> {
-    return this.http.get<Product>(`${this.url_server}/account/product/`);
+    return this.http.get<Product>(`${this.url_server}/product/`);
   }
 
   getByIdforUpdate(id: string): Observable<Product> {

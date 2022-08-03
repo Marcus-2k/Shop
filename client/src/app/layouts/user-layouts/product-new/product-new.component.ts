@@ -297,15 +297,12 @@ export class ProductNewComponent implements OnInit, DoCheck {
     let optionsNumber: number[] = [];
 
     allSelectParamsArray.forEach((element: HTMLSelectElement, idx) => {
-      console.log(idx);
-
       optionsNumber.push(Number(element.value));
 
       this.optionsToString.push(
         this.characteristics[idx].select[Number(element.value)]
       );
     }); // Записуємо номера вибраних параметрів в масив
-    console.log(this.optionsToString);
 
     for (let idx = 0; idx < optionsNumber.length; idx++) {
       if (optionsNumber[idx] <= -1) {
@@ -329,7 +326,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
       this.checkKeyWords = false;
     } // Перевірка чи всі ключові слова введено правильно
 
-    let action = false;
+    let action = 0;
 
     if (
       this.images &&
@@ -350,12 +347,13 @@ export class ProductNewComponent implements OnInit, DoCheck {
       formData.append("price", String(this.priceProduct)); // Add price product (type string)
       formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
       formData.append("options", optionsNumber.join(" ")); // Add option (type string)
-      formData.append("optionsToString", this.optionsToString.join(" ")); // Add optionsToString (type string)
+      formData.append("optionsToString", this.optionsToString.join(",")); // Add optionsToString (type string)
       formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
       formData.append("description", this.description); // Add description (type string)
       formData.append("action", action.toString()); // Add action (type string)
 
-      console.log("Send FormDate");
+      console.log("Send FormData");
+      this.optionsToString = [];
       this.requestProduct.createProduct(formData).subscribe(
         (res) => {
           this.showNotice.message("Товар створено успішно.");

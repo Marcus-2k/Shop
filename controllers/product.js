@@ -35,7 +35,7 @@ module.exports.create = async function (req, res) {
     options.forEach((element, idx) => {
       options[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
-    const optionsToString = req.body.optionsToString.split(" ");
+    const optionsToString = req.body.optionsToString.split(",");
 
     const product = new Product({
       name: req.body.name,
@@ -43,16 +43,15 @@ module.exports.create = async function (req, res) {
       price: req.body.price,
       category,
       options,
-      optionsToString: req.body.optionsToString,
+      optionsToString,
       keyWords,
       description: req.body.description,
-      // action: req.body.action ? Boolean(req.body.action) : false,
-      action: false,
+      action: Boolean(Number(req.body.action)),
       user: req.user.id,
     });
 
-    console.log(product);
-    // await product.save();
+    // console.log(product);
+    await product.save();
     res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
     res
@@ -80,13 +79,7 @@ module.exports.update = async function (req, res) {
 
     const productImg = await Product.findById(req.params.id);
 
-    fs.unlink(productImg.imageSrc, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("\nDeleted file: file.txt");
-      }
-    }); // Delete img, in folder
+    deleteImg(productImg.imageSrc); // Delete file from folder uploads
   }
   try {
     const product = await Product.findOneAndUpdate(
@@ -106,12 +99,7 @@ module.exports.delete = async function (req, res) {
   try {
     const productImg = await Product.findById(req.params.id);
 
-    fs.unlink(productImg.imageSrc, (err) => {
-      if (err) console.log(err);
-      else {
-        console.log("\nDeleted file: file.txt");
-      }
-    }); // Delete img, in folder
+    deleteImg(productImg.imageSrc); // Delete file from folder uploads
 
     await Product.remove({ _id: req.params.id }); // Delete cart in DB
 
