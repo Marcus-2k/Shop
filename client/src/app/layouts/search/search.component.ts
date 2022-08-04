@@ -59,7 +59,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           // ==============================================================================================
           this.listProduct = res.product; // List Product
           this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
-          this.productOptionsBlock = res.productOptionsBlock; //
+          this.productOptionsBlock = res.productOptionsBlock; // Parameters by block to categories
           // ==============================================================================================
           this.categoryNameDB = this.catagoryName.categoryList; // import from category-product.service.ts
           this.originalName = this.originalAndQueryName.originalName;
@@ -157,25 +157,15 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           noSortParams.forEach((element: string, idx) => {
             allParams[idx] = [element];
           });
-          // console.log("================================================");
+
           filterActive.forEach((element: FilterParamsBlock, idx: number) => {
-            // allParams.forEach((item: string[], index: number) => {
             noSortParams.forEach((item: string, index: number) => {
-              // let blockItem: ActiveFilter = {
-              //   name: item,
-              //   counter: element.inputActive[index].counter,
-              //   active: false,
-              // };
-              // console.log(item);
-              // console.log(blockItem);
-              // console.log(element.inputActive);
               element.inputActive.forEach((blockItem) => {
                 if (blockItem.name === item) {
                   blockItem.active = true;
                 }
               });
             });
-            // console.log("===================");
           });
 
           this.listFilter = filterActive;

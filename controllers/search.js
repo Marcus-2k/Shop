@@ -5,13 +5,13 @@ module.exports.search = async function (req, res) {
 
   try {
     console.log(req.query);
-
+    const lengthReq = Object.keys(req.query).length;
     const search_text = req.query.search_text; // Назва товару пошуку
 
-    let categoryNoUnique = [];
-    let productOptions = [];
+    if (lengthReq === 1) {
+      let categoryNoUnique = [];
+      let productOptions = [];
 
-    if (req.query.search_text) {
       // Пошук в БД всіх продуктів за словами з пошуку
       const product = await Product.find({
         name: { $regex: search_text, $options: "i" },
@@ -20,7 +20,6 @@ module.exports.search = async function (req, res) {
       product.sort((item, itemTwo) =>
         item.category < itemTwo.category ? 1 : -1
       );
-      // product.sort((item, itemTwo) => (item.price > itemTwo.price ? 1 : -1));
       // Пошук в БД всіх продуктів за словами з пошуку
 
       //======================================================================================
@@ -66,43 +65,96 @@ module.exports.search = async function (req, res) {
         productOptionsBlock.push(optionsBlock);
       });
       // Параметри товарів поблочно до категорій
+
       // ===========================================================================
-      if (true) {
-        delete product;
-        const parameters = Object.values(req.query).splice(1);
-        let parametersSplit = [];
-
-        parameters.forEach((element) => {
-          parametersSplit.push(element.split(","));
-        });
-
-        const allParams = parametersSplit.flat(1);
-        allParams.forEach((element, idx) => {
-          allParams[idx] = [element];
-        });
-
-        const product = await Product.find({
-          name: { $regex: search_text, $options: "i" },
-          optionsToString: { $in: allParams },
-        });
-
-        console.log(allParams);
-        // console.log(product);
-
-        res.status(200).json({
-          product,
-          uniqueProductCategory,
-          productOptionsBlock,
-        });
-      }
+      res.status(200).json({
+        product,
+        uniqueProductCategory,
+        productOptionsBlock,
+      });
+    } else if (lengthReq > 1) {
       // ===========================================================================
-      // res.status(200).json({
-      //   product,
-      //   uniqueProductCategory,
-      //   productOptionsBlock,
-      // });
-    } else {
-      res.status(404).json({ message: "Помилка запуту" });
+      const parameters = Object.values(req.query).splice(1); // {search_text: "телефон"; ram: "4 ГБ,16 ГБ"} >>> ['4 ГБ,16 ГБ']
+
+      let parametersSplit = [];
+      parameters.forEach((element) => {
+        parametersSplit.push(element.split(","));
+      });
+
+      const allParams = parametersSplit.flat(1); // concat all arrays in one array
+
+      allParams.forEach((element, idx) => {
+        allParams[idx] = [element];
+      }); // [ 'example', 'example' ] >>> [ ['example'], ['example'] ]
+      console.log(allParams);
+
+      const product = await Product.find({
+        name: { $regex: search_text, $options: "i" },
+        optionsToString: { $in: allParams },
+      }); // Search in DB, all product by keywors
+
+      product.sort((item, itemTwo) =>
+        item.category < itemTwo.category ? 1 : -1
+      ); // sort all product by category
+      // ===========================================================================
+      // ===========================================================================
+      // ===========================================================================
+      // ===========================================================================
+
+      let categoryNoUnique = [];
+      let productOptions = [];
+
+      //======================================================================================
+      product.forEach((element) => {
+        categoryNoUnique.push(element.category);
+        productOptions.push(element.options);
+      });
+      //======================================================================================
+
+      // Delete dublicate category === Start
+      categoryNoUnique.forEach((element, i) => {
+        categoryNoUnique[i] = element.join("");
+      }); // [ [1,0,5] ... ] >>> [ '105' ...]
+      const uniqueProductCategory = Array.from(new Set(categoryNoUnique));
+      uniqueProductCategory.forEach((element, i) => {
+        uniqueProductCategory[i] = ("" + element).split("").map(Number);
+      }); // [ '105' ... ] >>> [ [1,0,5] ... ]
+      // Delete dublicate category === End
+
+      // Counter product in category === START
+      let counterOptionsInCategory = []; // Кількість категорій, і товарів в них
+      let uniqueCategory = [];
+
+      uniqueProductCategory.forEach((element, i) => {
+        uniqueCategory[i] = element.join(""); // uniqueCategory = [ '100', '105' ]
+        counterOptionsInCategory.push([0]); // [ [ 0 ], [ 0 ], [ 0 ] ]
+      });
+
+      categoryNoUnique.forEach((element, i) => {
+        uniqueCategory.forEach((item, idx) => {
+          if (element === item) {
+            counterOptionsInCategory[idx][0]++;
+          }
+        });
+      }); // counterOptionsInCategory = [ [ 1 ], [ 6 ], [ 10 ] ]
+
+      // Counter product in category === END
+
+      // Параметри товарів поблочно до категорій
+      const productOptionsBlock = [];
+      counterOptionsInCategory.forEach((element, idx) => {
+        let optionsBlock = productOptions.splice(0, element[0]);
+        productOptionsBlock.push(optionsBlock);
+      });
+      // Параметри товарів поблочно до категорій
+
+      // ===========================================================================
+
+      res.status(200).json({
+        product,
+        uniqueProductCategory,
+        productOptionsBlock,
+      });
     }
   } catch (error) {
     console.log(error);

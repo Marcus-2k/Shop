@@ -83,11 +83,8 @@
         <div class="cart__box cart__item" *ngFor="let product of listProduct">
           <div class="cart__box-body">
             <div class="body__preview">
-              <img
-                class="preview__img"
-                alt=""
-                [src]="url_server_img + product.imageSrc"
-              />
+              <img class="preview__img" alt="" />
+              <!-- [src]="url_server_img + product.imageSrc" -->
             </div>
             <div class="body__discount" *ngIf="product.action">
               <p class="disount__text">Акція</p>
