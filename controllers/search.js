@@ -2,10 +2,7 @@ const Product = require("../models/Product");
 
 module.exports.search = async function (req, res) {
   console.log("Server search");
-  // const product = await Product.find({
-  //   name: { $regex: search_text, $options: "i" },
-  //   category: { $in: categoryFilter },
-  // });
+
   try {
     console.log(req.query);
 
@@ -70,18 +67,40 @@ module.exports.search = async function (req, res) {
       });
       // Параметри товарів поблочно до категорій
       // ===========================================================================
-      delete product;
-      if (req.query.ram) {
+      if (true) {
+        delete product;
+        const parameters = Object.values(req.query).splice(1);
+        let parametersSplit = [];
+
+        parameters.forEach((element) => {
+          parametersSplit.push(element.split(","));
+        });
+
+        const allParams = parametersSplit.flat(1);
+        allParams.forEach((element, idx) => {
+          allParams[idx] = [element];
+        });
+
         const product = await Product.find({
           name: { $regex: search_text, $options: "i" },
+          optionsToString: { $in: allParams },
+        });
+
+        console.log(allParams);
+        // console.log(product);
+
+        res.status(200).json({
+          product,
+          uniqueProductCategory,
+          productOptionsBlock,
         });
       }
       // ===========================================================================
-      res.status(200).json({
-        product,
-        uniqueProductCategory,
-        productOptionsBlock,
-      });
+      // res.status(200).json({
+      //   product,
+      //   uniqueProductCategory,
+      //   productOptionsBlock,
+      // });
     } else {
       res.status(404).json({ message: "Помилка запуту" });
     }

@@ -35,7 +35,11 @@ module.exports.create = async function (req, res) {
     options.forEach((element, idx) => {
       options[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
+
     const optionsToString = req.body.optionsToString.split(",");
+    optionsToString.forEach((element, idx) => {
+      optionsToString[idx] = [element];
+    });
 
     const product = new Product({
       name: req.body.name,
@@ -119,4 +123,4 @@ function deleteImg(linkImg) {
       console.log(`Deleted file ${linkImg}`);
     }
   });
-} // Delete img
+} // Delete file from folder uploads

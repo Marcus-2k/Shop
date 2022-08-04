@@ -8,8 +8,8 @@ export class ErrorHandlerService {
   constructor(private auth: AuthService) {}
 
   checkError(error: any) {
-    if (error.error === "Unauthorized") {
-      this.auth.logout();
-    }
+    // if (error.error === "Unauthorized") {
+    //   // this.auth.logout();
+    // }
   }
 }

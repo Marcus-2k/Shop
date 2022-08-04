@@ -81,10 +81,14 @@
                 (change)="onFileUpload($event)"
               />
               <img
-                [src]="
-                  url_server + imagePreview ||
-                  '../../../../assets/img/placeholder__avatar.webp'
-                "
+                *ngIf="imagePreview"
+                [src]="url_server + imagePreview"
+                class="placeholder__avatar"
+                (click)="addAvatar()"
+              />
+              <img
+                *ngIf="imagePreview === undefined"
+                [src]="'../../../../assets/img/placeholder__avatar.webp'"
                 class="placeholder__avatar"
                 (click)="addAvatar()"
               />

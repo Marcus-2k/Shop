@@ -1,12 +1,4 @@
-import {
-  Component,
-  DoCheck,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-
-import { ErrorHandlerService } from "src/app/shared/error/error-handler.service";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   oldUserResponse,
   userResponse,
@@ -19,10 +11,9 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
   templateUrl: "./user.component.html",
   styleUrls: ["./user.component.scss"],
 })
-export class UserComponent implements OnInit, DoCheck {
+export class UserComponent implements OnInit {
   constructor(
     private requestUser: RequestUserService,
-    private error: ErrorHandlerService,
     private showNotice: ShowNoticeService
   ) {}
 
@@ -52,12 +43,10 @@ export class UserComponent implements OnInit, DoCheck {
         this.oldUser.country = res.country;
       },
       (e) => {
-        this.error.checkError(e);
+        this.showNotice.message("Статлася помилка запиту");
       }
     );
   }
-
-  ngDoCheck(): void {}
 
   // User  === START
   user: userResponse = {
@@ -76,7 +65,8 @@ export class UserComponent implements OnInit, DoCheck {
     lastName: null,
     birthday: null,
     country: 0,
-  }; // User  === END
+  };
+  // User  === END
 
   date: Date = new Date();
   time: number = this.date.getHours();

@@ -23,10 +23,7 @@ export class RequestSearchService {
     productOptionsBlock: number[][][];
   }> {
     if (queryParams) {
-      //
       let query = new URLSearchParams(queryParams);
-      console.log(query.toString());
-      //
       return this.http.get<{
         product: Product[];
         uniqueProductCategory: number[][];

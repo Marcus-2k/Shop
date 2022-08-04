@@ -15,14 +15,5 @@ export class AppComponent implements OnInit {
     if (potentialToken !== null) {
       this.auth.setToken(potentialToken);
     }
-
-    // this.auth.getTest().subscribe(
-    //   (res) => {
-    //     console.log(res);
-    //   },
-    //   (e) => {
-    //     console.log(e);
-    //   }
-    // );
   }
 }

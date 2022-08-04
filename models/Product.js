@@ -23,7 +23,7 @@ const productSchema = new Schema({
     required: true,
   },
   optionsToString: {
-    type: [String],
+    type: [[String]],
     required: true,
   },
   keyWords: {

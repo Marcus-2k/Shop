@@ -14,6 +14,8 @@ export interface Product {
   imageSrc: string;
   price: number;
   category: number[];
+  options: number[];
+  optionsToString: string[][];
   keyWords?: [string]; // no required
   description: string;
   action: boolean;
@@ -60,12 +62,12 @@ export interface Options {
 
 // ==================================
 export interface FilterNameParams {
-  name: string; // example name uniqueCategory
+  name: string;
   params: string[];
 }
 
 export interface FilterParamsBlock {
-  name: string; // example name uniqueCategory
+  name: string;
   inputActive: ActiveFilter[];
 }
 
@@ -73,8 +75,6 @@ export interface ActiveFilter {
   name: string;
   counter: number;
   active: boolean;
-  // queryName: string;
-  // queryParams: string[];
 }
 
 export interface QueryParams {
