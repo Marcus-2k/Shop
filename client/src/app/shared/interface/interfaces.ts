@@ -66,7 +66,7 @@ export interface FilterNameParams {
   params: string[];
 }
 
-export interface FilterParamsBlock {
+export interface ActiveFilterBlock {
   name: string;
   inputActive: ActiveFilter[];
 }
