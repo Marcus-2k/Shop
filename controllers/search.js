@@ -5,27 +5,47 @@ module.exports.search = async function (req, res) {
 
   try {
     console.log(req.query);
-    const lengthReq = Object.keys(req.query).length;
-    const search_text = req.query.search_text; // Назва товару пошуку
 
-    if (lengthReq === 1) {
+    const lengthReq = Object.keys(req.query).length; // Counter Params
+    const search_text = req.query.search_text;
+
+    const limit = req.query.limit_user ? req.query.limit_user : 10; // Скільки користувачів на сторінку
+    let page = req.query.page ? req.query.page : 1; // Сторінка яку нада відобразити
+
+    let currentPage = page; // Open page
+
+    const count = await Product.find({
+      name: { $regex: search_text, $options: "i" },
+    })
+      .countDocuments({})
+      .exec(); // Max page
+    const maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
+
+    console.log(limit);
+    console.log(count);
+    console.log(maxPage);
+    console.log("==============================");
+
+    if (req.query.search_text || (req.query.search_text && req.query.limit)) {
       let categoryNoUnique = [];
       let productOptions = [];
 
-      const product = await Product.find({
+      let product = await Product.find({
         name: { $regex: search_text, $options: "i" },
-        // $regex >> partial keyWords, options "i" >> case insensitivity
-      }); // Search in DB, all product by keywors === START
-
-      // product.sort((item, itemTwo) =>
-      //   item.category < itemTwo.category ? 1 : -1
-      // );
+        // $regex >> partial keywords, options "i" >> case insensitivity
+      });
 
       product.forEach((element) => {
         categoryNoUnique.push(element.category);
         productOptions.push(element.options);
       }); // Category and Options in collection
 
+      product = await Product.find({
+        name: { $regex: search_text, $options: "i" },
+        // $regex >> partial keywords, options "i" >> case insensitivity
+      })
+        .limit(limit)
+        .skip(limit * --page); // Search in DB, all product by keywors
       const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Product
 
       const counterProductInCategory = counterProduct(
@@ -43,6 +63,9 @@ module.exports.search = async function (req, res) {
         product,
         uniqueProductCategory,
         productOptionsBlock,
+        currentPage,
+        maxPage,
+        limit,
       });
     } else if (lengthReq > 1) {
       const parameters = Object.values(req.query).splice(1); // {search_text: "телефон"; ram: "4 ГБ,16 ГБ"} >>> ['4 ГБ,16 ГБ']
@@ -65,7 +88,7 @@ module.exports.search = async function (req, res) {
 
       product.sort((item, itemTwo) =>
         item.category < itemTwo.category ? 1 : -1
-      ); // sort all product by category
+      ); // Sort all product by category
 
       let categoryNoUnique = [];
       let productOptions = [];
@@ -92,6 +115,7 @@ module.exports.search = async function (req, res) {
         product,
         uniqueProductCategory,
         productOptionsBlock,
+        maxPage,
       });
     }
   } catch (error) {

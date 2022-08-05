@@ -1,4 +1,10 @@
-import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
+import {
+  Component,
+  DoCheck,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+} from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
   CategoryProduct,
@@ -13,6 +19,10 @@ import { CategoryProductService } from "src/app/shared/service/category-product.
 import { NameQueryService } from "src/app/shared/service/name-query.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+
+// import { config } from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+// import "dotenv/config"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-search",
@@ -32,6 +42,8 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   titleSearch?: string;
   allQuery: Params = {};
 
+  url: string = environment.api;
+
   ngOnInit() {
     console.log("Start ngOnInit Search");
     this.route.queryParams.subscribe((queryParam: Params) => {
@@ -49,10 +61,18 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           this.listProduct = res.product; // List Product
           this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
           const productOptionsBlock: number[][][] = res.productOptionsBlock; // Parameters by block to categories
+          this.currentPage = Number(res.currentPage); // Current Page
+          // this.maxPage = res.maxPage; // Max pages site
+          this.limit = res.limit; // Limits item site
           // ==============================================================================================
           this.categoryNameDB = this.catagoryName.categoryList; // import from category-product.service.ts
           this.originalName = this.originalAndQueryName.originalName;
           this.nameForServer = this.originalAndQueryName.nameForServer;
+          // ==============================================================================================
+          while (res.maxPage > 0) {
+            this.maxPage.push(res.maxPage--);
+          }
+          this.maxPage.reverse();
           // ==============================================================================================
           let optionsListBlockCategory: Options[][] = []; // Options Product List
           this.uniqueCategory.forEach((element: number[], idx: number) => {
@@ -180,6 +200,8 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   private PORT: string = ":5000";
   url_server_img: string = `http://${this.HOST}${this.PORT}/`; // Link to server folder
 
+  // @ElementRef('selectLimit')
+
   // Loader Site ============================================================================
   loaderSelect: boolean = true; // Loader block Select
   loaderProduct: boolean = true; // Loader block Product
@@ -187,8 +209,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   // Loader Site ============================================================================
 
   // Sidebar ================================================================================
-
-  buttonTest() {}
 
   uniqueCategory: number[][] = []; // Category List [ [1,0,0], [1,0,5] ... ]
   categoryNameDB: CategoryProduct[] = []; // All Category, import from category-name.service.ts
@@ -205,8 +225,11 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     nameBlock: string,
     indexBlock: number,
     idxInput: number,
-    checked: boolean
+    checked: boolean,
+    selectLimit: number
   ) {
+    console.log(selectLimit);
+
     if (checked === true) {
       let positionIndexOriginalName: number =
         this.originalName.indexOf(nameBlock);
@@ -222,6 +245,18 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           this.queryParams[nameQueryForServer] = nameInput;
         }
         console.log(this.queryParams);
+
+        if (this.queryParams.hasOwnProperty("limit")) {
+          delete this.queryParams["limit"];
+        }
+        // if (selectLimit !== 10) {
+        //   this.queryParams["limit"] = selectLimit;
+        // }
+        // if (this.queryParams.hasOwnProperty("page")) {
+        //   delete this.queryParams["page"];
+        // }
+        // this.queryParams["page"] = this.currentPage;
+
         this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
         this.router.navigate([`search`], {
           queryParams: this.queryParams,
@@ -256,6 +291,13 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           delete this.queryParams[nameQueryForServer];
         }
 
+        if (this.queryParams.hasOwnProperty("limit")) {
+          delete this.queryParams["limit"];
+        }
+        if (selectLimit !== 10) {
+          this.queryParams["limit"] = selectLimit;
+        }
+
         this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
         this.router.navigate([`search`], {
           queryParams: this.queryParams,
@@ -275,5 +317,35 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
   // Main Product ===========================================================================
   listProduct: Product[] = []; // List Product
+
+  currentPage?: number;
+  maxPage: number[] = [];
+
+  limit?: number;
+  newPage(page: number) {
+    if (this.queryParams.hasOwnProperty("page")) {
+      delete this.queryParams["page"];
+    }
+    this.queryParams["page"] = page;
+
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
+    this.router.navigate([`search`], {
+      queryParams: this.queryParams,
+    });
+  }
+
+  newLimit(limit: string | number) {
+    limit = Number(limit);
+
+    if (this.queryParams.hasOwnProperty("limit")) {
+      delete this.queryParams["limit"];
+    }
+    this.queryParams["limit"] = limit;
+
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
+    this.router.navigate([`search`], {
+      queryParams: this.queryParams,
+    });
+  }
   // Main Product ===========================================================================
 }

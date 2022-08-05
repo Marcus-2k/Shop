@@ -21,6 +21,9 @@ export class RequestSearchService {
     product: Product[];
     uniqueProductCategory: number[][];
     productOptionsBlock: number[][][];
+    currentPage: number;
+    maxPage: number;
+    limit: number;
   }> {
     if (queryParams) {
       let query = new URLSearchParams(queryParams);
@@ -28,6 +31,9 @@ export class RequestSearchService {
         product: Product[];
         uniqueProductCategory: number[][];
         productOptionsBlock: number[][][];
+        currentPage: number;
+        maxPage: number;
+        limit: number;
       }>(`${this.url_server}/search?${query.toString()}`);
     } else {
       return this.http.get<any>(

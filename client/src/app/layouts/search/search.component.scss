@@ -183,6 +183,37 @@
         }
       }
       .pagination {
+        display: flex;
+        margin: 20px 0;
+        &__item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          height: 50px;
+          width: 50px;
+          margin-right: 10px;
+          padding: 10px;
+          border-radius: 4px;
+          background-color: #ddd;
+          border: 2px solid #b1b1b1;
+          cursor: pointer;
+          transition: 0.4s;
+          color: #535353;
+          &:hover {
+            transition: 0.4s;
+            background-color: rgb(200, 200, 200);
+          }
+        }
+        &__active {
+          background-color: #349948;
+          border: 2px solid #349948;
+          color: #fff;
+          &:hover {
+            transition: 0.4s;
+            background-color: #2c813d;
+          }
+        }
       }
     }
   }

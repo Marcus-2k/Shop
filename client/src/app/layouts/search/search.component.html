@@ -3,9 +3,7 @@
 <div class="search">
   <div class="search__content">
     <div class="search__content-sidebar">
-      <div class="reset">
-        <button (click)="buttonTest()">sdasdasoidasodasldnalsd</button>
-      </div>
+      <div class="reset"></div>
       <!--  -->
       <div class="select">
         <div class="select__content">
@@ -43,7 +41,8 @@
                       filter.name,
                       i,
                       idx,
-                      checkboxInput.checked
+                      checkboxInput.checked,
+                      +selectLimit.value
                     )
                   "
                   #checkboxInput
@@ -64,7 +63,21 @@
       </div>
     </div>
     <div class="search__content-body">
-      <div class="settings"></div>
+      <div class="settings">
+        <select name="select__limit" id="limit" [value]="limit" #selectLimit>
+          <option (click)="newLimit(selectLimit.value)" value="3">3</option>
+          <option (click)="newLimit(selectLimit.value)" value="6">6</option>
+          <option (click)="newLimit(selectLimit.value)" value="10">10</option>
+          <option (click)="newLimit(selectLimit.value)" value="15">15</option>
+          <option (click)="newLimit(selectLimit.value)" value="20">20</option>
+          <option (click)="newLimit(selectLimit.value)" value="25">25</option>
+          <option (click)="newLimit(selectLimit.value)" value="30">30</option>
+          <option (click)="newLimit(selectLimit.value)" value="35">35</option>
+          <option (click)="newLimit(selectLimit.value)" value="40">40</option>
+          <option (click)="newLimit(selectLimit.value)" value="45">45</option>
+          <option (click)="newLimit(selectLimit.value)" value="50">50</option>
+        </select>
+      </div>
       <!--  -->
       <div class="cart">
         <!-- Loader STR -->
@@ -85,7 +98,11 @@
         <div class="cart__box cart__item" *ngFor="let product of listProduct">
           <div class="cart__box-body">
             <div class="body__preview">
-              <img class="preview__img" alt="" />
+              <img
+                class="preview__img"
+                alt=""
+                style="background-color: #fff; background: #fff"
+              />
               <!-- [src]="url_server_img + product.imageSrc" -->
             </div>
             <div class="body__discount" *ngIf="product.action">
@@ -125,7 +142,19 @@
         <!-- Cart END -->
       </div>
       <!--  -->
-      <div class="pagination"></div>
+      <div class="pagination">
+        <ng-container *ngFor="let page of maxPage">
+          <div
+            class="pagination__item"
+            [ngClass]="{ pagination__active: currentPage === page }"
+            (click)="newPage(page)"
+          >
+            {{ page }}
+          </div>
+        </ng-container>
+        <!-- <div class="pagination__item pagination__active">1</div>
+        <div class="pagination__item">3</div> -->
+      </div>
     </div>
   </div>
 </div>
