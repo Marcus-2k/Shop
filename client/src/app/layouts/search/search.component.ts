@@ -20,10 +20,6 @@ import { NameQueryService } from "src/app/shared/service/name-query.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
-// import { config } from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-// import "dotenv/config"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-import { environment } from "src/environments/environment";
-
 @Component({
   selector: "app-search",
   templateUrl: "./search.component.html",
@@ -41,8 +37,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
   titleSearch?: string;
   allQuery: Params = {};
-
-  url: string = environment.api;
 
   ngOnInit() {
     console.log("Start ngOnInit Search");
