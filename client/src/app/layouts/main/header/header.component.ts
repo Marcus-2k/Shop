@@ -21,6 +21,8 @@ export class HeaderComponent implements DoCheck {
     this.router.navigate([`search`], {
       queryParams: {
         search_text: title,
+        limit: 10,
+        page: 1,
       },
     });
   } // search title >> redirect >> /search

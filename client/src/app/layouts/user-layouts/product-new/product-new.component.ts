@@ -5,13 +5,14 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import {
   CategoryProduct,
   Options,
   Product,
 } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
+import { NameQueryService } from "src/app/shared/service/name-query.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
@@ -25,7 +26,8 @@ export class ProductNewComponent implements OnInit, DoCheck {
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
     private categoryName: CategoryProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private nameOptions: NameQueryService
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +41,11 @@ export class ProductNewComponent implements OnInit, DoCheck {
         this.update = false;
       }
     });
+    //
+    this.originalName = this.nameOptions.originalName;
+    this.nameQueryParams = this.nameOptions.nameForServer;
+    //
+
     if (this.update) {
       if (this.reqParams) {
         this.requestProduct.getByIdforUpdate(this.reqParams).subscribe(
@@ -52,6 +59,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
         );
       }
     }
+    //
   }
 
   ngDoCheck(): void {}
@@ -227,7 +235,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
   // Options START ====
   characteristics: Options[] = [];
 
-  allSelectParams: HTMLCollection =
+  selectCollection: HTMLCollection =
     document.getElementsByClassName("select__params");
 
   getOptionsFromService() {
@@ -243,9 +251,11 @@ export class ProductNewComponent implements OnInit, DoCheck {
   } // Видалення характеристик
   // Options END ====
 
-  // OptionsToString START ====
-  optionsToString: string[] = [];
-  // OptionsToString END ====
+  // queryParams START ====
+  queryParams: Params = {};
+  originalName: string[] = [];
+  nameQueryParams: string[] = [];
+  // queryParams END ====
 
   // Key Words START ====
   keyWords: string[] = []; // Ключові слова.
@@ -292,17 +302,34 @@ export class ProductNewComponent implements OnInit, DoCheck {
   // Create product Start ====
   createProduct() {
     console.log("Кнопка Створити");
+    console.log(this.queryParams);
 
-    let allSelectParamsArray = Array.prototype.slice.call(this.allSelectParams);
+    let selectParamsArray = Array.prototype.slice.call(this.selectCollection);
     let optionsNumber: number[] = [];
 
-    allSelectParamsArray.forEach((element: HTMLSelectElement, idx) => {
+    selectParamsArray.forEach((element: HTMLSelectElement, idx) => {
       optionsNumber.push(Number(element.value));
 
-      this.optionsToString.push(
-        this.characteristics[idx].select[Number(element.value)]
-      );
+      let indexName = this.originalName.indexOf(this.characteristics[idx].name);
+      console.log(indexName);
+
+      let nameQueryParams = this.nameQueryParams[indexName];
+      console.log(nameQueryParams);
+
+      this.queryParams[nameQueryParams] =
+        this.characteristics[idx].select[Number(element.value)];
+
+      // this.optionsToString.push(
+      //   this.characteristics[idx].select[Number(element.value)]
+      // );
     }); // Записуємо номера вибраних параметрів в масив
+    // let params = new URLSearchParams(this.queryParams).toString();
+    // let params = Array.from(this.queryParams)
+    let params = Object.entries(this.queryParams);
+    params = params.flat(1);
+
+    console.log(this.queryParams);
+    console.log(params);
 
     for (let idx = 0; idx < optionsNumber.length; idx++) {
       if (optionsNumber[idx] <= -1) {
@@ -347,13 +374,13 @@ export class ProductNewComponent implements OnInit, DoCheck {
       formData.append("price", String(this.priceProduct)); // Add price product (type string)
       formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
       formData.append("options", optionsNumber.join(" ")); // Add option (type string)
-      formData.append("optionsToString", this.optionsToString.join(",")); // Add optionsToString (type string)
+      formData.append("queryParams", params.join(","));
       formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
       formData.append("description", this.description); // Add description (type string)
       formData.append("action", action.toString()); // Add action (type string)
 
       console.log("Send FormData");
-      this.optionsToString = [];
+      // this.optionsToString = [];
       this.requestProduct.createProduct(formData).subscribe(
         (res) => {
           this.showNotice.message("Товар створено успішно.");
@@ -364,10 +391,8 @@ export class ProductNewComponent implements OnInit, DoCheck {
         }
       ); //Відправили на сервер
     } else {
-      this.showNotice.message(
-        "Товар не було створено, дані заповнено не коректно"
-      );
-      this.optionsToString = [];
+      this.showNotice.message("Товар не було створено, дані заповнено невірно");
+      // this.optionsToString = [];
     }
   }
 

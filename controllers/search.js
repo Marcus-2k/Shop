@@ -6,34 +6,43 @@ module.exports.search = async function (req, res) {
   try {
     console.log(req.query);
 
-    const lengthReq = Object.keys(req.query).length; // Counter Params
+    const lengthQueryParams = Object.keys(req.query).length; // Counter Params
+
     const search_text = req.query.search_text;
 
-    const limit = req.query.limit_user ? req.query.limit_user : 10; // Скільки користувачів на сторінку
-    let page = req.query.page ? req.query.page : 1; // Сторінка яку нада відобразити
+    // Pagination === START
+    const limit = req.query.limit ? Number(req.query.limit) : 10; // Скільки користувачів на сторінку
+    let page = req.query.page ? Number(req.query.page) : 1; // Сторінка яку нада відобразити
 
     let currentPage = page; // Open page
+    let count;
+    // let count = await Product.find({
+    //   name: { $regex: search_text, $options: "i" },
+    // })
+    //   .countDocuments({})
+    //   .exec(); // Max page
 
-    const count = await Product.find({
-      name: { $regex: search_text, $options: "i" },
-    })
-      .countDocuments({})
-      .exec(); // Max page
-    const maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
+    // const maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
+    let maxPage;
+    // Pagination === END
 
-    console.log(limit);
-    console.log(count);
-    console.log(maxPage);
-    console.log("==============================");
+    if (lengthQueryParams === 3) {
+      console.log("IF");
 
-    if (req.query.search_text || (req.query.search_text && req.query.limit)) {
-      let categoryNoUnique = [];
-      let productOptions = [];
+      let count = await Product.find({
+        name: { $regex: search_text, $options: "i" },
+      })
+        .countDocuments({})
+        .exec(); // Counter element in collection
+      maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
 
       let product = await Product.find({
         name: { $regex: search_text, $options: "i" },
         // $regex >> partial keywords, options "i" >> case insensitivity
       });
+
+      let categoryNoUnique = [];
+      let productOptions = [];
 
       product.forEach((element) => {
         categoryNoUnique.push(element.category);
@@ -46,6 +55,7 @@ module.exports.search = async function (req, res) {
       })
         .limit(limit)
         .skip(limit * --page); // Search in DB, all product by keywors
+
       const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Product
 
       const counterProductInCategory = counterProduct(
@@ -67,28 +77,36 @@ module.exports.search = async function (req, res) {
         maxPage,
         limit,
       });
-    } else if (lengthReq > 1) {
+    } else if (lengthQueryParams > 3) {
+      console.log("ELSE IF");
       const parameters = Object.values(req.query).splice(1); // {search_text: "телефон"; ram: "4 ГБ,16 ГБ"} >>> ['4 ГБ,16 ГБ']
+      parameters.pop(); // delete limit
+      parameters.pop(); // delete page
 
-      let parametersSplit = [];
+      let allQueryParams = []; // Example [ [ '6 ГБ' ], [ '10' ], [ '1' ] ]
       parameters.forEach((element) => {
-        parametersSplit.push(element.split(","));
-      });
+        element.split(",").forEach((item) => {
+          allQueryParams.push([item]);
+        });
+        // allQueryParams.push(element.split(","));
+      }); // [ '6 ГБ', '10', '1' ] >>> [ [ '6 ГБ' ], [ '10' ], [ '1' ] ]
 
-      const allParams = parametersSplit.flat(1); // concat all arrays in one array
+      console.log(allQueryParams);
 
-      allParams.forEach((element, idx) => {
-        allParams[idx] = [element];
-      }); // [ 'example', 'example' ] >>> [ ['example'], ['example'] ]
-
-      const product = await Product.find({
+      //
+      let count = await Product.find({
         name: { $regex: search_text, $options: "i" },
-        optionsToString: { $in: allParams },
-      }); // Search in DB, all product by keywors
+        optionsToString: { $in: allQueryParams },
+      })
+        .countDocuments({})
+        .exec(); // Counter element in collection
+      maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
+      //
 
-      product.sort((item, itemTwo) =>
-        item.category < itemTwo.category ? 1 : -1
-      ); // Sort all product by category
+      let product = await Product.find({
+        name: { $regex: search_text, $options: "i" },
+        // $regex >> partial keywords, options "i" >> case insensitivity
+      });
 
       let categoryNoUnique = [];
       let productOptions = [];
@@ -97,6 +115,13 @@ module.exports.search = async function (req, res) {
         categoryNoUnique.push(element.category);
         productOptions.push(element.options);
       }); // Category and Options in collection
+
+      product = await Product.find({
+        name: { $regex: search_text, $options: "i" },
+        optionsToString: { $in: allQueryParams },
+      })
+        .limit(limit)
+        .skip(limit * --page); // Search in DB, all product by keywors
 
       const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Product
 
@@ -115,7 +140,9 @@ module.exports.search = async function (req, res) {
         product,
         uniqueProductCategory,
         productOptionsBlock,
+        currentPage,
         maxPage,
+        limit,
       });
     }
   } catch (error) {

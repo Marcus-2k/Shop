@@ -23,6 +23,10 @@
           <!-- Loader END -->
           <!-- Category STR -->
           <div class="select__conten-category">
+            <!-- <div>
+              <hr />
+              <input type="range" min="0" max="10000" />
+            </div> -->
             <ng-container *ngFor="let filter of listFilter; let i = index">
               <hr />
               <p>{{ filter.name }}</p>
@@ -41,12 +45,12 @@
                       filter.name,
                       i,
                       idx,
-                      checkboxInput.checked,
-                      +selectLimit.value
+                      checkboxInput.checked
                     )
                   "
                   #checkboxInput
                 />
+                <!-- +selectLimit.value -->
                 <label [for]="i + '' + '0' + idx" class="category__title"
                   >ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp;{{
                     filterItem.name
@@ -64,18 +68,25 @@
     </div>
     <div class="search__content-body">
       <div class="settings">
-        <select name="select__limit" id="limit" [value]="limit" #selectLimit>
-          <option (click)="newLimit(selectLimit.value)" value="3">3</option>
-          <option (click)="newLimit(selectLimit.value)" value="6">6</option>
-          <option (click)="newLimit(selectLimit.value)" value="10">10</option>
-          <option (click)="newLimit(selectLimit.value)" value="15">15</option>
-          <option (click)="newLimit(selectLimit.value)" value="20">20</option>
-          <option (click)="newLimit(selectLimit.value)" value="25">25</option>
-          <option (click)="newLimit(selectLimit.value)" value="30">30</option>
-          <option (click)="newLimit(selectLimit.value)" value="35">35</option>
-          <option (click)="newLimit(selectLimit.value)" value="40">40</option>
-          <option (click)="newLimit(selectLimit.value)" value="45">45</option>
-          <option (click)="newLimit(selectLimit.value)" value="50">50</option>
+        <select
+          name="select__limit"
+          id="limit"
+          [value]="limit"
+          #selectLimit
+          (change)="newLimit(selectLimit.value)"
+          class="settings__select"
+        >
+          <!-- <option value="3">3</option> -->
+          <!-- <option value="6">6</option> -->
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+          <option value="30">30</option>
+          <option value="35">35</option>
+          <option value="40">40</option>
+          <option value="45">45</option>
+          <option value="50">50</option>
         </select>
       </div>
       <!--  -->
@@ -98,11 +109,7 @@
         <div class="cart__box cart__item" *ngFor="let product of listProduct">
           <div class="cart__box-body">
             <div class="body__preview">
-              <img
-                class="preview__img"
-                alt=""
-                style="background-color: #fff; background: #fff"
-              />
+              <img class="preview__img" alt="" />
               <!-- [src]="url_server_img + product.imageSrc" -->
             </div>
             <div class="body__discount" *ngIf="product.action">

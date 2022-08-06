@@ -22,8 +22,8 @@ const productSchema = new Schema({
     type: [Number],
     required: true,
   },
-  optionsToString: {
-    type: [[String]],
+  queryParams: {
+    type: {},
     required: true,
   },
   keyWords: {

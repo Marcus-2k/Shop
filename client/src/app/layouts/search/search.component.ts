@@ -51,6 +51,9 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           // console.log(res.product);
           // console.log(res.uniqueProductCategory);
           // console.log(res.productOptionsBlock);
+          console.log(res.currentPage);
+          console.log(res.maxPage);
+          console.log(res.limit);
           // ==============================================================================================
           this.listProduct = res.product; // List Product
           this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
@@ -219,11 +222,8 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     nameBlock: string,
     indexBlock: number,
     idxInput: number,
-    checked: boolean,
-    selectLimit: number
+    checked: boolean
   ) {
-    console.log(selectLimit);
-
     if (checked === true) {
       let positionIndexOriginalName: number =
         this.originalName.indexOf(nameBlock);
@@ -238,19 +238,23 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
         } else {
           this.queryParams[nameQueryForServer] = nameInput;
         }
-        console.log(this.queryParams);
 
+        // Limit
         if (this.queryParams.hasOwnProperty("limit")) {
           delete this.queryParams["limit"];
+          this.queryParams["limit"] = this.limit;
+        } else {
+          this.queryParams["limit"] = this.limit;
         }
-        // if (selectLimit !== 10) {
-        //   this.queryParams["limit"] = selectLimit;
-        // }
-        // if (this.queryParams.hasOwnProperty("page")) {
-        //   delete this.queryParams["page"];
-        // }
-        // this.queryParams["page"] = this.currentPage;
+        // Page
+        if (this.queryParams.hasOwnProperty("page")) {
+          delete this.queryParams["page"];
+          this.queryParams["page"] = this.currentPage;
+        } else {
+          this.queryParams["page"] = this.currentPage;
+        }
 
+        console.log(this.queryParams);
         this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
         this.router.navigate([`search`], {
           queryParams: this.queryParams,
@@ -271,7 +275,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       if (positionIndexOriginalName >= 0) {
         nameQueryForServer = this.nameForServer[positionIndexOriginalName];
 
-        console.log(this.queryParams);
         let deleteSubString: string[] =
           this.queryParams[nameQueryForServer].split(",");
 
@@ -285,13 +288,22 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           delete this.queryParams[nameQueryForServer];
         }
 
+        // Limit
         if (this.queryParams.hasOwnProperty("limit")) {
           delete this.queryParams["limit"];
+          this.queryParams["limit"] = this.limit;
+        } else {
+          this.queryParams["limit"] = this.limit;
         }
-        if (selectLimit !== 10) {
-          this.queryParams["limit"] = selectLimit;
+        // Page
+        if (this.queryParams.hasOwnProperty("page")) {
+          delete this.queryParams["page"];
+          this.queryParams["page"] = this.currentPage;
+        } else {
+          this.queryParams["page"] = this.currentPage;
         }
 
+        console.log(this.queryParams);
         this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
         this.router.navigate([`search`], {
           queryParams: this.queryParams,
@@ -335,6 +347,11 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       delete this.queryParams["limit"];
     }
     this.queryParams["limit"] = limit;
+
+    if (this.queryParams.hasOwnProperty("page")) {
+      delete this.queryParams["page"];
+    }
+    this.queryParams["page"] = 1;
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
     this.router.navigate([`search`], {
