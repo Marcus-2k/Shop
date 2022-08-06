@@ -45,15 +45,18 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       this.allQuery = queryParam;
     });
 
+    Object.assign(this.queryParams, this.allQuery);
+
     if (this.titleSearch) {
       this.searchService.search(this.titleSearch, this.allQuery).subscribe(
         (res) => {
-          // console.log(res.product);
-          // console.log(res.uniqueProductCategory);
-          // console.log(res.productOptionsBlock);
-          // console.log(res.currentPage);
-          // console.log(res.maxPage);
-          // console.log(res.limit);
+          // ==============================================================================================
+          console.log(res.product);
+          console.log(res.uniqueProductCategory);
+          console.log(res.productOptionsBlock);
+          console.log("Відкрита сторінка", res.currentPage);
+          console.log("Кількість сторінок", res.maxPage);
+          console.log("Товарів на сторінку", res.limit);
           // ==============================================================================================
           this.listProduct = res.product; // List Product
           this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
@@ -78,101 +81,86 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
                 .subNameListCategory[element[2]].options
             );
           });
+          console.log(optionsListBlockCategory);
           // ==============================================================================================
-          let filter: FilterNameParams[] = [];
-          this.uniqueCategory.forEach((category: number[], i: number) => {
-            //
-            optionsListBlockCategory[i].forEach((element, idx) => {
-              //
-              let filterBlock: FilterNameParams = {
-                name: element.name,
-                params: [],
+          // let filterName: ActiveFilterBlock[][] = [];
+          let filterName: ActiveFilterBlock[] = [];
+          optionsListBlockCategory.forEach((element: Options[], index) => {
+            // let blockCategory: ActiveFilterBlock[] = [];
+            productOptionsBlock[index].forEach((item, idx) => {
+              let block: ActiveFilterBlock = {
+                name: element[idx].name,
+                inputActive: [],
               };
-              productOptionsBlock[i].forEach((item, k) => {
-                filterBlock.params.push(element.select[item[idx]]);
+              item.forEach((items) => {
+                let item: ActiveFilter = {
+                  name: element[idx].select[items],
+                  counter: 0,
+                  active: false,
+                };
+                block.inputActive.push(item);
               });
-              filter.push(filterBlock);
-              //
+              // blockCategory.push(block);
+              filterName.push(block);
             });
+            // filterName.push(blockCategory);
           });
-          let filterItem: any = {};
-          filter = filter.filter((entry: FilterNameParams) => {
-            let previous: any;
+          // console.log(filterName);
+          // ==============================================================================================
+          const uniqueFilter: ActiveFilterBlock[] = [];
 
-            // Have we filterItem this label before?
-            if (filterItem.hasOwnProperty(entry.name)) {
-              // Yes, grab it and add this data to it
-              previous = filterItem[entry.name];
-              entry.params.forEach((name) => {
-                previous.params.push(name);
-              });
-              // Don't keep this entry, we've merged it into the previous one
-              return false;
+          filterName.forEach((element, idx) => {
+            if (idx === 0) {
+              uniqueFilter.push(element);
+            } else if (idx > 0) {
+              let flag = true;
+              for (let key of uniqueFilter) {
+                if (key.name === element.name) {
+                  key.inputActive = key.inputActive.concat(element.inputActive);
+                  flag = false;
+                }
+              }
+              if (flag) {
+                uniqueFilter.push(element);
+              }
             }
-
-            // entry.data probably isn't an array; make it one for consistency
-            if (!Array.isArray(entry.params)) {
-              entry.params = [entry.params];
-            }
-
-            // Remember that we've filterItem it
-            filterItem[entry.name] = entry;
-
-            // Keep this one, we'll merge any others that match into it
-            return true;
           });
-          let filterActive: ActiveFilterBlock[] = [];
-          filter.forEach((element: FilterNameParams) => {
-            //
-            let setParams = Array.from(new Set(element.params));
-            //
-            let filterParamsBlock: ActiveFilterBlock = {
+          console.log(uniqueFilter);
+          // ==============================================================================================
+
+          let uniqueFilterBlock: ActiveFilterBlock[] = [];
+          uniqueFilter.forEach((element) => {
+            let uniqueFilterBlockItem: ActiveFilterBlock = {
               name: element.name,
               inputActive: [],
             };
-            setParams.forEach((item) => {
-              let counter = 0;
-              element.params.forEach((arrayItem: string) => {
-                if (item === arrayItem) {
-                  counter++;
+            let inputActiveItem: ActiveFilter[] = [];
+            //
+            element.inputActive.forEach((item, index) => {
+              //
+              if (index === 0) {
+                inputActiveItem.push(item);
+              } else if (index > 0) {
+                //
+                let flag = true;
+                for (let key of inputActiveItem) {
+                  if (key.name === item.name) {
+                    flag = false;
+                    key.counter++;
+                  }
                 }
-              });
-              let filterParams: ActiveFilter = {
-                name: item,
-                counter,
-                active: false,
-              };
-              filterParamsBlock.inputActive.push(filterParams);
+                if (flag) {
+                  inputActiveItem.push(item);
+                }
+              }
+              uniqueFilterBlockItem.inputActive = inputActiveItem;
             });
-            filterActive.push(filterParamsBlock);
+            uniqueFilterBlock.push(uniqueFilterBlockItem);
           });
+          console.log(uniqueFilterBlock);
+
           // ==============================================================================================
-          Object.assign(this.queryParams, this.allQuery);
-
-          const parameters: any = Object.values(this.queryParams).splice(1);
-          let parametersSplit: string[][] = [];
-          parameters.forEach((element: string, idx: number) => {
-            parametersSplit.push(element.split(","));
-          });
-
-          const noSortParams = parametersSplit.flat(1);
-
-          let allParams: string[][] = [];
-          noSortParams.forEach((element: string, idx) => {
-            allParams[idx] = [element];
-          });
-
-          filterActive.forEach((element: ActiveFilterBlock, idx: number) => {
-            noSortParams.forEach((item: string, index: number) => {
-              element.inputActive.forEach((blockItem) => {
-                if (blockItem.name === item) {
-                  blockItem.active = true;
-                }
-              });
-            });
-          });
-
-          this.listFilter = filterActive;
+          this.listFilter = uniqueFilterBlock;
           // ==============================================================================================
           this.loaderProduct = false; // Loader Main
           this.loaderSelect = false; // Loader SideBar

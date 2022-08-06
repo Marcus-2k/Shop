@@ -23,17 +23,12 @@
           <!-- Loader END -->
           <!-- Category STR -->
           <div class="select__conten-category">
-            <!-- <div>
-              <hr />
-              <input type="range" min="0" max="10000" />
-            </div> -->
             <ng-container *ngFor="let filter of listFilter; let i = index">
               <hr />
               <p>{{ filter.name }}</p>
               <ng-container
                 *ngFor="let filterItem of filter.inputActive; let idx = index"
               >
-                <!-- [checked] -->
                 <input
                   type="checkbox"
                   [id]="i + '' + '0' + idx"
@@ -50,13 +45,12 @@
                   "
                   #checkboxInput
                 />
-                <!-- +selectLimit.value -->
                 <label [for]="i + '' + '0' + idx" class="category__title"
                   >ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp;{{
                     filterItem.name
                   }}
                   <span class="counter"
-                    >&nbsp;( {{ filterItem.counter }} )</span
+                    >&nbsp;( {{ filterItem.counter + 1 }} )</span
                   >
                 </label>
               </ng-container>
