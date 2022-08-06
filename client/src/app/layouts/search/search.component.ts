@@ -51,9 +51,9 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           // console.log(res.product);
           // console.log(res.uniqueProductCategory);
           // console.log(res.productOptionsBlock);
-          console.log(res.currentPage);
-          console.log(res.maxPage);
-          console.log(res.limit);
+          // console.log(res.currentPage);
+          // console.log(res.maxPage);
+          // console.log(res.limit);
           // ==============================================================================================
           this.listProduct = res.product; // List Product
           this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
@@ -69,7 +69,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           while (res.maxPage > 0) {
             this.maxPage.push(res.maxPage--);
           }
-          this.maxPage.reverse();
+          this.maxPage.reverse(); // Кількість сторінок на сайті [ 1, 2, 3, ..., 29 ]
           // ==============================================================================================
           let optionsListBlockCategory: Options[][] = []; // Options Product List
           this.uniqueCategory.forEach((element: number[], idx: number) => {

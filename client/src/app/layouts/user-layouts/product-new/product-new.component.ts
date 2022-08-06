@@ -307,6 +307,8 @@ export class ProductNewComponent implements OnInit, DoCheck {
     let selectParamsArray = Array.prototype.slice.call(this.selectCollection);
     let optionsNumber: number[] = [];
 
+    let optionsToString: string[] = [];
+
     selectParamsArray.forEach((element: HTMLSelectElement, idx) => {
       optionsNumber.push(Number(element.value));
 
@@ -319,17 +321,16 @@ export class ProductNewComponent implements OnInit, DoCheck {
       this.queryParams[nameQueryParams] =
         this.characteristics[idx].select[Number(element.value)];
 
-      // this.optionsToString.push(
-      //   this.characteristics[idx].select[Number(element.value)]
-      // );
+      optionsToString.push(
+        this.characteristics[idx].select[Number(element.value)]
+      );
     }); // Записуємо номера вибраних параметрів в масив
-    // let params = new URLSearchParams(this.queryParams).toString();
-    // let params = Array.from(this.queryParams)
     let params = Object.entries(this.queryParams);
     params = params.flat(1);
 
     console.log(this.queryParams);
-    console.log(params);
+    // console.log(params);
+    console.log(optionsToString);
 
     for (let idx = 0; idx < optionsNumber.length; idx++) {
       if (optionsNumber[idx] <= -1) {
@@ -374,6 +375,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
       formData.append("price", String(this.priceProduct)); // Add price product (type string)
       formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
       formData.append("options", optionsNumber.join(" ")); // Add option (type string)
+      formData.append("optionsToString", optionsToString.join(","));
       formData.append("queryParams", params.join(","));
       formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
       formData.append("description", this.description); // Add description (type string)

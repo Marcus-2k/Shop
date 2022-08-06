@@ -79,24 +79,39 @@ module.exports.search = async function (req, res) {
       });
     } else if (lengthQueryParams > 3) {
       console.log("ELSE IF");
-      const parameters = Object.values(req.query).splice(1); // {search_text: "телефон"; ram: "4 ГБ,16 ГБ"} >>> ['4 ГБ,16 ГБ']
+
+      // ===================================================================================================================
+      let parameters2 = Object.entries(req.query).splice(1); // {search_text: "телефон"; ram: "4 ГБ,16 ГБ"} >>> ['4 ГБ,16 ГБ']
+      parameters2.pop(); // delete limit
+      parameters2.pop(); // delete page
+      parameters2 = parameters2.flat(1);
+
+      const queryParams = {};
+      parameters2.forEach((element, idx) => {
+        if (idx % 2 === 0) {
+          idx++;
+          queryParams[element] = parameters2[idx].split(",");
+        }
+      });
+      console.log(queryParams);
+      // ===================================================================================================================
+      let parameters = Object.values(req.query).splice(1); // {search_text: "телефон"; ram: "4 ГБ,16 ГБ"} >>> ['4 ГБ,16 ГБ']
+      parameters = parameters.flat(1);
       parameters.pop(); // delete limit
       parameters.pop(); // delete page
 
-      let allQueryParams = []; // Example [ [ '6 ГБ' ], [ '10' ], [ '1' ] ]
-      parameters.forEach((element) => {
+      const paramsString = [];
+      parameters.forEach((element, idx) => {
         element.split(",").forEach((item) => {
-          allQueryParams.push([item]);
+          paramsString.push([item]);
         });
-        // allQueryParams.push(element.split(","));
-      }); // [ '6 ГБ', '10', '1' ] >>> [ [ '6 ГБ' ], [ '10' ], [ '1' ] ]
-
-      console.log(allQueryParams);
+      }); // [ '6 ГБ', 'Білий', '1 рік,2 роки' ] >>> [ [ '6 ГБ' ], [ 'Білий' ], [ '1 рік' ], [ '2 роки' ] ]
+      console.log(paramsString);
 
       //
       let count = await Product.find({
         name: { $regex: search_text, $options: "i" },
-        optionsToString: { $in: allQueryParams },
+        optionsToString: { $in: paramsString },
       })
         .countDocuments({})
         .exec(); // Counter element in collection
@@ -109,7 +124,9 @@ module.exports.search = async function (req, res) {
       });
 
       let categoryNoUnique = [];
+      let categoryNoUnique2 = [];
       let productOptions = [];
+      let productOptions2 = [];
 
       product.forEach((element) => {
         categoryNoUnique.push(element.category);
@@ -118,23 +135,41 @@ module.exports.search = async function (req, res) {
 
       product = await Product.find({
         name: { $regex: search_text, $options: "i" },
-        optionsToString: { $in: allQueryParams },
+        optionsToString: { $in: paramsString },
       })
         .limit(limit)
         .skip(limit * --page); // Search in DB, all product by keywors
 
-      const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Product
+      product.forEach((element) => {
+        categoryNoUnique2.push(element.category);
+        productOptions2.push(element.options);
+      }); // Category and Options in collection
 
+      // ==========================================
+      const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Product
+      const uniqueProductCategory2 = deleteDuplicateCategory(categoryNoUnique2); // Unique Product
+      // ==========================================
       const counterProductInCategory = counterProduct(
         uniqueProductCategory,
         categoryNoUnique
       ); // Counter category, and product in it
-
+      const counterProductInCategory2 = counterProduct(
+        uniqueProductCategory2,
+        categoryNoUnique2
+      ); // Counter category, and product in it
+      // ==========================================
       const productOptionsBlock = productBlock(
         counterProductInCategory,
         productOptions
       ); // Product parameters block by category
+      const productOptionsBlock2 = productBlock(
+        counterProductInCategory2,
+        productOptions2
+      ); // Product parameters block by category
+      // ==========================================
 
+      // console.log(productOptionsBlock);
+      // console.log(productOptionsBlock2);
       // ===========================================================================
       res.status(200).json({
         product,

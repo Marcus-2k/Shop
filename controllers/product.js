@@ -36,10 +36,13 @@ module.exports.create = async function (req, res) {
       options[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
 
-    // const optionsToString = req.body.optionsToString.split(",");
-    // optionsToString.forEach((element, idx) => {
-    //   optionsToString[idx] = [element];
-    // });
+    // ====================================================================
+    const optionsToString = req.body.optionsToString.split(",");
+    optionsToString.forEach((element, idx) => {
+      optionsToString[idx] = [element];
+    });
+    console.log(optionsToString);
+    // =========================
     const params = req.body.queryParams.split(",");
     const queryParams = {};
     params.forEach((element, idx) => {
@@ -48,7 +51,8 @@ module.exports.create = async function (req, res) {
         queryParams[element] = params[idx];
       }
     });
-    // console.log(queryParams);
+    console.log(queryParams);
+    // ====================================================================
 
     const product = new Product({
       name: req.body.name,
@@ -56,6 +60,7 @@ module.exports.create = async function (req, res) {
       price: req.body.price,
       category,
       options,
+      optionsToString,
       queryParams,
       keyWords,
       description: req.body.description,
@@ -63,7 +68,7 @@ module.exports.create = async function (req, res) {
       user: req.user.id,
     });
 
-    console.log(product);
+    // console.log(product);
     await product.save();
     res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
