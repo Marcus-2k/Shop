@@ -81,12 +81,10 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
                 .subNameListCategory[element[2]].options
             );
           });
-          console.log(optionsListBlockCategory);
+          // console.log(optionsListBlockCategory);
           // ==============================================================================================
-          // let filterName: ActiveFilterBlock[][] = [];
           let filterName: ActiveFilterBlock[] = [];
           optionsListBlockCategory.forEach((element: Options[], index) => {
-            // let blockCategory: ActiveFilterBlock[] = [];
             productOptionsBlock[index].forEach((item, idx) => {
               let block: ActiveFilterBlock = {
                 name: element[idx].name,
@@ -100,12 +98,9 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
                 };
                 block.inputActive.push(item);
               });
-              // blockCategory.push(block);
               filterName.push(block);
             });
-            // filterName.push(blockCategory);
           });
-          // console.log(filterName);
           // ==============================================================================================
           const uniqueFilter: ActiveFilterBlock[] = [];
 
@@ -125,7 +120,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
               }
             }
           });
-          console.log(uniqueFilter);
+          // console.log(uniqueFilter);
           // ==============================================================================================
 
           let uniqueFilterBlock: ActiveFilterBlock[] = [];
@@ -157,8 +152,35 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
             });
             uniqueFilterBlock.push(uniqueFilterBlockItem);
           });
-          console.log(uniqueFilterBlock);
+          // console.log(uniqueFilterBlock);
+          // ==============================================================================================
 
+          const parameters: string[] = Object.values(this.queryParams).splice(
+            1
+          );
+          parameters.pop(); //delete page
+          parameters.pop(); //delete limit
+          console.log(parameters);
+
+          let sortParameters: string[] = [];
+          parameters.forEach((element: string, idx) => {
+            if (element.indexOf(",") !== -1) {
+              sortParameters = sortParameters.concat(element.split(","));
+            } else {
+              sortParameters.push(element);
+            }
+          });
+          // this.resetParameters = sortParameters;
+
+          uniqueFilterBlock.forEach((element: ActiveFilterBlock, i) => {
+            sortParameters.forEach((block) => {
+              element.inputActive.forEach((item, idx) => {
+                if (block === item.name) {
+                  uniqueFilterBlock[i].inputActive[idx].active = true;
+                }
+              });
+            });
+          });
           // ==============================================================================================
           this.listFilter = uniqueFilterBlock;
           // ==============================================================================================
@@ -203,15 +225,14 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   originalName: string[] = []; // Original name params product
   nameForServer: string[] = []; // Special name for query params
 
+  // resetParameters: string[] = [];
+
   queryParams: Params = {};
 
-  filterSearch(
-    nameInput: string,
-    nameBlock: string,
-    indexBlock: number,
-    idxInput: number,
-    checked: boolean
-  ) {
+  filterSearch(nameInput: string, nameBlock: string, checked: boolean) {
+    console.log(nameInput);
+    console.log(nameBlock);
+
     if (checked === true) {
       let positionIndexOriginalName: number =
         this.originalName.indexOf(nameBlock);
@@ -328,8 +349,10 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     });
   }
 
-  newLimit(limit: string | number) {
-    limit = Number(limit);
+  newLimit(limit: number) {
+    // limit = Number(limit);
+    console.log("newLimit");
+    console.log(limit);
 
     if (this.queryParams.hasOwnProperty("limit")) {
       delete this.queryParams["limit"];

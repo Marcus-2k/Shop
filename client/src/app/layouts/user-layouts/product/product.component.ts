@@ -13,35 +13,34 @@ export class ProductComponent implements OnInit {
   constructor(
     private requestProduct: RequestProductService,
     private showNotice: ShowNoticeService,
-    private category: CategoryProductService
+    private categoryProduct: CategoryProductService
   ) {}
 
   /* Development */
-  url = "http://localhost:5000/";
+  url_server = "http://localhost:5000/";
 
-  // Loader
-  loaderUserP: boolean = true;
+  // Loader site
+  loader: boolean = true;
 
   ngOnInit(): void {
-    this.categoryList = this.category.categoryList;
     this.requestProduct.getUserProduct().subscribe(
-      (res) => {
-        res.forEach((element: Product) => {
-          this.productList.push(element);
-        });
-        this.loaderUserP = false;
+      (response) => {
+        console.log(response);
+
+        this.productList = response.product;
+        // this.loader = false;
       },
-      (e) => {
-        //
-      }
+      (e) => {}
     );
+
+    this.categoryList = this.categoryProduct.categoryList;
   }
 
-  deleteByIdProduct(id: any, indexP: number): void {
+  deleteProduct(id: any, index: number): void {
     this.requestProduct.deleteById(id).subscribe(
       (res) => {
         this.showNotice.message(res.message);
-        this.productList.splice(indexP, 1);
+        this.productList.splice(index, 1);
       },
       (e) => {
         console.log(e);

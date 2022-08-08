@@ -1,35 +1,21 @@
 <!--  -->
 <div class="account">
   <div class="account__content">
-    <div class="tabs">
-      <ul class="tabs__list">
-        <a
-          class="tabs__list-link"
-          routerLinkActive="active__link"
-          routerLink="user"
-          >Кабінет</a
-        >
-        <a
-          class="tabs__list-link"
-          routerLinkActive="active__link"
-          routerLink="product"
-          >Мої товари</a
-        >
-        <a
-          class="tabs__list-link"
-          routerLinkActive="active__link"
-          routerLink="settings"
-          >Налаштування</a
-        >
-        <a
-          class="tabs__list-link"
-          routerLinkActive="active__link"
-          routerLink="newsletters"
-          >Розсилки</a
-        >
-        <a class="tabs__list-link" (click)="logout()">Вийти</a>
-      </ul>
-    </div>
+    <mat-toolbar class="navbar">
+      <a class="navbar__item" routerLinkActive="active" routerLink="user"
+        >Кабінет</a
+      >
+      <a class="navbar__item" routerLinkActive="active" routerLink="product"
+        >Мої товари</a
+      >
+      <a class="navbar__item" routerLinkActive="active" routerLink="settings"
+        >Налаштування</a
+      >
+      <a class="navbar__item" routerLinkActive="active" routerLink="newsletters"
+        >Розсилки</a
+      >
+      <a class="navbar__item" routerLink="" (click)="logout()">Вийти</a>
+    </mat-toolbar>
   </div>
 </div>
 <router-outlet></router-outlet>

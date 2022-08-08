@@ -16,14 +16,8 @@ html {
   scroll-behavior: smooth;
 }
 
-body.menu-active {
-  overflow: hidden;
-  transition: 0.4s;
-  background: rgba(31, 38, 41, 0.8);
-}
-
 body {
-  font-family: "Mont";
+  // font-family: "Mont";
   background-color: #e5e5e5;
   &::-webkit-scrollbar {
     width: 10px;
@@ -338,3 +332,12 @@ body {
 // Adaptability ========================================================================
 @import "scss/media.scss";
 // Adaptability ========================================================================
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

@@ -1,25 +1,19 @@
 <!--  -->
 <div class="product">
   <div class="product__content">
-    <div class="product__content-new">
-      <button routerLink="new" class="product__content-new--btn">
-        Додати товар
+    <div class="example-button-row center">
+      <button
+        mat-stroked-button
+        color="primary"
+        routerLink="/account/product/new"
+      >
+        Створити товар
       </button>
     </div>
 
     <div class="cart">
-      <!--  -->
-      <div style="text-align: center; width: 100%" *ngIf="loaderUserP">
-        <div class="lds-roller">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+      <div class="center">
+        <mat-spinner *ngIf="loader"></mat-spinner>
       </div>
       <!--  -->
       <div
@@ -28,11 +22,15 @@
       >
         <div class="cart__box-body">
           <div class="body__preview">
-            <img class="preview__img" [src]="url + product.imageSrc" alt="" />
+            <img
+              class="preview__img"
+              [src]="url_server + product.imageSrc"
+              alt=""
+            />
           </div>
-          <!-- <div class="body__discount">
+          <div class="body__discount" *ngIf="product.action">
             <p class="disount__text">Акція</p>
-          </div> -->
+          </div>
           <div class="body__action">
             <div class="like">
               <img src="../../../assets/img/like.png" alt="" />
@@ -103,7 +101,7 @@
             </button>
             <button
               class="btn__cart btn__cart-delete"
-              (click)="deleteByIdProduct(product._id, i)"
+              (click)="deleteProduct(product._id, i)"
             >
               Видалити
             </button>
@@ -111,15 +109,11 @@
         </div>
       </div>
       <!--  -->
-      <div
-        class="notcart"
-        *ngIf="productList.length === 0 && loaderUserP === false"
-      >
+      <!-- <div class="notcart" *ngIf="productList.length === 0 && loader === false">
         <h2 class="notcart__title">
-          У вас ще не має товарів, виставлених на продажу.
+          У вас ще не має товарів, виставлених на продаж.
         </h2>
-      </div>
-      <!--  -->
+      </div> -->
     </div>
   </div>
 </div>

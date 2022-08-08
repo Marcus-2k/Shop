@@ -15,8 +15,9 @@ export interface Product {
   price: number;
   category: number[];
   options: number[];
-  optionsToString: string[][];
-  keyWords?: [string]; // no required
+  optionsToString: string[];
+  queryParams: {};
+  keyWords?: [string];
   description: string;
   action: boolean;
   _id?: string; // server

@@ -10,29 +10,11 @@
   &__content {
     max-width: 1600px;
     margin: 0 auto;
-    &-new {
-      margin-top: 25px;
-      text-align: center;
-      &--btn {
-        width: 160px;
-        background-color: #faa627;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 0;
-        cursor: pointer;
-        transition: 0.4s;
-        &:hover {
-          transition: 0.4s;
-          background-color: #d48d21;
-        }
-      }
-    }
     .cart {
       margin-top: 20px;
-      margin-bottom: 100px;
-      display: flex;
-      flex-wrap: wrap;
+      // margin-bottom: 100px;
+      // display: flex;
+      // flex-wrap: wrap;
       &__box {
         width: 390px;
         height: 700px;
@@ -231,6 +213,7 @@
   }
 }
 
-.not__product {
-  text-align: center;
+.center {
+  display: flex;
+  justify-content: center;
 }

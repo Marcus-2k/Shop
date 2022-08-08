@@ -37,6 +37,9 @@ import { ProductNewComponent } from "./layouts/user-layouts/product-new/product-
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
 import { UserComponent } from "./layouts/user-layouts/user/user.component";
 import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newsletters.component";
+// Angular Material UI
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MaterialModule } from "./shared/material/material.module";
 
 // Routing Link
 const appRoutes: Routes = [
@@ -120,6 +123,8 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, multi: true, useClass: TokenInterceptor },
