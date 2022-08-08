@@ -23,11 +23,11 @@ const productSchema = new Schema({
     required: true,
   },
   optionsToString: {
-    type: [[String]],
+    type: [String],
     required: true,
   },
   queryParams: {
-    type: {},
+    type: Object,
     required: true,
   },
   keyWords: {

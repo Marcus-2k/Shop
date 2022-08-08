@@ -39,7 +39,8 @@ module.exports.create = async function (req, res) {
     // ====================================================================
     const optionsToString = req.body.optionsToString.split(",");
     optionsToString.forEach((element, idx) => {
-      optionsToString[idx] = [element];
+      // optionsToString[idx] = [element];
+      optionsToString[idx] = element;
     });
     console.log(optionsToString);
     // =========================
