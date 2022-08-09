@@ -7,14 +7,14 @@ const router = express.Router();
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
-  controller.getUserAccount
+  controller.getUserInfo
 );
 
 router.patch(
-  "/:id",
+  "/",
   passport.authenticate("jwt", { session: false }),
   upload.single("image"),
-  controller.userUpInfo
+  controller.editUser
 );
 
 module.exports = router;

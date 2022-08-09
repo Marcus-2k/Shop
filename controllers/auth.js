@@ -82,7 +82,7 @@ module.exports.register = async function (req, res) {
 module.exports.logout = async function (req, res) {
   console.log("Server logout");
   try {
-    const tokenDecode = jwt_decode(req.headers.authorization); // Декодіровка jwt токена
+    const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
 
     const user = await User.findById(tokenDecode.userId).catch((error) => {
       console.log(error);

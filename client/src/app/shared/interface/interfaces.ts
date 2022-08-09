@@ -24,6 +24,15 @@ export interface Product {
   user?: string; // server
 }
 
+export interface User {
+  avatar: string | null | ArrayBuffer;
+  name: string;
+  lastName: string;
+  email: string;
+  birthday: string;
+  country: string;
+}
+
 export interface userResponse {
   _id: string | null;
   avatar: string;

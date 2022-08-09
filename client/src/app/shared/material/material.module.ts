@@ -10,6 +10,9 @@ import { MatCardModule } from "@angular/material/card";
 import { LayoutModule } from "@angular/cdk/layout";
 import { MatInputModule } from "@angular/material/input";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatTableModule } from "@angular/material/table";
+import { MatNativeDateModule } from "@angular/material/core";
 
 const Material = [
   MatSelectModule,
@@ -21,6 +24,9 @@ const Material = [
   LayoutModule,
   MatInputModule,
   MatTooltipModule,
+  MatDatepickerModule,
+  MatTableModule,
+  MatNativeDateModule,
 ];
 
 @NgModule({

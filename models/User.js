@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   avatar: {
-    type: String,
+    type: String || undefined,
+    default: undefined,
     required: false,
   },
   name: {
@@ -11,7 +12,7 @@ const userSchema = new Schema({
     required: true,
   },
   lastName: {
-    type: String | null,
+    type: String,
     required: false,
   },
   email: {
@@ -20,11 +21,11 @@ const userSchema = new Schema({
     unique: true,
   },
   birthday: {
-    type: String | null,
+    type: Date,
     required: false,
   },
   country: {
-    type: String | null,
+    type: String,
     required: false,
   },
   password: {

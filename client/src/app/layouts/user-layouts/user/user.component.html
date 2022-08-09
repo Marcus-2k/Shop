@@ -8,53 +8,55 @@
         morning__day: time >= 4 && time < 10,
         light__day: time >= 10 && time < 18,
         evening__day: time >= 18 && time < 23,
-        night__day: (time >= 23 && time < 25) || (time > 0 && time < 4)
+        night__day: (time >= 23 && time < 25) || (time >= 0 && time < 4)
       }"
     >
       <h2
         class="hello__title"
         [ngClass]="{
           hello__title__night:
-            (time >= 0 && time < 4) || (time >= 23 && time < 25)
+            (time >= 0 && time < 10) || (time >= 18 && time < 25)
         }"
       >
         {{
-          time >= 0 && time < 4
+          time >= 0 && time <= 4
             ? "Доброї ночі"
-            : time >= 4 && time < 10
+            : time >= 5 && time < 12
             ? "Доброго ранку"
-            : time >= 10 && time < 18
+            : time >= 12 && time < 18
             ? "Доброго дня"
             : time >= 18 && time < 23
             ? "Доброго вечора"
             : time >= 23 && time < 25
             ? "Доброї ночі"
-            : ""
+            : "Котра у вас година?"
         }}
       </h2>
       <h2
         class="hello__title"
         [ngClass]="{
           hello__title__night:
-            (time >= 0 && time < 4) || (time >= 23 && time < 25)
+            (time >= 0 && time < 10) || (time >= 18 && time < 25)
         }"
       >
-        &nbsp;{{ user.name }}
+        &nbsp;{{ newUser.name }}
       </h2>
+      <!--  -->
       <h2
         class="hello__title"
+        *ngIf="newUser.lastName"
         [ngClass]="{
           hello__title__night:
-            (time >= 0 && time < 4) || (time >= 23 && time < 25)
+            (time >= 0 && time < 10) || (time >= 18 && time < 25)
         }"
-        *ngIf="user.lastName"
       >
-        &nbsp;{{ user.lastName }}
+        &nbsp;{{ newUser.lastName }}
       </h2>
+      <!--  -->
       <h2
         [ngClass]="{
           hello__title__night:
-            (time >= 0 && time < 4) || (time >= 23 && time < 25)
+            (time >= 0 && time < 10) || (time >= 18 && time < 25)
         }"
       >
         !
@@ -76,32 +78,29 @@
               <input
                 type="file"
                 class="file__avatar"
-                style="display: none"
                 #fileAvatar
                 (change)="onFileUpload($event)"
               />
-              <img
-                *ngIf="imagePreview"
-                [src]="url_server + imagePreview"
-                class="placeholder__avatar"
-                (click)="addAvatar()"
-              />
-              <img
-                *ngIf="imagePreview === undefined"
-                [src]="'../../../../assets/img/placeholder__avatar.webp'"
-                class="placeholder__avatar"
-                (click)="addAvatar()"
-              />
-              <div>
-                <span>В розробці*</span>
-              </div>
-              <div>
-                <button (click)="resetAvatar()" class="user__avatar-box--reset">
-                  Зкинути аватар
-                </button>
+              <ng-container *ngIf="imagePreview !== null">
+                <img
+                  [src]="url_server + imagePreview"
+                  class="placeholder__avatar"
+                  (click)="addAvatar()"
+                />
+              </ng-container>
+              <ng-container *ngIf="imagePreview === null">
+                <img
+                  [src]="'../../../../assets/img/placeholder__avatar.webp'"
+                  class="placeholder__avatar"
+                  (click)="addAvatar()"
+                />
+              </ng-container>
+              <div class="user__avatar-box-button">
                 <button
+                  mat-raised-button
+                  color="warn"
                   (click)="deleteAvatar()"
-                  class="user__avatar-box--reset"
+                  [disabled]="imagePreview === null"
                 >
                   Видалити аватар
                 </button>
@@ -113,14 +112,21 @@
               <p class="info__title">Ім'я*</p>
             </div>
             <div class="user__name-content">
-              <input
-                type="text"
-                class="user__name-content-input"
-                placeholder="Ім'я"
-                [(ngModel)]="user.name"
-                maxlength="20"
-                minlength="4"
-              />
+              <mat-form-field
+                class="example-full-width input-width"
+                appearance="fill"
+              >
+                <mat-label>Ім'я</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="Ім'я"
+                  required
+                  [(ngModel)]="newUser.name"
+                  maxlength="20"
+                  minlength="3"
+                />
+              </mat-form-field>
             </div>
           </div>
           <div class="params__user-list user__lastname">
@@ -128,14 +134,20 @@
               <p class="info__title">Прізвище</p>
             </div>
             <div class="user__lastname-content">
-              <input
-                type="text"
-                class="user__lastname-content-input"
-                placeholder="Прізвище"
-                [(ngModel)]="user.lastName"
-                maxlength="20"
-                minlength="4"
-              />
+              <mat-form-field
+                class="example-full-width input-width"
+                appearance="fill"
+              >
+                <mat-label>Прізвище</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="Прізвище"
+                  [(ngModel)]="newUser.lastName"
+                  maxlength="20"
+                  minlength="4"
+                />
+              </mat-form-field>
             </div>
           </div>
           <div class="params__user-list user__email">
@@ -143,42 +155,45 @@
               <p class="info__title">Пошта*</p>
             </div>
             <div class="user__email-content">
-              <h2 class="user__email-content-info">{{ user.email }}</h2>
+              <mat-form-field
+                class="example-full-width input-width"
+                appearance="fill"
+              >
+                <mat-label>Пошта</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="Пошта"
+                  required
+                  [(ngModel)]="newUser.email"
+                  [disabled]="true"
+                />
+              </mat-form-field>
             </div>
           </div>
           <div class="params__user-list user__birthday">
             <div class="info">
-              <p class="info__title">Дата народеження</p>
+              <p class="info__title">Дата народження</p>
             </div>
             <div class="user__birthday-content">
-              <h2
-                class="user__birthday-content-info info-birthday"
-                *ngIf="user.birthday && !editDate"
+              <mat-form-field
+                class="example-full-width input-width"
+                appearance="fill"
               >
-                {{ user.birthday | date }}
-              </h2>
-              <input
-                type="date"
-                class="user__birthday-content-input"
-                min="1970-01-01"
-                [max]="maxInputDate"
-                [(ngModel)]="user.birthday"
-                *ngIf="editDate"
-              />
-              <button
-                class="user__birthday-content-button user__birthday-button--edit"
-                (click)="editDateBtn()"
-                *ngIf="!editDate"
-              >
-                {{ user.birthday ? "Змінити" : "Додати" }} дату народеження
-              </button>
-              <button
-                class="user__birthday-content-button user__birthday-button--reset"
-                *ngIf="editDate"
-                (click)="resetDate()"
-              >
-                Зкинути дату
-              </button>
+                <mat-label>Дата народження</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  [(ngModel)]="newUser.birthday"
+                  [max]="maxDate"
+                />
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+              </mat-form-field>
             </div>
           </div>
           <div class="params__user-list user__country">
@@ -186,37 +201,41 @@
               <p class="info__title">Країна</p>
             </div>
             <div class="user__country-content">
-              <select
-                name=""
-                id=""
-                #selectCountry
-                [(ngModel)]="user.country"
-                class="user__country-content-select"
-              >
-                <ng-container
-                  *ngFor="let country of countryList; let idx = index"
+              <mat-form-field appearance="fill" class="input-width">
+                <mat-label>Країна</mat-label>
+                <mat-select
+                  [(ngModel)]="newUser.country"
+                  name="country"
+                  #selectCountry
                 >
-                  <option [value]="idx">
+                  <mat-option
+                    *ngFor="let country of countryList"
+                    [value]="country"
+                  >
                     {{ country }}
-                  </option>
-                </ng-container>
-              </select>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
           <div class="params__user-list user__save">
-            <button
-              (click)="saveInfo()"
-              class="user__save-button"
-              [disabled]="
-                !images &&
-                oldUser.name === user.name &&
-                oldUser.lastName === user.lastName &&
-                oldUser.birthday === user.birthday &&
-                oldUser.country === user.country
-              "
-            >
-              Зберегти
-            </button>
+            <div class="example-button-row">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="saveInfo()"
+                [disabled]="
+                  user.avatar === newUser.avatar &&
+                  user.name === newUser.name &&
+                  user.lastName === newUser.lastName &&
+                  user.email === newUser.email &&
+                  user.birthday === newUser.birthday &&
+                  user.country === newUser.country
+                "
+              >
+                Зберегти
+              </button>
+            </div>
           </div>
         </div>
       </div>
