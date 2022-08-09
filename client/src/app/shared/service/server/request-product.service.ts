@@ -13,8 +13,8 @@ export class RequestProductService {
   private PORT: string = ":5000";
   private url_server: string = `http://${this.HOST}${this.PORT}/api/account`;
 
-  getUserProduct(): Observable<{ product: Product[] }> {
-    return this.http.get<{ product: Product[] }>(`${this.url_server}/product/`);
+  getUserProduct(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.url_server}/product/`);
   }
 
   getByIdforUpdate(id: string): Observable<Product> {

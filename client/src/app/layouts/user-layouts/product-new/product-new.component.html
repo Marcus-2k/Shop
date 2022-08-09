@@ -13,83 +13,91 @@
       <!--  -->
       <div class="product__content-body">
         <div class="new__photo">
-          <a (click)="triggerClick()" class="new__photo-button" #newPhoto>
-            Завантажити фото
-            <img src="../../../../assets/img/download-circular-button.png" />
-          </a>
+          <div class="example-button-row">
+            <button mat-raised-button color="primary" (click)="triggerClick()">
+              Завантажити фото
+              <span class="material-symbols-outlined"> file_download </span>
+            </button>
+          </div>
+
           <span class="error__input" *ngIf="validImages"
             >Фото товара є обов'язковим.</span
           >
         </div>
-        <!--  -->
+        <!-- ============================================================== -->
         <div class="new__name">
-          <div class="box">
+          <mat-form-field
+            class="example-full-width width-input"
+            appearance="fill"
+          >
+            <mat-label>Назва товару</mat-label>
             <input
+              matInput
               type="text"
-              class="box__input box__input-width"
-              required
               #inputTitle
+              required
               id="name"
               [(ngModel)]="nameProduct"
             />
-            <span class="box__line box__line-width"></span>
-            <label class="box__label"> Назва товару*</label>
-          </div>
+          </mat-form-field>
         </div>
-        <!--  -->
+        <!-- ============================================================== -->
         <div class="new__price">
           <!--  -->
-          <div class="box">
+          <mat-form-field
+            class="example-full-width width-input"
+            appearance="fill"
+          >
+            <mat-label>Ціна товару</mat-label>
             <input
+              matInput
               type="number"
-              class="box__input box__input-width"
-              required
+              class="price__input"
               #inputPrice
+              required
               [(ngModel)]="priceProduct"
             />
-            <span class="box__line box__line-width"></span>
-            <label class="box__label">Ціна товару*</label>
-          </div>
+          </mat-form-field>
           <!--  -->
         </div>
-        <!--  -->
+        <!-- ============================================================== -->
         <div class="new__category">
           <p class="new__category-title">Виберіть категорію*</p>
-          <!--  -->
+
           <div class="new__category-block" (click)="popuapOpen()">
             <!--  -->
             <div class="category__select" *ngIf="!categorySelected">
-              <h2 class="category__title">Категорія не вибрана</h2>
+              <p class="category__select-title">Категорія не вибрана</p>
             </div>
             <!--  -->
             <div class="category" *ngIf="categorySelected">
-              <h2 class="category__title">
+              <p class="category__title">
                 {{ categoryList[oneIndex].nameCategory }}
-              </h2>
+              </p>
               <span>&nbsp;/&nbsp;</span>
-              <h2 class="category__title">
+              <p class="category__title">
                 {{
                   categoryList[oneIndex].nameListCategory[twoIndex]
                     .subNameCategory
                 }}
-              </h2>
+              </p>
               <span *ngIf="categoryNumber.length === 3">&nbsp;/&nbsp;</span>
-              <h2 class="category__title" *ngIf="categoryNumber.length === 3">
+              <p class="category__title" *ngIf="categoryNumber.length === 3">
                 {{
                   categoryList[oneIndex].nameListCategory[twoIndex]
                     .subNameListCategory[0].titleSubNameListCategory
                 }}
-              </h2>
+              </p>
             </div>
             <!--  -->
           </div>
-          <!--  -->
+
           <div class="category__error" *ngIf="categoryErrorShow">
             <span class="error__category"> Виберіть категорію товара </span>
           </div>
         </div>
-        <!--  -->
-        <div class="new__characteristics">
+        <!-- ============================================================== -->
+        <div class="new__characteristics" *ngIf="categorySelected">
           <p class="new__characteristics-title">Характеристики товару*</p>
           <!--  -->
           <div class="new__characteristics-block">
@@ -97,8 +105,8 @@
               *ngFor="let options of characteristics; let idx = index"
             >
               <div class="item">
-                <p class="item__title">№{{ idx }}&nbsp;{{ options.name }}</p>
-                <select
+                <!-- <p class="item__title">№{{ idx }}&nbsp;{{ options.name }}</p> -->
+                <!-- <select
                   name=""
                   [id]="'select_' + idx"
                   class="item__select select__params"
@@ -110,30 +118,44 @@
                   >
                     <option [value]="i">{{ option }}</option>
                   </ng-container>
-                </select>
+                </select> -->
+                <!--  -->
+                <mat-form-field appearance="fill">
+                  <mat-label>№{{ idx }}&nbsp;{{ options.name }}</mat-label>
+                  <mat-select disableRipple>
+                    <!-- <mat-option [value]="-1">Виберіть параметр</mat-option> -->
+                    <ng-container
+                      *ngFor="let option of options.select; let i = index"
+                    >
+                      <mat-option [value]="i">{{ option }}</mat-option>
+                    </ng-container>
+                  </mat-select>
+                </mat-form-field>
+                <!--  -->
               </div>
             </ng-container>
           </div>
         </div>
-        <!--  -->
+        <!-- ============================================================== -->
         <div class="new__words">
           <p class="new__words-title">
             Введіть ключові слова для товару через пробіл, не більше 200
             символів (не обов'язково)
           </p>
-          <!--  -->
-          <div class="box">
+          <mat-form-field
+            class="example-full-width input-width-keywords"
+            appearance="fill"
+          >
+            <mat-label>Ключові слова</mat-label>
             <textarea
+              matInput
               type="text"
-              class="box__input textarea__style box__input-textarea-width box__input-textarea-keywords-height"
-              required
+              class="input-keywords"
               [(ngModel)]="stringKeysWords"
               #inputKeyWords
               (keyup)="keyWordsInput(inputKeyWords.value)"
             ></textarea>
-            <span class="box__line box__line-textarea-width"></span>
-            <label class="box__label">Ключові слова</label>
-          </div>
+          </mat-form-field>
           <!--  -->
           <div class="symbol">
             <span [ngClass]="{ error__input: lengthKeyWords > 200 }"
@@ -176,27 +198,32 @@
             </p>
           </div>
         </div>
-        <!--  -->
+        <!-- ============================================================== -->
         <div class="new__description">
-          <!--  -->
-          <div class="box">
+          <mat-form-field
+            class="example-full-width input-width-description"
+            appearance="fill"
+          >
+            <mat-label>Опис товару</mat-label>
             <textarea
+              matInput
               type="text"
-              class="box__input textarea__style box__input-textarea-width box__input-textarea-description-height"
+              class="input-description"
               required
               #inputDescription
               [(ngModel)]="description"
+              [minlength]="minLengthDescription"
+              [maxlength]="maxnLengthDescription"
             ></textarea>
-            <span class="box__line box__line-textarea-width"></span>
-            <label class="box__label">Опис товару*</label>
-          </div>
+          </mat-form-field>
+          <!--  -->
           <div class="new__description-symbol">
             <span
               class="span__description"
               [ngClass]="{
                 try__input:
                   description.length >= 60 && description.length <= 5000,
-                error__input: description.length > 5000
+                error__input: description.length > 4000
               }"
             >
               Кількість символів {{ description.length }} / 5000
@@ -230,12 +257,7 @@
     </div>
     <!--  -->
     <div class="new__create">
-      <button
-        type="submit"
-        class="new__create-button"
-        *ngIf="!update"
-        (click)="createProduct()"
-      >
+      <div class="example-button-row">
         <!-- [disabled]="
           !images ||
           nameProduct.length <= 5 ||
@@ -245,8 +267,16 @@
           description.length < 60 ||
           description.length > 5000
         " -->
-        Створити
-      </button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          *ngIf="!update"
+          (click)="createProduct()"
+        >
+          Створити
+        </button>
+      </div>
       <!--  -->
       <button
         type="submit"
@@ -271,7 +301,9 @@
 
 <div class="select__popuap" *ngIf="popuapOnOff">
   <div class="select__popuap-content">
-    <a (click)="popuapClose(0)" class="close">&Cross;</a>
+    <a (click)="popuapClose(0)" class="close"
+      ><span class="material-symbols-outlined"> close </span></a
+    >
     <!--  -->
     <div class="category__select-item" *ngIf="!oneCategory">
       <div class="category__title">
@@ -363,17 +395,21 @@
       </div>
     </div>
     <!--  -->
-    <button
-      class="select__category-this"
-      *ngIf="oneCategory"
-      [disabled]="
-        categoryList[oneIndex].nameListCategory[twoIndex === -1 ? 0 : twoIndex]
-          .subNameListCategory[threeIndex === -1 ? 0 : threeIndex]
-          .titleSubNameListCategory !== undefined && threeIndex === -1
-      "
-      (click)="buttonSelectThisCategory()"
-    >
-      Вибрати категорію
-    </button>
+    <div class="example-button-row">
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="oneCategory"
+        [disabled]="
+          categoryList[oneIndex].nameListCategory[
+            twoIndex === -1 ? 0 : twoIndex
+          ].subNameListCategory[threeIndex === -1 ? 0 : threeIndex]
+            .titleSubNameListCategory !== undefined && threeIndex === -1
+        "
+        (click)="buttonSelectThisCategory()"
+      >
+        Вибрати категорію
+      </button>
+    </div>
   </div>
 </div>

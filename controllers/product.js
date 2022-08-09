@@ -70,7 +70,7 @@ module.exports.create = async function (req, res) {
     });
 
     // console.log(product);
-    await product.save();
+    // await product.save();
     res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
     res

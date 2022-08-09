@@ -297,6 +297,8 @@ export class ProductNewComponent implements OnInit, DoCheck {
 
   // Description Start ====
   description: string = ""; // Description
+  minLengthDescription: number = 60;
+  maxnLengthDescription: number = 5000;
   // Description END ====
 
   // Create product Start ====

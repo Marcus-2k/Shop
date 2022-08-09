@@ -6,7 +6,10 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatGridListModule } from "@angular/material/grid-list";
-// import {  } from "@angular/material";
+import { MatCardModule } from "@angular/material/card";
+import { LayoutModule } from "@angular/cdk/layout";
+import { MatInputModule } from "@angular/material/input";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 const Material = [
   MatSelectModule,
@@ -14,6 +17,10 @@ const Material = [
   MatButtonModule,
   MatProgressSpinnerModule,
   MatGridListModule,
+  MatCardModule,
+  LayoutModule,
+  MatInputModule,
+  MatTooltipModule,
 ];
 
 @NgModule({

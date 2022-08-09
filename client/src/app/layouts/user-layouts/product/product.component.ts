@@ -23,17 +23,16 @@ export class ProductComponent implements OnInit {
   loader: boolean = true;
 
   ngOnInit(): void {
+    this.categoryList = this.categoryProduct.categoryList;
     this.requestProduct.getUserProduct().subscribe(
       (response) => {
         console.log(response);
 
-        this.productList = response.product;
-        // this.loader = false;
+        this.productList = response;
+        this.loader = false;
       },
       (e) => {}
     );
-
-    this.categoryList = this.categoryProduct.categoryList;
   }
 
   deleteProduct(id: any, index: number): void {
@@ -46,6 +45,9 @@ export class ProductComponent implements OnInit {
         console.log(e);
       }
     );
+  }
+  test() {
+    console.log(this.productList);
   }
 
   productList: Product[] = [];
