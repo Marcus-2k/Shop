@@ -17,7 +17,9 @@ export class AccountComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
-    this.router.navigate(["account/user"]);
+    console.log("Start ngOnInit ACCOUNT");
+
+    this.router.navigate(["/account/user"]);
     this.route.queryParams.subscribe((params: Params) => {
       if (params["login"]) {
         this.showNotice.message("Ви вже авторизовані в системі.");
@@ -36,6 +38,9 @@ export class AccountComponent implements OnInit, DoCheck {
           sessionFail: true,
         },
       });
+    }
+    if (this.router.url === "/account") {
+      this.router.navigate(["/account/user"]);
     }
   }
 

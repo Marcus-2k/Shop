@@ -14,12 +14,12 @@ export class RequestUserService {
   private url_server: string = `http://${this.HOST}${this.PORT}/api/account`;
 
   getUserInfo(): Observable<User> {
-    return this.http.get<User>(`${this.url_server}/user`);
+    return this.http.get<User>(`${this.url_server}/user/`);
   }
 
   userUpInfo(newUser: FormData): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(
-      `${this.url_server}/user`,
+      `${this.url_server}/user/`,
       newUser
     );
   }

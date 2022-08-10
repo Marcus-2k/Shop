@@ -1,12 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { response } from "express";
-import {
-  oldUserResponse,
-  User,
-  userResponse,
-} from "src/app/shared/interface/interfaces";
+import { Router } from "@angular/router";
+
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { User } from "src/app/shared/interface/interfaces";
 
 @Component({
   selector: "app-user",
@@ -16,18 +13,21 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 export class UserComponent implements OnInit {
   constructor(
     private requestUser: RequestUserService,
-    private showNotice: ShowNoticeService
+    private showNotice: ShowNoticeService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    console.log("ngOnInit USER");
+    console.log("Start ngOnInit USER");
 
     this.requestUser.getUserInfo().subscribe(
       (response) => {
         console.log(response);
         this.user = response;
 
-        this.imagePreview = response.avatar;
+        if (response.avatar !== null) {
+          this.imagePreview = response.avatar;
+        }
         this.newUser.avatar = response.avatar;
         this.newUser.name = response.name;
         this.newUser.lastName = response.lastName;
@@ -35,34 +35,16 @@ export class UserComponent implements OnInit {
         this.newUser.country = response.country;
         this.newUser.birthday = response.birthday;
 
-        // // ID
-        // this.user._id = res._id;
-        // // Avatar
-        // this.imagePreview = res.avatar.replace(/\\/g, "/");
-        // this.user.avatar = res.avatar.replace(/\\/g, "/");
-        // this.oldUser.avatar = res.avatar.replace(/\\/g, "/");
-        // // Name
-        // this.user.name = res.name;
-        // this.oldUser.name = res.name;
-        // // Last Name
-        // this.user.lastName = res.lastName;
-        // this.oldUser.lastName = res.lastName;
-        // // Last Email
-        // this.user.email = res.email;
-        // // Last Birthday
-        // this.user.birthday = res.birthday;
-        // this.oldUser.birthday = res.birthday;
-        // // Last Country
-        // this.user.country = res.country;
-        // this.oldUser.country = res.country;
+        setInterval(() => {
+          this.loader = false;
+        }, 100);
       },
       (e) => {
-        this.showNotice.message("Статлася помилка запиту");
+        // this.showNotice.message("Статлася помилка запиту");
+        this.showNotice.message(e.message);
       }
     );
   }
-
-  loader: boolean = true;
 
   // User === START
   user: User = {
@@ -82,11 +64,9 @@ export class UserComponent implements OnInit {
     birthday: "",
     country: "",
   };
-
   // User === END
 
-  date: Date = new Date();
-  time: number = this.date.getHours();
+  loader: boolean = true;
 
   // Developer mode === START
   private HOST: string = "localhost";
@@ -107,6 +87,8 @@ export class UserComponent implements OnInit {
   }
 
   onFileUpload(event: any) {
+    // console.log(event.target.files);
+
     const file = event.target.files[0];
     this.images = file;
 
@@ -123,10 +105,16 @@ export class UserComponent implements OnInit {
 
   deleteAvatar() {
     this.images = undefined;
-    this.imagePreview = null;
-    this.newUser.avatar = null;
+    this.imagePreview = undefined;
+    this.newUser.avatar = "";
+    console.log(this.user);
+    console.log(this.newUser);
   }
   // Avatar user === END
+
+  // Date === START
+  date: Date = new Date();
+  time: number = this.date.getHours();
 
   // Max-date birthday for user === START
   maxDate = new Date(
@@ -137,6 +125,7 @@ export class UserComponent implements OnInit {
     .toISOString()
     .split("T")[0];
   // Max-date birthday for user === END
+  // Date === END
 
   // Select country === START
   countryList: string[] = [
@@ -154,7 +143,8 @@ export class UserComponent implements OnInit {
     "Japan",
     "China",
     "Mexico",
-  ]; // Select country === END
+  ];
+  // Select country === END
 
   // Save info about user === START
   saveInfo() {
@@ -162,7 +152,10 @@ export class UserComponent implements OnInit {
 
     if (this.images) {
       newUser.append("image", this.images, this.images.name);
+    } else if (this.newUser.avatar === "") {
+      newUser.append("image", "");
     }
+
     if (this.user.name !== this.newUser.name) {
       newUser.append("name", this.newUser.name);
     }
@@ -182,6 +175,10 @@ export class UserComponent implements OnInit {
     this.requestUser.userUpInfo(newUser).subscribe(
       (response) => {
         this.showNotice.message(response.message);
+
+        // this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
+        // this.router.onSameUrlNavigation = "reload";
+        // this.router.navigate(["/account/user"], {});
       },
       (error) => {
         this.showNotice.message(error.message);

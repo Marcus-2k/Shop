@@ -4,23 +4,19 @@ const fs = require("fs");
 
 module.exports.getUserInfo = async function (req, res) {
   try {
+    console.log(req.user);
     const user = await User.findOne(
       {},
       { password: 0, __v: 0, _id: 0 },
       { _id: req.user.id }
     );
-    // const userRes = {
-    //   _id: userInfo[0]._id,
-    //   avatar: userInfo[0].avatar,
-    //   name: userInfo[0].name,
-    //   lastName: userInfo[0].lastName,
-    //   email: userInfo[0].email,
-    //   birthday: userInfo[0].birthday,
-    //   country: userInfo[0].country,
-    // };
+    console.log(user);
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
   }
 };
 
@@ -34,6 +30,19 @@ module.exports.editUser = async function (req, res) {
   try {
     if (user) {
       const updatedUser = {};
+
+      console.log(req.file);
+      console.log(req.body);
+      if (req.file) {
+        updatedUser.avatar = req.file.path;
+        if (user.avatar !== null) {
+          deleteImgFromFolder(user.avatar);
+        }
+      } else if (req.body.image === "") {
+        updatedUser.avatar = null;
+        deleteImgFromFolder(user.avatar);
+      }
+
       if (req.body.name) {
         updatedUser.name = req.body.name;
       }
@@ -48,17 +57,6 @@ module.exports.editUser = async function (req, res) {
       }
       if (req.body.birthday) {
         updatedUser.birthday = req.body.birthday;
-      }
-      if (req.file) {
-        updatedUser.avatar = req.file.path;
-        if (user.avatar !== null) {
-          deleteImgFromFolder(user.avatar);
-        }
-      } else {
-        updatedUser.avatar = null;
-        if (user.avatar !== null) {
-          deleteImgFromFolder(user.avatar);
-        }
       }
 
       const newUser = await User.findByIdAndUpdate(

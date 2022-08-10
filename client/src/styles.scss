@@ -23,9 +23,6 @@ html {
 body {
   // font-family: "Mont";
   background-color: #e5e5e5;
-  // position: relative;
-  height: 100vh;
-
   &::-webkit-scrollbar {
     width: 10px;
     background-color: #d8d8d8;
@@ -41,6 +38,13 @@ body {
   &.active {
     overflow: hidden;
   }
+}
+
+.content-element-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 25px;
 }
 
 // Popuap Site Error
@@ -119,168 +123,6 @@ body {
 }
 
 // Popuap Site Error
-
-/* Стилі для всіх input'в на сайті */
-/*
-
-Якщо потрібно врегулювати їхню довжину, то добавити ось це.
-
-.box {
-  &__input {
-  }
-  &__input-width {
-    width: 400px;
-  }
-  &__line {
-  }
-  &__line-width {
-    width: 400px;
-  }
-}
-*/
-
-.box {
-  position: relative;
-  // Input
-  &__input {
-    font-size: 20px;
-    padding: 10px;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    outline: none;
-  }
-  // Label
-  &__label {
-    position: absolute;
-    color: #000;
-    font-size: 20px;
-    left: 10px;
-    top: 15px;
-    transition: 0.2s;
-    pointer-events: none;
-  }
-  /* Active State */
-  &__input:focus ~ .box__label,
-  &__input:valid ~ .box__label {
-    top: -15px;
-    font-size: 14px;
-    color: #faa627;
-  }
-  // Animation Line
-  &__line {
-    position: relative;
-    display: block;
-  }
-  &__line:before,
-  &__line:after {
-    content: "";
-    position: absolute;
-    height: 2px;
-    width: 0;
-    bottom: 0;
-    background: #faa627;
-    transition: 0.2s;
-  }
-  &__line:before {
-    left: 50%;
-  }
-  &__line:after {
-    right: 50%;
-  }
-  /* Active State */
-  &__input:focus ~ .box__line:before,
-  &__input:focus ~ .box__line:after {
-    width: 50%;
-  }
-}
-/* Стилі для всіх Input на сайті */
-
-/* Loader */
-.lds-roller {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-.lds-roller div {
-  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  transform-origin: 40px 40px;
-}
-.lds-roller div:after {
-  content: " ";
-  display: block;
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #faa627;
-  margin: -4px 0 0 -4px;
-}
-.lds-roller div:nth-child(1) {
-  animation-delay: -0.036s;
-}
-.lds-roller div:nth-child(1):after {
-  top: 63px;
-  left: 63px;
-}
-.lds-roller div:nth-child(2) {
-  animation-delay: -0.072s;
-}
-.lds-roller div:nth-child(2):after {
-  top: 68px;
-  left: 56px;
-}
-.lds-roller div:nth-child(3) {
-  animation-delay: -0.108s;
-}
-.lds-roller div:nth-child(3):after {
-  top: 71px;
-  left: 48px;
-}
-.lds-roller div:nth-child(4) {
-  animation-delay: -0.144s;
-}
-.lds-roller div:nth-child(4):after {
-  top: 72px;
-  left: 40px;
-}
-.lds-roller div:nth-child(5) {
-  animation-delay: -0.18s;
-}
-.lds-roller div:nth-child(5):after {
-  top: 71px;
-  left: 32px;
-}
-.lds-roller div:nth-child(6) {
-  animation-delay: -0.216s;
-}
-.lds-roller div:nth-child(6):after {
-  top: 68px;
-  left: 24px;
-}
-.lds-roller div:nth-child(7) {
-  animation-delay: -0.252s;
-}
-.lds-roller div:nth-child(7):after {
-  top: 63px;
-  left: 17px;
-}
-.lds-roller div:nth-child(8) {
-  animation-delay: -0.288s;
-}
-.lds-roller div:nth-child(8):after {
-  top: 56px;
-  left: 12px;
-}
-@keyframes lds-roller {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-/* Loader */
 
 /* All Input type="checkbox" */
 .custom-checkbox {

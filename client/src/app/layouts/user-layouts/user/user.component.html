@@ -1,5 +1,8 @@
 <!--  -->
-<div class="user">
+<div class="content-element-center" *ngIf="loader">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="user" *ngIf="!loader">
   <div class="user__content">
     <!--  -->
     <div
@@ -81,14 +84,19 @@
                 #fileAvatar
                 (change)="onFileUpload($event)"
               />
-              <ng-container *ngIf="imagePreview !== null">
+              <ng-container *ngIf="imagePreview !== undefined">
                 <img
                   [src]="url_server + imagePreview"
                   class="placeholder__avatar"
                   (click)="addAvatar()"
                 />
               </ng-container>
-              <ng-container *ngIf="imagePreview === null">
+              <ng-container
+                *ngIf="
+                  (newUser.avatar === null || newUser.avatar === '') &&
+                  imagePreview === undefined
+                "
+              >
                 <img
                   [src]="'../../../../assets/img/placeholder__avatar.webp'"
                   class="placeholder__avatar"
@@ -100,7 +108,7 @@
                   mat-raised-button
                   color="warn"
                   (click)="deleteAvatar()"
-                  [disabled]="imagePreview === null"
+                  [disabled]="imagePreview === undefined"
                 >
                   Видалити аватар
                 </button>
