@@ -152,27 +152,28 @@
           display: flex;
           &-link {
             .link-item {
-              // width: 40px;
-              // height: 40px;
               margin: 0 calc(5px + (10 - 5) * ((100vw - 768px) / (1920 - 768)));
               display: flex;
               align-items: center;
               justify-content: center;
               transition: 0.4s;
               color: #000;
-              span {
+              .google-icon {
                 font-size: calc(
                   24px + (36 - 24) * ((100vw - 768px) / (1920 - 768))
                 );
+                .favorite__number .cart__number {
+                  position: absolute;
+                  span {
+                    font-size: 22px;
+                    font-weight: 400;
+                  }
+                }
               }
               &:hover {
                 transition: 0.4s;
                 background-color: #fff;
                 border-radius: 5px;
-              }
-              img {
-                width: 32px;
-                height: 32px;
               }
             }
           }

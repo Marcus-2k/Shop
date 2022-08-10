@@ -17,4 +17,22 @@ router.patch(
   controller.editUser
 );
 
+router.get(
+  "/get/favorite",
+  passport.authenticate("jwt", { session: false }),
+  controller.getFavorite
+);
+
+router.post(
+  "/add/favorite",
+  passport.authenticate("jwt", { session: false }),
+  controller.addFavorite
+);
+
+router.post(
+  "/remove/favorite",
+  passport.authenticate("jwt", { session: false }),
+  controller.removeFavorite
+);
+
 module.exports = router;

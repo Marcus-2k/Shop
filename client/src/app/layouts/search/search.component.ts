@@ -17,7 +17,9 @@ import {
 // Service
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { NameQueryService } from "src/app/shared/service/name-query.service";
+import { OtherDataService } from "src/app/shared/service/other-data.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
+import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
@@ -30,9 +32,11 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private searchService: RequestSearchService,
+    private requestUser: RequestUserService,
     private catagoryName: CategoryProductService,
     private originalAndQueryName: NameQueryService,
-    private showNotice: ShowNoticeService
+    private showNotice: ShowNoticeService,
+    private otherData: OtherDataService
   ) {}
 
   titleSearch?: string;
@@ -51,14 +55,17 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       this.searchService.search(this.titleSearch, this.allQuery).subscribe(
         (res) => {
           // ==============================================================================================
+          console.log("=====================================================");
           console.log(res.product);
           console.log(res.uniqueProductCategory);
           console.log(res.productOptionsBlock);
           console.log("Відкрита сторінка", res.currentPage);
           console.log("Кількість сторінок", res.maxPage);
           console.log("Товарів на сторінку", res.limit);
+          console.log("=====================================================");
+
           // ==============================================================================================
-          this.listProduct = res.product; // List Product
+          this.productList = res.product; // List Product
           this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
           const productOptionsBlock: number[][][] = res.productOptionsBlock; // Parameters by block to categories
           this.currentPage = Number(res.currentPage); // Current Page
@@ -160,7 +167,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           );
           parameters.pop(); //delete page
           parameters.pop(); //delete limit
-          console.log(parameters);
+          // console.log(parameters);
 
           let sortParameters: string[] = [];
           parameters.forEach((element: string, idx) => {
@@ -197,6 +204,20 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       this.router.navigate([""]);
       this.showNotice.message("Помилка запиту, не введено текст пошуку.");
     }
+
+    this.requestUser.getFavorite().subscribe(
+      (responce) => {
+        console.log(responce);
+        this.listFavoriteUser = responce.favorite;
+      },
+      //
+      (error) => {
+        this.showNotice.message(
+          "Сталася помилка на серверові. Спробуйте пізніше."
+        );
+        console.log(error);
+      }
+    );
   }
 
   ngDoCheck(): void {}
@@ -205,7 +226,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
   private HOST: string = "localhost";
   private PORT: string = ":5000";
-  url_server_img: string = `http://${this.HOST}${this.PORT}/`; // Link to server folder
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`; // Link to server folder
 
   // @ElementRef('selectLimit')
 
@@ -233,6 +254,8 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     console.log(nameInput);
     console.log(nameBlock);
 
+    console.log(checked);
+
     if (checked === true) {
       let positionIndexOriginalName: number =
         this.originalName.indexOf(nameBlock);
@@ -240,6 +263,9 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
       if (positionIndexOriginalName >= 0) {
         nameQueryForServer = this.nameForServer[positionIndexOriginalName];
+
+        console.log("==========================");
+        console.log(nameQueryForServer);
 
         if (this.queryParams.hasOwnProperty(nameQueryForServer)) {
           this.queryParams[nameQueryForServer] =
@@ -331,13 +357,16 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   // Sidebar ================================================================================
 
   // Main Product ===========================================================================
-  listProduct: Product[] = []; // List Product
+  productList: Product[] = []; // List Product
 
-  currentPage?: number;
+  currentPage: number = 1;
   maxPage: number[] = [];
 
   limit?: number;
   newPage(page: number) {
+    console.log("newPage");
+    console.log(page);
+
     if (this.queryParams.hasOwnProperty("page")) {
       delete this.queryParams["page"];
     }
@@ -350,7 +379,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   newLimit(limit: number) {
-    // limit = Number(limit);
     console.log("newLimit");
     console.log(limit);
 
@@ -369,5 +397,78 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       queryParams: this.queryParams,
     });
   }
+
+  listFavoriteUser: string[] = [];
+
+  checkedFavorite(productID: string | undefined): Boolean {
+    if (productID) {
+      for (const iterator of this.listFavoriteUser) {
+        if (iterator === productID) {
+          return true;
+        }
+      }
+
+      return false;
+    } else {
+      return false;
+    }
+  }
+
+  addRemoveFavorite(id: string | undefined) {
+    if (id) {
+      //
+      if (this.listFavoriteUser.indexOf(id) === -1) {
+        console.log("Add favirite in you list");
+
+        this.requestUser.addFavorite(id).subscribe(
+          (response) => {
+            console.log(response.favorite);
+            this.listFavoriteUser = response.favorite;
+            this.otherData.favoriteNumber = response.favorite.length;
+            this.showNotice.message(response.message);
+          },
+          (error) => {
+            this.showNotice.message(
+              "Сталася помилка на серверові. Спробуйте пізніше."
+            );
+            console.log(error);
+          }
+        );
+      } else if (this.listFavoriteUser.indexOf(id) !== -1) {
+        console.log("Remove favirite in you list");
+
+        this.requestUser.removeFavorite(id).subscribe(
+          (response) => {
+            console.log(response.favorite);
+            this.listFavoriteUser = response.favorite;
+            this.otherData.favoriteNumber = response.favorite.length;
+            this.showNotice.message(response.message);
+
+            // this.requestUser.getFavorite().subscribe(
+            //   (responce) => {
+            //     console.log(responce);
+            //     this.listFavoriteUser = responce;
+            //   },
+            //   //
+            //   (error) => {
+            //     this.showNotice.message(
+            //       "Сталася помилка на серверові. Спробуйте пізніше."
+            //     );
+            //     console.log(error);
+            //   }
+            // );
+          },
+          (error) => {
+            this.showNotice.message(
+              "Сталася помилка на серверові. Спробуйте пізніше."
+            );
+            console.log(error);
+          }
+        );
+      }
+    } else {
+    }
+  }
+
   // Main Product ===========================================================================
 }

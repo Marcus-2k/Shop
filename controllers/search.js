@@ -34,6 +34,9 @@ module.exports.search = async function (req, res) {
         name: { $regex: search_text, $options: "i" },
         // $regex >> partial keywords, options "i" >> case insensitivity
       });
+      console.log("===========================");
+      // console.log(product);
+      console.log("===========================");
 
       let categoryNoUnique = [];
       let productOptions = [];

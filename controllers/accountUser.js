@@ -78,6 +78,90 @@ module.exports.editUser = async function (req, res) {
   }
 };
 
+module.exports.getFavorite = async function (req, res) {
+  try {
+    console.log("Server getFavorite");
+    const toker_decode = jwt_decode(req.headers.authorization);
+
+    const userFavorite = await User.findOne(
+      {},
+      { favorite: 1, _id: 0 },
+      { _id: toker_decode.userId }
+    );
+
+    res.status(200).json({ favorite: userFavorite.favorite });
+  } catch (error) {}
+};
+
+module.exports.addFavorite = async function (req, res) {
+  try {
+    console.log("Server addFavorite");
+    console.log(req.body);
+
+    const toker_decode = jwt_decode(req.headers.authorization);
+
+    console.log(toker_decode);
+    const user = await User.findOne({ _id: toker_decode.userId });
+
+    const addFavorite = await User.updateOne(
+      { _id: user._id },
+      { $push: { favorite: req.body.id } },
+      { new: true }
+    );
+
+    const userFavorite = await User.findOne(
+      {},
+      { favorite: 1, _id: 0 },
+      { _id: toker_decode.userId }
+    );
+
+    res.status(200).json({
+      favorite: userFavorite.favorite,
+      message: "Успішно додано до списку вподабаних товарів.",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
+
+module.exports.removeFavorite = async function (req, res) {
+  try {
+    console.log("Server addFavorite");
+    console.log(req.body);
+
+    const toker_decode = jwt_decode(req.headers.authorization);
+
+    console.log(toker_decode);
+    const user = await User.findOne({ _id: toker_decode.userId });
+
+    const removeFavorite = await User.updateOne(
+      { _id: user._id },
+      { $pull: { favorite: req.body.id } },
+      { new: true }
+    );
+
+    const userFavorite = await User.findOne(
+      {},
+      { favorite: 1, _id: 0 },
+      { _id: toker_decode.userId }
+    );
+
+    res.status(200).json({
+      favorite: userFavorite.favorite,
+      message: "Успішно видалено з списку вподабаних товарів.",
+    });
+    // console.log(user);
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
+
 function deleteImgFromFolder(linkImg) {
   fs.unlink(linkImg, (err) => {
     if (err) {

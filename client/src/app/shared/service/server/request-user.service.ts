@@ -23,4 +23,31 @@ export class RequestUserService {
       newUser
     );
   }
+
+  // Favorite ============================================================
+  getFavorite(): Observable<{ favorite: string[] }> {
+    return this.http.get<{ favorite: string[] }>(
+      `${this.url_server}/user/get/favorite`
+    );
+  }
+
+  addFavorite(id: string): Observable<{ favorite: string[]; message: string }> {
+    return this.http.post<{ favorite: string[]; message: string }>(
+      `${this.url_server}/user/add/favorite`,
+      {
+        id,
+      }
+    );
+  }
+
+  removeFavorite(
+    id: string
+  ): Observable<{ favorite: string[]; message: string }> {
+    return this.http.post<{ favorite: string[]; message: string }>(
+      `${this.url_server}/user/remove/favorite`,
+      {
+        id,
+      }
+    );
+  }
 }

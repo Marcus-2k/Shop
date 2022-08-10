@@ -42,25 +42,49 @@
           <li class="user__list-link" *ngIf="!potentialToken">
             <a routerLink="/login" routerLinkActive="" class="link-item">
               <!-- <img src="../../../../assets/img/enter.png" alt="enter" /> -->
-              <span class="material-symbols-outlined"> login </span>
+              <span class="material-symbols-outlined google-icon"> login </span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
-            <a routerLink="/account" routerLinkActive="" class="link-item">
+            <a routerLink="/account/user" routerLinkActive="" class="link-item">
               <!-- <img src="../../../../assets/img/user.png" alt="user" /> -->
-              <span class="material-symbols-outlined"> person </span>
+              <span class="material-symbols-outlined google-icon">
+                person
+              </span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
             <a routerLink="/like" routerLinkActive="" class="link-item">
               <!-- <img src="../../../../assets/img/love.png" alt="love" /> -->
-              <span class="material-symbols-outlined"> favorite </span>
+              <span class="material-symbols-outlined google-icon">
+                favorite
+                <span
+                  *ngIf="lengthFavorite > 0"
+                  class="favorite__number"
+                  [matBadge]="lengthFavorite"
+                  matBadgePosition="after"
+                  matBadgeColor="primary"
+                  matBadgeSize="medium"
+                >
+                </span>
+              </span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
             <a routerLink="/cart" routerLinkActive="" class="link-item">
               <!-- <img src="../../../../assets/img/shopping-cart.png" alt="shopping-cart" /> -->
-              <span class="material-symbols-outlined"> shopping_cart </span>
+              <span class="material-symbols-outlined google-icon">
+                shopping_cart
+                <span
+                  *ngIf="lengthCart > 0"
+                  class="cart__number"
+                  [matBadge]="lengthCart"
+                  matBadgePosition="after"
+                  matBadgeColor="primary"
+                  matBadgeSize="medium"
+                >
+                </span>
+              </span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
@@ -71,7 +95,9 @@
               (click)="logout()"
             >
               <!-- <img src="../../../../assets/img/logout.png" alt="logout /> -->
-              <span class="material-symbols-outlined"> logout </span>
+              <span class="material-symbols-outlined google-icon">
+                logout
+              </span>
             </a>
           </li>
         </ul>

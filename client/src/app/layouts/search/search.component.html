@@ -43,28 +43,28 @@
               <ng-container
                 *ngFor="let filterItem of filter.inputActive; let idx = index"
               >
-                <input
-                  type="checkbox"
-                  [id]="i + '' + '0' + idx"
-                  class="custom-checkbox category__input"
-                  [checked]="filterItem.active"
-                  (click)="
-                    filterSearch(
-                      filterItem.name,
-                      filter.name,
-                      checkboxInput.checked
-                    )
-                  "
-                  #checkboxInput
-                />
-                <label [for]="i + '' + '0' + idx" class="category__title"
-                  >ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp;{{
-                    filterItem.name
-                  }}
-                  <span class="counter"
-                    >&nbsp;( {{ filterItem.counter + 1 }} )</span
+                <p>
+                  <mat-checkbox
+                    (click)="
+                      filterSearch(
+                        filterItem.name,
+                        filter.name,
+                        !checkboxInput.checked
+                      )
+                    "
+                    [checked]="filterItem.active"
+                    [id]="i + '' + '0' + idx"
+                    color="primary"
+                    #checkboxInput
                   >
-                </label>
+                    ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp;{{
+                      filterItem.name
+                    }}
+                    <span class="counter"
+                      >&nbsp;( {{ filterItem.counter + 1 }} )</span
+                    ></mat-checkbox
+                  >
+                </p>
               </ng-container>
             </ng-container>
           </div>
@@ -84,46 +84,10 @@
               >10</mat-option
             >
             <mat-option
-              (click)="newLimit(15)"
-              [disabled]="limit === 15"
-              value="15"
-              >15</mat-option
-            >
-            <mat-option
-              (click)="newLimit(20)"
-              [disabled]="limit === 20"
-              value="20"
-              >20</mat-option
-            >
-            <mat-option
               (click)="newLimit(25)"
               [disabled]="limit === 25"
               value="25"
               >25</mat-option
-            >
-            <mat-option
-              (click)="newLimit(30)"
-              [disabled]="limit === 30"
-              value="30"
-              >30</mat-option
-            >
-            <mat-option
-              (click)="newLimit(35)"
-              [disabled]="limit === 35"
-              value="35"
-              >35</mat-option
-            >
-            <mat-option
-              (click)="newLimit(40)"
-              [disabled]="limit === 40"
-              value="40"
-              >40</mat-option
-            >
-            <mat-option
-              (click)="newLimit(45)"
-              [disabled]="limit === 45"
-              value="45"
-              >45</mat-option
             >
             <mat-option
               (click)="newLimit(50)"
@@ -131,12 +95,18 @@
               value="50"
               >50</mat-option
             >
+            <mat-option
+              (click)="newLimit(50)"
+              [disabled]="limit === 100"
+              value="100"
+              >100</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </div>
       <!--  -->
       <div class="cart">
-        <!-- Loader STR -->
+        <!-- Loader START -->
         <div style="text-align: center; width: 100%" *ngIf="loaderProduct">
           <div class="lds-roller">
             <div></div>
@@ -150,54 +120,119 @@
           </div>
         </div>
         <!-- Loader END -->
-        <!-- Cart STR -->
-        <div class="cart__box cart__item" *ngFor="let product of listProduct">
-          <div class="cart__box-body">
-            <div class="body__preview">
+        <!-- Cart START -->
+        <ng-container *ngIf="false">
+          <div class="cart__box cart__item" *ngFor="let product of productList">
+            <div class="cart__box-body">
+              <div class="body__preview">
+                <img
+                  class="preview__img"
+                  alt=""
+                  [src]="url_server_folder + product.imageSrc"
+                />
+              </div>
+              <div class="body__discount" *ngIf="product.action">
+                <p class="disount__text">Акція</p>
+              </div>
+              <div class="body__action">
+                <div class="like">
+                  <img src="../../../assets/img/like.png" alt="" />
+                </div>
+                <div class="scales">
+                  <img src="../../../assets/img/scales.png" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="cart__box-wrapper">
+              <div class="wrapper__title">
+                <h2 class="title__cart" [title]="product.name">
+                  {{ product.name.substr(0, 20) }}
+                  <span *ngIf="product.name.length > 20">...</span>
+                </h2>
+              </div>
+              <div class="wrapper__price">
+                <p class="price__cart">{{ product.price | price }}</p>
+                <p class="currency__cart">грн.</p>
+              </div>
+              <div class="wrapper__description">
+                <h2 class="description__cart">
+                  {{ product.description.substr(0, 100) }}
+                  <span *ngIf="product.description.length > 100">...</span>
+                </h2>
+              </div>
+              <div class="wrapper__button">
+                <button class="btn__cart" routerLink="">Придбати</button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div
+          class="cart-item"
+          *ngFor="let product of productList; let i = index"
+        >
+          <mat-card class="example-card" XSmall>
+            <div class="image">
               <img
-                class="preview__img"
-                alt=""
-                [src]="url_server_img + product.imageSrc"
+                [src]="url_server_folder + product.imageSrc"
+                alt="Photo of a Shiba Inu"
               />
             </div>
-            <div class="body__discount" *ngIf="product.action">
-              <p class="disount__text">Акція</p>
-            </div>
-            <div class="body__action">
-              <div class="like">
-                <img src="../../../assets/img/like.png" alt="" />
+            <mat-card-content>
+              <div class="favorite__compare">
+                <p class="favorite">
+                  <span
+                    class="material-symbols-outlined"
+                    [ngClass]="{
+                      material_symbols_outlined_like: checkedFavorite(
+                        product._id
+                      )
+                    }"
+                    (click)="addRemoveFavorite(product._id)"
+                  >
+                    favorite
+                  </span>
+                </p>
+                <p class="compare"></p>
               </div>
-              <div class="scales">
-                <img src="../../../assets/img/scales.png" alt="" />
+              <div class="mat-title block__title">
+                <p
+                  [matTooltip]="product.name"
+                  matTooltipClass="example-tooltip-primary"
+                  class="title__cart"
+                >
+                  {{ product.name.slice(0, 24) }}
+                  <span *ngIf="product.name.length > 24">...</span>
+                </p>
               </div>
-            </div>
-          </div>
-          <div class="cart__box-wrapper">
-            <div class="wrapper__title">
-              <h2 class="title__cart" [title]="product.name">
-                {{ product.name.substr(0, 20) }}
-                <span *ngIf="product.name.length > 20">...</span>
-              </h2>
-            </div>
-            <div class="wrapper__price">
-              <p class="price__cart">{{ product.price | price }}</p>
-              <p class="currency__cart">грн.</p>
-            </div>
-            <div class="wrapper__description">
-              <h2 class="description__cart">
-                {{ product.description.substr(0, 100) }}
-                <span *ngIf="product.description.length > 100">...</span>
-              </h2>
-            </div>
-            <div class="wrapper__button">
-              <button class="btn__cart" routerLink="">Придбати</button>
-            </div>
-          </div>
+              <div class="price">
+                <p class="mat-subheading-1 price__cart">
+                  {{ product.price | price
+                  }}<span class="price__cart-currency">&nbsp;₴</span>
+                </p>
+                <p class="price__cart-shop">
+                  <button mat-button color="accent">
+                    <span class="material-symbols-outlined" color="primary">
+                      shopping_cart
+                    </span>
+                  </button>
+                </p>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button color="primary">Придбати</button>
+            </mat-card-actions>
+          </mat-card>
         </div>
         <!-- Cart END -->
       </div>
       <!--  -->
       <div class="pagination">
+        <div
+          class="pagination__item pagination-prev"
+          (click)="newPage(currentPage - 1)"
+        >
+          <span class="material-symbols-outlined"> chevron_left </span>
+        </div>
         <ng-container *ngFor="let page of maxPage">
           <div
             class="pagination__item"
@@ -207,9 +242,9 @@
             {{ page }}
           </div>
         </ng-container>
-
-        <!-- <div class="pagination__item pagination__active">1</div>
-        <div class="pagination__item">3</div> -->
+        <div class="pagination__item" (click)="newPage(currentPage + 1)">
+          <span class="material-symbols-outlined"> chevron_right </span>
+        </div>
       </div>
     </div>
   </div>
