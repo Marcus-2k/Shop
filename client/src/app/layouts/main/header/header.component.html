@@ -7,15 +7,13 @@
         <div class="logo">
           <a routerLink="/" class="logo__link">
             <img src="../../../../assets/img/globe.png" alt="" />
-            <h1>&nbsp;Globe Site</h1>
+            <h1 class="title__site">&nbsp;Globe Site</h1>
           </a>
         </div>
       </div>
       <div class="menu-catalog">
         <button class="menu-catalog--button">
-          <span class="icon__img"
-            ><img src="../../../../assets/img/tiles.png"
-          /></span>
+          <span class="material-symbols-outlined"> category </span>
           Каталог
         </button>
       </div>
@@ -43,25 +41,26 @@
         <ul class="user__list">
           <li class="user__list-link" *ngIf="!potentialToken">
             <a routerLink="/login" routerLinkActive="" class="link-item">
-              <img src="../../../../assets/img/enter.png" alt="enter" />
+              <!-- <img src="../../../../assets/img/enter.png" alt="enter" /> -->
+              <span class="material-symbols-outlined"> login </span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
             <a routerLink="/account" routerLinkActive="" class="link-item">
-              <img src="../../../../assets/img/user.png" alt="user" />
+              <!-- <img src="../../../../assets/img/user.png" alt="user" /> -->
+              <span class="material-symbols-outlined"> person </span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
             <a routerLink="/like" routerLinkActive="" class="link-item">
-              <img src="../../../../assets/img/love.png" alt="love" />
+              <!-- <img src="../../../../assets/img/love.png" alt="love" /> -->
+              <span class="material-symbols-outlined"> favorite </span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
             <a routerLink="/cart" routerLinkActive="" class="link-item">
-              <img
-                src="../../../../assets/img/shopping-cart.png"
-                alt="shopping-cart"
-              />
+              <!-- <img src="../../../../assets/img/shopping-cart.png" alt="shopping-cart" /> -->
+              <span class="material-symbols-outlined"> shopping_cart </span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="potentialToken">
@@ -71,7 +70,8 @@
               class="link-item"
               (click)="logout()"
             >
-              <img src="../../../../assets/img/logout.png" alt="logout" />
+              <!-- <img src="../../../../assets/img/logout.png" alt="logout /> -->
+              <span class="material-symbols-outlined"> logout </span>
             </a>
           </li>
         </ul>

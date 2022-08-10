@@ -27,8 +27,15 @@
               width: 36px;
               height: 36px;
             }
-            h1 {
+            .title__site {
               color: #000;
+              margin: 0;
+              font-size: calc(
+                18px + (24 - 18) * ((100vw - 768px) / (1920 - 768))
+              );
+              @media screen and(max-width: 880px) {
+                display: none;
+              }
             }
           }
         }
@@ -44,14 +51,20 @@
           background-color: #fff;
           font-weight: 600;
           font-family: "Mont";
-          font-size: 16px;
+          font-size: calc(12px + (16 - 12) * ((100vw - 768px) / (1920 - 768)));
           height: 40px;
           cursor: pointer;
-          padding: 0 20px;
+          padding: 0 calc(10px + (20 - 10) * ((100vw - 768px) / (1920 - 768)));
           transition: 0.4s;
           &:hover {
             transition: 0.4s;
             background-color: #dddddd;
+          }
+          span {
+            font-size: calc(
+              14px + (24 - 14) * ((100vw - 768px) / (1920 - 768))
+            );
+            margin-right: 5px;
           }
           .icon__img {
             margin-right: 5px;
@@ -139,13 +152,19 @@
           display: flex;
           &-link {
             .link-item {
-              width: 40px;
-              height: 40px;
-              margin: 0 10px;
+              // width: 40px;
+              // height: 40px;
+              margin: 0 calc(5px + (10 - 5) * ((100vw - 768px) / (1920 - 768)));
               display: flex;
               align-items: center;
               justify-content: center;
               transition: 0.4s;
+              color: #000;
+              span {
+                font-size: calc(
+                  24px + (36 - 24) * ((100vw - 768px) / (1920 - 768))
+                );
+              }
               &:hover {
                 transition: 0.4s;
                 background-color: #fff;
