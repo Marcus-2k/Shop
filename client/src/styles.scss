@@ -21,7 +21,6 @@ html {
 }
 
 body {
-  // font-family: "Mont";
   background-color: #e5e5e5;
   &::-webkit-scrollbar {
     width: 10px;
@@ -47,7 +46,6 @@ body {
   padding-top: 25px;
 }
 
-// Popuap Site Error
 .toast {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
@@ -122,8 +120,6 @@ body {
   }
 }
 
-// Popuap Site Error
-
 @import "scss/other__style.scss";
 // Style ===============================================================================
 // Font ================================================================================
@@ -132,12 +128,3 @@ body {
 // Adaptability ========================================================================
 @import "scss/media.scss";
 // Adaptability ========================================================================
-
-// html,
-// body {
-// height: 100%;
-// }
-body {
-  // margin: 0;
-  // font-family: Roboto, "Helvetica Neue", sans-serif;
-}

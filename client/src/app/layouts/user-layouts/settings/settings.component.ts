@@ -8,5 +8,9 @@ import { Component, OnInit } from "@angular/core";
 export class SettingsComponent implements OnInit {
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const titleCollection = document.getElementsByTagName("title");
+    const title = Array.from(titleCollection);
+    title[0].innerText = "Налаштування";
+  }
 }

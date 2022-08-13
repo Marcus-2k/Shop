@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 
 @Component({
   selector: "app-home",
@@ -6,7 +7,11 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
-  constructor() {}
+  constructor(private renameTitle: RenameTitleService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("Start ngOnInit HOME");
+
+    this.renameTitle.renameTitleSite("Інтернет-Магазин");
+  }
 }

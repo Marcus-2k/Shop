@@ -4,7 +4,7 @@ import { CategoryProduct, Options } from "../interface/interfaces";
 @Injectable({
   providedIn: "root",
 })
-export class CategoryProductService {
+export class CategoryProductService2 {
   constructor() {}
 
   // optionOperatingSystem: options = {

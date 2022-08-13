@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 // Service, Pipe, Guard, Token, Class.
 import { AuthGuard } from "./shared/guard/auth.guard";
 import { PricePipe } from "./shared/pipe/price.pipe";
-import { TokenInterceptor } from "./shared/classes/toke.interseptor";
+import { TokenInterceptor } from "./shared/classes/token.interseptor";
 
 // Lead Component
 import { AppComponent } from "./app.component";
@@ -40,6 +40,21 @@ import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newslet
 // Angular Material UI
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MaterialModule } from "./shared/material/material.module";
+import { InfoComponent } from "./layouts/card/info/info.component";
+// Card ========================================================================================================================
+import { CardComponent } from "./layouts/card/card.component";
+// Card >>> Info
+import { CardInfoComponent } from "./layouts/card/card-info/card-info.component";
+// Card >>> Characteristics
+import { CardCharacteristicsComponent } from "./layouts/card/card-characteristics/card-characteristics.component";
+// Card >>> Comments
+import { CardCommentsComponent } from "./layouts/card/card-comments/card-comments.component";
+// Card >>> Questions
+import { CardQuestionsComponent } from "./layouts/card/card-questions/card-questions.component";
+// Card >>> Photo
+import { CardPhotoComponent } from "./layouts/card/card-photo/card-photo.component";
+// Card >>> Accessories
+import { CardAccessoriesComponent } from "./layouts/card/card-accessories/card-accessories.component";
 
 // Routing Link
 const appRoutes: Routes = [
@@ -92,6 +107,36 @@ const appRoutes: Routes = [
   { path: "cart", canActivate: [AuthGuard], component: CartComponent },
   { path: "search", component: SearchComponent },
   {
+    path: "card/:id",
+    component: CardComponent,
+    children: [
+      {
+        path: "info",
+        component: CardInfoComponent,
+      },
+      {
+        path: "characteristics",
+        component: CardCharacteristicsComponent,
+      },
+      {
+        path: "comments",
+        component: CardCommentsComponent,
+      },
+      {
+        path: "questions",
+        component: CardQuestionsComponent,
+      },
+      {
+        path: "photo",
+        component: CardPhotoComponent,
+      },
+      {
+        path: "accessories",
+        component: CardAccessoriesComponent,
+      },
+    ],
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },
@@ -116,6 +161,11 @@ const appRoutes: Routes = [
     UserComponent,
     PricePipe,
     NewslettersComponent,
+    CardComponent,
+    InfoComponent,
+    CardCommentsComponent,
+    CardQuestionsComponent,
+    CardPhotoComponent,
   ],
   imports: [
     BrowserModule,

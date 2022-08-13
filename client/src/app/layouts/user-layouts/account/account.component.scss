@@ -6,7 +6,8 @@
       display: flex;
       justify-content: center;
       &__item {
-        margin: 0 10px;
+        margin: 0 calc(5px + (10 - 5) * ((100vw - 768px) / (1920 - 768)));
+        font-size: calc(14px + (20 - 14) * ((100vw - 768px) / (1920 - 768)));
         color: #000;
         transition: 0.4s;
         position: relative;

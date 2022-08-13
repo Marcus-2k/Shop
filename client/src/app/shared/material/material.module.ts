@@ -14,6 +14,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatBadgeModule } from "@angular/material/badge";
+import { MatTabsModule } from "@angular/material/tabs";
 
 const Material = [
   MatSelectModule,
@@ -30,6 +31,7 @@ const Material = [
   MatNativeDateModule,
   MatCheckboxModule,
   MatBadgeModule,
+  MatTabsModule,
 ];
 
 @NgModule({

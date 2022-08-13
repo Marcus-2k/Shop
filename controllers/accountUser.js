@@ -4,13 +4,13 @@ const fs = require("fs");
 
 module.exports.getUserInfo = async function (req, res) {
   try {
-    console.log(req.user);
+    // console.log(req.user);
     const user = await User.findOne(
       {},
       { password: 0, __v: 0, _id: 0 },
       { _id: req.user.id }
     );
-    console.log(user);
+    // console.log(user);
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -31,8 +31,8 @@ module.exports.editUser = async function (req, res) {
     if (user) {
       const updatedUser = {};
 
-      console.log(req.file);
-      console.log(req.body);
+      // console.log(req.file);
+      // console.log(req.body);
       if (req.file) {
         updatedUser.avatar = req.file.path;
         if (user.avatar !== null) {
@@ -90,17 +90,20 @@ module.exports.getFavorite = async function (req, res) {
     );
 
     res.status(200).json({ favorite: userFavorite.favorite });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
 };
 
 module.exports.addFavorite = async function (req, res) {
   try {
     console.log("Server addFavorite");
-    console.log(req.body);
 
     const toker_decode = jwt_decode(req.headers.authorization);
 
-    console.log(toker_decode);
     const user = await User.findOne({ _id: toker_decode.userId });
 
     const addFavorite = await User.updateOne(
@@ -117,7 +120,7 @@ module.exports.addFavorite = async function (req, res) {
 
     res.status(200).json({
       favorite: userFavorite.favorite,
-      message: "Успішно додано до списку вподабаних товарів.",
+      message: "Add you list",
     });
   } catch (error) {
     console.log(error);
@@ -129,12 +132,10 @@ module.exports.addFavorite = async function (req, res) {
 
 module.exports.removeFavorite = async function (req, res) {
   try {
-    console.log("Server addFavorite");
-    console.log(req.body);
+    console.log("Server removeFavorite");
 
     const toker_decode = jwt_decode(req.headers.authorization);
 
-    console.log(toker_decode);
     const user = await User.findOne({ _id: toker_decode.userId });
 
     const removeFavorite = await User.updateOne(
@@ -151,9 +152,8 @@ module.exports.removeFavorite = async function (req, res) {
 
     res.status(200).json({
       favorite: userFavorite.favorite,
-      message: "Успішно видалено з списку вподабаних товарів.",
+      message: "Remove you list",
     });
-    // console.log(user);
   } catch (error) {
     console.log(error);
     res.status(401).json({

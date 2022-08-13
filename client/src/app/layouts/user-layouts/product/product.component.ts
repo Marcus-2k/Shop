@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Product } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
@@ -13,7 +14,8 @@ export class ProductComponent implements OnInit {
   constructor(
     private requestProduct: RequestProductService,
     private showNotice: ShowNoticeService,
-    private categoryProduct: CategoryProductService
+    private categoryProduct: CategoryProductService,
+    private renameTitle: RenameTitleService
   ) {}
 
   /* Development */
@@ -23,6 +25,8 @@ export class ProductComponent implements OnInit {
   loader: boolean = true;
 
   ngOnInit(): void {
+    console.log("Start ngOnInit PRODUCT");
+
     this.categoryList = this.categoryProduct.categoryList;
     this.requestProduct.getUserProduct().subscribe(
       (response) => {
@@ -33,6 +37,8 @@ export class ProductComponent implements OnInit {
       },
       (e) => {}
     );
+
+    this.renameTitle.renameTitleSite("Мої товари");
   }
 
   deleteProduct(id: any, index: number): void {

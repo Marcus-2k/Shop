@@ -5,6 +5,11 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
+import {
+  MatSelect,
+  MatSelectChange,
+  _MatSelectBase,
+} from "@angular/material/select";
 import { ActivatedRoute, Params } from "@angular/router";
 import {
   CategoryProduct,
@@ -13,6 +18,7 @@ import {
 } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { NameQueryService } from "src/app/shared/service/name-query.service";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
@@ -21,36 +27,33 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
   templateUrl: "./product-new.component.html",
   styleUrls: ["./product-new.component.scss"],
 })
-export class ProductNewComponent implements OnInit, DoCheck {
+export class ProductNewComponent implements OnInit {
   constructor(
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
     private categoryName: CategoryProductService,
     private route: ActivatedRoute,
-    private nameOptions: NameQueryService
+    private nameOptions: NameQueryService,
+    private renameTitle: RenameTitleService
   ) {}
 
   ngOnInit(): void {
-    console.log("Start ngOnInit product-new");
+    console.log("Start ngOnInit PRODUCT-NEW");
     this.categoryList = this.categoryName.categoryList;
-    this.route.queryParams.subscribe((queryParam: any) => {
-      this.reqParams = queryParam["id"];
-      if (this.reqParams) {
-        this.update = true;
-      } else {
-        this.update = false;
-      }
-    });
-    //
-    this.originalName = this.nameOptions.originalName;
-    this.nameQueryParams = this.nameOptions.nameForServer;
-    //
+    this.route.params.subscribe((value) => {
+      const id: string = Object.values(value)[0];
 
-    if (this.update) {
-      if (this.reqParams) {
-        this.requestProduct.getByIdforUpdate(this.reqParams).subscribe(
-          (res) => {
-            this.updateProduct = res;
+      if (id) {
+        this.renameTitle.renameTitleSite("Змінення товару");
+      } else {
+        this.renameTitle.renameTitleSite("Створення товару");
+      }
+
+      if (this.update) {
+        this.requestProduct.getByIdProduct(id).subscribe(
+          (response) => {
+            this.updateProduct = response;
+            this.newUpdateProduct = response;
             this.updateOnInit();
           },
           (e) => {
@@ -58,19 +61,24 @@ export class ProductNewComponent implements OnInit, DoCheck {
           }
         );
       }
-    }
+    });
+    //
+
+    this.originalName = this.nameOptions.originalName;
+    this.nameQueryParams = this.nameOptions.nameForServer;
     //
   }
 
-  ngDoCheck(): void {}
-
   // Update product START ====
   update: boolean = false; // Режим update true/false
-  reqParams: string | undefined = undefined;
-  updateProduct: Product | undefined = undefined;
+  valueId?: string;
+  updateProduct?: Product;
+  newUpdateProduct?: Product;
 
   updateOnInit() {
     if (this.updateProduct) {
+      console.log(this.updateProduct);
+
       // Присвоєння name, price, keyWords, description
       this.nameProduct = this.updateProduct.name;
       this.priceProduct = this.updateProduct.price;
@@ -89,7 +97,31 @@ export class ProductNewComponent implements OnInit, DoCheck {
         this.stringKeysWords = this.updateProduct.keyWords.join(" ");
         this.keyWordsInput(this.updateProduct.keyWords.join(" "));
       }
+      // Параметри товару
+      this.optionForUpdate = this.updateProduct.options;
+
+      if (this.categoryNumber.length === 2) {
+        // this.characteristics = this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[this.categoryNumber[1]].options;
+      } else if (this.categoryNumber.length === 3) {
+        this.characteristics =
+          this.categoryName.categoryList[
+            this.categoryNumber[0]
+          ].nameListCategory[this.categoryNumber[1]].subNameListCategory[
+            this.categoryNumber[2]
+          ].options;
+      }
+
+      this.characteristics.forEach((element, idx) => {
+        this.optionsListNumber.push(this.optionForUpdate[idx]);
+      });
+      // this.valueChangeSelect();
     }
+  }
+
+  test() {
+    // console.log(this.optionsListNumber);
+    console.log(this.upNewParameters);
+    this.checkingKeyWordsNew();
   }
 
   // Update product END ====
@@ -110,7 +142,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
   triggerClick() {
     this.inputFile?.nativeElement.click();
     this.validImages = true;
-  } // Коли нажато на кнопку "Завантажити фото"
+  } // Click button "Завантажити фото"
 
   onFileUpload(event: any) {
     const file = event.target.files[0];
@@ -130,6 +162,10 @@ export class ProductNewComponent implements OnInit, DoCheck {
   // Name Start ====
   nameProduct: string = "";
   // Name END ====
+
+  // Action Start ====
+  action: 0 | 1 = 0;
+  // Action END ====
 
   // Price Start ====
   priceProduct?: number;
@@ -154,6 +190,8 @@ export class ProductNewComponent implements OnInit, DoCheck {
     this.oneIndex = index;
     this.oneCategory = true;
     this.twoCategory = true;
+    //
+    this.upNewParameters = true;
   }
 
   // Reselect category
@@ -212,6 +250,7 @@ export class ProductNewComponent implements OnInit, DoCheck {
 
   popuapOnOff: boolean = false; // Popuap On/Off
   categorySelected: boolean = false; // Category in form visibility
+  upNewParameters: boolean = false;
 
   popuapOpen() {
     this.popuapOnOff = true; // Open Popuap
@@ -234,20 +273,60 @@ export class ProductNewComponent implements OnInit, DoCheck {
 
   // Options START ====
   characteristics: Options[] = [];
+  optionForUpdate: number[] = [];
+
+  optionsListNumber: number[] = [];
 
   selectCollection: HTMLCollection =
     document.getElementsByClassName("select__params");
 
+  updateSelectValidity: boolean = false;
+  valueChangeSelect() {
+    console.log("ValueChangeSelect");
+    console.log(this.optionsListNumber);
+    //
+    // якщо є в массиві -1
+    if (this.optionsListNumber.indexOf(-1) >= 0) {
+      this.updateSelectValidity = false;
+      //
+
+      // Якщо немає в масиві -1
+    } else if (this.optionsListNumber.indexOf(-1) === -1) {
+      if (this.upNewParameters === true) {
+        this.updateSelectValidity = true;
+      } else {
+        let counterCorrect = 0;
+        this.updateProduct?.options.forEach((element, idx) => {
+          if (this.optionsListNumber[idx] === element) {
+            counterCorrect++;
+          }
+        });
+        if (counterCorrect === this.updateProduct?.options.length) {
+          this.updateSelectValidity = false;
+        } else {
+          this.updateSelectValidity = true;
+        }
+      }
+    }
+  }
   getOptionsFromService() {
     this.characteristics =
       this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[
         this.categoryNumber[1]
       ].subNameListCategory[this.categoryNumber[2]].options;
-
-    console.log(this.characteristics);
+    this.recordOptionsInArray();
   } // Отримуємо характеристики для опису товара за його категорією
+  recordOptionsInArray() {
+    this.characteristics.forEach((element, idx) => {
+      this.optionsListNumber.push(-1);
+    });
+    this.valueChangeSelect();
+  }
   resetOptions() {
     this.characteristics = [];
+    // if (this.update) {
+    this.optionsListNumber = [];
+    // }
   } // Видалення характеристик
   // Options END ====
 
@@ -292,56 +371,28 @@ export class ProductNewComponent implements OnInit, DoCheck {
         index--;
       }
     }
+    this.checkKeyWords = false;
+  }
+
+  checkingKeyWordsNew() {
+    let counterCorrect: number = 0;
+    console.log(this.keyWords);
+    console.log(this.updateProduct?.keyWords);
+
+    this.updateProduct?.keyWords?.forEach((element, idx) => {
+      // if(element === this.keyWords)
+    });
   }
   // Key Words END ====
 
   // Description Start ====
   description: string = ""; // Description
   minLengthDescription: number = 60;
-  maxnLengthDescription: number = 5000;
+  maxLengthDescription: number = 5000;
   // Description END ====
 
-  // Create product Start ====
-  createProduct() {
-    console.log("Кнопка Створити");
-    console.log(this.queryParams);
-
-    let selectParamsArray = Array.prototype.slice.call(this.selectCollection);
-    let optionsNumber: number[] = [];
-
-    let optionsToString: string[] = [];
-
-    selectParamsArray.forEach((element: HTMLSelectElement, idx) => {
-      optionsNumber.push(Number(element.value));
-
-      let indexName = this.originalName.indexOf(this.characteristics[idx].name);
-      console.log(indexName);
-
-      let nameQueryParams = this.nameQueryParams[indexName];
-      console.log(nameQueryParams);
-
-      this.queryParams[nameQueryParams] =
-        this.characteristics[idx].select[Number(element.value)];
-
-      optionsToString.push(
-        this.characteristics[idx].select[Number(element.value)]
-      );
-    }); // Записуємо номера вибраних параметрів в масив
-    let params = Object.entries(this.queryParams);
-    params = params.flat(1);
-
-    console.log(this.queryParams);
-    // console.log(params);
-    console.log(optionsToString);
-
-    for (let idx = 0; idx < optionsNumber.length; idx++) {
-      if (optionsNumber[idx] <= -1) {
-        this.showNotice.message("Не всі параметри заповненні правильно");
-        optionsNumber = [];
-        break;
-      }
-    } // Якщо в масиві один з параметрів -1 то значить якийсь параметр був не вибраний
-
+  // Create/Up product Start ====
+  checkingKeyWords() {
     for (let index = 0; index < this.keyWords.length; index++) {
       if (
         this.keyWords[index].length <= 1 ||
@@ -355,8 +406,53 @@ export class ProductNewComponent implements OnInit, DoCheck {
       }
       this.checkKeyWords = false;
     } // Перевірка чи всі ключові слова введено правильно
+  }
 
-    let action = 0;
+  checkingOptions(): boolean {
+    for (let idx = 0; idx < this.optionsListNumber.length; idx++) {
+      if (this.optionsListNumber[idx] === -1) {
+        return false;
+      }
+    } // Якщо в масиві один з параметрів -1 то значить якийсь параметр був не вибраний
+    return true;
+  }
+
+  createParams(optionsToString: string[]): Params {
+    let params: Params = {};
+
+    this.characteristics.forEach((element, idx) => {
+      let index = this.originalName.indexOf(element.name);
+      if (index !== -1) {
+        let name = this.nameQueryParams[index];
+        params[name] = optionsToString[idx];
+      } else {
+        console.log("Це не можливо, значіть капец проблеми");
+      }
+    });
+
+    return params;
+  }
+
+  createOptionToString(): string[] {
+    let optionsToString: string[] = [];
+    this.optionsListNumber.forEach((item, idx) => {
+      optionsToString.push(
+        this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[
+          this.categoryNumber[1]
+        ].subNameListCategory[this.categoryNumber[2]].options[idx].select[
+          this.optionsListNumber[idx]
+        ]
+      );
+    });
+    return optionsToString;
+  }
+
+  createProduct() {
+    console.log("Button Create");
+
+    this.checkingKeyWords();
+    const optionsValidity: boolean = this.checkingOptions();
+    const optionsToString: string[] = this.createOptionToString();
 
     if (
       this.images &&
@@ -366,9 +462,10 @@ export class ProductNewComponent implements OnInit, DoCheck {
       this.lengthKeyWords <= 200 &&
       this.description.length >= 60 &&
       this.description.length <= 5000 &&
-      this.characteristics.length === optionsNumber.length
+      optionsValidity
     ) {
       console.log("Create FormData");
+      const params: Params = this.createParams(optionsToString);
 
       const formData = new FormData();
 
@@ -376,47 +473,36 @@ export class ProductNewComponent implements OnInit, DoCheck {
       formData.append("name", this.nameProduct); // Add name product
       formData.append("price", String(this.priceProduct)); // Add price product (type string)
       formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
-      formData.append("options", optionsNumber.join(" ")); // Add option (type string)
+      formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
       formData.append("optionsToString", optionsToString.join(","));
-      formData.append("queryParams", params.join(","));
+      formData.append("queryParams", Object.entries(params).join(","));
       formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
       formData.append("description", this.description); // Add description (type string)
-      formData.append("action", action.toString()); // Add action (type string)
+      formData.append("action", this.action.toString()); // Add action (type string)
 
       console.log("Send FormData");
-      // this.optionsToString = [];
       this.requestProduct.createProduct(formData).subscribe(
         (res) => {
           this.showNotice.message("Товар створено успішно.");
         },
         (e) => {
-          // console.log(e);
-          this.showNotice.message(e.message);
+          console.log(e);
+          this.showNotice.message("Помилка на серверові.");
         }
-      ); //Відправили на сервер
+      );
     } else {
-      this.showNotice.message("Товар не було створено, дані заповнено невірно");
-      // this.optionsToString = [];
+      this.showNotice.message(
+        "Товар не було створено, дані заповнено невірно."
+      );
     }
   }
 
   upProduct() {
-    console.log("Кнопка Зберегти");
+    console.log("Button Save");
 
-    for (let index = 0; index < this.keyWords.length; index++) {
-      console.log("Старт циклу");
-      if (
-        this.keyWords[index].length <= 1 ||
-        this.keyWords[index].length > 10
-      ) {
-        this.showNotice.message(
-          "В ключових словах, є слова в яких кількість символів меньше двох (2), або більше десяти (10)."
-        );
-        this.checkKeyWords = true;
-        break;
-      }
-      this.checkKeyWords = false;
-    } // Перевірка чи всі ключові слова введено корректно
+    this.checkingKeyWords();
+    const optionsValidity: boolean = this.checkingOptions();
+    const optionsToString: string[] = this.createOptionToString();
 
     if (
       this.update &&
@@ -426,22 +512,43 @@ export class ProductNewComponent implements OnInit, DoCheck {
       !this.checkKeyWords &&
       this.lengthKeyWords <= 200 &&
       this.description.length >= 60 &&
-      this.description.length <= 5000
+      this.description.length <= 5000 &&
+      optionsValidity
     ) {
-      console.log("Створили FromData");
+      console.log("Create FormData");
+      const params: Params = this.createParams(optionsToString);
 
       const formData = new FormData();
+
       if (this.images) {
         formData.append("image", this.images, this.images.name); // Add photo product
       }
+      if (this.nameProduct !== this.updateProduct.name) {
+        formData.append("name", this.nameProduct); // Add name product
+      }
+      if (this.priceProduct !== this.updateProduct.price) {
+        formData.append("price", String(this.priceProduct)); // Add price product (type string)
+      }
+      if (this.upNewParameters) {
+        formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
+        formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
+        formData.append("optionsToString", optionsToString.join(","));
+        formData.append("queryParams", Object.entries(params).join(","));
+      } else if (this.updateSelectValidity) {
+        formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
+        formData.append("optionsToString", optionsToString.join(","));
+        formData.append("queryParams", Object.entries(params).join(","));
+      }
 
-      formData.append("name", this.nameProduct); // Add name product
-      formData.append("price", String(this.priceProduct)); // Add price product
-      formData.append("category", this.categoryNumber.join(" ")); // Add category number
-      formData.append("keyWords", this.keyWords.join(" ")); // Add key word (string format)
-      formData.append("description", this.description); // Add description (string format)
+      formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
+      if (this.description !== this.updateProduct.description) {
+        formData.append("description", this.description); // Add description (type string)
+      }
+      if (Boolean(this.action) !== this.updateProduct.action) {
+        formData.append("action", this.action.toString()); // Add action (type string)
+      }
 
-      console.log("Відправили FromData");
+      console.log("Send FormData");
 
       const id = this.updateProduct._id;
       this.requestProduct.updateById(formData, id).subscribe(
@@ -461,5 +568,5 @@ export class ProductNewComponent implements OnInit, DoCheck {
       );
     }
   }
-  // Create product END ====
+  // Create/Up product END ====
 }

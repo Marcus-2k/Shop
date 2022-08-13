@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 
 @Component({
   selector: "app-main",

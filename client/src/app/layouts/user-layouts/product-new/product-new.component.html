@@ -1,4 +1,7 @@
 <!--  -->
+<button (click)="test()">
+  TESTsssssssssssssssssssssssssssssssssssssssssssssssssssss
+</button>
 <div class="new">
   <div class="form">
     <input
@@ -105,29 +108,23 @@
               *ngFor="let options of characteristics; let idx = index"
             >
               <div class="item">
-                <!-- <p class="item__title">№{{ idx }}&nbsp;{{ options.name }}</p> -->
-                <!-- <select
-                  name=""
-                  [id]="'select_' + idx"
-                  class="item__select select__params"
-                  value="0"
-                >
-                  <option value="-1">Виберіть параметр</option>
-                  <ng-container
-                    *ngFor="let option of options.select; let i = index"
-                  >
-                    <option [value]="i">{{ option }}</option>
-                  </ng-container>
-                </select> -->
-                <!--  -->
                 <mat-form-field appearance="fill">
                   <mat-label>№{{ idx }}&nbsp;{{ options.name }}</mat-label>
-                  <mat-select disableRipple>
-                    <!-- <mat-option [value]="-1">Виберіть параметр</mat-option> -->
+                  <mat-select
+                    disableRipple
+                    class="select__params"
+                    #selectedValue
+                    [(ngModel)]="optionsListNumber[idx]"
+                    (ngModelChange)="valueChangeSelect()"
+                    required
+                  >
+                    <mat-option [value]="-1">-1-Параметр не вибрано</mat-option>
                     <ng-container
                       *ngFor="let option of options.select; let i = index"
                     >
-                      <mat-option [value]="i">{{ option }}</mat-option>
+                      <mat-option [value]="i">{{
+                        i + "-" + option
+                      }}</mat-option>
                     </ng-container>
                   </mat-select>
                 </mat-form-field>
@@ -213,7 +210,7 @@
               #inputDescription
               [(ngModel)]="description"
               [minlength]="minLengthDescription"
-              [maxlength]="maxnLengthDescription"
+              [maxlength]="maxLengthDescription"
             ></textarea>
           </mat-form-field>
           <!--  -->
@@ -223,10 +220,11 @@
               [ngClass]="{
                 try__input:
                   description.length >= 60 && description.length <= 5000,
-                error__input: description.length > 4000
+                error__input: description.length > 5000
               }"
             >
-              Кількість символів {{ description.length }} / 5000
+              Кількість символів {{ description.length }} /
+              {{ maxLengthDescription }}
             </span>
           </div>
           <!--  -->
@@ -258,38 +256,37 @@
     <!--  -->
     <div class="new__create">
       <div class="example-button-row">
-        <!-- [disabled]="
-          !images ||
-          nameProduct.length <= 5 ||
-          !priceProduct ||
-          categoryNumber.length <= 1 ||
-          lengthKeyWords > 200 ||
-          description.length < 60 ||
-          description.length > 5000
-        " -->
         <button
           mat-raised-button
           color="primary"
           type="submit"
           *ngIf="!update"
           (click)="createProduct()"
+          [disabled]=""
         >
-          Створити
-        </button>
-      </div>
-      <!--  -->
-      <button
-        type="submit"
-        class="new__create-button"
-        *ngIf="update"
-        (click)="upProduct()"
-        [disabled]="
+          <!-- !images ||
           nameProduct.length <= 5 ||
           !priceProduct ||
           categoryNumber.length <= 1 ||
           lengthKeyWords > 200 ||
           description.length < 60 ||
-          description.length > 5000
+          description.length > 5000 ||
+          checkOptions() -->
+          Створити
+        </button>
+      </div>
+      <!--  -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        *ngIf="update"
+        (click)="upProduct()"
+        [disabled]="
+          updateProduct?.name === nameProduct &&
+          updateProduct?.price === priceProduct &&
+          updateProduct?.description === description &&
+          !updateSelectValidity
         "
       >
         Зберегти

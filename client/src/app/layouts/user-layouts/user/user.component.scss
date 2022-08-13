@@ -2,8 +2,8 @@
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
-  height: 1000px;
   &__content {
+    padding: 0;
     &-hello {
       display: flex;
       align-items: center;
@@ -47,6 +47,9 @@
     }
     &-info {
       margin-top: 25px;
+      @media screen and (max-width: 1600px) {
+        padding: 0 15px;
+      }
       .params {
         &__title {
           font-size: 24px;
@@ -57,10 +60,17 @@
             display: flex;
             align-items: center;
             margin-top: 10px;
+            @media screen and (max-width: 600px) {
+              flex-direction: column;
+              justify-content: center;
+            }
             .info {
               width: 320px;
               &__title {
                 font-size: 18px;
+                @media screen and (max-width: 600px) {
+                  margin-left: 10px;
+                }
               }
             }
             .input-width {

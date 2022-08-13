@@ -18,6 +18,7 @@ import {
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { NameQueryService } from "src/app/shared/service/name-query.service";
 import { OtherDataService } from "src/app/shared/service/other-data.service";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
@@ -36,7 +37,8 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     private catagoryName: CategoryProductService,
     private originalAndQueryName: NameQueryService,
     private showNotice: ShowNoticeService,
-    private otherData: OtherDataService
+    private otherData: OtherDataService,
+    private renameTitle: RenameTitleService
   ) {}
 
   titleSearch?: string;
@@ -191,9 +193,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           // ==============================================================================================
           this.listFilter = uniqueFilterBlock;
           // ==============================================================================================
-          this.loaderProduct = false; // Loader Main
-          this.loaderSelect = false; // Loader SideBar
-          this.loaderLine = false; // Loader Header
+          this.loader = false; // Loader
           // ==============================================================================================
         },
         (e) => {
@@ -218,6 +218,9 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
         console.log(error);
       }
     );
+    this.renameTitle.renameTitleSite(
+      this.titleSearch ? this.titleSearch : "Інтернет-магазин"
+    );
   }
 
   ngDoCheck(): void {}
@@ -231,9 +234,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   // @ElementRef('selectLimit')
 
   // Loader Site ============================================================================
-  loaderSelect: boolean = true; // Loader block Select
-  loaderProduct: boolean = true; // Loader block Product
-  loaderLine: boolean = true; // Loader block Header
+  loader: boolean = true; // Loader block Select
   // Loader Site ============================================================================
 
   // Sidebar ================================================================================
@@ -414,7 +415,10 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
+  workFunction: boolean = false;
   addRemoveFavorite(id: string | undefined) {
+    this.workFunction = true;
+    //
     if (id) {
       //
       if (this.listFavoriteUser.indexOf(id) === -1) {
@@ -422,12 +426,14 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
         this.requestUser.addFavorite(id).subscribe(
           (response) => {
+            this.workFunction = false;
             console.log(response.favorite);
             this.listFavoriteUser = response.favorite;
             this.otherData.favoriteNumber = response.favorite.length;
             this.showNotice.message(response.message);
           },
           (error) => {
+            this.workFunction = false;
             this.showNotice.message(
               "Сталася помилка на серверові. Спробуйте пізніше."
             );
@@ -439,26 +445,14 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
         this.requestUser.removeFavorite(id).subscribe(
           (response) => {
+            this.workFunction = false;
             console.log(response.favorite);
             this.listFavoriteUser = response.favorite;
             this.otherData.favoriteNumber = response.favorite.length;
             this.showNotice.message(response.message);
-
-            // this.requestUser.getFavorite().subscribe(
-            //   (responce) => {
-            //     console.log(responce);
-            //     this.listFavoriteUser = responce;
-            //   },
-            //   //
-            //   (error) => {
-            //     this.showNotice.message(
-            //       "Сталася помилка на серверові. Спробуйте пізніше."
-            //     );
-            //     console.log(error);
-            //   }
-            // );
           },
           (error) => {
+            this.workFunction = false;
             this.showNotice.message(
               "Сталася помилка на серверові. Спробуйте пізніше."
             );
@@ -466,8 +460,11 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           }
         );
       }
+      //
     } else {
+      this.workFunction = false;
     }
+    //
   }
 
   // Main Product ===========================================================================

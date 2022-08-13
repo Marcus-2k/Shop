@@ -91,3 +91,8 @@ export interface QueryParams {
   name: string;
   query: string[];
 }
+// ============================
+export interface LinkNavigate {
+  name: string;
+  link: string;
+}

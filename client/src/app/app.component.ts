@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "./shared/service/auth.service";
+import { RenameTitleService } from "./shared/service/rename-title.service";
 
 @Component({
   selector: "app-root",
@@ -7,7 +8,10 @@ import { AuthService } from "./shared/service/auth.service";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private renameTitle: RenameTitleService
+  ) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit APP");
@@ -15,5 +19,7 @@ export class AppComponent implements OnInit {
     if (potentialToken !== null) {
       this.auth.setToken(potentialToken);
     }
+
+    // this.renameTitle.renameTitleSite("Інтернет-Магазин");
   }
 }

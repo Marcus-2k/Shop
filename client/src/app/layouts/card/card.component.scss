@@ -1,0 +1,75 @@
+.card {
+  width: 100%;
+  &__content {
+    max-width: 1600px;
+    margin: 0 auto;
+    // background: gray;
+    height: 2000px;
+    @media screen and(max-width:1600px) {
+      padding: 0 15px;
+    }
+    &-breadcrumbs {
+      display: flex;
+      align-items: center;
+      padding-top: 25px;
+      span {
+        color: #4857b4;
+        cursor: context-menu;
+        font-size: 18px;
+        margin: 0 5px;
+      }
+      .breadcrumbs-item {
+        cursor: pointer;
+      }
+    }
+    &-title {
+      margin-top: 25px;
+      .card__title {
+        font-size: 48px;
+      }
+    }
+    &-navigation {
+      .nav {
+        display: flex;
+        position: relative;
+        margin: 25px 0;
+        &__item {
+          display: block;
+          text-align: center;
+          width: 160px;
+
+          font-size: 18px;
+          cursor: pointer;
+          color: #4857b4;
+          transition: 0.4s;
+        }
+        &__item-active {
+          // background-color: #b1b1b1;
+          // transition: 0.4s;
+        }
+        .nav_link_bar {
+          width: 160px;
+          height: 3px;
+          border-radius: 4px;
+          background-color: #4857b4;
+          position: absolute;
+          bottom: -5px;
+          //   transform: translateX(0px);
+          transition: 0.4s;
+          &:after {
+            content: "";
+            background-color: #b1b1b1;
+            border-radius: 4px 4px 0 0;
+            opacity: 0.5;
+            transition: 0.4s;
+            width: 100%;
+            height: 25px;
+            position: absolute;
+            top: -25px;
+            left: 0px;
+          }
+        }
+      }
+    }
+  }
+}

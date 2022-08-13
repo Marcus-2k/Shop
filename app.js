@@ -6,6 +6,9 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/accountUser");
+
+const cardRoutes = require("./routes/card.js");
+
 const searchRoutes = require("./routes/search");
 // Router END
 // Swagger START
@@ -60,6 +63,8 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/account/product", productRoutes);
 app.use("/api/account/user", userRoutes);
+
+app.use("/api/card", cardRoutes);
 
 app.use("/api/search", searchRoutes);
 

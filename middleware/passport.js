@@ -10,7 +10,6 @@ const options = {
 };
 
 module.exports = (passport) => {
-  // console.log("Passport");
   passport.use(
     new JwtStrategy(options, async (payload, done) => {
       // try {
@@ -36,7 +35,6 @@ module.exports = (passport) => {
       // console.log("Passport");
       try {
         const user = await User.findById(payload.userId).select("email id");
-        // console.log(user);
         if (user) {
           done(null, user);
         } else {

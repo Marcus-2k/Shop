@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 import { User } from "src/app/shared/interface/interfaces";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 
 @Component({
   selector: "app-user",
@@ -14,7 +15,7 @@ export class UserComponent implements OnInit {
   constructor(
     private requestUser: RequestUserService,
     private showNotice: ShowNoticeService,
-    private router: Router
+    private renameTitle: RenameTitleService
   ) {}
 
   ngOnInit(): void {
@@ -22,7 +23,6 @@ export class UserComponent implements OnInit {
 
     this.requestUser.getUserInfo().subscribe(
       (response) => {
-        console.log(response);
         this.user = response;
 
         if (response.avatar !== null) {
@@ -35,12 +35,11 @@ export class UserComponent implements OnInit {
         this.newUser.country = response.country;
         this.newUser.birthday = response.birthday;
 
-        setInterval(() => {
-          this.loader = false;
-        }, 100);
+        this.loader = false;
+        //
+        this.renameTitle.renameTitleSite("Кабінет");
       },
       (e) => {
-        // this.showNotice.message("Статлася помилка запиту");
         this.showNotice.message(e.message);
       }
     );
@@ -83,6 +82,8 @@ export class UserComponent implements OnInit {
   addAvatar() {
     this.fileAvatar?.nativeElement.click();
     // console.log(this.user);
+    console.log(this.time);
+
     console.log(this.newUser);
   }
 

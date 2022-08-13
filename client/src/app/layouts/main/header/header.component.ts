@@ -20,19 +20,25 @@ export class HeaderComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
-    this.requestUser.getFavorite().subscribe(
-      (responce) => {
-        console.log(responce);
-        this.lengthFavorite = responce.favorite.length;
-        this.otherData.favoriteNumber = responce.favorite.length;
-      },
-      (error) => {
-        this.showNotice.message(
-          "Сталася помилка на серверові. Спробуйте пізніше."
-        );
-        console.log(error);
-      }
-    );
+    console.log("Start ngOnInit HEADER");
+
+    if (this.potentialToken) {
+      // get favorite user, if user authorize
+      // console.log("Запит на токен");
+
+      this.requestUser.getFavorite().subscribe(
+        (responce) => {
+          this.lengthFavorite = responce.favorite.length;
+          this.otherData.favoriteNumber = responce.favorite.length;
+        },
+        (error) => {
+          this.showNotice.message(
+            "Сталася помилка на серверові. Спробуйте пізніше."
+          );
+          console.log(error);
+        }
+      );
+    }
   }
 
   ngDoCheck(): void {
@@ -45,7 +51,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   lengthCart: number = 0;
 
   // Щоб показувати відповідні іконки, (login / exit, account, favorite, cart)
-  potentialToken = localStorage.getItem("auth-token");
+  potentialToken: string | null = localStorage.getItem("auth-token");
 
   search(title: string) {
     this.router.navigate([`search`], {
@@ -55,8 +61,7 @@ export class HeaderComponent implements OnInit, DoCheck {
         page: 1,
       },
     });
-  } // search title >> redirect >> /search
-
+  }
   logout() {
     this.auth.logout().subscribe(
       (res) => {
