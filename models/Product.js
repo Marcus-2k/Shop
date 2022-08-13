@@ -41,6 +41,10 @@ const productSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  comments: {
+    type: Array,
+    required: false,
+  },
   user: {
     ref: "users",
     type: Schema.Types.ObjectId,

@@ -14,6 +14,11 @@ export class RequestCardService {
   private url_server: string = `http://${this.HOST}${this.PORT}/api/card`;
 
   getByIdCard(id: string): Observable<Product> {
-    return this.http.get<Product>(`${this.url_server}/product/${id}`);
+    return this.http.get<Product>(`${this.url_server}/${id}`);
+  }
+
+  getByIdCardInfo(id: string): Observable<Product> {
+    return this.http.get<Product>(`${this.url_server}/info/${id}`);
+    // return this.http.get<Product>(`${this.url_server}/${id}/info`);
   }
 }

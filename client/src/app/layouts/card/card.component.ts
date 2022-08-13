@@ -34,44 +34,51 @@ export class CardComponent implements OnInit {
     this.route.params.subscribe((value) => {
       const params = value;
       console.log(params);
+      // this.renameTitle.renameTitleSite(responce.name);
+      this.route.data.subscribe((responce: any) => {
+        console.log("Resolve");
+        console.log(responce.product);
 
-      this.requstCard.getByIdCard(params["id"]).subscribe(
-        (responce) => {
-          console.log(responce);
-          this.renameTitle.renameTitleSite(responce.name);
-
-          // Bread Crumbs
-          if (responce.category.length === 3) {
-            this.levelOne =
-              this.categoryName.categoryList[
-                responce.category[0]
-              ].nameListCategory[responce.category[1]].subNameListCategory[
-                responce.category[2]
-              ].titleSubNameListCategory;
-            this.levelTwo =
-              this.categoryName.categoryList[
-                responce.category[0]
-              ].nameListCategory[responce.category[1]].subNameCategory;
-          }
-          this.location = responce.name;
-          // Bread Crumbs
-          // Title
-          this.titleProduct = responce.name;
-          // Title
-          // Navigation
-
-          // console.log(window.location.pathname.split("/")[3]);
-
-          this.navBar(window.location.pathname.split("/")[3]);
-          // Navigation
-        },
-        (error) => {
-          this.showNotice.message(
-            "Сталася помилка на серверові. Спробуйте пізніше."
-          );
-          console.log(error);
+        // Bread Crumbs
+        if (responce.product.category.length === 3) {
+          this.levelOne =
+            this.categoryName.categoryList[
+              responce.product.category[0]
+            ].nameListCategory[
+              responce.product.category[1]
+            ].subNameListCategory[
+              responce.product.category[2]
+            ].titleSubNameListCategory;
+          this.levelTwo =
+            this.categoryName.categoryList[
+              responce.product.category[0]
+            ].nameListCategory[responce.product.category[1]].subNameCategory;
         }
-      );
+        this.location = responce.product.name;
+        // Bread Crumbs
+        // Title
+        this.titleProduct = responce.product.name;
+        // Title
+        // Navigation
+        this.navBar(window.location.pathname.split("/")[3]);
+        // Navigation
+      });
+      // =======================
+
+      // // console.log(window.location.pathname.split("/")[3]);
+
+      // =======================
+      // this.requstCard.getByIdCard(params["id"]).subscribe(
+      //   (responce) => {
+      //     console.log(responce);
+      //   },
+      //   (error) => {
+      //     this.showNotice.message(
+      //       "Сталася помилка на серверові. Спробуйте пізніше."
+      //     );
+      //     console.log(error);
+      //   }
+      // );
     });
   }
 

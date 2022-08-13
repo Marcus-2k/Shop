@@ -22,6 +22,47 @@ export interface Product {
   action: boolean;
   _id?: string; // server
   user?: string; // server
+  __v?: string | number; //server
+}
+export interface ProductInfo {
+  name: string;
+  imageSrc: string;
+  price: number;
+  category: number[];
+  options: number[];
+  optionsToString: string[];
+  queryParams: {};
+  keyWords?: [string];
+  description: string;
+  action: boolean;
+  _id?: string; // server
+  user?: string; // server
+}
+export interface ProductCharacteristics {
+  category: number[];
+  options: number[];
+  optionsToString: string[];
+  queryParams: {};
+}
+export interface ProductComments {
+  category: number[];
+  options: number[];
+  optionsToString: string[];
+  queryParams: {};
+}
+
+export interface ProductPhoto {
+  category: number[];
+  options: number[];
+  optionsToString: string[];
+  queryParams: {};
+}
+
+export interface ProductAccessories {
+  category: number[];
+  options: number[];
+  optionsToString: string[];
+  queryParams: {};
 }
 
 export interface User {
@@ -33,25 +74,7 @@ export interface User {
   country: string;
 }
 
-export interface userResponse {
-  _id: string | null;
-  avatar: string;
-  name: string | null;
-  lastName: string | null;
-  email: string | null;
-  birthday: string | null;
-  country: number;
-}
-
-export interface oldUserResponse {
-  avatar: string;
-  name: string | null;
-  lastName: string | null;
-  birthday: string | null;
-  country: number;
-}
-
-// ==================================
+// Category ==================================
 export interface CategoryProduct {
   nameCategory: string;
   nameListCategory: CategorList[];
@@ -69,8 +92,8 @@ export interface Options {
   htmlElement: "select"; // html tag
   select: string[]; // field for option select
 }
+// Category ==================================
 
-// ==================================
 export interface FilterNameParams {
   name: string;
   params: string[];
@@ -91,6 +114,7 @@ export interface QueryParams {
   name: string;
   query: string[];
 }
+
 // ============================
 export interface LinkNavigate {
   name: string;

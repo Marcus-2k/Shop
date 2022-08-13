@@ -5,10 +5,12 @@ import { RouterModule, Routes } from "@angular/router";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-// Service, Pipe, Guard, Token, Class.
+// Service, Pipe, Guard, Token, Class, Resolver
 import { AuthGuard } from "./shared/guard/auth.guard";
 import { PricePipe } from "./shared/pipe/price.pipe";
 import { TokenInterceptor } from "./shared/classes/token.interseptor";
+import { CardResolver } from "./layouts/card/card.resolver";
+import { CardInfoResolver } from "./layouts/card/card-info/card-info.resolver";
 
 // Lead Component
 import { AppComponent } from "./app.component";
@@ -40,7 +42,7 @@ import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newslet
 // Angular Material UI
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MaterialModule } from "./shared/material/material.module";
-import { InfoComponent } from "./layouts/card/info/info.component";
+// import { InfoComponent } from "./layouts/card/info/info.component";
 // Card ========================================================================================================================
 import { CardComponent } from "./layouts/card/card.component";
 // Card >>> Info
@@ -109,30 +111,51 @@ const appRoutes: Routes = [
   {
     path: "card/:id",
     component: CardComponent,
+    resolve: {
+      product: CardResolver,
+    },
     children: [
       {
         path: "info",
         component: CardInfoComponent,
+        resolve: {
+          productInfo: CardInfoResolver,
+        },
       },
       {
         path: "characteristics",
         component: CardCharacteristicsComponent,
+        // resolve: {
+        // productCharacteristics: CardCharacteristicsResolver,
+        // },
       },
       {
         path: "comments",
         component: CardCommentsComponent,
+        // resolve: {
+        // productComments: CardCommentsResolver,
+        // },
       },
       {
         path: "questions",
         component: CardQuestionsComponent,
+        // resolve: {
+        // productQuestions: CardQuestionsResolver,
+        // },
       },
       {
         path: "photo",
         component: CardPhotoComponent,
+        // resolve: {
+        // productPhoto: CardPhotoResolver,
+        // },
       },
       {
         path: "accessories",
         component: CardAccessoriesComponent,
+        // resolve: {
+        // productAccessories: CardAccessoriesResolver,
+        // },
       },
     ],
   },
@@ -161,11 +184,14 @@ const appRoutes: Routes = [
     UserComponent,
     PricePipe,
     NewslettersComponent,
+    // Card
     CardComponent,
-    InfoComponent,
+    CardInfoComponent,
+    CardCharacteristicsComponent,
     CardCommentsComponent,
     CardQuestionsComponent,
     CardPhotoComponent,
+    CardAccessoriesComponent,
   ],
   imports: [
     BrowserModule,
