@@ -8,7 +8,7 @@ const productSchema = new Schema({
   },
   imageSrc: {
     type: String,
-    default: "",
+    required: true,
   },
   price: {
     type: Number,
@@ -43,7 +43,20 @@ const productSchema = new Schema({
   },
   comments: {
     type: Array,
-    required: false,
+    required: true,
+  },
+  counter: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: Number,
+    required: true,
+  },
+  seller: {
+    // ref:'seller',
+    type: Schema.Types.ObjectId,
+    require: true,
   },
   user: {
     ref: "users",

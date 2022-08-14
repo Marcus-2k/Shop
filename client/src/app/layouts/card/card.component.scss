@@ -42,10 +42,13 @@
           cursor: pointer;
           color: #4857b4;
           transition: 0.4s;
+
+          .info__number {
+            color: #000;
+            margin-left: 5px;
+          }
         }
         &__item-active {
-          // background-color: #b1b1b1;
-          // transition: 0.4s;
         }
         .nav_link_bar {
           width: 160px;
@@ -54,7 +57,6 @@
           background-color: #4857b4;
           position: absolute;
           bottom: -5px;
-          //   transform: translateX(0px);
           transition: 0.4s;
           &:after {
             content: "";

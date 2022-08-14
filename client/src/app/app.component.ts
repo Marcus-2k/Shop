@@ -8,10 +8,7 @@ import { RenameTitleService } from "./shared/service/rename-title.service";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private auth: AuthService,
-    private renameTitle: RenameTitleService
-  ) {}
+  constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit APP");

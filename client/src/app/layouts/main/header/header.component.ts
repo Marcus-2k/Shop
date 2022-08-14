@@ -23,11 +23,16 @@ export class HeaderComponent implements OnInit, DoCheck {
     console.log("Start ngOnInit HEADER");
 
     if (this.potentialToken) {
+      console.log("Token True");
+
       // get favorite user, if user authorize
       // console.log("Запит на токен");
 
       this.requestUser.getFavorite().subscribe(
         (responce) => {
+          console.log("responce.favorite");
+          console.log(responce.favorite);
+          this.otherData.favoriteListUser = responce.favorite;
           this.lengthFavorite = responce.favorite.length;
           this.otherData.favoriteNumber = responce.favorite.length;
         },

@@ -15,6 +15,8 @@ export class CardResolver implements Resolve<Product> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Product> | Promise<Product> | Product {
+    // console.log("Start CardResolver");
+
     return this.requestCard.getByIdCard(route.params["id"]);
   }
 }

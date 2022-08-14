@@ -33,12 +33,12 @@ export class CardComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((value) => {
       const params = value;
-      console.log(params);
-      // this.renameTitle.renameTitleSite(responce.name);
+      // console.log(params);
       this.route.data.subscribe((responce: any) => {
-        console.log("Resolve");
-        console.log(responce.product);
+        console.log("Start ngOnInit Card");
+        // console.log(responce.product);
 
+        this.renameTitle.renameTitleSite(responce.product.name);
         // Bread Crumbs
         if (responce.product.category.length === 3) {
           this.levelOne =

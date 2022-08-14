@@ -80,7 +80,7 @@ module.exports.editUser = async function (req, res) {
 
 module.exports.getFavorite = async function (req, res) {
   try {
-    console.log("Server getFavorite");
+    console.log("Server getFavoriteById");
     const toker_decode = jwt_decode(req.headers.authorization);
 
     const userFavorite = await User.findOne(
@@ -89,6 +89,7 @@ module.exports.getFavorite = async function (req, res) {
       { _id: toker_decode.userId }
     );
 
+    console.log(userFavorite);
     res.status(200).json({ favorite: userFavorite.favorite });
   } catch (error) {
     console.log(error);

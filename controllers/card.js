@@ -14,9 +14,9 @@ module.exports.getByIdCardInfo = async function (req, res) {
   console.log("Server getByIdCardInfo");
   try {
     console.log(req.params);
-    console.log(req.query);
-    // const product = await Product.findById(req.params.id);
-    res.status(200).json({ message: "sdaasdsasd" });
+    const product = await Product.findById(req.params.id);
+    res.status(200).json(product);
+    // res.status(200).json({ message: "s" });
   } catch (error) {
     console.log(error);
   }

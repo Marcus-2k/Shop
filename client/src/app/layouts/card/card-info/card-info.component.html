@@ -1,8 +1,107 @@
 <!--  -->
+<div *ngIf="loader" class="content-element-center">
+  <mat-spinner></mat-spinner>
+</div>
 
 <div class="card__info">
-  <div class="card__info-content">
-    <div class="card__info-content-img"></div>
-    <div class="card__info-content-info"></div>
+  <div class="card__info-content" *ngIf="!loader">
+    <div class="card__info-content-img">
+      <img [src]="url_server_folder + productInfo?.imageSrc" alt="" />
+    </div>
+    <div class="card__info-content-info">
+      <div class="info">
+        <div class="info__container-unique__params"></div>
+        <div class="info__container-status">
+          <div class="status__item in_stock" *ngIf="productInfo?.status === 0">
+            <span class="material-symbols-outlined"> check_circle </span>
+            <p>В наявності</p>
+          </div>
+          <div class="status__item time" *ngIf="productInfo?.status === 1">
+            <span class="material-symbols-outlined"> schedule </span>
+            <p>Очікується постачання</p>
+          </div>
+          <div class="status__item end" *ngIf="productInfo?.status === 2">
+            <span class="material-symbols-outlined"> do_not_disturb_on </span>
+            <p>Немає в наяності</p>
+          </div>
+          <div class="status__item ends" *ngIf="productInfo?.status === 3">
+            <span class="material-symbols-outlined"> schedule </span>
+            <p>Закінчується</p>
+          </div>
+        </div>
+        <div class="info__container-price">
+          <div class="price">
+            <p class="price__title">
+              {{ productInfo?.price | price }}
+              <span class="price__title-currency">₴</span>
+            </p>
+            <button class="price__button" mat-raised-button color="primary">
+              <span class="material-symbols-outlined"> shopping_cart </span
+              >Придбати
+            </button>
+            <div class="favorite__compare">
+              <p class="favorite">
+                <button
+                  class="favorite__button"
+                  (click)="addRemoveFavorite(productInfo?._id)"
+                  [disabled]="workFunction"
+                >
+                  <span
+                    class="material-symbols-outlined"
+                    [ngClass]="{
+                      material_symbols_outlined_like: checkedFavorite(
+                        productInfo?._id
+                      )
+                    }"
+                  >
+                    favorite
+                  </span>
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="info__container-recommendation">
+          <div class="recommendation"></div>
+        </div>
+        <div class="info__container-seller">
+          <div class="seller">
+            <div class="seller__title">
+              <p class="seller__title-placeholder">Продавець:</p>
+              <p class="seller__title-name">ROZETKA</p>
+            </div>
+            <div class="seller__logo"></div>
+            <!-- <div class="seller__logo" *ngIf="productInfo?.seller.logo"></div> -->
+          </div>
+        </div>
+        <div class="info__container-payment">
+          <div class="payment">
+            <div class="payment__logo">
+              <span class="material-symbols-outlined">
+                account_balance_wallet
+              </span>
+            </div>
+            <div class="payment__info">
+              <span class="payment__info-title">Оплата.</span>
+              Оплата при отриманні товару, Картою онлайн, Google Pay,
+              Безготівковими для юридичних осіб, Сплатити онлайн соціальною
+              карткою "Пакунок малюка", Безготівковими для фізичних осіб, Apple
+              Pay, ., Оплатити онлайн карткою "єПідтримка", PrivatPay
+            </div>
+          </div>
+        </div>
+        <div class="info__container-guarantee">
+          <div class="guarantee">
+            <div class="guarantee__logo">
+              <span class="material-symbols-outlined"> verified_user </span>
+            </div>
+            <div class="guarantee__info">
+              <span class="guarantee__info-title">Гарантія.</span>
+              38 місяців. Обмін/повернення товару протягом 14 днів
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

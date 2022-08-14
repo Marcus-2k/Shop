@@ -22,6 +22,11 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   controller.getFavorite
 );
+// router.get(
+//   "/get/favorite/:id",
+//   passport.authenticate("jwt", { session: false }),
+//   controller.getFavoriteById
+// );
 
 router.post(
   "/add/favorite",

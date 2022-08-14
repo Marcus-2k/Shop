@@ -3,12 +3,11 @@ export interface UserRegister {
   email: string;
   password: string;
 }
-
 export interface UserLogin {
   email: string;
   password: string;
 }
-
+// Product =======================================
 export interface Product {
   name: string;
   imageSrc: string;
@@ -19,7 +18,9 @@ export interface Product {
   queryParams: {};
   keyWords?: [string];
   description: string;
-  action: boolean;
+  action: Boolean;
+  counter: Number;
+  status: 0 | 1 | 2 | 3;
   _id?: string; // server
   user?: string; // server
   __v?: string | number; //server
@@ -34,8 +35,10 @@ export interface ProductInfo {
   queryParams: {};
   keyWords?: [string];
   description: string;
-  action: boolean;
-  _id?: string; // server
+  action: Boolean;
+  counter: Number;
+  status: 0 | 1 | 2 | 3;
+  _id: string; // server
   user?: string; // server
 }
 export interface ProductCharacteristics {
@@ -50,20 +53,25 @@ export interface ProductComments {
   optionsToString: string[];
   queryParams: {};
 }
-
+export interface ProductQuestions {
+  category: number[];
+  options: number[];
+  optionsToString: string[];
+  queryParams: {};
+}
 export interface ProductPhoto {
   category: number[];
   options: number[];
   optionsToString: string[];
   queryParams: {};
 }
-
 export interface ProductAccessories {
   category: number[];
   options: number[];
   optionsToString: string[];
   queryParams: {};
 }
+// Product =======================================
 
 export interface User {
   avatar: string | null | ArrayBuffer;
