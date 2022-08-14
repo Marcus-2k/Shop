@@ -1,3 +1,5 @@
+import { Params } from "@angular/router";
+// Auth ==========================================
 export interface UserRegister {
   name: string;
   email: string;
@@ -7,6 +9,15 @@ export interface UserLogin {
   email: string;
   password: string;
 }
+// Auth ==========================================
+
+// Seller ========================================
+export interface Seller {
+  name: string;
+  logo: string;
+}
+// Seller ========================================
+
 // Product =======================================
 export interface Product {
   name: string;
@@ -15,7 +26,7 @@ export interface Product {
   category: number[];
   options: number[];
   optionsToString: string[];
-  queryParams: {};
+  queryParams: Params;
   keyWords?: [string];
   description: string;
   action: Boolean;
@@ -32,7 +43,7 @@ export interface ProductInfo {
   category: number[];
   options: number[];
   optionsToString: string[];
-  queryParams: {};
+  queryParams: Params;
   keyWords?: [string];
   description: string;
   action: Boolean;

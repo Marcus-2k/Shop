@@ -15,6 +15,7 @@
     <div class="product__content">
       <!--  -->
       <div class="product__content-body">
+        <!-- ============================================================== -->
         <div class="new__photo">
           <div class="example-button-row">
             <button mat-raised-button color="primary" (click)="triggerClick()">
@@ -58,10 +59,57 @@
               class="price__input"
               #inputPrice
               required
+              placeholder="3 489"
               [(ngModel)]="priceProduct"
             />
           </mat-form-field>
           <!--  -->
+        </div>
+        <!-- ============================================================== -->
+        <div class="new__action">
+          <mat-checkbox [(ngModel)]="action">Акція на товар</mat-checkbox>
+          <div class="new__action-price__procent" *ngIf="action">
+            <!-- <p *ngIf="actionProcent >= minActionProcent"> -->
+            <p *ngIf="actionProcent <= minActionProcent">
+              Знижка {{ actionProcent }}%
+            </p>
+            <p *ngIf="actionProcent > minActionProcent">
+              Мінімальна знижка на товар {{ minActionProcent }}%
+            </p>
+          </div>
+          <div class="new__action-price" *ngIf="action">
+            <mat-form-field
+              class="example-full-width width-input"
+              appearance="fill"
+            >
+              <mat-label>Акційна ціна</mat-label>
+              <input
+                matInput
+                type="number"
+                class="price__input-action"
+                required
+                [(ngModel)]="actionPrice"
+                #actionPriceInput
+                (ngModelChange)="procentActionNumber(actionPriceInput.value)"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- ============================================================== -->
+        <div class="new__counter">
+          <mat-form-field
+            class="example-full-width width-input"
+            appearance="fill"
+          >
+            <mat-label>Кількість товару в наявності</mat-label>
+            <input
+              matInput
+              [(ngModel)]="counterProduct"
+              type="number"
+              class="counter__input"
+              required
+            />
+          </mat-form-field>
         </div>
         <!-- ============================================================== -->
         <div class="new__category">
@@ -132,6 +180,62 @@
               </div>
             </ng-container>
           </div>
+        </div>
+        <!-- ============================================================== -->
+        <div class="new__unique__params" *ngIf="categorySelected">
+          <p class="new__unique__params-title">Ключовий параметр*</p>
+          <mat-form-field appearance="fill">
+            <mat-label>Ключовий параметр</mat-label>
+            <mat-select
+              disableRipple
+              class="select__params"
+              #selectedValue
+              [(ngModel)]="uniqueParamsNumber"
+              required
+            >
+              <mat-option
+                [value]="idx"
+                *ngFor="let unique of uniqueParams; let idx = index"
+                >{{ unique }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- ============================================================== -->
+        <div class="new__status">
+          <mat-form-field appearance="fill">
+            <mat-label>Статус товару</mat-label>
+            <mat-select
+              disableRipple
+              class="select__params"
+              required
+              [(ngModel)]="statusNumber"
+            >
+              <mat-option [value]="0">В наявності</mat-option>
+              <mat-option [value]="1">Очікується постачання</mat-option>
+              <mat-option [value]="2">Немає в наявності</mat-option>
+              <mat-option [value]="3">Закінчується</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- ============================================================== -->
+        <div class="new__seller">
+          <mat-form-field appearance="fill">
+            <mat-label>Вибиріть продавця</mat-label>
+            <mat-select
+              disableRipple
+              class="select__params"
+              [(ngModel)]="sellerNumber"
+              required
+            >
+              <mat-option [value]="0">Від свого імені</mat-option>
+              <mat-option
+                [value]="idx + 1"
+                *ngFor="let seller of sellerList; let idx = index"
+                >{{ seller.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
         </div>
         <!-- ============================================================== -->
         <div class="new__words">
@@ -229,6 +333,7 @@
           </div>
           <!--  -->
         </div>
+        <!-- ============================================================== -->
       </div>
       <!--  -->
       <div class="product__content-photo">
@@ -262,16 +367,22 @@
           type="submit"
           *ngIf="!update"
           (click)="createProduct()"
-          [disabled]=""
+          [disabled]="
+            !images ||
+            nameProduct.length <= 5 ||
+            !priceProduct ||
+            actionProcent > minActionProcent ||
+            counterProduct <= 0 ||
+            statusNumber <= -1 ||
+            sellerNumber <= -1 ||
+            categoryNumber.length <= 1 ||
+            !updateSelectValidity ||
+            uniqueParamsNumber <= -1 ||
+            lengthKeyWords > 200 ||
+            description.length < 60 ||
+            description.length > 5000
+          "
         >
-          <!-- !images ||
-          nameProduct.length <= 5 ||
-          !priceProduct ||
-          categoryNumber.length <= 1 ||
-          lengthKeyWords > 200 ||
-          description.length < 60 ||
-          description.length > 5000 ||
-          checkOptions() -->
           Створити
         </button>
       </div>

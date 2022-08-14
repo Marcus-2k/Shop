@@ -42,7 +42,7 @@ module.exports.create = async function (req, res) {
       // optionsToString[idx] = [element];
       optionsToString[idx] = element;
     });
-    console.log(optionsToString);
+    // console.log(optionsToString);
     // =========================
     const params = req.body.queryParams.split(",");
     const queryParams = {};
@@ -52,7 +52,7 @@ module.exports.create = async function (req, res) {
         queryParams[element] = params[idx];
       }
     });
-    console.log(queryParams);
+    // console.log(queryParams);
     // ====================================================================
 
     const product = new Product({
@@ -70,7 +70,7 @@ module.exports.create = async function (req, res) {
     });
 
     console.log(product);
-    await product.save();
+    // await product.save();
     res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
     res

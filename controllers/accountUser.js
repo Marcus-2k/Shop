@@ -88,8 +88,6 @@ module.exports.getFavorite = async function (req, res) {
       { favorite: 1, _id: 0 },
       { _id: toker_decode.userId }
     );
-
-    console.log(userFavorite);
     res.status(200).json({ favorite: userFavorite.favorite });
   } catch (error) {
     console.log(error);

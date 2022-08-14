@@ -15,11 +15,13 @@ import {
   CategoryProduct,
   Options,
   Product,
+  Seller,
 } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { NameQueryService } from "src/app/shared/service/name-query.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
+import { RequestSellerService } from "src/app/shared/service/server/request-seller.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
@@ -31,6 +33,7 @@ export class ProductNewComponent implements OnInit {
   constructor(
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
+    private requestSeller: RequestSellerService,
     private categoryName: CategoryProductService,
     private route: ActivatedRoute,
     private nameOptions: NameQueryService,
@@ -63,7 +66,19 @@ export class ProductNewComponent implements OnInit {
       }
     });
     //
-
+    this.requestSeller.getSeller().subscribe(
+      (responce) => {
+        console.log(responce);
+        this.sellerList = responce;
+      },
+      (error) => {
+        this.showNotice.message(
+          "Сталася помилка на серверові. Спробуйте пізніше."
+        );
+        console.log(error);
+      }
+    );
+    //
     this.originalName = this.nameOptions.originalName;
     this.nameQueryParams = this.nameOptions.nameForServer;
     //
@@ -120,8 +135,10 @@ export class ProductNewComponent implements OnInit {
 
   test() {
     // console.log(this.optionsListNumber);
-    console.log(this.upNewParameters);
-    this.checkingKeyWordsNew();
+    // console.log(this.upNewParameters);
+    // this.checkingKeyWordsNew();
+    console.log(this.action);
+    console.log(this.actionPrice.toString());
   }
 
   // Update product END ====
@@ -163,13 +180,31 @@ export class ProductNewComponent implements OnInit {
   nameProduct: string = "";
   // Name END ====
 
+  // Price Start ====
+  priceProduct: number = 3300;
+  // Price END ====
+
   // Action Start ====
-  action: 0 | 1 = 0;
+  action: boolean = false;
+  actionProcent = -10;
+  minActionProcent = -5;
+  actionPrice: number = 2970;
+  procentActionNumber(value: string) {
+    console.log(Number(value));
+    // let newAction = Math.round(
+    //   (100 * (this.actionPrice - this.priceProduct)) / this.priceProduct
+    // );
+    // this.actionProcent = newAction;
+    let newAction: number =
+      (100 * (this.actionPrice - this.priceProduct)) / this.priceProduct;
+    let newActionFixed = newAction.toFixed(2);
+    this.actionProcent = Number(newActionFixed);
+  }
   // Action END ====
 
-  // Price Start ====
-  priceProduct?: number;
-  // Price END ====
+  // Counter START ====
+  counterProduct: number = 1;
+  // Counter END ====
 
   // Popuap Select Category START ====
   categoryList: CategoryProduct[] = []; // Category List
@@ -315,6 +350,12 @@ export class ProductNewComponent implements OnInit {
         this.categoryNumber[1]
       ].subNameListCategory[this.categoryNumber[2]].options;
     this.recordOptionsInArray();
+
+    //
+    this.uniqueParams.push("Параметр відсутній");
+    this.characteristics.forEach((element) => {
+      this.uniqueParams.push(element.name);
+    });
   } // Отримуємо характеристики для опису товара за його категорією
   recordOptionsInArray() {
     this.characteristics.forEach((element, idx) => {
@@ -324,9 +365,11 @@ export class ProductNewComponent implements OnInit {
   }
   resetOptions() {
     this.characteristics = [];
-    // if (this.update) {
+
     this.optionsListNumber = [];
-    // }
+
+    this.uniqueParams = [];
+    this.uniqueParamsNumber = 0;
   } // Видалення характеристик
   // Options END ====
 
@@ -335,6 +378,20 @@ export class ProductNewComponent implements OnInit {
   originalName: string[] = [];
   nameQueryParams: string[] = [];
   // queryParams END ====
+
+  // Unique Params START ====
+  uniqueParams: string[] = [];
+  uniqueParamsNumber: number = -1;
+  // Unique Params END ====
+
+  // Status START ====
+  statusNumber: number = -1;
+  // Status END ====
+
+  // Seller START ====
+  sellerList: Seller[] = [];
+  sellerNumber: number = -1;
+  // Seller END ====
 
   // Key Words START ====
   keyWords: string[] = []; // Ключові слова.
@@ -472,10 +529,20 @@ export class ProductNewComponent implements OnInit {
       formData.append("image", this.images, this.images.name); // Add photo product
       formData.append("name", this.nameProduct); // Add name product
       formData.append("price", String(this.priceProduct)); // Add price product (type string)
+      if (this.action) {
+        formData.append("action", "1");
+        formData.append("actionPrice", this.actionPrice.toString());
+      } else {
+        formData.append("action", "0");
+      }
+      formData.append("counter", this.counterProduct.toString());
       formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
       formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
       formData.append("optionsToString", optionsToString.join(","));
       formData.append("queryParams", Object.entries(params).join(","));
+      formData.append("uniqueParams", this.uniqueParams.toString());
+      formData.append("status", this.statusNumber.toString());
+      formData.append("seller", this.sellerNumber.toString());
       formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
       formData.append("description", this.description); // Add description (type string)
       formData.append("action", this.action.toString()); // Add action (type string)

@@ -30,11 +30,6 @@ export class RequestUserService {
       `${this.url_server}/user/get/favorite`
     );
   }
-  // getFavoriteByID(id: string): Observable<{ favorite: Boolean }> {
-  //   return this.http.get<{ favorite: Boolean }>(
-  //     `${this.url_server}/user/get/favorite/${id}`
-  //   );
-  // }
 
   addFavorite(id: string): Observable<{ favorite: string[]; message: string }> {
     return this.http.post<{ favorite: string[]; message: string }>(
