@@ -107,7 +107,7 @@
           <mat-card class="example-card" XSmall>
             <div class="image">
               <img
-                [src]="url_server_folder + product.imageSrc"
+                [src]="url_server_folder + product.imageSrc[0]"
                 class="image__src"
                 [routerLink]="'/card/' + product._id + '/info/'"
                 style="cursor: pointer"

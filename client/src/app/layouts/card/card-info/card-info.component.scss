@@ -80,12 +80,46 @@
               display: flex;
               align-items: center;
               height: 80px;
-              &__title {
-                font-size: 24px;
-                margin: 0;
-                margin-right: 15px;
-                &-currency {
+              &__info {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                .price__action {
+                  position: absolute;
+                  top: -40px;
+                  left: 0;
+
+                  color: #b1b1b1;
                   font-size: 18px;
+                  margin: 0;
+                  margin-right: 15px;
+                  background-color: #e5e5e5;
+                  margin: 0;
+                  &::after {
+                    content: "";
+                    top: 40%;
+                    left: 0px;
+                    position: absolute;
+                    background-color: #b1b1b1;
+                    width: 100%;
+                    height: 1px;
+                    border-radius: 4px;
+                  }
+                  .price__title-currency {
+                    font-size: inherit;
+                  }
+                }
+                .price__title {
+                  font-size: 24px;
+                  margin: 0;
+                  margin-right: 15px;
+                  &-currency {
+                    font-size: 18px;
+                  }
+                }
+                .action {
+                  color: red;
                 }
               }
               &__button {
@@ -141,7 +175,6 @@
               border: 1px solid #b1b1b1;
               padding: 10px;
               border-radius: 4px;
-              //   height: 100px;
               display: flex;
               align-items: center;
               justify-content: space-between;
@@ -162,7 +195,13 @@
               &__logo {
                 width: 200px;
                 height: 40px;
-                background: #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img {
+                  max-width: 100%;
+                  max-height: 100%;
+                }
               }
             }
           }

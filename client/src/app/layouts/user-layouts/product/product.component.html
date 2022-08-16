@@ -18,7 +18,7 @@
       <div class="card" *ngFor="let product of productList; let i = index">
         <mat-card XSmall>
           <div class="image">
-            <img [src]="url_server + product.imageSrc" class="image__src" />
+            <img [src]="url_server + product.imageSrc[0]" class="image__src" />
           </div>
           <mat-card-content>
             <div class="mat-title">
@@ -31,7 +31,7 @@
               </p>
             </div>
             <div class="price">
-              <p class="mat-subheading-1">{{ product.price | price }}грн.</p>
+              <p class="mat-subheading-1">{{ product.price | price }}&#8372;</p>
             </div>
           </mat-card-content>
           <mat-card-actions>

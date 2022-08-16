@@ -7,7 +7,7 @@ module.exports.getUserInfo = async function (req, res) {
     // console.log(req.user);
     const user = await User.findOne(
       {},
-      { password: 0, __v: 0, _id: 0 },
+      { password: 0, __v: 0, _id: 1 },
       { _id: req.user.id }
     );
     // console.log(user);
@@ -168,5 +168,5 @@ function deleteImgFromFolder(linkImg) {
     } else {
       console.log(`Deleted file: ${linkImg}`);
     }
-  }); // Delete img, in folder
+  }); // Delete img, in folder uploads
 }

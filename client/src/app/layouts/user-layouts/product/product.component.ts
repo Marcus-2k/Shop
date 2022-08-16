@@ -21,9 +21,6 @@ export class ProductComponent implements OnInit {
   /* Development */
   url_server = "http://localhost:5000/";
 
-  // Loader site
-  loader: boolean = true;
-
   ngOnInit(): void {
     console.log("Start ngOnInit PRODUCT");
 
@@ -52,9 +49,9 @@ export class ProductComponent implements OnInit {
       }
     );
   }
-  test() {
-    console.log(this.productList);
-  }
+
+  // Loader site
+  loader: boolean = false;
 
   productList: Product[] = [];
   categoryList: any = [];

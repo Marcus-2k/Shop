@@ -1,4 +1,6 @@
 const Product = require("../models/Product");
+const Seller = require("../models/Seller");
+const User = require("../models/User");
 const fs = require("fs");
 
 module.exports.getAllProduct = async function (req, res) {
@@ -24,26 +26,38 @@ module.exports.getById = async function (req, res) {
 module.exports.create = async function (req, res) {
   console.log("Server create");
   try {
+    // console.log(req.files);
+
+    // Images ====================================================================
+    const files = Object.values(req.files);
+    const imageSrc = [];
+    files.forEach((image) => {
+      imageSrc.push(image[0].path);
+    });
+
+    // KeyWords ====================================================================
     const keyWords = req.body.keyWords.split(" ");
 
+    // Category ====================================================================
     const category = req.body.category.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
     category.forEach((element, idx) => {
       category[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
 
+    // Options ====================================================================
     const options = req.body.options.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
     options.forEach((element, idx) => {
       options[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
 
-    // ====================================================================
+    // OptionsToString ====================================================================
     const optionsToString = req.body.optionsToString.split(",");
     optionsToString.forEach((element, idx) => {
       // optionsToString[idx] = [element];
       optionsToString[idx] = element;
     });
-    // console.log(optionsToString);
-    // =========================
+
+    // QueryParams ====================================================================
     const params = req.body.queryParams.split(",");
     const queryParams = {};
     params.forEach((element, idx) => {
@@ -52,25 +66,35 @@ module.exports.create = async function (req, res) {
         queryParams[element] = params[idx];
       }
     });
-    // console.log(queryParams);
-    // ====================================================================
 
+    // Status ====================================================================
+    const status = Number(req.body.status);
+
+    // ActionPrice ====================================================================
+    const action = Boolean(Number(req.body.action));
+    const actionPrice = action === true ? Number(req.body.actionPrice) : -1;
+
+    console.log("=============================================");
     const product = new Product({
+      imageSrc,
       name: req.body.name,
-      imageSrc: req.file.path,
       price: req.body.price,
+      action,
+      actionPrice,
+      counter: Number(req.body.counter),
       category,
       options,
       optionsToString,
       queryParams,
+      status,
+      seller: req.body.seller,
       keyWords,
       description: req.body.description,
-      action: Boolean(Number(req.body.action)),
       user: req.user.id,
     });
 
     console.log(product);
-    // await product.save();
+    await product.save();
     res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
     res
@@ -177,7 +201,7 @@ module.exports.delete = async function (req, res) {
   try {
     const productImg = await Product.findById(req.params.id);
 
-    deleteImg(productImg.imageSrc); // Delete file from folder uploads
+    deleteImgFromFolder(productImg.imageSrc); // Delete file from folder uploads
 
     await Product.remove({ _id: req.params.id }); // Delete cart in DB
 
@@ -196,5 +220,5 @@ function deleteImgFromFolder(linkImg) {
     } else {
       console.log(`Deleted file: ${linkImg}`);
     }
-  }); // Delete img, in folder
+  }); // Delete img, in folder uploads
 }

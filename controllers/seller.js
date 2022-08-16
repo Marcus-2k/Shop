@@ -10,3 +10,13 @@ module.exports.getSeller = async function (req, res) {
     console.log(error);
   }
 };
+
+module.exports.getSellerById = async function (req, res) {
+  console.log("Server getSellerById");
+  try {
+    const seller = await Seller.findById(req.params.id);
+    res.status(200).json(seller);
+  } catch (error) {
+    console.log(error);
+  }
+};

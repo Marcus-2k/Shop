@@ -1,10 +1,16 @@
 import { Component, DoCheck, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Product, ProductInfo } from "src/app/shared/interface/interfaces";
+import { ProductInfo, Seller } from "src/app/shared/interface/interfaces";
+
+import Swiper from "swiper";
+
 import { AuthService } from "src/app/shared/service/auth.service";
 import { OtherDataService } from "src/app/shared/service/other-data.service";
+
 import { RequestCardService } from "src/app/shared/service/server/request-card.service";
+import { RequestSellerService } from "src/app/shared/service/server/request-seller.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
+
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
@@ -19,6 +25,7 @@ export class CardInfoComponent implements OnInit, DoCheck {
     private requestCard: RequestCardService,
     private showNotice: ShowNoticeService,
     private requestUser: RequestUserService,
+    private requestSeller: RequestSellerService,
     private otherData: OtherDataService
   ) {}
 
@@ -32,6 +39,18 @@ export class CardInfoComponent implements OnInit, DoCheck {
         console.log(responce);
         this.productInfo = responce;
         this.loader = false;
+
+        this.requestSeller.getSellerById(responce.seller).subscribe(
+          (responce: Seller) => {
+            this.seller = responce;
+          },
+          (error) => {
+            this.showNotice.message(
+              "Сталася помилка на серверові. Спробуйте пізніше."
+            );
+            console.log(error);
+          }
+        );
       },
       (error) => {
         this.showNotice.message(
@@ -46,21 +65,16 @@ export class CardInfoComponent implements OnInit, DoCheck {
 
     // Favorite
   }
-  ngDoCheck(): void {
-    // const potentialToken: string | null = localStorage.getItem("auth-token");
-    // if (potentialToken) {
-    //   this.authorize = true;
-    // } else {
-    //   this.authorize = false;
-    // }
-  }
-  // authorize: boolean = false;
+  ngDoCheck(): void {}
+  url_server_folder: string = "http://localhost:5000/";
 
   loader: boolean = true;
 
   productInfo?: ProductInfo;
+  seller?: Seller;
 
-  url_server_folder: string = "http://localhost:5000/";
+  // Slider
+  // swiper = new Swiper(); // Optional parameters
 
   listFavoriteUser: string[] = [];
   checkedFavorite(productID: string | undefined): Boolean {

@@ -1,22 +1,32 @@
-<!--  -->
-<button (click)="test()">
-  TESTsssssssssssssssssssssssssssssssssssssssssssssssssssss
-</button>
+<!-- -->
 <div class="new">
   <div class="form">
     <input
       type="file"
       #inputFile
+      multiple
+      [max]="maxCounterFile"
       class="input__file product__input"
       (change)="onFileUpload($event)"
       accept="image/jpeg,image/png"
     />
     <!--  -->
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="test()"
+      style="margin-left: 15px"
+    >
+      TEST FUNCTION
+    </button>
     <div class="product__content">
-      <!--  -->
       <div class="product__content-body">
         <!-- ============================================================== -->
-        <div class="new__photo">
+        <div class="new__item new__photo">
+          <div class="new__item-title">
+            <p class="title">Фото вашого товару*</p>
+          </div>
+
           <div class="example-button-row">
             <button mat-raised-button color="primary" (click)="triggerClick()">
               Завантажити фото
@@ -29,7 +39,10 @@
           >
         </div>
         <!-- ============================================================== -->
-        <div class="new__name">
+        <div class="new__item new__name">
+          <div class="new__item-title">
+            <p class="title">Назва товару*</p>
+          </div>
           <mat-form-field
             class="example-full-width width-input"
             appearance="fill"
@@ -46,8 +59,10 @@
           </mat-form-field>
         </div>
         <!-- ============================================================== -->
-        <div class="new__price">
-          <!--  -->
+        <div class="new__item new__price">
+          <div class="new__item-title">
+            <p class="title">Ціна товару*</p>
+          </div>
           <mat-form-field
             class="example-full-width width-input"
             appearance="fill"
@@ -61,15 +76,18 @@
               required
               placeholder="3 489"
               [(ngModel)]="priceProduct"
+              (ngModelChange)="procentActionNumber()"
             />
           </mat-form-field>
           <!--  -->
         </div>
         <!-- ============================================================== -->
-        <div class="new__action">
+        <div class="new__item new__action">
+          <div class="new__item-title">
+            <p class="title">Акція на товар*</p>
+          </div>
           <mat-checkbox [(ngModel)]="action">Акція на товар</mat-checkbox>
           <div class="new__action-price__procent" *ngIf="action">
-            <!-- <p *ngIf="actionProcent >= minActionProcent"> -->
             <p *ngIf="actionProcent <= minActionProcent">
               Знижка {{ actionProcent }}%
             </p>
@@ -90,13 +108,16 @@
                 required
                 [(ngModel)]="actionPrice"
                 #actionPriceInput
-                (ngModelChange)="procentActionNumber(actionPriceInput.value)"
+                (ngModelChange)="procentActionNumber()"
               />
             </mat-form-field>
           </div>
         </div>
         <!-- ============================================================== -->
-        <div class="new__counter">
+        <div class="new__item new__counter">
+          <div class="new__item-title">
+            <p class="title">Кількість товару*</p>
+          </div>
           <mat-form-field
             class="example-full-width width-input"
             appearance="fill"
@@ -112,9 +133,10 @@
           </mat-form-field>
         </div>
         <!-- ============================================================== -->
-        <div class="new__category">
-          <p class="new__category-title">Виберіть категорію*</p>
-
+        <div class="new__item new__category">
+          <div class="new__item-title">
+            <p class="title">Категорія товару*</p>
+          </div>
           <div class="new__category-block" (click)="popuapOpen()">
             <!--  -->
             <div class="category__select" *ngIf="!categorySelected">
@@ -148,9 +170,11 @@
           </div>
         </div>
         <!-- ============================================================== -->
-        <div class="new__characteristics" *ngIf="categorySelected">
-          <p class="new__characteristics-title">Характеристики товару*</p>
-          <!--  -->
+        <div class="new__item new__characteristics" *ngIf="categorySelected">
+          <div class="new__item-title">
+            <p class="title">Характеристики товару*</p>
+          </div>
+
           <div class="new__characteristics-block">
             <ng-container
               *ngFor="let options of characteristics; let idx = index"
@@ -182,8 +206,11 @@
           </div>
         </div>
         <!-- ============================================================== -->
-        <div class="new__unique__params" *ngIf="categorySelected">
-          <p class="new__unique__params-title">Ключовий параметр*</p>
+        <div class="new__item new__unique__params" *ngIf="categorySelected">
+          <div class="new__item-title">
+            <p class="title">Ключовий параметр*</p>
+          </div>
+
           <mat-form-field appearance="fill">
             <mat-label>Ключовий параметр</mat-label>
             <mat-select
@@ -202,7 +229,10 @@
           </mat-form-field>
         </div>
         <!-- ============================================================== -->
-        <div class="new__status">
+        <div class="new__item new__status">
+          <div class="new__item-title">
+            <p class="title">Статус товару*</p>
+          </div>
           <mat-form-field appearance="fill">
             <mat-label>Статус товару</mat-label>
             <mat-select
@@ -219,7 +249,10 @@
           </mat-form-field>
         </div>
         <!-- ============================================================== -->
-        <div class="new__seller">
+        <div class="new__item new__seller">
+          <div class="new__item-title">
+            <p class="title">Виберіть продавця*</p>
+          </div>
           <mat-form-field appearance="fill">
             <mat-label>Вибиріть продавця</mat-label>
             <mat-select
@@ -228,9 +261,8 @@
               [(ngModel)]="sellerNumber"
               required
             >
-              <mat-option [value]="0">Від свого імені</mat-option>
               <mat-option
-                [value]="idx + 1"
+                [value]="idx"
                 *ngFor="let seller of sellerList; let idx = index"
                 >{{ seller.name }}</mat-option
               >
@@ -238,11 +270,13 @@
           </mat-form-field>
         </div>
         <!-- ============================================================== -->
-        <div class="new__words">
-          <p class="new__words-title">
-            Введіть ключові слова для товару через пробіл, не більше 200
-            символів (не обов'язково)
-          </p>
+        <div class="new__item new__words">
+          <div class="new__item-title">
+            <p class="title">
+              Введіть ключові слова для товару через пробіл, не більше 200
+              символів (не обов'язково)
+            </p>
+          </div>
           <mat-form-field
             class="example-full-width input-width-keywords"
             appearance="fill"
@@ -271,13 +305,14 @@
                 class="display__symbol-word"
                 *ngIf="word.length >= 1"
                 [ngClass]="{
-                  error__keywords: word.length <= 1 || word.length > 10
+                  error__keywords:
+                    word.length < minWordLength || word.length > maxWordLength
                 }"
                 [title]="
-                  word.length <= 1
-                    ? 'Мінімальна кількість символів 2'
-                    : word.length > 10
-                    ? 'Максимальна кількість символів 10'
+                  word.length < minWordLength
+                    ? 'Мінімальна кількість символів ' + minWordLength
+                    : word.length > maxWordLength
+                    ? 'Максимальна кількість символів ' + maxWordLength
                     : ''
                 "
               >
@@ -300,7 +335,10 @@
           </div>
         </div>
         <!-- ============================================================== -->
-        <div class="new__description">
+        <div class="new__item new__description">
+          <div class="new__item-title">
+            <p class="title">Опис товару*</p>
+          </div>
           <mat-form-field
             class="example-full-width input-width-description"
             appearance="fill"
@@ -323,87 +361,82 @@
               class="span__description"
               [ngClass]="{
                 try__input:
-                  description.length >= 60 && description.length <= 5000,
-                error__input: description.length > 5000
+                  description.length >= minLengthDescription &&
+                  description.length <= maxLengthDescription,
+                error__input: description.length > maxLengthDescription
               }"
             >
-              Кількість символів {{ description.length }} /
-              {{ maxLengthDescription }}
+              Символів {{ description.length }}/{{ maxLengthDescription }}
             </span>
           </div>
           <!--  -->
         </div>
         <!-- ============================================================== -->
-      </div>
-      <!--  -->
-      <div class="product__content-photo">
-        <div class="img__preview">
-          <img
-            src="../../../../assets/img/placeholder__img.webp"
-            *ngIf="imagePreview === undefined && update === false"
-          />
-          <img
-            [src]="imagePreview"
-            *ngIf="imagePreview !== undefined && update === false"
-          />
-          <img
-            [src]="'http://localhost:5000/' + updateProduct?.imageSrc"
-            *ngIf="imagePreview === undefined && update === true"
-          />
-          <img
-            [src]="imagePreview"
-            *ngIf="imagePreview !== undefined && update === true"
-          />
+        <div class="new__item new__create">
+          <div class="example-button-row">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              *ngIf="!update"
+              (click)="createProduct()"
+              [disabled]="
+                !imagesValidation ||
+                nameProduct.length <= 5 ||
+                !priceProduct ||
+                actionProcent > minActionProcent ||
+                counterProduct <= 0 ||
+                statusNumber <= -1 ||
+                sellerNumber <= -1 ||
+                categoryNumber.length <= 1 ||
+                !updateSelectValidity ||
+                uniqueParamsNumber <= -1 ||
+                lengthKeyWords > 200 ||
+                description.length < 60 ||
+                description.length > 5000
+              "
+            >
+              Створити
+            </button>
+          </div>
+          <!--  -->
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            *ngIf="update"
+            (click)="upProduct()"
+            [disabled]="
+              updateProduct?.name === nameProduct &&
+              updateProduct?.price === priceProduct &&
+              updateProduct?.description === description &&
+              !updateSelectValidity
+            "
+          >
+            Зберегти
+          </button>
         </div>
       </div>
       <!--  -->
-    </div>
-    <!--  -->
-    <div class="new__create">
-      <div class="example-button-row">
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          *ngIf="!update"
-          (click)="createProduct()"
-          [disabled]="
-            !images ||
-            nameProduct.length <= 5 ||
-            !priceProduct ||
-            actionProcent > minActionProcent ||
-            counterProduct <= 0 ||
-            statusNumber <= -1 ||
-            sellerNumber <= -1 ||
-            categoryNumber.length <= 1 ||
-            !updateSelectValidity ||
-            uniqueParamsNumber <= -1 ||
-            lengthKeyWords > 200 ||
-            description.length < 60 ||
-            description.length > 5000
-          "
-        >
-          Створити
-        </button>
-      </div>
-      <!--  -->
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        *ngIf="update"
-        (click)="upProduct()"
-        [disabled]="
-          updateProduct?.name === nameProduct &&
-          updateProduct?.price === priceProduct &&
-          updateProduct?.description === description &&
-          !updateSelectValidity
-        "
+      <div
+        cdkDropList
+        class="product__content-photo example-list"
+        (cdkDropListDropped)="drop($event)"
       >
-        Зберегти
-      </button>
+        <div
+          class="img__preview example-box"
+          *ngFor="let image of imagePreview"
+          cdkDrag
+        >
+          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+          <img [src]="image" *ngIf="image !== undefined" />
+          <img
+            src="../../../../assets//img/300x300.png"
+            *ngIf="image === undefined"
+          />
+        </div>
+      </div>
     </div>
-    <!--  -->
   </div>
 </div>
 

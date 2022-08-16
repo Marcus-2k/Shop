@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import {
   Component,
   DoCheck,
@@ -68,8 +69,26 @@ export class ProductNewComponent implements OnInit {
     //
     this.requestSeller.getSeller().subscribe(
       (responce) => {
-        console.log(responce);
+        // console.log(responce);
+
+        const _id: string | null = localStorage.getItem("_id");
+
+        // console.log(_id);
+
+        const mySeller: Seller = {
+          name: "Від свого імені",
+          logo: "",
+          _id: "",
+        };
+
+        if (_id) {
+          mySeller._id = _id;
+        } else {
+          // re-direct page login
+        }
+
         this.sellerList = responce;
+        this.sellerList.splice(0, 0, mySeller);
       },
       (error) => {
         this.showNotice.message(
@@ -137,8 +156,18 @@ export class ProductNewComponent implements OnInit {
     // console.log(this.optionsListNumber);
     // console.log(this.upNewParameters);
     // this.checkingKeyWordsNew();
-    console.log(this.action);
-    console.log(this.actionPrice.toString());
+    // console.log(this.action);
+    // console.log(this.actionPrice.toString());
+    // console.log(this.sellerList);
+    console.log(
+      "=============================================================="
+    );
+    console.log(this.images);
+    console.log(this.imagePreview);
+    console.log(
+      "=============================================================="
+    );
+    // console.log(this.imagePreview.reverse());
   }
 
   // Update product END ====
@@ -152,27 +181,72 @@ export class ProductNewComponent implements OnInit {
   body = document.getElementById("body");
 
   // File Start ====
-  validImages = false; // Якщо фото не завантажено, але було нажато кнопку завантажити, для вивидення помилки"потрібно вибрати фото"
-  images?: File; // Download image product
-  imagePreview: any; // Picture of the product on the site
+  validImages = false; // if click button "Завантажити фото" but no select photo
+  // images?: File[]; // Download image product
+  imagesValidation: boolean = false;
+  images: File[] | undefined[] = [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]; // Download image product
+  imagePreview: any[] = [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]; // Picture of the product on the site
+  maxCounterFile: number = 8;
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.imagePreview, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.images, event.previousIndex, event.currentIndex);
+  }
 
   triggerClick() {
     this.inputFile?.nativeElement.click();
     this.validImages = true;
+    this.imagesValidation = false;
+    console.log(this.imagePreview);
   } // Click button "Завантажити фото"
 
   onFileUpload(event: any) {
-    const file = event.target.files[0];
-    this.images = file;
+    this.images = [];
 
-    const reader = new FileReader();
+    // const fileList = event.target.files;
+    const fileList: File[] = Array.from(event.target.files);
+    const fileCounter = event.target.files.length;
+    const needCart = this.maxCounterFile - fileCounter;
 
-    reader.onload = () => {
-      this.imagePreview = reader.result;
-      this.validImages = false;
-    };
+    this.images = fileList;
 
-    reader.readAsDataURL(file);
+    this.imagePreview = [];
+
+    for (let index = 0; index < needCart; index++) {
+      this.imagePreview.push(undefined);
+    } // No select photo
+
+    let idx: number = fileCounter - 1; // 5 >> 4 >> 3 || unshift()
+
+    for (const iterator of fileList) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.imagePreview.unshift(reader.result);
+      };
+      reader.readAsDataURL(fileList[idx]);
+      idx = idx - 1;
+    }
+    this.validImages = false;
+    this.imagesValidation = true;
   }
   // File END ====
 
@@ -189,12 +263,8 @@ export class ProductNewComponent implements OnInit {
   actionProcent = -10;
   minActionProcent = -5;
   actionPrice: number = 2970;
-  procentActionNumber(value: string) {
-    console.log(Number(value));
-    // let newAction = Math.round(
-    //   (100 * (this.actionPrice - this.priceProduct)) / this.priceProduct
-    // );
-    // this.actionProcent = newAction;
+
+  procentActionNumber() {
     let newAction: number =
       (100 * (this.actionPrice - this.priceProduct)) / this.priceProduct;
     let newActionFixed = newAction.toFixed(2);
@@ -203,7 +273,7 @@ export class ProductNewComponent implements OnInit {
   // Action END ====
 
   // Counter START ====
-  counterProduct: number = 1;
+  counterProduct: number = 10;
   // Counter END ====
 
   // Popuap Select Category START ====
@@ -399,6 +469,9 @@ export class ProductNewComponent implements OnInit {
   lengthKeyWords: number = 0; // Кількість символів ключових слів.
   checkKeyWords: boolean = false; // Для блока видалення не правильних ключових слів.
 
+  minWordLength: number = 2;
+  maxWordLength: number = 10;
+
   keyWordsInput(value: string) {
     this.keyWords = value.replace(/ +/g, " ").trim().split(" ");
     this.lengthKeyWords = value.replace(/\s+/g, "").length;
@@ -512,7 +585,7 @@ export class ProductNewComponent implements OnInit {
     const optionsToString: string[] = this.createOptionToString();
 
     if (
-      this.images &&
+      this.imagesValidation &&
       this.nameProduct.length > 5 &&
       this.priceProduct &&
       !this.checkKeyWords &&
@@ -520,19 +593,29 @@ export class ProductNewComponent implements OnInit {
       this.description.length >= 60 &&
       this.description.length <= 5000 &&
       optionsValidity
+      // true
     ) {
       console.log("Create FormData");
       const params: Params = this.createParams(optionsToString);
 
       const formData = new FormData();
 
-      formData.append("image", this.images, this.images.name); // Add photo product
+      const imagesArray = Array.from(this.images);
+
+      imagesArray.forEach((img, idx) => {
+        if (img) {
+          formData.append(`image-${idx}`, img, img.name); // Add photo product
+        }
+        console.log(`image-${idx}`);
+        console.log(formData.get(`image-${idx}`));
+      });
+
       formData.append("name", this.nameProduct); // Add name product
       formData.append("price", String(this.priceProduct)); // Add price product (type string)
-      if (this.action) {
+      if (this.action === true) {
         formData.append("action", "1");
         formData.append("actionPrice", this.actionPrice.toString());
-      } else {
+      } else if (this.action === false) {
         formData.append("action", "0");
       }
       formData.append("counter", this.counterProduct.toString());
@@ -540,12 +623,11 @@ export class ProductNewComponent implements OnInit {
       formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
       formData.append("optionsToString", optionsToString.join(","));
       formData.append("queryParams", Object.entries(params).join(","));
-      formData.append("uniqueParams", this.uniqueParams.toString());
+      formData.append("uniqueParams", this.uniqueParamsNumber.toString());
       formData.append("status", this.statusNumber.toString());
-      formData.append("seller", this.sellerNumber.toString());
+      formData.append("seller", this.sellerList[this.sellerNumber]._id);
       formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
       formData.append("description", this.description); // Add description (type string)
-      formData.append("action", this.action.toString()); // Add action (type string)
 
       console.log("Send FormData");
       this.requestProduct.createProduct(formData).subscribe(
@@ -588,7 +670,7 @@ export class ProductNewComponent implements OnInit {
       const formData = new FormData();
 
       if (this.images) {
-        formData.append("image", this.images, this.images.name); // Add photo product
+        // formData.append("image", this.images, this.images.name); // Add photo product
       }
       if (this.nameProduct !== this.updateProduct.name) {
         formData.append("name", this.nameProduct); // Add name product

@@ -16,4 +16,8 @@ export class RequestSellerService {
   getSeller(): Observable<Seller[]> {
     return this.http.get<Seller[]>(`${this.url_server}seller/`);
   }
+
+  getSellerById(id: string): Observable<Seller> {
+    return this.http.get<Seller>(`${this.url_server}seller/${id}`);
+  }
 }

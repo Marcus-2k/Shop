@@ -5,6 +5,7 @@ import { RequestUserService } from "src/app/shared/service/server/request-user.s
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 import { User } from "src/app/shared/interface/interfaces";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { OtherDataService } from "src/app/shared/service/other-data.service";
 
 @Component({
   selector: "app-user",
@@ -23,6 +24,8 @@ export class UserComponent implements OnInit {
 
     this.requestUser.getUserInfo().subscribe(
       (response) => {
+        // console.log(response);
+        localStorage.setItem("_id", response._id);
         this.user = response;
 
         if (response.avatar !== null) {
@@ -53,6 +56,7 @@ export class UserComponent implements OnInit {
     email: "",
     birthday: "",
     country: "",
+    _id: "",
   };
 
   newUser: User = {
@@ -62,6 +66,7 @@ export class UserComponent implements OnInit {
     email: "",
     birthday: "",
     country: "",
+    _id: "",
   };
   // User === END
 

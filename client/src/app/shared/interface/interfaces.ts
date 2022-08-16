@@ -15,42 +15,48 @@ export interface UserLogin {
 export interface Seller {
   name: string;
   logo: string;
+  _id: string;
 }
 // Seller ========================================
 
 // Product =======================================
 export interface Product {
   name: string;
-  imageSrc: string;
+  imageSrc: string[];
   price: number;
+  action: Boolean;
+  actionPrice: number;
+  counter: number;
   category: number[];
   options: number[];
   optionsToString: string[];
   queryParams: Params;
-  keyWords?: [string];
+  seller: string;
+  keyWords?: string[];
   description: string;
-  action: Boolean;
-  counter: Number;
   status: 0 | 1 | 2 | 3;
   _id?: string; // server
   user?: string; // server
-  __v?: string | number; //server
+  __v?: string; //server
 }
 export interface ProductInfo {
   name: string;
-  imageSrc: string;
+  imageSrc: string[];
   price: number;
+  action: Boolean;
+  actionPrice: number;
+  counter: number;
   category: number[];
   options: number[];
   optionsToString: string[];
   queryParams: Params;
-  keyWords?: [string];
+  seller: string;
+  keyWords?: string[];
   description: string;
-  action: Boolean;
-  counter: Number;
   status: 0 | 1 | 2 | 3;
-  _id: string; // server
+  _id?: string; // server
   user?: string; // server
+  __v?: string; //server
 }
 export interface ProductCharacteristics {
   category: number[];
@@ -71,17 +77,9 @@ export interface ProductQuestions {
   queryParams: {};
 }
 export interface ProductPhoto {
-  category: number[];
-  options: number[];
-  optionsToString: string[];
-  queryParams: {};
+  imageSrc: string[];
 }
-export interface ProductAccessories {
-  category: number[];
-  options: number[];
-  optionsToString: string[];
-  queryParams: {};
-}
+export interface ProductAccessories {}
 // Product =======================================
 
 export interface User {
@@ -91,6 +89,7 @@ export interface User {
   email: string;
   birthday: string;
   country: string;
+  _id: string;
 }
 
 // Category ==================================

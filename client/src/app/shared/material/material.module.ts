@@ -15,6 +15,7 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatTabsModule } from "@angular/material/tabs";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 const Material = [
   MatSelectModule,
@@ -32,6 +33,7 @@ const Material = [
   MatCheckboxModule,
   MatBadgeModule,
   MatTabsModule,
+  DragDropModule,
 ];
 
 @NgModule({
