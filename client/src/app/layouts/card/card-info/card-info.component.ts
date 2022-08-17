@@ -1,10 +1,8 @@
-import { Component, DoCheck, OnInit } from "@angular/core";
+import { Component, DoCheck, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ProductInfo, Seller } from "src/app/shared/interface/interfaces";
 
-import Swiper from "swiper";
-
-import { AuthService } from "src/app/shared/service/auth.service";
+import { AuthService } from "src/app/shared/service/server/auth.service";
 import { OtherDataService } from "src/app/shared/service/other-data.service";
 
 import { RequestCardService } from "src/app/shared/service/server/request-card.service";
@@ -12,6 +10,10 @@ import { RequestSellerService } from "src/app/shared/service/server/request-sell
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+
+import Swiper from "swiper";
+import { Navigation, Pagination, SwiperOptions } from "swiper";
+import { SwiperComponent } from "swiper/angular";
 
 @Component({
   selector: "app-card-info",
@@ -61,9 +63,11 @@ export class CardInfoComponent implements OnInit, DoCheck {
     );
     // Favorite
     this.listFavoriteUser = this.otherData.favoriteListUser;
-    console.log(this.listFavoriteUser);
-
     // Favorite
+
+    // Slider Swiper
+    Swiper.use([Navigation, Pagination]);
+    // Slider Swiper
   }
   ngDoCheck(): void {}
   url_server_folder: string = "http://localhost:5000/";
@@ -73,24 +77,32 @@ export class CardInfoComponent implements OnInit, DoCheck {
   productInfo?: ProductInfo;
   seller?: Seller;
 
-  // Slider
-  // swiper = new Swiper(); // Optional parameters
+  // Slider Swiper
+  config: SwiperOptions = {
+    slidesPerView: 1,
+    spaceBetween: 0,
+    navigation: true,
+    pagination: { clickable: true },
+  };
+
+  // Slider Swiper
 
   listFavoriteUser: string[] = [];
   checkedFavorite(productID: string | undefined): Boolean {
+    console.log("check");
     if (productID) {
       for (const iterator of this.listFavoriteUser) {
         if (iterator === productID) {
           return true;
         }
       }
-
       return false;
     } else {
       return false;
     }
   }
 
+  // Add or Remove Favorite === START
   workFunction: boolean = false;
   addRemoveFavorite(id: string | undefined) {
     this.workFunction = true;
@@ -142,4 +154,5 @@ export class CardInfoComponent implements OnInit, DoCheck {
     }
     //
   }
+  // Add or Remove Favorite === END
 }

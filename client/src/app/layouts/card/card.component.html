@@ -1,17 +1,31 @@
 <div class="card">
   <div class="card__content">
     <div class="card__content-breadcrumbs">
-      <span routerLink="/" class="material-symbols-outlined breadcrumbs-item">
+      <span
+        [matTooltip]="'Інтернет магазин'"
+        routerLink="/"
+        class="material-symbols-outlined breadcrumbs-item"
+      >
         home
       </span>
 
       <span class="material-symbols-outlined"> navigate_next </span>
 
-      <span routerLink="/" class="breadcrumbs-item">{{ levelOne }}</span>
+      <span
+        [matTooltip]="levelOne ? levelOne : ''"
+        routerLink="/"
+        class="breadcrumbs-item"
+        >{{ levelOne }}</span
+      >
 
       <span class="material-symbols-outlined"> navigate_next </span>
 
-      <span routerLink="/" class="breadcrumbs-item">{{ levelTwo }}</span>
+      <span
+        [matTooltip]="levelTwo ? levelTwo : ''"
+        routerLink="/"
+        class="breadcrumbs-item"
+        >{{ levelTwo }}</span
+      >
 
       <span class="material-symbols-outlined"> navigate_next </span>
 
@@ -32,12 +46,8 @@
               routerLinkActive="nav__item-active"
               (click)="navBar(item.link)"
               >{{ item.name }}
-              <span class="info__number" *ngIf="item.name === 'Питання'"
-                >14</span
-              >
-              <span class="info__number" *ngIf="item.name === 'Відгуки'"
-                >6</span
-              >
+              <span class="info__number" *ngIf="idx === 2">14</span>
+              <span class="info__number" *ngIf="idx === 3">6</span>
             </a>
           </li>
           <div
@@ -66,6 +76,7 @@
     <!--  -->
     <div class="card__content-product">
       <router-outlet></router-outlet>
+      <!-- <app-card-photo [id]="id"></app-card-photo> -->
     </div>
   </div>
 </div>

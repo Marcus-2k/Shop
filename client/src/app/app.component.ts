@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "./shared/service/auth.service";
+import { AuthService } from "./shared/service/server/auth.service";
 import { RenameTitleService } from "./shared/service/rename-title.service";
 
 @Component({

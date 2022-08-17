@@ -7,7 +7,7 @@ import {
   RouterStateSnapshot,
 } from "@angular/router";
 import { Observable, of } from "rxjs";
-import { AuthService } from "../service/auth.service";
+import { AuthService } from "../service/server/auth.service";
 
 @Injectable({
   providedIn: "root",

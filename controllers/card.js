@@ -43,7 +43,7 @@ module.exports.getByIdCardComments = async function (req, res) {
 };
 
 module.exports.getByIdCardQuestions = async function (req, res) {
-  console.log("Server getByIdCardQuestionsd");
+  console.log("Server getByIdCardQuestions");
   try {
     // const product = await Product.findById(req.params.id);
     // res.status(200).json(product);
@@ -53,10 +53,32 @@ module.exports.getByIdCardQuestions = async function (req, res) {
 };
 
 module.exports.getByIdCardPhoto = async function (req, res) {
-  console.log("Server getByIdCardPhotodCard");
+  console.log("Server getByIdCardPhoto");
   try {
-    // const product = await Product.findById(req.params.id);
-    // res.status(200).json(product);
+    const productPhoto = await Product.findOne(
+      {},
+      {
+        name: 0,
+        price: 0,
+        action: 0,
+        actionPrice: 0,
+        counter: 0,
+        category: 0,
+        options: 0,
+        optionsToString: 0,
+        queryParams: 0,
+        keyWords: 0,
+        description: 0,
+        status: 0,
+        seller: 0,
+        comments: 0,
+        user: 0,
+        __v: 0,
+        _id: 0,
+      },
+      { _id: req.params.id }
+    );
+    res.status(200).json(productPhoto);
   } catch (error) {
     console.log(error);
   }

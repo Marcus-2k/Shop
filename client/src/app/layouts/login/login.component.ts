@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
-import { AuthService } from "src/app/shared/service/auth.service";
+import { AuthService } from "src/app/shared/service/server/auth.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({

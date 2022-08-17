@@ -3,8 +3,7 @@
   &__content {
     max-width: 1600px;
     margin: 0 auto;
-    // background: gray;
-    height: 2000px;
+    // height: 2000px;
     @media screen and(max-width:1600px) {
       padding: 0 15px;
     }
@@ -15,34 +14,51 @@
       span {
         color: #4857b4;
         cursor: context-menu;
-        font-size: 18px;
-        margin: 0 5px;
+        font-size: 14px;
+        margin: 0 2.5px;
       }
       .breadcrumbs-item {
         cursor: pointer;
       }
     }
     &-title {
-      margin-top: 25px;
+      margin-top: calc(15px + (25 - 15) * ((100vw - 320px) / (1920 - 320)));
       .card__title {
-        font-size: 48px;
+        font-size: calc(24px + (36 - 24) * ((100vw - 360px) / (1920 - 360)));
       }
     }
     &-navigation {
+      padding: 10px 0;
+      @media screen and (max-width: 989px) {
+        overflow-x: scroll;
+      }
+      &::-webkit-scrollbar {
+        height: 4px;
+        background-color: #d8d8d8;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #3f51b5;
+      }
+      &:-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: #d8d8d8;
+      }
       .nav {
         display: flex;
         position: relative;
-        margin: 25px 0;
+        height: 25px;
         &__item {
           display: block;
           text-align: center;
+          color: #3f51b5;
+
           width: 160px;
-
-          font-size: 18px;
+          // margin: 0 10px;
+          font-size: 14px;
+          white-space: nowrap;
           cursor: pointer;
-          color: #4857b4;
           transition: 0.4s;
-
           .info__number {
             color: #000;
             margin-left: 5px;
@@ -54,21 +70,21 @@
           width: 160px;
           height: 3px;
           border-radius: 4px;
-          background-color: #4857b4;
+          background-color: #3f51b5;
           position: absolute;
-          bottom: -5px;
+          bottom: 0px;
           transition: 0.4s;
           &:after {
-            content: "";
-            background-color: #b1b1b1;
-            border-radius: 4px 4px 0 0;
-            opacity: 0.5;
-            transition: 0.4s;
-            width: 100%;
-            height: 25px;
-            position: absolute;
-            top: -25px;
-            left: 0px;
+            // content: "";
+            // background-color: #b1b1b1;
+            // border-radius: 4px 4px 0 0;
+            // opacity: 0.5;
+            // transition: 0.4s;
+            // width: 100%;
+            // height: 25px;
+            // position: absolute;
+            // top: -25px;
+            // left: 0px;
           }
         }
       }

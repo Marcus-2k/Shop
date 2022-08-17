@@ -1,6 +1,6 @@
 import { Component, DoCheck, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { AuthService } from "src/app/shared/service/auth.service";
+import { AuthService } from "src/app/shared/service/server/auth.service";
 import { OtherDataService } from "src/app/shared/service/other-data.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";

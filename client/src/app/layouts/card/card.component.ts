@@ -1,18 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  Resolve,
-  Router,
-  RouterStateSnapshot,
-} from "@angular/router";
-import { Observable } from "rxjs";
+import { ActivatedRoute } from "@angular/router";
 import { LinkNavigate, Product } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
-import { RequestCardService } from "src/app/shared/service/server/request-card.service";
-import { RequestProductService } from "src/app/shared/service/server/request-product.service";
-import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
   selector: "app-card",
@@ -21,22 +11,19 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 })
 export class CardComponent implements OnInit {
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
-    private requstProduct: RequestProductService,
-    private requstCard: RequestCardService,
-    private showNotice: ShowNoticeService,
+
     private categoryName: CategoryProductService,
     private renameTitle: RenameTitleService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((value) => {
-      const params = value;
-      // console.log(params);
+    this.route.params.subscribe((params) => {
+      this.id = params["id"];
+
       this.route.data.subscribe((responce: any) => {
         console.log("Start ngOnInit Card");
-        // console.log(responce.product);
+        // console.log(responce);
 
         this.renameTitle.renameTitleSite(responce.product.name);
         // Bread Crumbs
@@ -64,23 +51,10 @@ export class CardComponent implements OnInit {
         // Navigation
       });
       // =======================
-
-      // // console.log(window.location.pathname.split("/")[3]);
-
-      // =======================
-      // this.requstCard.getByIdCard(params["id"]).subscribe(
-      //   (responce) => {
-      //     console.log(responce);
-      //   },
-      //   (error) => {
-      //     this.showNotice.message(
-      //       "Сталася помилка на серверові. Спробуйте пізніше."
-      //     );
-      //     console.log(error);
-      //   }
-      // );
     });
   }
+
+  // @Input()
 
   // Bread Crumbs ==========================================================================================================
   levelOne?: string;
@@ -105,6 +79,8 @@ export class CardComponent implements OnInit {
   }
   // Navigation ============================================================================================================
   // Product Content =======================================================================================================
-  Product?: Product;
+  product?: Product;
+  id: string = "";
+
   // Product Content =======================================================================================================
 }

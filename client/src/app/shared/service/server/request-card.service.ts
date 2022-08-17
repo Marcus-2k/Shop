@@ -28,22 +28,27 @@ export class RequestCardService {
   getByIdCardInfo(id: string): Observable<ProductInfo> {
     return this.http.get<ProductInfo>(`${this.url_server}/${id}/info`);
   }
+
   getByIdCardCharacteristics(id: string): Observable<ProductCharacteristics> {
     return this.http.get<ProductCharacteristics>(
       `${this.url_server}/${id}/characteristics`
     );
   }
+
   getByIdCardComments(id: string): Observable<ProductComments> {
     return this.http.get<ProductComments>(`${this.url_server}/${id}/comments`);
   }
+
   getByIdCardQuestions(id: string): Observable<ProductQuestions> {
     return this.http.get<ProductQuestions>(
       `${this.url_server}/${id}/questions`
     );
   }
+
   getByIdCardPhoto(id: string): Observable<ProductPhoto> {
     return this.http.get<ProductPhoto>(`${this.url_server}/${id}/photo`);
   }
+
   getByIdCardAccessories(id: string): Observable<ProductAccessories> {
     return this.http.get<ProductAccessories>(
       `${this.url_server}/${id}/accessories`
