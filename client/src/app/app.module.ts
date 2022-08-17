@@ -1,16 +1,13 @@
 // Module Angular
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { RouterModule, Routes } from "@angular/router";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-// Service, Pipe, Guard, Token, Class, Resolver
-import { AuthGuard } from "./shared/guard/auth.guard";
+// Service, Pipe, Guard, Token, Class, Resolver, Routing
 import { PricePipe } from "./shared/pipe/price.pipe";
 import { TokenInterceptor } from "./shared/classes/token.interseptor";
-import { CardResolver } from "./layouts/card/card.resolver";
-import { CardInfoResolver } from "./layouts/card/card-info/card-info.resolver";
+import { RoutingModule } from "./shared/routing/routing.module";
 
 // Library
 import { SwiperModule } from "swiper/angular";
@@ -61,7 +58,6 @@ import { CardQuestionsComponent } from "./layouts/card/card-questions/card-quest
 import { CardPhotoComponent } from "./layouts/card/card-photo/card-photo.component";
 // Card >>> Accessories
 import { CardAccessoriesComponent } from "./layouts/card/card-accessories/card-accessories.component";
-import { RoutingModule } from "./shared/routing/routing.module";
 
 @NgModule({
   declarations: [
@@ -76,12 +72,13 @@ import { RoutingModule } from "./shared/routing/routing.module";
     RegisterComponent,
     AccountComponent,
     LikeComponent,
+    UserComponent,
     CartComponent,
     ProductComponent,
     ProductNewComponent,
-    UserComponent,
     PricePipe,
     NewslettersComponent,
+    SettingsComponent,
     // Card
     CardComponent,
     CardInfoComponent,

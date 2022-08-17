@@ -9,7 +9,7 @@ import { LoginComponent } from "src/app/layouts/login/login.component";
 import { RegisterComponent } from "src/app/layouts/register/register.component";
 // Guard, Resolver
 import { AuthGuard } from "../guard/auth.guard";
-import { CardResolver } from "src/app/layouts/card/card.resolver";
+import { CardResolver } from "src/app/shared/resolver/card.resolver";
 // User account pages
 import { AccountComponent } from "src/app/layouts/user-layouts/account/account.component";
 import { UserComponent } from "src/app/layouts/user-layouts/user/user.component";
