@@ -58,9 +58,9 @@ export interface ProductInfo {
   description: string;
   // comments: [];
   // questions: [];
-  // user?: string; // server
-  // _id?: string; // server
-  // __v?: string; //server
+  user?: string; // server
+  _id?: string; // server
+  __v?: string; //server
 }
 export interface ProductCharacteristics {
   category: number[];
