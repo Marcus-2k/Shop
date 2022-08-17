@@ -21,8 +21,8 @@ export interface Seller {
 
 // Product =======================================
 export interface Product {
-  name: string;
   imageSrc: string[];
+  name: string;
   price: number;
   action: Boolean;
   actionPrice: number;
@@ -31,54 +31,51 @@ export interface Product {
   options: number[];
   optionsToString: string[];
   queryParams: Params;
+  status: 0 | 1 | 2 | 3;
   seller: string;
   keyWords?: string[];
   description: string;
-  status: 0 | 1 | 2 | 3;
-  _id?: string; // server
+  comments: [];
+  questions: [];
   user?: string; // server
+  _id?: string; // server
   __v?: string; //server
 }
 export interface ProductInfo {
-  name: string;
   imageSrc: string[];
+  name: string;
   price: number;
   action: Boolean;
   actionPrice: number;
   counter: number;
   category: number[];
   options: number[];
-  optionsToString: string[];
-  queryParams: Params;
+  // optionsToString: string[];
+  // queryParams: Params;
+  status: 0 | 1 | 2 | 3;
   seller: string;
   keyWords?: string[];
   description: string;
-  status: 0 | 1 | 2 | 3;
-  _id?: string; // server
-  user?: string; // server
-  __v?: string; //server
+  // comments: [];
+  // questions: [];
+  // user?: string; // server
+  // _id?: string; // server
+  // __v?: string; //server
 }
 export interface ProductCharacteristics {
   category: number[];
   options: number[];
-  optionsToString: string[];
-  queryParams: {};
 }
 export interface ProductComments {
-  category: number[];
-  options: number[];
-  optionsToString: string[];
-  queryParams: {};
+  comments: [];
 }
 export interface ProductQuestions {
-  category: number[];
-  options: number[];
-  optionsToString: string[];
-  queryParams: {};
+  questions: [];
 }
 export interface ProductPhoto {
   imageSrc: string[];
 }
+
 export interface ProductAccessories {}
 // Product =======================================
 
