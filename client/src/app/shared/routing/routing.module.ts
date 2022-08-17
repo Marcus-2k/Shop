@@ -29,6 +29,7 @@ import { CardCommentsComponent } from "src/app/layouts/card/card-comments/card-c
 import { CardQuestionsComponent } from "src/app/layouts/card/card-questions/card-questions.component";
 import { CardPhotoComponent } from "src/app/layouts/card/card-photo/card-photo.component";
 import { CardAccessoriesComponent } from "src/app/layouts/card/card-accessories/card-accessories.component";
+import { CardInfoResolver } from "../resolver/card-info.resolver";
 // Card Component Child === END
 
 const routes: Routes = [
@@ -90,6 +91,9 @@ const routes: Routes = [
       {
         path: "info",
         component: CardInfoComponent,
+        resolve: {
+          productInfo: CardInfoResolver,
+        },
       },
       {
         path: "characteristics",
