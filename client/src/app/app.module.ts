@@ -61,113 +61,7 @@ import { CardQuestionsComponent } from "./layouts/card/card-questions/card-quest
 import { CardPhotoComponent } from "./layouts/card/card-photo/card-photo.component";
 // Card >>> Accessories
 import { CardAccessoriesComponent } from "./layouts/card/card-accessories/card-accessories.component";
-
-// Routing Link
-const appRoutes: Routes = [
-  {
-    path: "",
-    component: HomeComponent,
-    children: [
-      { path: "login", component: LoginComponent },
-      { path: "register", component: RegisterComponent },
-    ],
-  },
-  {
-    path: "account",
-    canActivate: [AuthGuard],
-    component: AccountComponent,
-    children: [
-      {
-        path: "user",
-        canActivate: [AuthGuard],
-        component: UserComponent,
-      },
-      {
-        path: "product",
-        canActivate: [AuthGuard],
-        component: ProductComponent,
-      },
-      {
-        path: "product/new",
-        canActivate: [AuthGuard],
-        component: ProductNewComponent,
-      },
-      {
-        path: "product/new/:id",
-        canActivate: [AuthGuard],
-        component: ProductNewComponent,
-      },
-      {
-        path: "settings",
-        canActivate: [AuthGuard],
-        component: SettingsComponent,
-      },
-      {
-        path: "newsletters",
-        canActivate: [AuthGuard],
-        component: NewslettersComponent,
-      },
-    ],
-  },
-  { path: "like", canActivate: [AuthGuard], component: LikeComponent },
-  { path: "cart", canActivate: [AuthGuard], component: CartComponent },
-  { path: "search", component: SearchComponent },
-  {
-    path: "card/:id",
-    component: CardComponent,
-    resolve: {
-      product: CardResolver,
-    },
-    children: [
-      {
-        path: "info",
-        component: CardInfoComponent,
-        resolve: {
-          productInfo: CardInfoResolver,
-        },
-      },
-      {
-        path: "characteristics",
-        component: CardCharacteristicsComponent,
-        // resolve: {
-        // productCharacteristics: CardCharacteristicsResolver,
-        // },
-      },
-      {
-        path: "comments",
-        component: CardCommentsComponent,
-        // resolve: {
-        // productComments: CardCommentsResolver,
-        // },
-      },
-      {
-        path: "questions",
-        component: CardQuestionsComponent,
-        // resolve: {
-        // productQuestions: CardQuestionsResolver,
-        // },
-      },
-      {
-        path: "photo",
-        component: CardPhotoComponent,
-        // resolve: {
-        // productPhoto: CardPhotoResolver,
-        // },
-      },
-      {
-        path: "accessories",
-        component: CardAccessoriesComponent,
-        // resolve: {
-        // productAccessories: CardAccessoriesResolver,
-        // },
-      },
-    ],
-  },
-  {
-    path: "**",
-    component: NotFoundComponent,
-  },
-];
+import { RoutingModule } from "./shared/routing/routing.module";
 
 @NgModule({
   declarations: [
@@ -199,7 +93,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
+    RoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
