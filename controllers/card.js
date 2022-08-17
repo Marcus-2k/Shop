@@ -51,6 +51,7 @@ module.exports.getByIdCardCharacteristics = async function (req, res) {
         status: 0,
         seller: 0,
         comments: 0,
+        questions: 0,
         user: 0,
         __v: 0,
         _id: 0,
@@ -88,6 +89,7 @@ module.exports.getByIdCardComments = async function (req, res) {
         status: 0,
         seller: 0,
         // comments: 0,
+        questions: 0,
         user: 0,
         __v: 0,
         _id: 0,
@@ -107,6 +109,36 @@ module.exports.getByIdCardComments = async function (req, res) {
 module.exports.getByIdCardQuestions = async function (req, res) {
   console.log("Server getByIdCardQuestions");
   try {
+    const product = await Product.findById(
+      { _id: req.params.id },
+      {
+        name: 0,
+        imageSrc: 0,
+        price: 0,
+        action: 0,
+        actionPrice: 0,
+        counter: 0,
+        category: 0,
+        options: 0,
+        optionsToString: 0,
+        queryParams: 0,
+        keyWords: 0,
+        description: 0,
+        status: 0,
+        seller: 0,
+        comments: 0,
+        // questions: 0,
+        user: 0,
+        __v: 0,
+        _id: 0,
+      }
+    );
+
+    if (product) {
+      res.status(200).json(product);
+    } else {
+      res.status(404).json({ messge: "Такий товар не існує" });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -118,6 +150,7 @@ module.exports.getByIdCardPhoto = async function (req, res) {
     const productPhoto = await Product.findOne(
       {},
       {
+        // imageSrc: 0,
         name: 0,
         price: 0,
         action: 0,
@@ -132,6 +165,7 @@ module.exports.getByIdCardPhoto = async function (req, res) {
         status: 0,
         seller: 0,
         comments: 0,
+        questions: 0,
         user: 0,
         __v: 0,
         _id: 0,
