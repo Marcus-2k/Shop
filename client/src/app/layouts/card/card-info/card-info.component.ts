@@ -34,6 +34,7 @@ export class CardInfoComponent implements OnInit {
         // console.log(responce["productInfo"]);
         this.productInfo = responce["productInfo"];
 
+        this.loader = false;
         this.requestSeller
           .getSellerById(responce["productInfo"].seller)
           .subscribe(
