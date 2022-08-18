@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Data } from "@angular/router";
 import { ProductPhoto } from "src/app/shared/interface/interfaces";
-import { RequestCardService } from "src/app/shared/service/server/request-card.service";
 
 @Component({
   selector: "app-card-photo",
@@ -9,26 +8,15 @@ import { RequestCardService } from "src/app/shared/service/server/request-card.s
   styleUrls: ["./card-photo.component.scss"],
 })
 export class CardPhotoComponent implements OnInit {
-  constructor(
-    private route: ActivatedRoute,
-    private requestCard: RequestCardService
-  ) {}
-
-  // @Input()
-  id: string = "sdsdsds";
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Photo");
 
-    this.id = window.location.pathname.split("/")[2];
-
-    this.requestCard.getByIdCardPhoto(this.id).subscribe(
-      (responce) => {
-        console.log("responce");
-        console.log(responce);
-
-        this.productPhoto = responce;
-        this.loader = false;
+    this.route.data.subscribe(
+      (responce: Data) => {
+        // console.log(responce["productPhoto"]);
+        this.productPhoto = responce["productPhoto"];
       },
       (error) => {
         console.log(error);
