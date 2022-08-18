@@ -5,23 +5,23 @@ import {
   ActivatedRouteSnapshot,
 } from "@angular/router";
 import { Observable } from "rxjs";
-import { ProductInfo } from "src/app/shared/interface/interfaces";
+import { ProductComments } from "src/app/shared/interface/interfaces";
 import { RequestCardService } from "src/app/shared/service/server/request-card.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class CardInfoResolver implements Resolve<ProductInfo> {
+export class CardCommentsResolver implements Resolve<ProductComments> {
   constructor(private requestCard: RequestCardService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<ProductInfo> | Promise<ProductInfo> | ProductInfo {
-    console.log("Start Card-Info Resolver");
+  ): Observable<ProductComments> | Promise<ProductComments> | ProductComments {
+    console.log("Start Card-Comments Resolver");
 
     const id = state.url.split("/")[2];
 
-    return this.requestCard.getByIdCardInfo(id);
+    return this.requestCard.getByIdCardComments(id);
   }
 }
