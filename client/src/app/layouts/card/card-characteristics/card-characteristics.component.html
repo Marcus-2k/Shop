@@ -4,5 +4,19 @@
 </div>
 
 <div class="card__characteristics">
-  <div class="card__characteristics-content" *ngIf="!loader"></div>
+  <div class="card__characteristics-content" *ngIf="!loader">
+    <div class="params">
+      <div class="params__item" *ngFor="let option of optionsName">
+        <div class="params__item-title">
+          <p class="title title-option">{{ option.name }}</p>
+        </div>
+        <div class="params__item-empty"></div>
+        <div class="params__item-info">
+          <p class="title title-info">{{ option.select[1] }}</p>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    <aside class="sidebar__card"></aside>
+  </div>
 </div>

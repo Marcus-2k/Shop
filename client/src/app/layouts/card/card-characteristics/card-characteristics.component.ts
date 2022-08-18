@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Data } from "@angular/router";
+import { Options } from "src/app/shared/interface/interfaces";
 import { ProductCharacteristics } from "src/app/shared/interface/interfaces";
+import { CategoryProductService } from "src/app/shared/service/category-product.service";
 
 @Component({
   selector: "app-card-characteristics",
@@ -8,7 +10,10 @@ import { ProductCharacteristics } from "src/app/shared/interface/interfaces";
   styleUrls: ["./card-characteristics.component.scss"],
 })
 export class CardCharacteristicsComponent implements OnInit {
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private catagoryName: CategoryProductService
+  ) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Characteristics");
@@ -19,6 +24,13 @@ export class CardCharacteristicsComponent implements OnInit {
         this.productCharacteristics = responce["productCharacteristics"];
 
         this.loader = false;
+        this.category = responce["productCharacteristics"].category;
+        this.options = responce["productCharacteristics"].options;
+
+        this.optionsName =
+          this.catagoryName.categoryList[this.category[0]].nameListCategory[
+            this.category[1]
+          ].subNameListCategory[this.category[2]].options;
       },
       (error) => {
         console.log(error);
@@ -29,4 +41,9 @@ export class CardCharacteristicsComponent implements OnInit {
   loader: boolean = true;
 
   productCharacteristics?: ProductCharacteristics;
+
+  category: number[] = [];
+  options: number[] = [];
+
+  optionsName: Options[] = [];
 }
