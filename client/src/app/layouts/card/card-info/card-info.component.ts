@@ -1,11 +1,9 @@
-import { Component, DoCheck, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Data } from "@angular/router";
 import { ProductInfo, Seller } from "src/app/shared/interface/interfaces";
 
-import { AuthService } from "src/app/shared/service/server/auth.service";
 import { OtherDataService } from "src/app/shared/service/other-data.service";
 
-import { RequestCardService } from "src/app/shared/service/server/request-card.service";
 import { RequestSellerService } from "src/app/shared/service/server/request-seller.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 
@@ -13,18 +11,15 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 import Swiper from "swiper";
 import { Navigation, Pagination, SwiperOptions } from "swiper";
-import { SwiperComponent } from "swiper/angular";
 
 @Component({
   selector: "app-card-info",
   templateUrl: "./card-info.component.html",
   styleUrls: ["./card-info.component.scss"],
 })
-export class CardInfoComponent implements OnInit, DoCheck {
+export class CardInfoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
-    private auth: AuthService,
-    private requestCard: RequestCardService,
     private showNotice: ShowNoticeService,
     private requestUser: RequestUserService,
     private requestSeller: RequestSellerService,
@@ -34,33 +29,27 @@ export class CardInfoComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Info");
 
-    // console.log(window.location.pathname.split("/")[2]);
-    const id: string = window.location.pathname.split("/")[2];
-    this.requestCard.getByIdCardInfo(id).subscribe(
-      (responce) => {
-        console.log(responce);
-        this.productInfo = responce;
-        this.loader = false;
+    this.route.data.subscribe(
+      (responce: Data) => {
+        // console.log(responce["productInfo"]);
+        this.productInfo = responce["productInfo"];
 
-        this.requestSeller.getSellerById(responce.seller).subscribe(
-          (responce: Seller) => {
-            this.seller = responce;
-          },
-          (error) => {
-            this.showNotice.message(
-              "Сталася помилка на серверові. Спробуйте пізніше."
-            );
-            console.log(error);
-          }
-        );
+        this.requestSeller
+          .getSellerById(responce["productInfo"].seller)
+          .subscribe(
+            (responce: Seller) => {
+              this.seller = responce;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       },
       (error) => {
-        this.showNotice.message(
-          "Сталася помилка на серверові. Спробуйте пізніше."
-        );
         console.log(error);
       }
     );
+
     // Favorite
     this.listFavoriteUser = this.otherData.favoriteListUser;
     // Favorite
@@ -69,7 +58,7 @@ export class CardInfoComponent implements OnInit, DoCheck {
     Swiper.use([Navigation, Pagination]);
     // Slider Swiper
   }
-  ngDoCheck(): void {}
+
   url_server_folder: string = "http://localhost:5000/";
 
   loader: boolean = true;
@@ -84,12 +73,10 @@ export class CardInfoComponent implements OnInit, DoCheck {
     navigation: true,
     pagination: { clickable: true },
   };
-
   // Slider Swiper
 
   listFavoriteUser: string[] = [];
   checkedFavorite(productID: string | undefined): Boolean {
-    console.log("check");
     if (productID) {
       for (const iterator of this.listFavoriteUser) {
         if (iterator === productID) {
@@ -106,7 +93,7 @@ export class CardInfoComponent implements OnInit, DoCheck {
   workFunction: boolean = false;
   addRemoveFavorite(id: string | undefined) {
     this.workFunction = true;
-    //
+
     if (id) {
       //
       if (this.listFavoriteUser.indexOf(id) === -1) {
@@ -152,7 +139,6 @@ export class CardInfoComponent implements OnInit, DoCheck {
     } else {
       this.workFunction = false;
     }
-    //
   }
   // Add or Remove Favorite === END
 }
