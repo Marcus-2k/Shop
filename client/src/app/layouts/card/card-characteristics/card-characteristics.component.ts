@@ -17,6 +17,8 @@ export class CardCharacteristicsComponent implements OnInit {
       (responce: Data) => {
         // console.log(responce["productCharacteristics"]);
         this.productCharacteristics = responce["productCharacteristics"];
+
+        this.loader = false;
       },
       (error) => {
         console.log(error);

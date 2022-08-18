@@ -17,12 +17,16 @@ export class CardQuestionsComponent implements OnInit {
       (responce: Data) => {
         // console.log(responce["productQuestions"]);
         this.productQuestions = responce["productQuestions"];
+
+        this.loader = false;
       },
       (error) => {
         console.log(error);
       }
     );
   }
+
+  loader: boolean = true;
 
   productQuestions?: ProductQuestions;
 }

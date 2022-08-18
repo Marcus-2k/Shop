@@ -1,1 +1,8 @@
-<p>card-questions works!</p>
+<!--  -->
+<div *ngIf="loader" class="content-element-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="card__questions">
+  <div class="card__questions-content" *ngIf="!loader"></div>
+</div>

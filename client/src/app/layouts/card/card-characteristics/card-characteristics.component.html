@@ -1,1 +1,8 @@
-<p>card-characteristics works!</p>
+<!--  -->
+<div *ngIf="loader" class="content-element-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="card__characteristics">
+  <div class="card__characteristics-content" *ngIf="!loader"></div>
+</div>

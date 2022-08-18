@@ -17,6 +17,8 @@ export class CardCommentsComponent implements OnInit {
       (responce: Data) => {
         // console.log(responce["productComments"]);
         this.productComments = responce["productComments"];
+
+        this.loader = false;
       },
       (error) => {
         console.log(error);

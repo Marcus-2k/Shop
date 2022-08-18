@@ -17,6 +17,8 @@ export class CardPhotoComponent implements OnInit {
       (responce: Data) => {
         // console.log(responce["productPhoto"]);
         this.productPhoto = responce["productPhoto"];
+
+        this.loader = false;
       },
       (error) => {
         console.log(error);

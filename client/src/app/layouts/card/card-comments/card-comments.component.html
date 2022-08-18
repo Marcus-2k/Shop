@@ -1,1 +1,8 @@
-<p>card-comments works!</p>
+<!--  -->
+<div *ngIf="loader" class="content-element-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="card__comments">
+  <div class="card__comments-content" *ngIf="loader"></div>
+</div>

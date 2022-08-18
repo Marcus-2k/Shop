@@ -4,7 +4,7 @@
 </div>
 
 <div class="card__photo">
-  <div class="card__photo-content">
+  <div class="card__photo-content" *ngIf="!loader">
     <div class="content-image" *ngFor="let image of productPhoto?.imageSrc">
       <img [src]="url_server_folder + image" alt="" />
     </div>
