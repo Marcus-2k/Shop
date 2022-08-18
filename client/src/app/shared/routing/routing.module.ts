@@ -10,6 +10,11 @@ import { RegisterComponent } from "src/app/layouts/register/register.component";
 // Guard, Resolver
 import { AuthGuard } from "../guard/auth.guard";
 import { CardResolver } from "src/app/shared/resolver/card.resolver";
+import { CardInfoResolver } from "../resolver/card-info.resolver";
+import { CardCharacteristicsResolver } from "../resolver/card-characteristics.resolver";
+import { CardCommentsResolver } from "../resolver/card-comments.resolver";
+import { CardQuestionsResolver } from "../resolver/card-questions.resolver";
+import { CardPhotoResolver } from "../resolver/card-photo.resolver";
 // User account pages
 import { AccountComponent } from "src/app/layouts/user-layouts/account/account.component";
 import { UserComponent } from "src/app/layouts/user-layouts/user/user.component";
@@ -29,7 +34,6 @@ import { CardCommentsComponent } from "src/app/layouts/card/card-comments/card-c
 import { CardQuestionsComponent } from "src/app/layouts/card/card-questions/card-questions.component";
 import { CardPhotoComponent } from "src/app/layouts/card/card-photo/card-photo.component";
 import { CardAccessoriesComponent } from "src/app/layouts/card/card-accessories/card-accessories.component";
-import { CardInfoResolver } from "../resolver/card-info.resolver";
 // Card Component Child === END
 
 const routes: Routes = [
@@ -98,18 +102,30 @@ const routes: Routes = [
       {
         path: "characteristics",
         component: CardCharacteristicsComponent,
+        resolve: {
+          productCharacteristics: CardCharacteristicsResolver,
+        },
       },
       {
         path: "comments",
         component: CardCommentsComponent,
+        resolve: {
+          productComments: CardCommentsResolver,
+        },
       },
       {
         path: "questions",
         component: CardQuestionsComponent,
+        resolve: {
+          productQuestions: CardQuestionsResolver,
+        },
       },
       {
         path: "photo",
         component: CardPhotoComponent,
+        resolve: {
+          productPhoto: CardPhotoResolver,
+        },
       },
       {
         path: "accessories",
