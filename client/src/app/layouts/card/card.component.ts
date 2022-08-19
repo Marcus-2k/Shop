@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { LinkNavigate, Product } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
@@ -18,12 +18,13 @@ export class CardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params: Params) => {
       this.id = params["id"];
 
       this.route.data.subscribe((responce: any) => {
         console.log("Start ngOnInit Card");
-        // console.log(responce);
+        // console.log(responce["product"]);
+        this.product = responce["product"];
 
         this.renameTitle.renameTitleSite(responce.product.name);
         // Bread Crumbs
@@ -50,7 +51,6 @@ export class CardComponent implements OnInit {
         this.navBar(window.location.pathname.split("/")[3]);
         // Navigation
       });
-      // =======================
     });
   }
 
@@ -74,18 +74,14 @@ export class CardComponent implements OnInit {
   activeRoute: string = "info";
   navBar(link: string) {
     this.activeRoute = link;
-    if (link === "accessories") {
-      console.log("link === accessories");
 
+    if (link === "accessories") {
       this.sidebar = 0;
     } else if (link === "info") {
-      console.log("link === info");
       this.sidebar = 1;
     } else {
-      console.log("link === else");
       this.sidebar = 2;
     }
-    console.log(this.sidebar);
   }
   // Navigation ============================================================================================================
   // Product Content =======================================================================================================

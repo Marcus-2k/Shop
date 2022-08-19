@@ -80,7 +80,10 @@
       </div>
       <!--  -->
       <div class="product-sidebar">
-        <app-card-big-sidebar *ngIf="sidebar === 1"></app-card-big-sidebar>
+        <app-card-big-sidebar
+          *ngIf="sidebar === 1"
+          [productSidebar]="product"
+        ></app-card-big-sidebar>
         <app-card-small-sidebar *ngIf="sidebar === 2"></app-card-small-sidebar>
       </div>
     </div>
