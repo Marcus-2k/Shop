@@ -58,6 +58,8 @@ import { CardQuestionsComponent } from "./layouts/card/card-questions/card-quest
 import { CardPhotoComponent } from "./layouts/card/card-photo/card-photo.component";
 // Card >>> Accessories
 import { CardAccessoriesComponent } from "./layouts/card/card-accessories/card-accessories.component";
+import { CardSmallSidebarComponent } from './layouts/card/card-small-sidebar/card-small-sidebar.component';
+import { CardBigSidebarComponent } from './layouts/card/card-big-sidebar/card-big-sidebar.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +89,8 @@ import { CardAccessoriesComponent } from "./layouts/card/card-accessories/card-a
     CardQuestionsComponent,
     CardPhotoComponent,
     CardAccessoriesComponent,
+    CardSmallSidebarComponent,
+    CardBigSidebarComponent,
   ],
   imports: [
     BrowserModule,
