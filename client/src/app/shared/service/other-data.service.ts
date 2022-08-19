@@ -10,6 +10,5 @@ export class OtherDataService {
   favoriteListUser: string[] = [];
 
   cartNumber: number = 0;
-
-  _id?: string;
+  cartListUser: string[] = [];
 }
