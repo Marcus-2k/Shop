@@ -24,7 +24,7 @@ export interface Product {
   imageSrc: string[];
   name: string;
   price: number;
-  action: Boolean;
+  action: boolean;
   actionPrice: number;
   counter: number;
   category: number[];
@@ -45,7 +45,7 @@ export interface ProductInfo {
   imageSrc: string[];
   name: string;
   price: number;
-  action: Boolean;
+  action: boolean;
   actionPrice: number;
   counter: number;
   category: number[];
@@ -75,7 +75,6 @@ export interface ProductQuestions {
 export interface ProductPhoto {
   imageSrc: string[];
 }
-
 export interface ProductAccessories {}
 // Product =======================================
 
