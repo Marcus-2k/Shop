@@ -75,8 +75,14 @@
     </div>
     <!--  -->
     <div class="card__content-product">
-      <router-outlet></router-outlet>
-      <!-- <app-card-photo [id]="id"></app-card-photo> -->
+      <div class="product-content">
+        <router-outlet></router-outlet>
+      </div>
+      <!--  -->
+      <div class="product-sidebar">
+        <app-card-big-sidebar *ngIf="sidebar === 1"></app-card-big-sidebar>
+        <app-card-small-sidebar *ngIf="sidebar === 2"></app-card-small-sidebar>
+      </div>
     </div>
   </div>
 </div>

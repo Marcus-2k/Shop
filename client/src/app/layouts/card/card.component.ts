@@ -54,8 +54,6 @@ export class CardComponent implements OnInit {
     });
   }
 
-  // @Input()
-
   // Bread Crumbs ==========================================================================================================
   levelOne?: string;
   levelTwo?: string;
@@ -76,11 +74,24 @@ export class CardComponent implements OnInit {
   activeRoute: string = "info";
   navBar(link: string) {
     this.activeRoute = link;
+    if (link === "accessories") {
+      console.log("link === accessories");
+
+      this.sidebar = 0;
+    } else if (link === "info") {
+      console.log("link === info");
+      this.sidebar = 1;
+    } else {
+      console.log("link === else");
+      this.sidebar = 2;
+    }
+    console.log(this.sidebar);
   }
   // Navigation ============================================================================================================
   // Product Content =======================================================================================================
   product?: Product;
   id: string = "";
 
+  sidebar: 0 | 1 | 2 = 0; // 0 === none, 1 === big-sidebar, 2 === small-sidebar
   // Product Content =======================================================================================================
 }
