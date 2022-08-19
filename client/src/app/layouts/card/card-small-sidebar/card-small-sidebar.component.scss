@@ -1,6 +1,8 @@
 .small-sidebar {
   max-width: 480px;
   margin: 0 auto;
+  position: sticky;
+  top: 25px;
   &__content {
     .content {
       margin-top: 15px;
