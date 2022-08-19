@@ -16,7 +16,6 @@
     &-price {
       display: flex;
       height: 100%;
-
       @media (max-width: 1200px) {
         grid-area: 1 / 1 / 2 / 2;
       }
@@ -39,7 +38,6 @@
           position: absolute;
           top: -35px;
           background-color: #fff;
-
           font-size: 20px;
           color: gray;
           text-decoration: line-through;
