@@ -4,13 +4,14 @@ const fs = require("fs");
 
 module.exports.getUserInfo = async function (req, res) {
   try {
-    // console.log(req.user);
+    console.log("Сервер getUserInfo");
+
     const user = await User.findOne(
       {},
       { password: 0, __v: 0, _id: 1 },
       { _id: req.user.id }
     );
-    // console.log(user);
+
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -21,7 +22,7 @@ module.exports.getUserInfo = async function (req, res) {
 };
 
 module.exports.editUser = async function (req, res) {
-  console.log("Сервер userUpInfo");
+  console.log("Сервер editUser");
 
   const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
 
@@ -31,8 +32,6 @@ module.exports.editUser = async function (req, res) {
     if (user) {
       const updatedUser = {};
 
-      // console.log(req.file);
-      // console.log(req.body);
       if (req.file) {
         updatedUser.avatar = req.file.path;
         if (user.avatar !== null) {
@@ -64,6 +63,7 @@ module.exports.editUser = async function (req, res) {
         { $set: updatedUser },
         { new: true }
       );
+
       res.status(200).json({ message: "Користувача успішно оновлено." });
     } else {
       res
@@ -80,7 +80,8 @@ module.exports.editUser = async function (req, res) {
 
 module.exports.getFavorite = async function (req, res) {
   try {
-    console.log("Server getFavoriteById");
+    console.log("Server getFavorite");
+
     const toker_decode = jwt_decode(req.headers.authorization);
 
     const userFavorite = await User.findOne(
@@ -88,6 +89,7 @@ module.exports.getFavorite = async function (req, res) {
       { favorite: 1, _id: 0 },
       { _id: toker_decode.userId }
     );
+
     res.status(200).json({ favorite: userFavorite.favorite });
   } catch (error) {
     console.log(error);
@@ -119,7 +121,6 @@ module.exports.addFavorite = async function (req, res) {
 
     res.status(200).json({
       favorite: userFavorite.favorite,
-      message: "Add you list",
     });
   } catch (error) {
     console.log(error);
@@ -151,7 +152,6 @@ module.exports.removeFavorite = async function (req, res) {
 
     res.status(200).json({
       favorite: userFavorite.favorite,
-      message: "Remove you list",
     });
   } catch (error) {
     console.log(error);
