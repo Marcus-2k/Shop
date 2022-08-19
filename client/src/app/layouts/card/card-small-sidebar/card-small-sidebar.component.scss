@@ -1,0 +1,48 @@
+.small-sidebar {
+  max-width: 480px;
+  margin: 0 auto;
+  &__content {
+    .content {
+      margin-top: 15px;
+    }
+    .content__box {
+      border-radius: 4px;
+      border: 1px solid #b1b1b1;
+      padding: 5px 15px;
+    }
+    .content-info {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 100px;
+        .logo {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+      &-title {
+        max-width: 300px;
+        margin-left: 10px;
+        .title {
+          margin: 0;
+          font-size: 18px;
+        }
+      }
+    }
+    .content-status {
+      width: 100%;
+    }
+    .content-about {
+      width: 100%;
+    }
+    .content-seller {
+      width: 100%;
+    }
+  }
+}

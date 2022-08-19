@@ -1,1 +1,38 @@
-<p>card-small-sidebar works!</p>
+<!--  -->
+<div *ngIf="loader" class="content-element-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="small-sidebar">
+  <div class="small-sidebar__content">
+    <div class="content content__box content-info">
+      <div class="content-info-logo">
+        <img [src]="url_server_folder + image[0]" alt="" class="logo" />
+      </div>
+      <div class="content-info-title">
+        <p class="title">{{ productSidebar?.name }}</p>
+      </div>
+    </div>
+    <!--  -->
+    <div class="content content-status">
+      <app-card-sidebar-statuses
+        [status]="productSidebar?.status"
+      ></app-card-sidebar-statuses>
+    </div>
+    <!--  -->
+    <div class="content content-about">
+      <app-card-sidebar-about
+        [price]="productSidebar?.price"
+        [action]="productSidebar?.action"
+        [actionPrice]="productSidebar?.actionPrice"
+        [_id]="productSidebar?._id"
+      ></app-card-sidebar-about>
+    </div>
+    <!--  -->
+    <div class="content content-seller">
+      <app-card-sidebar-seller
+        [idSeller]="productSidebar?.seller"
+      ></app-card-sidebar-seller>
+    </div>
+  </div>
+</div>

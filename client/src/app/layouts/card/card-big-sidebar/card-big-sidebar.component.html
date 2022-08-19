@@ -4,72 +4,18 @@
     <div class="info__box info__container-unique__params"></div>
     <!-- =============================================== -->
     <div class="info__box info__container-status">
-      <div class="status__item in_stock" *ngIf="productSidebar?.status === 0">
-        <span class="material-symbols-outlined"> check_circle </span>
-        <p>В наявності</p>
-      </div>
-      <div class="status__item time" *ngIf="productSidebar?.status === 1">
-        <span class="material-symbols-outlined"> schedule </span>
-        <p>Очікується постачання</p>
-      </div>
-      <div class="status__item end" *ngIf="productSidebar?.status === 2">
-        <span class="material-symbols-outlined"> do_not_disturb_on </span>
-        <p>Немає в наяності</p>
-      </div>
-      <div class="status__item ends" *ngIf="productSidebar?.status === 3">
-        <span class="material-symbols-outlined"> schedule </span>
-        <p>Закінчується</p>
-      </div>
+      <app-card-sidebar-statuses
+        [status]="productSidebar?.status"
+      ></app-card-sidebar-statuses>
     </div>
     <!-- =============================================== -->
-    <div class="info__box info__container-price">
-      <div class="price">
-        <div class="price__info">
-          <div class="price__info-content">
-            <p class="content__title">
-              {{
-                productSidebar?.action
-                  ? (productSidebar?.actionPrice | price)
-                  : (productSidebar?.price | price)
-              }}
-              <span class="content__title-currency">₴</span>
-            </p>
-            <p
-              class="content__title-action"
-              *ngIf="productSidebar?.action === true"
-            >
-              {{ productSidebar?.price | price }}
-              <span class="content__title-action-currency">₴</span>
-            </p>
-          </div>
-        </div>
-        <div class="price__buttons">
-          <button class="price__buttons-cart" mat-raised-button color="primary">
-            <span class="material-symbols-outlined"> shopping_cart </span
-            >Придбати
-          </button>
-          <div class="price__buttons-favorite">
-            <p class="favorite">
-              <button
-                class="favorite__button"
-                (click)="addRemoveFavorite(productSidebar?._id)"
-                [disabled]="workFunction"
-              >
-                <span
-                  class="material-symbols-outlined"
-                  [ngClass]="{
-                    material_symbols_outlined_like: checkedFavorite(
-                      productSidebar?._id
-                    )
-                  }"
-                >
-                  favorite
-                </span>
-              </button>
-            </p>
-          </div>
-        </div>
-      </div>
+    <div class="info__box info__container-about">
+      <app-card-sidebar-about
+        [price]="productSidebar?.price"
+        [action]="productSidebar?.action"
+        [actionPrice]="productSidebar?.actionPrice"
+        [_id]="productSidebar?._id"
+      ></app-card-sidebar-about>
     </div>
     <!-- =============================================== -->
     <div class="info__box info__container-recommendation">
@@ -77,15 +23,9 @@
     </div>
     <!-- =============================================== -->
     <div class="info__box info__container-seller">
-      <div class="seller">
-        <div class="seller__title">
-          <p class="seller__title-placeholder">Продавець:</p>
-          <p class="seller__title-name">{{ seller?.name }}</p>
-        </div>
-        <div class="seller__logo" *ngIf="seller?.logo !== ''">
-          <img [src]="url_server_folder + seller?.logo" alt="" />
-        </div>
-      </div>
+      <app-card-sidebar-seller
+        [idSeller]="productSidebar?.seller"
+      ></app-card-sidebar-seller>
     </div>
     <!-- =============================================== -->
     <div class="info__box info__container-payment">

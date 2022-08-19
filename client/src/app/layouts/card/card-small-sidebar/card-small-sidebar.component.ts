@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import { Product } from "src/app/shared/interface/interfaces";
 
 @Component({
   selector: "app-card-small-sidebar",
@@ -8,7 +9,20 @@ import { Component, OnInit } from "@angular/core";
 export class CardSmallSidebarComponent implements OnInit {
   constructor() {}
 
+  @Input() productSidebar?: Product;
+
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Small-Sidebar");
+
+    if (this.productSidebar) {
+      this.image = this.productSidebar?.imageSrc;
+    }
+    this.loader = false;
   }
+
+  loader: boolean = true;
+
+  url_server_folder: string = "http://localhost:5000/";
+
+  image: string[] = [];
 }
