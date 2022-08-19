@@ -1,0 +1,10 @@
+<!--  -->
+<div class="seller">
+  <div class="seller__title">
+    <p class="seller__title-placeholder">Продавець:</p>
+    <p class="seller__title-name">{{ seller?.name }}</p>
+  </div>
+  <div class="seller__logo" *ngIf="seller?.logo !== ''">
+    <img [src]="url_server_folder + seller?.logo" alt="" />
+  </div>
+</div>

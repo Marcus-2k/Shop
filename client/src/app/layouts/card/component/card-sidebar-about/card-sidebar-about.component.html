@@ -1,0 +1,28 @@
+<!--  -->
+<div class="about">
+  <div class="about__content">
+    <!--  -->
+    <div class="about__content-price">
+      <div class="price">
+        <p class="price__title" [ngClass]="{ price__title__action: action }">
+          {{ action ? (actionPrice | price) : (price | price) }}
+          <span class="price__title-currency">₴</span>
+        </p>
+        <p class="price__action" *ngIf="action">
+          {{ price | price }}
+          <span class="price__action-currency">₴</span>
+        </p>
+      </div>
+    </div>
+    <div class="about__content-btn">
+      <button mat-raised-button color="primary" class="button-cart">
+        <span class="material-symbols-outlined icon"> shopping_cart </span
+        >Придбати
+      </button>
+    </div>
+    <div class="about__content-favorite">
+      <app-card-favorite [_id]="_id"></app-card-favorite>
+    </div>
+    <!--  -->
+  </div>
+</div>

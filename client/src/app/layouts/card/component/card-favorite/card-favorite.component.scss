@@ -1,0 +1,23 @@
+.favorite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.4s;
+  &:hover {
+    background-color: #ececf7;
+  }
+  .material-symbols-outlined {
+    transition: 0.4s;
+    color: #faa627;
+    font-variation-settings: "FILL" 0;
+  }
+  .icon__active {
+    transition: 0.4s;
+    font-variation-settings: "FILL" 1;
+  }
+}

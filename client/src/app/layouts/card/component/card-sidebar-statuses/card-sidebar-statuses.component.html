@@ -1,0 +1,19 @@
+<!--  -->
+<div class="status">
+  <div class="status__item in_stock" *ngIf="status === 0">
+    <span class="material-symbols-outlined"> check_circle </span>
+    <p>В наявності</p>
+  </div>
+  <div class="status__item time" *ngIf="status === 1">
+    <span class="material-symbols-outlined"> schedule </span>
+    <p>Очікується постачання</p>
+  </div>
+  <div class="status__item end" *ngIf="status === 2">
+    <span class="material-symbols-outlined"> do_not_disturb_on </span>
+    <p>Немає в наяності</p>
+  </div>
+  <div class="status__item ends" *ngIf="status === 3">
+    <span class="material-symbols-outlined"> schedule </span>
+    <p>Закінчується</p>
+  </div>
+</div>

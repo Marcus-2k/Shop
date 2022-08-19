@@ -1,0 +1,52 @@
+.status {
+  display: inline-block;
+  .status__item {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 5px;
+    .material-symbols-outlined {
+      margin-right: 5px;
+    }
+    p {
+      margin: 0px;
+    }
+  }
+  .in_stock {
+    background-color: rgba(52, 153, 72, 0.2);
+    .material-symbols-outlined {
+      color: #349948;
+    }
+    p {
+      color: #349948;
+    }
+  }
+  .time {
+    background-color: rgba(50, 129, 202, 0.2);
+    .material-symbols-outlined {
+      color: #3281ca;
+    }
+    p {
+      color: #3281ca;
+    }
+  }
+  .end {
+    background-color: rgba(80, 65, 65, 0.2);
+    .material-symbols-outlined {
+      color: #504141;
+    }
+    p {
+      color: #504141;
+    }
+  }
+  .ends {
+    background-color: rgba(180, 57, 26, 0.2);
+    .material-symbols-outlined {
+      color: #b4391a;
+    }
+    p {
+      color: #b4391a;
+    }
+  }
+}

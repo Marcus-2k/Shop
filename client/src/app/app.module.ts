@@ -58,8 +58,13 @@ import { CardQuestionsComponent } from "./layouts/card/card-questions/card-quest
 import { CardPhotoComponent } from "./layouts/card/card-photo/card-photo.component";
 // Card >>> Accessories
 import { CardAccessoriesComponent } from "./layouts/card/card-accessories/card-accessories.component";
-import { CardSmallSidebarComponent } from './layouts/card/card-small-sidebar/card-small-sidebar.component';
-import { CardBigSidebarComponent } from './layouts/card/card-big-sidebar/card-big-sidebar.component';
+import { CardSmallSidebarComponent } from "./layouts/card/card-small-sidebar/card-small-sidebar.component";
+import { CardBigSidebarComponent } from "./layouts/card/card-big-sidebar/card-big-sidebar.component";
+
+import { CardSidebarAboutComponent } from "./layouts/card/component/card-sidebar-about/card-sidebar-about.component";
+import { CardSidebarStatusesComponent } from "./layouts/card/component/card-sidebar-statuses/card-sidebar-statuses.component";
+import { CardSidebarSellerComponent } from "./layouts/card/component/card-sidebar-seller/card-sidebar-seller.component";
+import { CardFavoriteComponent } from './layouts/card/component/card-favorite/card-favorite.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +96,10 @@ import { CardBigSidebarComponent } from './layouts/card/card-big-sidebar/card-bi
     CardAccessoriesComponent,
     CardSmallSidebarComponent,
     CardBigSidebarComponent,
+    CardSidebarAboutComponent,
+    CardSidebarStatusesComponent,
+    CardSidebarSellerComponent,
+    CardFavoriteComponent,
   ],
   imports: [
     BrowserModule,

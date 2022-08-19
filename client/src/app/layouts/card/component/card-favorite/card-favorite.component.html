@@ -1,0 +1,13 @@
+<!--  -->
+<button
+  class="favorite"
+  (click)="addRemovefavorite()"
+  [disabled]="buttonDisabled"
+>
+  <span
+    class="material-symbols-outlined"
+    [ngClass]="{ icon__active: checkingFavorite() }"
+  >
+    favorite
+  </span>
+</button>
