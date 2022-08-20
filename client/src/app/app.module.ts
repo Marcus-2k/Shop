@@ -10,7 +10,7 @@ import { TokenInterceptor } from "./shared/classes/token.interseptor";
 import { RoutingModule } from "./shared/routing/routing.module";
 
 // Library
-import { SwiperModule } from "swiper/angular";
+import { SliderSwiperModule } from "./shared/slider/slider.module";
 
 // Lead Component
 import { AppComponent } from "./app.component";
@@ -29,6 +29,7 @@ import { FooterComponent } from "./layouts/main/footer/footer.component";
 import { LoginComponent } from "./layouts/login/login.component";
 import { RegisterComponent } from "./layouts/register/register.component";
 
+// Page Search Product
 import { SearchComponent } from "./layouts/search/search.component";
 // User Layouts
 import { AccountComponent } from "./layouts/user-layouts/account/account.component";
@@ -64,7 +65,7 @@ import { CardBigSidebarComponent } from "./layouts/card/card-big-sidebar/card-bi
 import { CardSidebarAboutComponent } from "./layouts/card/component/card-sidebar-about/card-sidebar-about.component";
 import { CardSidebarStatusesComponent } from "./layouts/card/component/card-sidebar-statuses/card-sidebar-statuses.component";
 import { CardSidebarSellerComponent } from "./layouts/card/component/card-sidebar-seller/card-sidebar-seller.component";
-import { CardFavoriteComponent } from './layouts/card/component/card-favorite/card-favorite.component';
+import { CardFavoriteComponent } from "./layouts/card/component/card-favorite/card-favorite.component";
 
 @NgModule({
   declarations: [
@@ -86,7 +87,6 @@ import { CardFavoriteComponent } from './layouts/card/component/card-favorite/ca
     PricePipe,
     NewslettersComponent,
     SettingsComponent,
-    // Card
     CardComponent,
     CardInfoComponent,
     CardCharacteristicsComponent,
@@ -109,7 +109,7 @@ import { CardFavoriteComponent } from './layouts/card/component/card-favorite/ca
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    SwiperModule,
+    SliderSwiperModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, multi: true, useClass: TokenInterceptor },
