@@ -78,6 +78,7 @@ export interface ProductPhoto {
 export interface ProductAccessories {}
 // Product =======================================
 
+// User
 export interface User {
   avatar: string | null | ArrayBuffer;
   name: string;
@@ -87,6 +88,10 @@ export interface User {
   country: string;
   _id: string;
 }
+export interface Favorite {
+  favorite: string[];
+}
+// User
 
 // Category ==================================
 export interface CategoryProduct {

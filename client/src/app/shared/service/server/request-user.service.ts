@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { User } from "src/app/shared/interface/interfaces";
+import { Favorite, User } from "src/app/shared/interface/interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -25,29 +25,20 @@ export class RequestUserService {
   }
 
   // Favorite ============================================================
-  getFavorite(): Observable<{ favorite: string[] }> {
-    return this.http.get<{ favorite: string[] }>(
-      `${this.url_server}/user/get/favorite`
-    );
+  getFavorite(): Observable<Favorite> {
+    return this.http.get<Favorite>(`${this.url_server}/user/get/favorite`);
   }
 
-  addFavorite(id: string): Observable<{ favorite: string[]; message: string }> {
-    return this.http.post<{ favorite: string[]; message: string }>(
-      `${this.url_server}/user/add/favorite`,
-      {
-        id,
-      }
-    );
+  addFavorite(id: string): Observable<Favorite> {
+    return this.http.post<Favorite>(`${this.url_server}/user/add/favorite`, {
+      id,
+    });
   }
 
-  removeFavorite(
-    id: string
-  ): Observable<{ favorite: string[]; message: string }> {
-    return this.http.post<{ favorite: string[]; message: string }>(
-      `${this.url_server}/user/remove/favorite`,
-      {
-        id,
-      }
-    );
+  removeFavorite(id: string): Observable<Favorite> {
+    return this.http.post<Favorite>(`${this.url_server}/user/remove/favorite`, {
+      id,
+    });
   }
+  // Favorite ============================================================
 }
