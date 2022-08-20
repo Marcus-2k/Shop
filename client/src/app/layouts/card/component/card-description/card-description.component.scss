@@ -1,4 +1,16 @@
 .card-description {
   &-content {
+    .content-title {
+      &-description {
+        font-size: 24px;
+        font-weight: 700;
+      }
+    }
+    .content-text {
+      &-description {
+        font-size: 18px;
+        color: #525252;
+      }
+    }
   }
 }
