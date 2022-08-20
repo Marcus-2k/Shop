@@ -87,35 +87,6 @@
               max-height: 100%;
             }
           }
-          .favorite__compare {
-            position: absolute;
-            top: 35px;
-            right: 35px;
-            display: flex;
-            flex-direction: column;
-            .favorite {
-              &__button {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: #fff;
-                border-radius: 4px;
-                border: none;
-                padding: 5px;
-                cursor: pointer;
-              }
-              .material-symbols-outlined {
-                color: #faa627;
-                transition: 0.4s;
-                font-variation-settings: "FILL" 0;
-              }
-              .material_symbols_outlined_like {
-                color: #faa627;
-                transition: 0.4s;
-                font-variation-settings: "FILL" 1;
-              }
-            }
-          }
         }
         // &__box {
         //   width: 100%;

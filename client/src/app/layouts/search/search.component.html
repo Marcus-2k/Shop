@@ -114,27 +114,7 @@
               />
             </div>
             <mat-card-content>
-              <div class="favorite__compare">
-                <p class="favorite">
-                  <button
-                    class="favorite__button"
-                    (click)="addRemoveFavorite(product._id)"
-                    [disabled]="workFunction"
-                  >
-                    <span
-                      class="material-symbols-outlined"
-                      [ngClass]="{
-                        material_symbols_outlined_like: checkedFavorite(
-                          product._id
-                        )
-                      }"
-                    >
-                      favorite
-                    </span>
-                  </button>
-                </p>
-                <p class="compare"></p>
-              </div>
+
               <div
                 class="mat-title block__title"
                 [routerLink]="'card/' + product._id"

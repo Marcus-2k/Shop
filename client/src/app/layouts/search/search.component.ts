@@ -205,19 +205,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
       this.showNotice.message("Помилка запиту, не введено текст пошуку.");
     }
 
-    this.requestUser.getFavorite().subscribe(
-      (responce) => {
-        console.log(responce);
-        this.listFavoriteUser = responce.favorite;
-      },
-      //
-      (error) => {
-        this.showNotice.message(
-          "Сталася помилка на серверові. Спробуйте пізніше."
-        );
-        console.log(error);
-      }
-    );
     this.renameTitle.renameTitleSite(
       this.titleSearch ? this.titleSearch : "Інтернет-магазин"
     );
@@ -397,74 +384,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     this.router.navigate([`search`], {
       queryParams: this.queryParams,
     });
-  }
-
-  listFavoriteUser: string[] = [];
-
-  checkedFavorite(productID: string | undefined): Boolean {
-    if (productID) {
-      for (const iterator of this.listFavoriteUser) {
-        if (iterator === productID) {
-          return true;
-        }
-      }
-
-      return false;
-    } else {
-      return false;
-    }
-  }
-
-  workFunction: boolean = false;
-  addRemoveFavorite(id: string | undefined) {
-    this.workFunction = true;
-    //
-    if (id) {
-      //
-      if (this.listFavoriteUser.indexOf(id) === -1) {
-        console.log("Add favirite in you list");
-
-        this.requestUser.addFavorite(id).subscribe(
-          (response) => {
-            this.workFunction = false;
-            console.log(response.favorite);
-            this.listFavoriteUser = response.favorite;
-            this.otherData.favoriteNumber = response.favorite.length;
-            this.showNotice.message(response.message);
-          },
-          (error) => {
-            this.workFunction = false;
-            this.showNotice.message(
-              "Сталася помилка на серверові. Спробуйте пізніше."
-            );
-            console.log(error);
-          }
-        );
-      } else if (this.listFavoriteUser.indexOf(id) !== -1) {
-        console.log("Remove favirite in you list");
-
-        this.requestUser.removeFavorite(id).subscribe(
-          (response) => {
-            this.workFunction = false;
-            console.log(response.favorite);
-            this.listFavoriteUser = response.favorite;
-            this.otherData.favoriteNumber = response.favorite.length;
-            this.showNotice.message(response.message);
-          },
-          (error) => {
-            this.workFunction = false;
-            this.showNotice.message(
-              "Сталася помилка на серверові. Спробуйте пізніше."
-            );
-            console.log(error);
-          }
-        );
-      }
-      //
-    } else {
-      this.workFunction = false;
-    }
-    //
   }
 
   // Main Product ===========================================================================
