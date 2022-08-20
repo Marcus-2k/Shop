@@ -1,26 +1,17 @@
-import {
-  Component,
-  DoCheck,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-} from "@angular/core";
+import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
   CategoryProduct,
   Product,
   ActiveFilter,
   Options,
-  FilterNameParams,
   ActiveFilterBlock,
 } from "src/app/shared/interface/interfaces"; // Interface
 // Service
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { NameQueryService } from "src/app/shared/service/name-query.service";
-import { OtherDataService } from "src/app/shared/service/other-data.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
-import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
@@ -33,11 +24,9 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private searchService: RequestSearchService,
-    private requestUser: RequestUserService,
     private catagoryName: CategoryProductService,
     private originalAndQueryName: NameQueryService,
     private showNotice: ShowNoticeService,
-    private otherData: OtherDataService,
     private renameTitle: RenameTitleService
   ) {}
 

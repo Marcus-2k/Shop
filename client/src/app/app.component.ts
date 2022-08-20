@@ -24,7 +24,6 @@ export class AppComponent implements OnInit {
       this.auth.setToken(potentialToken);
       this.requestUser.getFavorite().subscribe(
         (responce: { favorite: string[] }) => {
-          console.log(responce);
           this.otherData.favoriteListUser = responce.favorite;
         },
         (error) => {

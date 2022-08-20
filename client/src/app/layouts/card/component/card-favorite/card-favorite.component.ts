@@ -51,8 +51,6 @@ export class CardFavoriteComponent implements DoCheck {
 
   listFavorite: string[] = this.otherData.favoriteListUser;
   checkingFavorite(): boolean {
-    console.log(this.listFavorite);
-
     if (this._id) {
       if (this.listFavorite.indexOf(this._id) === -1) {
         return false;
