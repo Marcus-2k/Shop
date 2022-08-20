@@ -114,6 +114,11 @@
               />
             </div>
             <mat-card-content>
+              <div class="favorite">
+                <app-card-favorite
+                  [_idProduct]="product._id"
+                ></app-card-favorite>
+              </div>
               <div
                 class="mat-title block__title"
                 [routerLink]="'card/' + product._id"

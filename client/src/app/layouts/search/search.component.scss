@@ -44,6 +44,13 @@
           margin-top: 10px;
           width: 300px;
           height: 450px;
+          .favorite {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #fff;
+            border-radius: 4px;
+          }
           .mat-card {
             padding: 10px;
           }

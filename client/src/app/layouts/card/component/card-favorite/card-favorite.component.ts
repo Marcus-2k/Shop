@@ -13,7 +13,7 @@ export class CardFavoriteComponent implements DoCheck {
     private requestUser: RequestUserService
   ) {}
 
-  @Input() _id?: string;
+  @Input() _idProduct?: string;
 
   ngDoCheck() {
     this.listFavorite = this.otherData.favoriteListUser;
@@ -22,11 +22,12 @@ export class CardFavoriteComponent implements DoCheck {
   buttonDisabled: boolean = false;
   addRemovefavorite() {
     this.buttonDisabled = true;
-    if (this._id) {
-      if (this.listFavorite.indexOf(this._id) === -1) {
-        this.requestUser.addFavorite(this._id).subscribe(
+    if (this._idProduct) {
+      if (this.listFavorite.indexOf(this._idProduct) === -1) {
+        this.requestUser.addFavorite(this._idProduct).subscribe(
           (responce) => {
             this.otherData.favoriteListUser = responce.favorite;
+            this.otherData.favoriteNumber = responce.favorite.length;
             this.buttonDisabled = false;
           },
           (error) => {
@@ -34,10 +35,11 @@ export class CardFavoriteComponent implements DoCheck {
             this.buttonDisabled = false;
           }
         );
-      } else if (this.listFavorite.indexOf(this._id) >= 0) {
-        this.requestUser.removeFavorite(this._id).subscribe(
+      } else if (this.listFavorite.indexOf(this._idProduct) >= 0) {
+        this.requestUser.removeFavorite(this._idProduct).subscribe(
           (responce) => {
             this.otherData.favoriteListUser = responce.favorite;
+            this.otherData.favoriteNumber = responce.favorite.length;
             this.buttonDisabled = false;
           },
           (error) => {
@@ -51,8 +53,8 @@ export class CardFavoriteComponent implements DoCheck {
 
   listFavorite: string[] = this.otherData.favoriteListUser;
   checkingFavorite(): boolean {
-    if (this._id) {
-      if (this.listFavorite.indexOf(this._id) === -1) {
+    if (this._idProduct) {
+      if (this.listFavorite.indexOf(this._idProduct) === -1) {
         return false;
       } else {
         return true;
