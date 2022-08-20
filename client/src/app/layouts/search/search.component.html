@@ -138,11 +138,9 @@
                   }}<span class="price__cart-currency">&nbsp;₴</span>
                 </p>
                 <p class="price__cart-shop">
-                  <button mat-button color="accent">
-                    <span class="material-symbols-outlined" color="primary">
-                      shopping_cart
-                    </span>
-                  </button>
+                  <app-card-shopping-cart
+                    [_idProduct]="product._id"
+                  ></app-card-shopping-cart>
                 </p>
               </div>
             </mat-card-content>

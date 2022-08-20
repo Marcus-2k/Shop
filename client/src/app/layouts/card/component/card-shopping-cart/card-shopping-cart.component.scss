@@ -1,0 +1,18 @@
+.shopping__cart {
+  button {
+    transition: 0.4s;
+    &:hover {
+      transition: 0.4s;
+      background-color: rgba(0, 128, 0, 0.1);
+    }
+  }
+  .material-symbols-outlined {
+    transition: 0.4s;
+    color: green;
+    font-variation-settings: "FILL" 0;
+  }
+  .icon__active {
+    transition: 0.4s;
+    font-variation-settings: "FILL" 1;
+  }
+}

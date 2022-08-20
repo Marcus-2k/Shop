@@ -17,27 +17,41 @@ router.patch(
   controller.editUser
 );
 
+// ==== Favorite ====================================================================================================
 router.get(
   "/get/favorite",
   passport.authenticate("jwt", { session: false }),
   controller.getFavorite
 );
-// router.get(
-//   "/get/favorite/:id",
-//   passport.authenticate("jwt", { session: false }),
-//   controller.getFavoriteById
-// );
-
 router.post(
   "/add/favorite",
   passport.authenticate("jwt", { session: false }),
   controller.addFavorite
 );
-
 router.post(
   "/remove/favorite",
   passport.authenticate("jwt", { session: false }),
   controller.removeFavorite
 );
+// ==== Favorite ====================================================================================================
+// Shopping Cart ====================================================================================================
+router.get(
+  "/shopping_cart/",
+  passport.authenticate("jwt", { session: false }),
+  controller.getShoppingCart
+);
+
+router.post(
+  "/shopping_cart/",
+  passport.authenticate("jwt", { session: false }),
+  controller.addShoppingCart
+);
+
+router.delete(
+  "/shopping_cart/:id",
+  passport.authenticate("jwt", { session: false }),
+  controller.removeShoppingCart
+);
+// Shopping Cart ====================================================================================================
 
 module.exports = router;

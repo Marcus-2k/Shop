@@ -1,2 +1,11 @@
 <!--  -->
-<p>card-shopping-cart works!</p>
+<div class="shopping__cart">
+  <button mat-button (click)="addRemovefavorite()" [disabled]="buttonDisabled">
+    <span
+      class="material-symbols-outlined"
+      [ngClass]="{ icon__active: checkingShoppingCart() }"
+    >
+      shopping_cart
+    </span>
+  </button>
+</div>

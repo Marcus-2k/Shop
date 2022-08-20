@@ -36,6 +36,10 @@ const userSchema = new Schema({
     type: Array,
     require: true,
   },
+  shoppingCart: {
+    type: Array,
+    require: true,
+  },
 });
 
 module.exports = mongoose.model("users", userSchema);

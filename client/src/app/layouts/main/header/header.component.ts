@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   ngDoCheck(): void {
     this.potentialToken = localStorage.getItem("auth-token");
     this.lengthFavorite = this.otherData.favoriteNumber;
-    this.lengthCart = this.otherData.cartNumber;
+    this.lengthCart = this.otherData.shoppingCartNumber;
   }
 
   lengthFavorite: number = 0;

@@ -91,6 +91,9 @@ export interface User {
 export interface Favorite {
   favorite: string[];
 }
+export interface ShoppingCart {
+  shoppingCart: string[];
+}
 // User
 
 // Category ==================================

@@ -78,6 +78,7 @@ module.exports.editUser = async function (req, res) {
   }
 };
 
+// ==== Favorite ====================================================================================================
 module.exports.getFavorite = async function (req, res) {
   try {
     console.log("Server getFavorite");
@@ -98,7 +99,6 @@ module.exports.getFavorite = async function (req, res) {
     });
   }
 };
-
 module.exports.addFavorite = async function (req, res) {
   try {
     console.log("Server addFavorite");
@@ -129,7 +129,6 @@ module.exports.addFavorite = async function (req, res) {
     });
   }
 };
-
 module.exports.removeFavorite = async function (req, res) {
   try {
     console.log("Server removeFavorite");
@@ -160,6 +159,91 @@ module.exports.removeFavorite = async function (req, res) {
     });
   }
 };
+// ==== Favorite ====================================================================================================
+
+// Shopping Cart ====================================================================================================
+module.exports.getShoppingCart = async function (req, res) {
+  try {
+    console.log("Server getShoppingCart");
+
+    const token_decode = jwt_decode(req.headers.authorization);
+
+    const userShoppingCart = await User.findOne(
+      {},
+      { shoppingCart: 1, _id: 0 },
+      { _id: token_decode.userId }
+    );
+
+    res.status(200).json({ shoppingCart: userShoppingCart.shoppingCart });
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
+module.exports.addShoppingCart = async function (req, res) {
+  try {
+    console.log("Server addShoppingCart");
+
+    const token_decode = jwt_decode(req.headers.authorization);
+
+    const user = await User.findOne({ _id: token_decode.userId });
+
+    const addShoppingCart = await User.updateOne(
+      { _id: user._id },
+      { $push: { shoppingCart: req.body.id } },
+      { new: true }
+    );
+
+    const userShoppingCart = await User.findOne(
+      {},
+      { shoppingCart: 1, _id: 0 },
+      { _id: token_decode.userId }
+    );
+
+    // console.log(userShoppingCart);
+    res.status(200).json({
+      shoppingCart: userShoppingCart.shoppingCart,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
+module.exports.removeShoppingCart = async function (req, res) {
+  try {
+    console.log("Server removeShoppingCart");
+
+    const token_decode = jwt_decode(req.headers.authorization);
+
+    const user = await User.findOne({ _id: token_decode.userId });
+
+    const removeShoppingCart = await User.updateOne(
+      { _id: user._id },
+      { $pull: { shoppingCart: req.params.id } },
+      { new: true }
+    );
+
+    const userShoppingCart = await User.findOne(
+      {},
+      { shoppingCart: 1, _id: 0 },
+      { _id: token_decode.userId }
+    );
+
+    res.status(200).json({
+      shoppingCart: userShoppingCart.shoppingCart,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
+// Shopping Cart ====================================================================================================
 
 function deleteImgFromFolder(linkImg) {
   fs.unlink(linkImg, (err) => {
