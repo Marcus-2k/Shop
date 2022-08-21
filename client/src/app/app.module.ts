@@ -38,7 +38,7 @@ import { ProductComponent } from "./layouts/user-layouts/product/product.compone
 import { ProductNewComponent } from "./layouts/user-layouts/product-new/product-new.component";
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
 import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newsletters.component";
-import { LikeComponent } from "./layouts/user-layouts/like/like.component";
+import { WishlistComponent } from "./layouts/user-layouts/wishlist/wishlist.component";
 import { CartComponent } from "./layouts/user-layouts/cart/cart.component";
 
 // Angular Material UI
@@ -82,7 +82,7 @@ import { CardShoppingCartComponent } from "./layouts/card/component/card-shoppin
     LoginComponent,
     RegisterComponent,
     AccountComponent,
-    LikeComponent,
+    WishlistComponent,
     UserComponent,
     CartComponent,
     ProductComponent,

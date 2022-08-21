@@ -22,7 +22,7 @@ import { ProductComponent } from "src/app/layouts/user-layouts/product/product.c
 import { ProductNewComponent } from "src/app/layouts/user-layouts/product-new/product-new.component";
 import { SettingsComponent } from "src/app/layouts/user-layouts/settings/settings.component";
 import { NewslettersComponent } from "src/app/layouts/user-layouts/newsletters/newsletters.component";
-import { LikeComponent } from "src/app/layouts/user-layouts/like/like.component";
+import { WishlistComponent } from "src/app/layouts/user-layouts/wishlist/wishlist.component";
 import { CartComponent } from "src/app/layouts/user-layouts/cart/cart.component";
 import { SearchComponent } from "src/app/layouts/search/search.component";
 // Card Component
@@ -82,7 +82,7 @@ const routes: Routes = [
       },
     ],
   },
-  { path: "like", canActivate: [AuthGuard], component: LikeComponent },
+  { path: "wishlist", canActivate: [AuthGuard], component: WishlistComponent },
   { path: "cart", canActivate: [AuthGuard], component: CartComponent },
   { path: "search", component: SearchComponent },
   {
