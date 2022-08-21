@@ -30,19 +30,17 @@ export class RequestUserService {
 
   // Favorite ============================================================
   getFavorite(): Observable<Favorite> {
-    return this.http.get<Favorite>(`${this.url_server}/user/get/favorite`);
+    return this.http.get<Favorite>(`${this.url_server}/user/favorite/`);
   }
 
   addFavorite(id: string): Observable<Favorite> {
-    return this.http.post<Favorite>(`${this.url_server}/user/add/favorite`, {
+    return this.http.post<Favorite>(`${this.url_server}/user/favorite/`, {
       id,
     });
   }
 
   removeFavorite(id: string): Observable<Favorite> {
-    return this.http.post<Favorite>(`${this.url_server}/user/remove/favorite`, {
-      id,
-    });
+    return this.http.delete<Favorite>(`${this.url_server}/user/favorite/${id}`);
   }
   // Favorite ============================================================
   // Shopping Cart =======================================================

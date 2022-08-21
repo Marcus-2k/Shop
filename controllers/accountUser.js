@@ -139,7 +139,7 @@ module.exports.removeFavorite = async function (req, res) {
 
     const removeFavorite = await User.updateOne(
       { _id: user._id },
-      { $pull: { favorite: req.body.id } },
+      { $pull: { favorite: req.params.id } },
       { new: true }
     );
 

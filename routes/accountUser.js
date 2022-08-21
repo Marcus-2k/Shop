@@ -19,17 +19,17 @@ router.patch(
 
 // ==== Favorite ====================================================================================================
 router.get(
-  "/get/favorite",
+  "/favorite/",
   passport.authenticate("jwt", { session: false }),
   controller.getFavorite
 );
 router.post(
-  "/add/favorite",
+  "/favorite/",
   passport.authenticate("jwt", { session: false }),
   controller.addFavorite
 );
-router.post(
-  "/remove/favorite",
+router.delete(
+  "/favorite/:id",
   passport.authenticate("jwt", { session: false }),
   controller.removeFavorite
 );

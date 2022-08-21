@@ -22,14 +22,11 @@ export class CardShoppingCartComponent implements OnInit {
 
   ngOnInit(): void {
     this.listShoppingCart = this.otherData.shoppingCartListUser;
-    console.log(this.otherData.shoppingCartListUser);
-    console.log(this.otherData.shoppingCartNumber);
   }
 
   buttonDisabled: boolean = false;
   addRemovefavorite() {
     this.buttonDisabled = true; // disabled btn - did not spam clicks
-
     // checking auth user
     if (this.auth.isAuthenticated()) {
       //
@@ -71,9 +68,6 @@ export class CardShoppingCartComponent implements OnInit {
 
   listShoppingCart: string[] = this.otherData.shoppingCartListUser;
   checkingShoppingCart(): boolean {
-    console.log("checkingShoppingCart");
-    console.log(this.listShoppingCart);
-
     if (this._idProduct) {
       if (this.listShoppingCart.indexOf(this._idProduct) === -1) {
         return false;
