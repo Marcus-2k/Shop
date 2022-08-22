@@ -116,6 +116,11 @@ export interface Wish {
   _id?: string; // server
   // __v?: string; //server
 }
+
+export interface WishChecked {
+  checked: boolean;
+  _id: string; // server
+}
 // User
 
 // Category ==================================

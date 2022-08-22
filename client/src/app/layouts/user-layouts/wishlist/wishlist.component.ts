@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Wish } from "src/app/shared/interface/interfaces";
+import { Wish, WishChecked } from "src/app/shared/interface/interfaces";
+import { OtherDataService } from "src/app/shared/service/other-data.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 
@@ -11,7 +12,8 @@ import { RequestUserService } from "src/app/shared/service/server/request-user.s
 export class WishlistComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
-    private requestUser: RequestUserService
+    private requestUser: RequestUserService,
+    private otherData: OtherDataService
   ) {}
 
   ngOnInit(): void {
@@ -19,18 +21,11 @@ export class WishlistComponent implements OnInit {
 
     this.requestUser.getWishList().subscribe(
       (responce) => {
-        console.log(responce);
         this.wishList = responce;
 
-        responce.forEach((item) => {
-          if (item.action) {
-            this.totolPrice = this.totolPrice + item.actionPrice;
-          } else {
-            this.totolPrice = this.totolPrice + item.price;
-          }
-        });
-
         this.loader = false;
+
+        this.calcTotolPrice();
       },
       (error) => {
         console.log(error);
@@ -40,6 +35,16 @@ export class WishlistComponent implements OnInit {
     this.renameTitle.renameTitleSite("Вподобані товари");
   }
 
+  calcTotolPrice() {
+    this.wishList.forEach((item) => {
+      if (item.action) {
+        this.totolPrice = this.totolPrice + item.actionPrice;
+      } else {
+        this.totolPrice = this.totolPrice + item.price;
+      }
+    });
+  }
+
   loader: boolean = true;
 
   wishList: Wish[] = [];
@@ -47,14 +52,54 @@ export class WishlistComponent implements OnInit {
   totolPriceAction: number = 0;
   totolPrice: number = 0;
 
-  productListChecked: {}[] = [];
+  wishChecked: WishChecked[] = [];
 
-  // gettingChecked(item: any) {
-  // console.log("sadsdsasd");
-  // console.log(item);
-  // this.productListChecked.forEach((element) => {
+  gettingChecked(item: WishChecked) {
+    let exist: boolean = false;
 
-  // });
-  // this.productListChecked.push(item);
-  // }
+    this.wishChecked.forEach((element, idx) => {
+      if (element._id === item._id) {
+        exist = true;
+        if (item.checked === true) {
+          element.checked = item.checked;
+        } else {
+          this.wishChecked.splice(idx, 1);
+        }
+      }
+    });
+
+    if (exist === false) {
+      this.wishChecked.push(item);
+    }
+  }
+
+  deleteWishChecked() {
+    if (this.wishChecked.length !== 0) {
+      const listId: string[] = [];
+
+      this.wishChecked.forEach((element) => {
+        listId.push(element._id);
+      });
+
+      this.requestUser.deleteWishList(listId).subscribe(
+        (responce) => {
+          this.wishList = responce;
+          this.wishChecked = [];
+          this.requestUser.getFavorite().subscribe(
+            (responce) => {
+              this.otherData.favoriteListUser = responce.favorite;
+              this.otherData.favoriteNumber = responce.favorite.length;
+              this.calcTotolPrice();
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
 }

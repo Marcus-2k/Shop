@@ -38,6 +38,11 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   controller.getWishList
 );
+router.patch(
+  "/wish_list/",
+  passport.authenticate("jwt", { session: false }),
+  controller.patchWishList
+);
 // ==== Favorite ====================================================================================================
 // Shopping Cart ====================================================================================================
 router.get(

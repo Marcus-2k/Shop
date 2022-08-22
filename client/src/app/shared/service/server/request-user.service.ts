@@ -44,6 +44,12 @@ export class RequestUserService {
   getWishList(): Observable<Wish[]> {
     return this.http.get<Wish[]>(`${this.url_server}/user/wish_list/`);
   }
+  deleteWishList(listId: string[]): Observable<Wish[]> {
+    return this.http.patch<Wish[]>(
+      `${this.url_server}/user/wish_list/`,
+      listId
+    );
+  }
   // Favorite ============================================================
   // Shopping Cart =======================================================
   getShoppingCart(): Observable<ShoppingCart> {

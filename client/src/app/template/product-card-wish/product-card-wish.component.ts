@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Wish } from "src/app/shared/interface/interfaces";
+import { Wish, WishChecked } from "src/app/shared/interface/interfaces";
 
 @Component({
   selector: "app-product-card-wish",
@@ -13,13 +13,16 @@ export class ProductCardWishComponent {
 
   url_server_folder: string = "http://localhost:5000/";
 
-  // @Output() transferChecked = new EventEmitter();
+  @Output() transferChecked = new EventEmitter();
 
-  // addInList(active: boolean) {
-  //   const wishChecked = {
-  //     checked: active,
-  //     _id: this.productItem?._id,
-  //   };
-  // this.transferChecked.emit(item);
-  // }
+  addInList(checked: boolean) {
+    if (this.productItem?._id) {
+      const wishChecked: WishChecked = {
+        checked: checked,
+        _id: this.productItem?._id,
+      };
+
+      this.transferChecked.emit(wishChecked);
+    }
+  }
 }

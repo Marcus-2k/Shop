@@ -8,7 +8,7 @@ export class PricePipe implements PipeTransform {
     if (value) {
       return value.toLocaleString("ru-RU");
     } else {
-      return "11:4 price.pipe.ts";
+      return "none";
     }
   }
 }

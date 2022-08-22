@@ -10,18 +10,38 @@
       <h2 class="wishlist-title">Обрані товари</h2>
     </div>
     <!--  -->
+    <div class="wishlist-content-panel">
+      <div class="panel-delete">
+        <button
+          mat-stroked-button
+          color="accent"
+          [disabled]="wishChecked.length === 0"
+          (click)="deleteWishChecked()"
+        >
+          <span class="material-symbols-outlined"> delete </span>Видалити
+        </button>
+      </div>
+    </div>
+    <!--  -->
     <div class="wishlist-content-catalog">
-      <ul class="catalog-list">
+      <ul class="catalog-list" *ngIf="wishList.length >= 1">
         <li class="catalog-list-item" *ngFor="let product of wishList">
-          <!-- (transferChecked)="gettingChecked($event)" -->
           <app-product-card-wish
+            (transferChecked)="gettingChecked($event)"
             [productItem]="product"
           ></app-product-card-wish>
         </li>
       </ul>
+      <ul class="catalog-list" *ngIf="wishList.length === 0">
+        <li class="catalog-list-none">
+          <p class="title__none-wishlist">
+            Нажль у вас ще немає впободаних товарів
+          </p>
+        </li>
+      </ul>
     </div>
     <!--  -->
-    <div class="wishlist-content-foo">
+    <div class="wishlist-content-foo" *ngIf="wishList.length >= 1">
       <div class="foo-info">
         <p class="foo-info-text">{{ wishList.length }}&nbsp;товари ну суму</p>
         <p class="foo-info-price">

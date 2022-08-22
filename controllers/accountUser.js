@@ -198,7 +198,67 @@ module.exports.getWishList = async function (req, res) {
       element.imageSrc = productWishList[idx].imageSrc.splice(0, 2);
     });
 
-    // console.log(productWishList);
+    res.status(200).json(productWishList);
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
+module.exports.patchWishList = async function (req, res) {
+  try {
+    console.log("Server pathWishList");
+
+    const token_decode = jwt_decode(req.headers.authorization);
+
+    console.log(token_decode);
+    const user = await User.findById({ _id: token_decode.userId });
+
+    const updatedFavoriteUser = { favorite: [] };
+    user.favorite.forEach((element, idx) => {
+      if (req.body.indexOf(element) === -1) {
+        updatedFavoriteUser.favorite.push(element);
+      }
+    });
+
+    await User.findByIdAndUpdate(
+      { _id: user._id },
+      { $set: updatedFavoriteUser },
+      { new: true }
+    );
+
+    const favoriteUser = await User.findById(
+      { _id: token_decode.userId },
+      {
+        favorite: 1,
+      }
+    );
+
+    console.log(favoriteUser);
+    const productWishList = await Product.find(
+      { _id: { $in: favoriteUser.favorite } },
+      {
+        // imageSrc: 0,
+        category: 0,
+        counter: 0,
+        options: 0,
+        optionsToString: 0,
+        queryParams: 0,
+        seller: 0,
+        keyWords: 0,
+        description: 0,
+        comments: 0,
+        user: 0,
+        questions: 0,
+        __v: 0,
+      }
+    );
+
+    productWishList.forEach((element, idx) => {
+      element.imageSrc = productWishList[idx].imageSrc.splice(0, 2);
+    });
+
     res.status(200).json(productWishList);
   } catch (error) {
     console.log(error);

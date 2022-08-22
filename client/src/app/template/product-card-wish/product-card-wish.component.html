@@ -3,12 +3,13 @@
   <div class="wish-item-content">
     <!--  -->
     <div class="content-checkbox">
-      <!-- <mat-checkbox
+      <mat-checkbox
         color="primary"
         #checkbox
-        (click)="addInList(checkbox.checked)"
-      ></mat-checkbox> -->
+        (click)="addInList(!checkbox.checked)"
+      ></mat-checkbox>
     </div>
+    <div>{{ productItem?._id }}</div>
     <!--  -->
     <div
       class="content-img"
