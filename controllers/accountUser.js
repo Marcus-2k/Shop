@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Product = require("../models/Product");
 const jwt_decode = require("jwt-decode");
 const fs = require("fs");
 
@@ -152,6 +153,53 @@ module.exports.removeFavorite = async function (req, res) {
     res.status(200).json({
       favorite: userFavorite.favorite,
     });
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
+module.exports.getWishList = async function (req, res) {
+  try {
+    console.log("Server getWishList");
+
+    const toker_decode = jwt_decode(req.headers.authorization);
+
+    const user = await User.findById(
+      { _id: toker_decode.userId },
+      {
+        favorite: 1,
+        _id: 1,
+      }
+    );
+    const favoriteUser = user.favorite;
+
+    const productWishList = await Product.find(
+      { _id: { $in: favoriteUser } },
+      {
+        // imageSrc: 0,
+        category: 0,
+        counter: 0,
+        options: 0,
+        optionsToString: 0,
+        queryParams: 0,
+        seller: 0,
+        keyWords: 0,
+        description: 0,
+        comments: 0,
+        user: 0,
+        questions: 0,
+        __v: 0,
+      }
+    );
+
+    productWishList.forEach((element, idx) => {
+      element.imageSrc = productWishList[idx].imageSrc.splice(0, 2);
+    });
+
+    // console.log(productWishList);
+    res.status(200).json(productWishList);
   } catch (error) {
     console.log(error);
     res.status(401).json({

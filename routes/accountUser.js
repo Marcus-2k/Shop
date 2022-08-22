@@ -33,6 +33,11 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   controller.removeFavorite
 );
+router.get(
+  "/wish_list/",
+  passport.authenticate("jwt", { session: false }),
+  controller.getWishList
+);
 // ==== Favorite ====================================================================================================
 // Shopping Cart ====================================================================================================
 router.get(
