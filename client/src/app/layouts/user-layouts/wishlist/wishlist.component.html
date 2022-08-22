@@ -1,2 +1,36 @@
 <!--  -->
-<p>like works!</p>
+<div *ngIf="loader" class="content-element-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="wishlist" *ngIf="!loader">
+  <div class="wishlist-content">
+    <!--  -->
+    <div class="wishlist-content-title">
+      <h2 class="wishlist-title">Обрані товари</h2>
+    </div>
+    <!--  -->
+    <div class="wishlist-content-catalog">
+      <ul class="catalog-list">
+        <li class="catalog-list-item" *ngFor="let product of wishList">
+          <!-- (transferChecked)="gettingChecked($event)" -->
+          <app-product-card-wish
+            [productItem]="product"
+          ></app-product-card-wish>
+        </li>
+      </ul>
+    </div>
+    <!--  -->
+    <div class="wishlist-content-foo">
+      <div class="foo-info">
+        <p class="foo-info-text">{{ wishList.length }}&nbsp;товари ну суму</p>
+        <p class="foo-info-price">
+          {{ totolPrice | price }}
+          <span class="currency">₴</span>
+        </p>
+      </div>
+    </div>
+    <!--  -->
+  </div>
+</div>
+<!--  -->

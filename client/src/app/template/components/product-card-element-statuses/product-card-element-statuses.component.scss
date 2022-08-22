@@ -1,0 +1,29 @@
+.status {
+  display: inline-block;
+  margin-top: 10px;
+  .status__item {
+    p {
+      margin: 0px;
+    }
+  }
+  .in_stock {
+    p {
+      color: #349948;
+    }
+  }
+  .time {
+    p {
+      color: #3281ca;
+    }
+  }
+  .end {
+    p {
+      color: #504141;
+    }
+  }
+  .ends {
+    p {
+      color: #b4391a;
+    }
+  }
+}

@@ -69,6 +69,10 @@ import { CardFavoriteComponent } from "./layouts/card/component/card-favorite/ca
 import { CardDescriptionComponent } from "./layouts/card/component/card-description/card-description.component";
 import { CardKeyWordsComponent } from "./layouts/card/component/card-key-words/card-key-words.component";
 import { CardShoppingCartComponent } from "./layouts/card/component/card-shopping-cart/card-shopping-cart.component";
+import { ProductCardWishComponent } from './template/product-card-wish/product-card-wish.component';
+import { ProductCardShoppingCartComponent } from './template/product-card-shopping-cart/product-card-shopping-cart.component';
+import { ProductCardElementStatusesComponent } from './template/components/product-card-element-statuses/product-card-element-statuses.component';
+import { ProductCardElementPriceComponent } from './template/components/product-card-element-price/product-card-element-price.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +110,10 @@ import { CardShoppingCartComponent } from "./layouts/card/component/card-shoppin
     CardDescriptionComponent,
     CardKeyWordsComponent,
     CardShoppingCartComponent,
+    ProductCardWishComponent,
+    ProductCardShoppingCartComponent,
+    ProductCardElementStatusesComponent,
+    ProductCardElementPriceComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,60 @@
+<!--  -->
+<div class="wish-item">
+  <div class="wish-item-content">
+    <!--  -->
+    <div class="content-checkbox">
+      <!-- <mat-checkbox
+        color="primary"
+        #checkbox
+        (click)="addInList(checkbox.checked)"
+      ></mat-checkbox> -->
+    </div>
+    <!--  -->
+    <div
+      class="content-img"
+      [routerLink]="'/card/' + productItem?._id + '/info'"
+    >
+      <img
+        class="placeholder__img"
+        [src]="url_server_folder + img"
+        [alt]="productItem?.name"
+        *ngFor="let img of productItem?.imageSrc"
+      />
+    </div>
+    <!--  -->
+    <div
+      class="content-title"
+      [routerLink]="'/card/' + productItem?._id + '/info'"
+    >
+      <p class="wish-item__title">{{ productItem?.name }}</p>
+    </div>
+    <!--  -->
+    <div class="content-action-price">
+      <p class="wish-item__action-price" *ngIf="productItem?.action">
+        {{ productItem?.price | price }}
+        <span class="currency">₴</span>
+      </p>
+    </div>
+    <div class="content-about">
+      <div class="content-about-price">
+        <app-product-card-element-price
+          [action]="productItem?.action"
+          [price]="productItem?.price"
+          [actionPrice]="productItem?.actionPrice"
+        ></app-product-card-element-price>
+      </div>
+      <div class="content-about-cart">
+        <app-card-shopping-cart
+          [_idProduct]="productItem?._id"
+        ></app-card-shopping-cart>
+      </div>
+    </div>
+    <!--  -->
+    <div class="content-status">
+      <app-product-card-element-statuses
+        [status]="productItem?.status"
+      ></app-product-card-element-statuses>
+    </div>
+    <!--  -->
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<!--  -->
+<div class="status">
+  <div class="status__item in_stock" *ngIf="status === 0">
+    <p>В наявності</p>
+  </div>
+  <div class="status__item time" *ngIf="status === 1">
+    <p>Очікується постачання</p>
+  </div>
+  <div class="status__item end" *ngIf="status === 2">
+    <p>Немає в наяності</p>
+  </div>
+  <div class="status__item ends" *ngIf="status === 3">
+    <p>Закінчується</p>
+  </div>
+</div>

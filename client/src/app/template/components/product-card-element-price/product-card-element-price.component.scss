@@ -1,0 +1,14 @@
+.price {
+  &__title {
+    margin: 0;
+    font-size: 24px;
+    color: #222222;
+    font-weight: 500;
+    &-currency {
+      font-size: 18px;
+    }
+  }
+  &__title__active {
+    color: red;
+  }
+}

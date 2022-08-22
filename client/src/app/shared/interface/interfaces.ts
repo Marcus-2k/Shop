@@ -94,6 +94,28 @@ export interface Favorite {
 export interface ShoppingCart {
   shoppingCart: string[];
 }
+
+export interface Wish {
+  imageSrc: string[];
+  name: string;
+  price: number;
+  action: boolean;
+  actionPrice: number;
+  // counter: number;
+  // category: number[];
+  // options: number[];
+  // optionsToString: string[];
+  // queryParams: Params;
+  status: 0 | 1 | 2 | 3;
+  // seller: string;
+  // keyWords?: string[];
+  // description: string;
+  // comments: [];
+  // questions: [];
+  // user?: string; // server
+  _id?: string; // server
+  // __v?: string; //server
+}
 // User
 
 // Category ==================================

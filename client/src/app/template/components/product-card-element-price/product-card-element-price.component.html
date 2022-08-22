@@ -1,0 +1,12 @@
+<!--  -->
+
+<div class="price">
+  <p
+    class="price__title price__title__active"
+    [ngClass]="{ price__title__active: action }"
+  >
+    {{ action ? (actionPrice | price) : (price | price) }}
+
+    <span class="price__title-currency">₴</span>
+  </p>
+</div>
