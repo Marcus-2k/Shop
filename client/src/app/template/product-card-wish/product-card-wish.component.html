@@ -9,18 +9,30 @@
         (click)="addInList(!checkbox.checked)"
       ></mat-checkbox>
     </div>
-    <div>{{ productItem?._id }}</div>
+    <div class="display-none">{{ productItem?._id }}</div>
     <!--  -->
     <div
       class="content-img"
       [routerLink]="'/card/' + productItem?._id + '/info'"
+      (mouseenter)="hoverEnter(pictureLogo, pictureSubLogo)"
     >
-      <img
-        class="placeholder__img"
-        [src]="url_server_folder + img"
-        [alt]="productItem?.name"
-        *ngFor="let img of productItem?.imageSrc"
-      />
+      <div
+        class="content-img-block"
+        (mouseleave)="hoverLeave(pictureLogo, pictureSubLogo)"
+      >
+        <img
+          class="placeholder__img display-block"
+          [src]="url_server_folder + images[0]"
+          [alt]="productItem?.name"
+          #pictureLogo
+        />
+        <img
+          class="placeholder__img display-none"
+          [src]="url_server_folder + images[1]"
+          [alt]="productItem?.name"
+          #pictureSubLogo
+        />
+      </div>
     </div>
     <!--  -->
     <div

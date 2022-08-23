@@ -30,6 +30,7 @@
         flex-wrap: wrap;
         &-item {
           width: 20%;
+          height: 450px;
           @media (max-width: 1250px) {
             width: 25%;
           }
