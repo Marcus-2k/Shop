@@ -58,11 +58,11 @@
               <!-- <img src="../../../../assets/img/love.png" alt="love" /> -->
               <span class="material-symbols-outlined google-icon">
                 favorite
+                <!-- matBadgePosition="above before" -->
                 <span
                   *ngIf="lengthFavorite > 0"
                   class="favorite__number"
                   [matBadge]="lengthFavorite"
-                  matBadgePosition="above after"
                   matBadgeColor="primary"
                   matBadgeSize="medium"
                 >
@@ -75,11 +75,11 @@
               <!-- <img src="../../../../assets/img/shopping-cart.png" alt="shopping-cart" /> -->
               <span class="material-symbols-outlined google-icon">
                 shopping_cart
+                <!-- matBadgePosition="before" -->
                 <span
                   *ngIf="lengthCart > 0"
                   class="cart__number"
                   [matBadge]="lengthCart"
-                  matBadgePosition="after"
                   matBadgeColor="primary"
                   matBadgeSize="medium"
                 >

@@ -1,1 +1,185 @@
-<p>cart works!</p>
+<!--  -->
+<div *ngIf="loader" class="content-element-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="cart" *ngIf="!loader">
+  <div class="cart-header">
+    <h2 class="cart-header-title">Оформити замовлення</h2>
+  </div>
+  <button (click)="test()">TEST FUNCTION</button>
+  <div class="cart-content">
+    <!--  -->
+    <div class="cart-content-main">
+      <div class="main">
+        <div class="checkout-content">
+          <!-- ========================================================================================== -->
+          <!-- Cart START -->
+          <div class="cart-step step" *ngIf="stepper.activeBlock !== 0">
+            <div class="step-text">
+              <h2 class="step-text-title">1. Ваше замовлення</h2>
+            </div>
+            <div class="step-button">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="stepper.activeBlock = 0"
+              >
+                Змінити
+              </button>
+            </div>
+          </div>
+          <!-- checkout__block: stepper.activeBlock === 0, -->
+          <div
+            class="checkout__block checkout-item"
+            [ngClass]="{
+              checkout__hidden: stepper.activeBlock !== 0
+            }"
+            #cartStep
+          >
+            <div class="checkout-item-content checkout-item-cart">
+              <div class="checkout-item-content__title">
+                <h2 class="step__title">1. Ваше замовлення</h2>
+              </div>
+              <ul class="checkout-item-content__list">
+                <li
+                  class="sub-list"
+                  *ngFor="let product of shoppingCart; let idx = index"
+                >
+                  <app-product-card-shopping-cart
+                    [productItem]="product"
+                  ></app-product-card-shopping-cart>
+                </li>
+              </ul>
+              <div class="checkout-item-content__btn">
+                <button mat-raised-button color="primary" (click)="nextStep()">
+                  Продовдити оформлення
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Cart END -->
+          <!-- ========================================================================================== -->
+          <!-- Contacts START -->
+          <div class="contacts-step step" *ngIf="stepper.activeBlock !== 1">
+            <div class="step-text">
+              <h2 class="step-text-title">2. Контактна інформація</h2>
+            </div>
+          </div>
+          <!-- checkout__block: stepper.activeBlock === 1, -->
+          <div
+            class="checkout__block checkout-item checkout-item-contacts"
+            [ngClass]="{
+              checkout__hidden: stepper.activeBlock !== 1
+            }"
+            #contactsStep
+          >
+            <div class="checkout-item-content">
+              <button mat-button (click)="prevStep()">Назад крок1</button>
+              <button mat-button (click)="nextStep()">Наступний крок2</button>
+            </div>
+          </div>
+          <!-- Contacts END-->
+          <!-- ========================================================================================== -->
+          <!-- Shipping START -->
+          <div class="shipping-step step" *ngIf="stepper.activeBlock !== 2">
+            <div class="step-text">
+              <h2 class="step-text-title">3. Спосіб доставки</h2>
+            </div>
+          </div>
+          <!-- checkout__block: stepper.activeBlock === 2, -->
+          <div
+            class="checkout__block checkout-item checkout-item-shipping"
+            [ngClass]="{
+              checkout__hidden: stepper.activeBlock !== 2
+            }"
+            #shippingStep
+          >
+            <div class="checkout-item-content">
+              <button mat-button (click)="prevStep()">Назад крок2</button>
+              <button mat-button (click)="nextStep()">Наступний крок3</button>
+            </div>
+          </div>
+          <!-- Shipping END -->
+          <!-- ========================================================================================== -->
+          <!-- Payment START -->
+          <div class="payment-step step" *ngIf="stepper.activeBlock !== 3">
+            <div class="step-text">
+              <h2 class="step-text-title">4. Спосіб оплати</h2>
+            </div>
+          </div>
+          <!-- checkout__block: stepper.activeBlock === 3, -->
+          <div
+            class="checkout__block checkout-item checkout-item-payment"
+            [ngClass]="{
+              checkout__hidden: stepper.activeBlock !== 3
+            }"
+            #paymentStep
+          >
+            <div class="checkout-item-content">
+              <button mat-button (click)="prevStep()">Назад крок3</button>
+              <button mat-button (click)="nextStep()">Кінець</button>
+            </div>
+          </div>
+          <!-- Payment END -->
+          <!-- ========================================================================================== -->
+          <!--  -->
+          <!--  -->
+          <!--  -->
+          <!-- <mat-stepper orientation="vertical" linear #stepper>
+            <mat-step [stepControl]="firstFormGroup" [editable]="false">
+              <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Ваше замовлення</ng-template>
+                <mat-form-field appearance="fill">
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    formControlName="firstCtrl"
+                    placeholder="Last name, First name"
+                    required
+                  />
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup" [editable]="false">
+              <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Fill out your address</ng-template>
+                <mat-form-field appearance="fill">
+                  <mat-label>Address</mat-label>
+                  <input
+                    matInput
+                    formControlName="secondCtrl"
+                    placeholder="Ex. 1 Main St, New York, NY"
+                    required
+                  />
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Back</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Done</ng-template>
+              <p>You are now done.</p>
+              <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="stepper.reset()">Reset</button>
+              </div>
+            </mat-step>
+          </mat-stepper> -->
+          <!--  -->
+          <!--  -->
+          <!--  -->
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    <aside class="cart-content-sidebar"></aside>
+    <!--  -->
+  </div>
+</div>
+<!--  -->

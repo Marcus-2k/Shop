@@ -1,1 +1,46 @@
-<p>product-card-shopping-cart works!</p>
+<!--  -->
+<div class="shopping__card">
+  <div class="display-none">{{ productItem?._id }}</div>
+  <div class="shopping__card-content">
+    <!--  -->
+    <div
+      class="content-image content-item"
+      [routerLink]="'/card/' + productItem?._id + '/info'"
+    >
+      <img [src]="url_server_folder + productItem?.imageSrc" alt="" />
+    </div>
+    <!--  -->
+    <div class="content-about content-item">
+      <div class="about-title">
+        <h2 class="shopping__card-title">{{ productItem?.name }}</h2>
+      </div>
+      <!--  -->
+      <div class="about-counter">
+        <button
+          class="counter-minus add__remove"
+          (click)="plusMinusCounter(-1)"
+        >
+          <span class="material-symbols-outlined"> remove </span>
+        </button>
+        <div class="counter-number">
+          <!-- <input
+            type="number"
+            [(ngModel)]="counter"
+            class="counter-number-input"
+          /> -->
+          <div class="counter-number-text">{{ counter }}</div>
+        </div>
+        <button class="counter-plus add__remove" (click)="plusMinusCounter(1)">
+          <span class="material-symbols-outlined"> add </span>
+        </button>
+      </div>
+    </div>
+    <!--  -->
+    <div class="content-price content-item"></div>
+    <!--  -->
+    <div class="content-delete content-item">
+      <span class="material-symbols-outlined"> delete </span>
+    </div>
+    <!--  -->
+  </div>
+</div>

@@ -116,11 +116,37 @@ export interface Wish {
   _id?: string; // server
   // __v?: string; //server
 }
-
 export interface WishChecked {
   checked: boolean;
   _id: string; // server
 }
+
+export interface ShoppingCart {
+  imageSrc: string[];
+  name: string;
+  price: number;
+  action: boolean;
+  actionPrice: number;
+  counter: number;
+  // category: number[];
+  // options: number[];
+  // optionsToString: string[];
+  // queryParams: Params;
+  status: 0 | 1 | 2 | 3;
+  seller: string;
+  // keyWords?: string[];
+  // description: string;
+  // comments: [];
+  // questions: [];
+  // user?: string; // server
+  _id?: string; // server
+  // __v?: string; //server
+}
+export interface ShoppingCartChecked {
+  checked: boolean;
+  _id: string; // server
+}
+
 // User
 
 // Category ==================================

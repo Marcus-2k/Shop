@@ -46,21 +46,29 @@ router.patch(
 // ==== Favorite ====================================================================================================
 // Shopping Cart ====================================================================================================
 router.get(
-  "/shopping_cart/",
+  "/cart/",
   passport.authenticate("jwt", { session: false }),
   controller.getShoppingCart
 );
-
 router.post(
-  "/shopping_cart/",
+  "/cart/",
   passport.authenticate("jwt", { session: false }),
   controller.addShoppingCart
 );
-
 router.delete(
-  "/shopping_cart/:id",
+  "/cart/:id",
   passport.authenticate("jwt", { session: false }),
   controller.removeShoppingCart
+);
+router.get(
+  "/shopping_cart/",
+  passport.authenticate("jwt", { session: false }),
+  controller.getShoppingCartList
+);
+router.patch(
+  "/shopping_cart/",
+  passport.authenticate("jwt", { session: false }),
+  controller.patchShoppingCartList
 );
 // Shopping Cart ====================================================================================================
 

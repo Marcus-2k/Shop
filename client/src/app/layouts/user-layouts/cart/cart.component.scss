@@ -1,0 +1,110 @@
+.cart {
+  width: 100%;
+  &-header {
+    margin-top: 50px;
+    &-title {
+      color: #535353;
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+  &-content {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    height: 100%;
+    @media (max-width: 1600px) {
+      padding: 0 15px;
+    }
+    &-main {
+      width: 65%;
+      .main {
+        .checkout-content {
+          .step {
+            background-color: #535353;
+            padding: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            transition: 0.4s;
+            &-text {
+              &-title {
+                color: #fff;
+                margin: 0px;
+              }
+            }
+          }
+
+          .cart-step {
+            // width: 0px;
+            // transition: 0.4s;
+          }
+          .contacts-step {
+            // width: 0px;
+            // transition: 0.4s;
+          }
+          .shipping-step {
+            // width: 0px;
+            // transition: 0.4s;
+          }
+          .payment-step {
+            // width: 0px;
+            // transition: 0.4s;
+          }
+          .checkout-item {
+            width: 100%;
+            &-content {
+              &__title {
+                .step__title {
+                  margin: 0;
+                }
+              }
+              // 1.
+              &__list {
+                .sub-list {
+                  border-bottom: 1px solid #535353;
+                  &:last-child {
+                    border-bottom: none;
+                  }
+                }
+              }
+
+              // 1.
+              &__btn {
+                text-align: center;
+              }
+            }
+          }
+          .checkout-item-cart {
+          }
+          .checkout-item-contacts {
+          }
+          .checkout-item-shipping {
+          }
+          .checkout-item-payment {
+          }
+          .checkout__block {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            height: auto;
+            min-height: 200px;
+            // transition: 0.4s;
+          }
+          .checkout__hidden {
+            height: 0px;
+            min-height: 0px;
+            // transition: 0.4s;
+            padding: 0px;
+            .checkout-item-content {
+              // opacity: 0;
+              display: none;
+            }
+          }
+        }
+      }
+    }
+    &-sidebar {
+      width: 35%;
+    }
+  }
+}

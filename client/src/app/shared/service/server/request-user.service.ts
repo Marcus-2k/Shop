@@ -53,24 +53,21 @@ export class RequestUserService {
   // Favorite ============================================================
   // Shopping Cart =======================================================
   getShoppingCart(): Observable<ShoppingCart> {
-    return this.http.get<ShoppingCart>(
+    return this.http.get<ShoppingCart>(`${this.url_server}/user/cart/`);
+  }
+  addShoppingCart(id: string): Observable<ShoppingCart> {
+    return this.http.post<ShoppingCart>(`${this.url_server}/user/cart/`, {
+      id,
+    });
+  }
+  removeShoppingCart(id: string): Observable<ShoppingCart> {
+    return this.http.delete<ShoppingCart>(`${this.url_server}/user/cart/${id}`);
+  }
+  getShoppingCartList(): Observable<ShoppingCart[]> {
+    return this.http.get<ShoppingCart[]>(
       `${this.url_server}/user/shopping_cart/`
     );
   }
 
-  addShoppingCart(id: string): Observable<ShoppingCart> {
-    return this.http.post<ShoppingCart>(
-      `${this.url_server}/user/shopping_cart/`,
-      {
-        id,
-      }
-    );
-  }
-
-  removeShoppingCart(id: string): Observable<ShoppingCart> {
-    return this.http.delete<ShoppingCart>(
-      `${this.url_server}/user/shopping_cart/${id}`
-    );
-  }
   // Shopping Cart =======================================================
 }

@@ -351,6 +351,109 @@ module.exports.removeShoppingCart = async function (req, res) {
     });
   }
 };
+module.exports.getShoppingCartList = async function (req, res) {
+  try {
+    console.log("Server getShoppingCartList");
+
+    const toker_decode = jwt_decode(req.headers.authorization);
+
+    const user = await User.findById(
+      { _id: toker_decode.userId },
+      {
+        shoppingCart: 1,
+        _id: 1,
+      }
+    );
+    const shoppingCartUser = user.shoppingCart;
+
+    const productShoppingCart = await Product.find(
+      { _id: { $in: shoppingCartUser } },
+      {
+        name: 1,
+        imageSrc: 1,
+        price: 1,
+        action: 1,
+        actionPrice: 1,
+        counter: 1,
+        status: 1,
+        seller: 1,
+      }
+    );
+
+    productShoppingCart.forEach((element, idx) => {
+      element.imageSrc = productShoppingCart[idx].imageSrc[0];
+    });
+
+    // console.log(productShoppingCart);
+    res.status(200).json(productShoppingCart);
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
+module.exports.patchShoppingCartList = async function (req, res) {
+  try {
+    console.log("Server patchShoppingCartList");
+
+    const token_decode = jwt_decode(req.headers.authorization);
+
+    console.log(token_decode);
+    const user = await User.findById({ _id: token_decode.userId });
+
+    const updatedFavoriteUser = { favorite: [] };
+    user.favorite.forEach((element, idx) => {
+      if (req.body.indexOf(element) === -1) {
+        updatedFavoriteUser.favorite.push(element);
+      }
+    });
+
+    await User.findByIdAndUpdate(
+      { _id: user._id },
+      { $set: updatedFavoriteUser },
+      { new: true }
+    );
+
+    const favoriteUser = await User.findById(
+      { _id: token_decode.userId },
+      {
+        favorite: 1,
+      }
+    );
+
+    console.log(favoriteUser);
+    const productWishList = await Product.find(
+      { _id: { $in: favoriteUser.favorite } },
+      {
+        // imageSrc: 0,
+        category: 0,
+        counter: 0,
+        options: 0,
+        optionsToString: 0,
+        queryParams: 0,
+        seller: 0,
+        keyWords: 0,
+        description: 0,
+        comments: 0,
+        user: 0,
+        questions: 0,
+        __v: 0,
+      }
+    );
+
+    productWishList.forEach((element, idx) => {
+      element.imageSrc = productWishList[idx].imageSrc.splice(0, 2);
+    });
+
+    res.status(200).json(productWishList);
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Сталася помилка на сервері спробуйте пізніше.",
+    });
+  }
+};
 // Shopping Cart ====================================================================================================
 
 function deleteImgFromFolder(linkImg) {

@@ -1,0 +1,108 @@
+.shopping__card {
+  height: 100%;
+  &-content {
+    display: flex;
+    width: 100%;
+    height: 120px;
+    .content-item {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .content-image {
+      width: 15%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+    .content-about {
+      width: 65%;
+      display: flex;
+      .about-title {
+        width: 65%;
+        .shopping__card-title {
+          font-size: 14px;
+          color: #313131;
+          height: 36px;
+          overflow: hidden;
+          margin: 0;
+          line-height: 20px;
+        }
+      }
+      .about-counter {
+        width: 35%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .add__remove {
+          border-radius: 50%;
+          background-color: #fff;
+          border: 1px solid #b1b1b1;
+          padding: 2.5px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 5px;
+          cursor: pointer;
+          .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 20;
+
+            // font-variation-settings: "opsz" 48;
+          }
+        }
+        .counter-minus {
+        }
+        .counter-number {
+          &-input {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            font-size: 20px;
+            padding: 8px;
+            border: 1px solid #b1b1b1;
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+          }
+          &-text {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            font-size: 20px;
+            padding: 8px;
+            border: 1px solid #b1b1b1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+        .counter-plus {
+        }
+      }
+    }
+    .content-price {
+      width: 15%;
+    }
+    .content-delete {
+      width: 10%;
+      span {
+        cursor: pointer;
+        font-variation-settings: "FILL" 0;
+        transition: 0.4s;
+        &:hover {
+          transition: 0.4s;
+          color: red;
+          font-variation-settings: "FILL" 1;
+        }
+      }
+    }
+  }
+}
