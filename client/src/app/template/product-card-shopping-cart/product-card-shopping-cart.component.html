@@ -1,4 +1,5 @@
 <!--  -->
+<button mat-raised-button (click)="test()">TEST</button>
 <div class="shopping__card">
   <div class="display-none">{{ productItem?._id }}</div>
   <div class="shopping__card-content">
@@ -23,12 +24,13 @@
           <span class="material-symbols-outlined"> remove </span>
         </button>
         <div class="counter-number">
-          <!-- <input
-            type="number"
-            [(ngModel)]="counter"
-            class="counter-number-input"
-          /> -->
-          <div class="counter-number-text">{{ counter }}</div>
+          <div
+            class="counter-number-text"
+            [ngClass]="{ counter__error: !validityCounter }"
+            [matTooltip]="'Товарів залишилося ' + maxCounter"
+          >
+            {{ counter }}
+          </div>
         </div>
         <button class="counter-plus add__remove" (click)="plusMinusCounter(1)">
           <span class="material-symbols-outlined"> add </span>
@@ -36,7 +38,23 @@
       </div>
     </div>
     <!--  -->
-    <div class="content-price content-item"></div>
+    <div class="content-price content-item">
+      <p class="price__action" *ngIf="productItem?.action">
+        {{ price * counter | price }}
+        <span class="currency">₴</span>
+      </p>
+      <p
+        class="price"
+        [ngStyle]="{ color: productItem?.action ? 'red' : 'black' }"
+      >
+        {{
+          productItem?.action
+            ? (actionPrice * counter | price)
+            : (price * counter | price)
+        }}
+        <span class="currency">₴</span>
+      </p>
+    </div>
     <!--  -->
     <div class="content-delete content-item">
       <span class="material-symbols-outlined"> delete </span>

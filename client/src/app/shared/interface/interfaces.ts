@@ -113,7 +113,7 @@ export interface Wish {
   // comments: [];
   // questions: [];
   // user?: string; // server
-  _id?: string; // server
+  _id: string; // server
   // __v?: string; //server
 }
 export interface WishChecked {
@@ -139,12 +139,17 @@ export interface ShoppingCart {
   // comments: [];
   // questions: [];
   // user?: string; // server
-  _id?: string; // server
+  _id: string; // server
   // __v?: string; //server
 }
-export interface ShoppingCartChecked {
-  checked: boolean;
-  _id: string; // server
+export interface Order {
+  _id: string;
+  counter: number;
+  merchant: string;
+}
+export interface OrderEvent {
+  _id: string;
+  counter: number;
 }
 
 // User

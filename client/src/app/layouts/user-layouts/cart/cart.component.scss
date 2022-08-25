@@ -2,6 +2,13 @@
   width: 100%;
   &-header {
     margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    @media (max-width: 1600px) {
+      padding: 0 calc(10px + (15 - 10) * ((100vw - 320px) / (1600 - 320)));
+    }
     &-title {
       color: #535353;
       font-size: 24px;
@@ -14,41 +21,54 @@
     display: flex;
     height: 100%;
     @media (max-width: 1600px) {
-      padding: 0 15px;
+      padding: 0 calc(10px + (15 - 10) * ((100vw - 320px) / (1600 - 320)));
+    }
+    @media (max-width: 1024px) {
+      flex-direction: column;
+      .cart-content-main {
+        width: 100%;
+        margin-right: 0px;
+      }
+      .cart-content-sidebar {
+        width: 100%;
+        margin-left: 0px;
+      }
     }
     &-main {
-      width: 65%;
+      width: 64.75%;
+      margin-right: 0.25%;
+
       .main {
         .checkout-content {
           .step {
             background-color: #535353;
-            padding: 20px;
+            padding: calc(5px + (20 - 5) * ((100vw - 320px) / (1920 - 320)));
+            border-radius: 4px;
             margin-top: 10px;
             margin-bottom: 10px;
             transition: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             &-text {
               &-title {
                 color: #fff;
                 margin: 0px;
               }
+              .title__error {
+                color: rgb(255, 25, 25);
+              }
+            }
+            &-button {
             }
           }
-
           .cart-step {
-            // width: 0px;
-            // transition: 0.4s;
           }
           .contacts-step {
-            // width: 0px;
-            // transition: 0.4s;
           }
           .shipping-step {
-            // width: 0px;
-            // transition: 0.4s;
           }
           .payment-step {
-            // width: 0px;
-            // transition: 0.4s;
           }
           .checkout-item {
             width: 100%;
@@ -58,33 +78,46 @@
                   margin: 0;
                 }
               }
-              // 1.
-              &__list {
-                .sub-list {
-                  border-bottom: 1px solid #535353;
-                  &:last-child {
-                    border-bottom: none;
-                  }
-                }
-              }
-
-              // 1.
-              &__btn {
-                text-align: center;
-              }
             }
           }
           .checkout-item-cart {
+            &__list {
+              .sub-list {
+                border-bottom: 1px solid #535353;
+                &:last-child {
+                  border-bottom: none;
+                }
+              }
+            }
+            &__btn {
+              text-align: center;
+            }
           }
           .checkout-item-contacts {
+            &__form {
+              .form {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                &-item {
+                  width: 40%;
+                }
+              }
+            }
+            &__btn {
+              text-align: center;
+            }
           }
           .checkout-item-shipping {
+            &__btn {
+              text-align: center;
+            }
           }
           .checkout-item-payment {
           }
           .checkout__block {
             background-color: #fff;
-            padding: 20px;
+            padding: calc(5px + (20 - 5) * ((100vw - 320px) / (1920 - 320)));
             border-radius: 5px;
             height: auto;
             min-height: 200px;
@@ -104,7 +137,51 @@
       }
     }
     &-sidebar {
-      width: 35%;
+      margin-left: 0.25%;
+      width: 34.75%;
+      position: sticky;
+      top: 25px;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: calc(5px + (20 - 5) * ((100vw - 320px) / (1920 - 320)));
+      height: 500px;
+      .develop {
+        color: rgb(255, 25, 25);
+        font-size: 50px;
+        margin: 10px 0;
+        text-align: center;
+      }
+      .sidebar-title {
+        .title {
+          font-size: 32px;
+        }
+      }
+      .sidebar-about {
+        .about-counter {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          p {
+            margin: 0;
+          }
+          .counter-content {
+            &-number {
+              font-size: 16px;
+              font-weight: 500;
+            }
+          }
+          .price-content {
+            &-text {
+              font-size: 16px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+      .sidebar-btn {
+        margin-top: 15px;
+        text-align: center;
+      }
     }
   }
 }
