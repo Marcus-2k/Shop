@@ -147,30 +147,12 @@ module.exports.getByIdCardQuestions = async function (req, res) {
 module.exports.getByIdCardPhoto = async function (req, res) {
   console.log("Server getByIdCardPhoto");
   try {
-    const productPhoto = await Product.findOne(
-      {},
+    const productPhoto = await Product.findById(
+      { _id: req.params.id },
       {
-        // imageSrc: 0,
-        name: 0,
-        price: 0,
-        action: 0,
-        actionPrice: 0,
-        counter: 0,
-        category: 0,
-        options: 0,
-        optionsToString: 0,
-        queryParams: 0,
-        keyWords: 0,
-        description: 0,
-        status: 0,
-        seller: 0,
-        comments: 0,
-        questions: 0,
-        user: 0,
-        __v: 0,
+        imageSrc: 1,
         _id: 0,
-      },
-      { _id: req.params.id }
+      }
     );
     res.status(200).json(productPhoto);
   } catch (error) {
