@@ -9,6 +9,12 @@ import { PricePipe } from "./shared/pipe/price.pipe";
 import { TokenInterceptor } from "./shared/classes/token.interseptor";
 import { RoutingModule } from "./shared/routing/routing.module";
 
+// Scripts
+import { CustomPaginator } from "./shared/scripts/CustomPaginatorConfiguration";
+
+// For providers
+import { MatPaginatorIntl } from "@angular/material/paginator";
+
 // Library
 import { SliderSwiperModule } from "./shared/slider/slider.module";
 
@@ -69,11 +75,11 @@ import { CardFavoriteComponent } from "./layouts/card/component/card-favorite/ca
 import { CardDescriptionComponent } from "./layouts/card/component/card-description/card-description.component";
 import { CardKeyWordsComponent } from "./layouts/card/component/card-key-words/card-key-words.component";
 import { CardShoppingCartComponent } from "./layouts/card/component/card-shopping-cart/card-shopping-cart.component";
-import { ProductCardWishComponent } from './template/product-card-wish/product-card-wish.component';
-import { ProductCardShoppingCartComponent } from './template/product-card-shopping-cart/product-card-shopping-cart.component';
-import { ProductCardElementStatusesComponent } from './template/components/product-card-element-statuses/product-card-element-statuses.component';
-import { ProductCardElementPriceComponent } from './template/components/product-card-element-price/product-card-element-price.component';
-import { ProductCardComponent } from './template/product-card/product-card.component';
+import { ProductCardWishComponent } from "./template/product-card-wish/product-card-wish.component";
+import { ProductCardShoppingCartComponent } from "./template/product-card-shopping-cart/product-card-shopping-cart.component";
+import { ProductCardElementStatusesComponent } from "./template/components/product-card-element-statuses/product-card-element-statuses.component";
+import { ProductCardElementPriceComponent } from "./template/components/product-card-element-price/product-card-element-price.component";
+import { ProductCardComponent } from "./template/product-card/product-card.component";
 
 @NgModule({
   declarations: [
@@ -129,6 +135,7 @@ import { ProductCardComponent } from './template/product-card/product-card.compo
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, multi: true, useClass: TokenInterceptor },
+    { provide: MatPaginatorIntl, useValue: CustomPaginator() },
   ],
   bootstrap: [AppComponent],
 })

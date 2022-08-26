@@ -16,6 +16,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatTabsModule } from "@angular/material/tabs";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 const Material = [
   MatSelectModule,
@@ -34,6 +35,7 @@ const Material = [
   MatBadgeModule,
   MatTabsModule,
   DragDropModule,
+  MatPaginatorModule,
 ];
 
 @NgModule({

@@ -2,7 +2,7 @@
 <div class="search">
   <div class="search__content">
     <div class="search__content-sidebar">
-      <div *ngIf="loader" class="content-element-center">
+      <div class="content-element-center" *ngIf="loader">
         <mat-spinner></mat-spinner>
       </div>
       <!--  -->
@@ -62,76 +62,35 @@
       </div>
     </div>
     <div class="search__content-body">
-      <div *ngIf="loader" class="content-element-center">
+      <div class="content-element-center" *ngIf="loader">
         <mat-spinner></mat-spinner>
       </div>
       <!--  -->
-      <div class="settings" *ngIf="!loader">
-        <mat-form-field appearance="fill" class="settings__limit">
-          <mat-label>{{ limit }}</mat-label>
-          <mat-select name="select__limit" id="limit">
-            <mat-option
-              (click)="newLimit(10)"
-              [disabled]="limit === 10"
-              value="10"
-              >10</mat-option
-            >
-            <mat-option
-              (click)="newLimit(25)"
-              [disabled]="limit === 25"
-              value="25"
-              >25</mat-option
-            >
-            <mat-option
-              (click)="newLimit(50)"
-              [disabled]="limit === 50"
-              value="50"
-              >50</mat-option
-            >
-            <mat-option
-              (click)="newLimit(50)"
-              [disabled]="limit === 100"
-              value="100"
-              >100</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
-      </div>
+      <div class="settings" *ngIf="!loader"></div>
       <!--  -->
+      <!-- Card START -->
       <div class="cards" *ngIf="!loader">
-        <!-- Card START -->
         <ul class="cards-catalog">
           <li class="cards-catalog-item" *ngFor="let product of productList">
             <app-product-card [productItem]="product"></app-product-card>
           </li>
         </ul>
-        <!-- Card END -->
       </div>
+      <!-- Card END -->
       <!--  -->
       <div class="pagination" *ngIf="!loader">
-        <div
-          class="pagination__item pagination-prev"
-          [ngClass]="{ pagination__active: currentPage - 1 !== 0 }"
-          (click)="newPage(currentPage - 1)"
+        <mat-paginator
+          [length]="maxPage"
+          [pageSize]="limit"
+          [pageIndex]="currentPage - 1"
+          [pageSizeOptions]="pageSizeOptions"
+          itemsPerPageLabel="Товарів на сторінку"
+          nextPageLabel="Наступна сторінка"
+          previousPageLabel="Попередня сторінка"
+          (page)="pageEvent = $event; onPaginateChange($event)"
         >
-          <span class="material-symbols-outlined"> chevron_left </span>
-        </div>
-        <ng-container *ngFor="let page of maxPage">
-          <div
-            class="pagination__item"
-            [ngClass]="{ pagination__active: currentPage === page }"
-            (click)="newPage(page)"
           >
-            {{ page }}
-          </div>
-        </ng-container>
-        <div
-          class="pagination__item"
-          [ngClass]="{ pagination__active: currentPage + 1 <= maxPage.length }"
-          (click)="newPage(currentPage + 1)"
-        >
-          <span class="material-symbols-outlined"> chevron_right </span>
-        </div>
+        </mat-paginator>
       </div>
     </div>
   </div>

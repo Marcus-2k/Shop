@@ -76,6 +76,27 @@ export interface ProductPhoto {
   imageSrc: string[];
 }
 export interface ProductAccessories {}
+export interface ProductSearch {
+  imageSrc: [string, string];
+  name: string;
+  price: number;
+  action: boolean;
+  actionPrice: number;
+  // counter: number;
+  category: number[];
+  options: number[];
+  // optionsToString: string[];
+  // queryParams: Params;
+  // status: 0 | 1 | 2 | 3;
+  // seller: string;
+  // keyWords: string[];
+  // description: string;
+  // comments: [];
+  // questions: [];
+  user: string;
+  _id: string;
+  // __v: string;
+}
 // Product =======================================
 
 // User

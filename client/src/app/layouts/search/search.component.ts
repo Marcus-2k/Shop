@@ -1,4 +1,5 @@
 import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
+import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
   CategoryProduct,
@@ -60,17 +61,17 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
           const productOptionsBlock: number[][][] = res.productOptionsBlock; // Parameters by block to categories
           this.currentPage = Number(res.currentPage); // Current Page
-          // this.maxPage = res.maxPage; // Max pages site
+          this.maxPage = res.maxPage; // Max pages site
           this.limit = res.limit; // Limits item site
           // ==============================================================================================
           this.categoryNameDB = this.catagoryName.categoryList; // import from category-product.service.ts
           this.originalName = this.originalAndQueryName.originalName;
           this.nameForServer = this.originalAndQueryName.nameForServer;
           // ==============================================================================================
-          while (res.maxPage > 0) {
-            this.maxPage.push(res.maxPage--);
-          }
-          this.maxPage.reverse(); // Кількість сторінок на сайті [ 1, 2, 3, ..., 29 ]
+          // while (res.maxPage > 0) {
+          //   this.maxPage.push(res.maxPage--);
+          // }
+          // this.maxPage.reverse(); // Кількість сторінок на сайті [ 1, 2, 3, ..., 29 ]
           // ==============================================================================================
           let optionsListBlockCategory: Options[][] = []; // Options Product List
           this.uniqueCategory.forEach((element: number[], idx: number) => {
@@ -223,8 +224,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   originalName: string[] = []; // Original name params product
   nameForServer: string[] = []; // Special name for query params
 
-  // resetParameters: string[] = [];
-
   queryParams: Params = {};
 
   filterSearch(nameInput: string, nameBlock: string, checked: boolean) {
@@ -337,37 +336,25 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   productList: Product[] = []; // List Product
 
   currentPage: number = 1;
-  maxPage: number[] = [];
+  maxPage: number = 1;
 
-  limit?: number;
-  newPage(page: number) {
-    console.log("newPage");
-    console.log(page);
+  limit: number = 10;
 
+  pageSizeOptions: number[] = [10, 25, 50, 100];
+
+  pageEvent?: PageEvent;
+  onPaginateChange(event: PageEvent) {
     if (this.queryParams.hasOwnProperty("page")) {
       delete this.queryParams["page"];
     }
-    this.queryParams["page"] = page;
-
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
-    this.router.navigate([`search`], {
-      queryParams: this.queryParams,
-    });
-  }
-
-  newLimit(limit: number) {
-    console.log("newLimit");
-    console.log(limit);
+    this.queryParams["page"] = event.pageIndex + 1;
 
     if (this.queryParams.hasOwnProperty("limit")) {
       delete this.queryParams["limit"];
     }
-    this.queryParams["limit"] = limit;
+    this.queryParams["limit"] = event.pageSize;
 
-    if (this.queryParams.hasOwnProperty("page")) {
-      delete this.queryParams["page"];
-    }
-    this.queryParams["page"] = 1;
+    console.log(this.queryParams);
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
     this.router.navigate([`search`], {
