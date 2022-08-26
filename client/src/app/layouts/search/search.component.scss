@@ -34,64 +34,22 @@
           max-width: 80px;
         }
       }
-      .cart {
+      .cards {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        position: relative;
-        &-item {
-          margin: 0 2.5px;
-          margin-top: 10px;
-          width: 300px;
-          height: 450px;
-          .favorite {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: #fff;
-            border-radius: 4px;
-          }
-          .mat-card {
-            padding: 10px;
-          }
-          .block__title {
-            .title__cart {
-              cursor: pointer;
-              font-size: 18px;
+        &-catalog {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          &-item {
+            width: 25%;
+            height: 450px;
+            @media (max-width: 1250px) {
+              width: 33.3%;
             }
-          }
-          .price {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            p {
-              margin: 0;
-            }
-            &__cart {
-              font-size: 24px;
-              &-currency {
-                font-size: 18px;
-              }
-            }
-            &__cart-shop {
-              // background-color: #000;
-              transition: 0.4s;
-              cursor: pointer;
-              &:hover {
-                transition: 0.4s;
-                background-color: #fff;
-              }
-            }
-          }
-          .image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 280px;
-            height: 300px;
-            &__src {
-              max-width: 100%;
-              max-height: 100%;
+            @media (max-width: 767px) {
+              width: 25%;
             }
           }
         }

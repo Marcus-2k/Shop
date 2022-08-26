@@ -98,56 +98,14 @@
         </mat-form-field>
       </div>
       <!--  -->
-      <div class="cart" *ngIf="!loader">
-        <!-- Cart START -->
-        <div
-          class="cart-item"
-          *ngFor="let product of productList; let i = index"
-        >
-          <mat-card class="example-card" XSmall>
-            <div class="image">
-              <img
-                [src]="url_server_folder + product.imageSrc[0]"
-                class="image__src"
-                [routerLink]="'/card/' + product._id + '/info/'"
-                style="cursor: pointer"
-              />
-            </div>
-            <mat-card-content>
-              <div class="favorite">
-                <app-card-favorite
-                  [_idProduct]="product._id"
-                ></app-card-favorite>
-              </div>
-              <div
-                class="mat-title block__title"
-                [routerLink]="'card/' + product._id"
-              >
-                <p
-                  [matTooltip]="product.name"
-                  matTooltipClass="example-tooltip-primary"
-                  class="title__cart"
-                >
-                  {{ product.name.slice(0, 24) }}
-                  <span *ngIf="product.name.length > 24">...</span>
-                </p>
-              </div>
-              <div class="price">
-                <p class="mat-subheading-1 price__cart">
-                  {{ product.price | price
-                  }}<span class="price__cart-currency">&nbsp;₴</span>
-                </p>
-                <p class="price__cart-shop">
-                  <app-card-shopping-cart
-                    [_idProduct]="product._id"
-                  ></app-card-shopping-cart>
-                </p>
-              </div>
-            </mat-card-content>
-            <mat-card-actions> </mat-card-actions>
-          </mat-card>
-        </div>
-        <!-- Cart END -->
+      <div class="cards" *ngIf="!loader">
+        <!-- Card START -->
+        <ul class="cards-catalog">
+          <li class="cards-catalog-item" *ngFor="let product of productList">
+            <app-product-card [productItem]="product"></app-product-card>
+          </li>
+        </ul>
+        <!-- Card END -->
       </div>
       <!--  -->
       <div class="pagination" *ngIf="!loader">
