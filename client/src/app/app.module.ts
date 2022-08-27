@@ -80,6 +80,7 @@ import { ProductCardShoppingCartComponent } from "./template/product-card-shoppi
 import { ProductCardElementStatusesComponent } from "./template/components/product-card-element-statuses/product-card-element-statuses.component";
 import { ProductCardElementPriceComponent } from "./template/components/product-card-element-price/product-card-element-price.component";
 import { ProductCardComponent } from "./template/product-card/product-card.component";
+import { ProductCardUserComponent } from './template/product-card-user/product-card-user.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { ProductCardComponent } from "./template/product-card/product-card.compo
     ProductCardElementStatusesComponent,
     ProductCardElementPriceComponent,
     ProductCardComponent,
+    ProductCardUserComponent,
   ],
   imports: [
     BrowserModule,
