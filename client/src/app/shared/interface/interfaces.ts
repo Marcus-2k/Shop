@@ -97,6 +97,9 @@ export interface ProductSearch {
   _id: string;
   // __v: string;
 }
+export interface ProductDelete {
+  _id: string;
+}
 // Product =======================================
 
 // User

@@ -199,11 +199,18 @@ module.exports.update = async function (req, res) {
 module.exports.delete = async function (req, res) {
   console.log("Server delete");
   try {
-    const productImg = await Product.findById(req.params.id);
+    console.log(req.params.id);
+    const product = await Product.findById(
+      { _id: req.params.id },
+      { imageSrc: 1 }
+    );
 
-    deleteImgFromFolder(productImg.imageSrc); // Delete file from folder uploads
+    product.imageSrc.forEach((item) => {
+      console.log(item);
+      deleteImgFromFolder(item);
+    }); // Delete file from folder uploads
 
-    await Product.remove({ _id: req.params.id }); // Delete cart in DB
+    await Product.remove({ _id: req.params.id }); // Delete card in DB
 
     res.status(200).json({
       message: "Товар видалено",

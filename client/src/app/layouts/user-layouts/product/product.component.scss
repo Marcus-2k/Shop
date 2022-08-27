@@ -25,46 +25,22 @@
       // justify-content: space-between;
       justify-content: center;
       flex-wrap: wrap;
-
-      .card {
-        margin: 0 5px;
-        width: 300px;
-        height: 450px;
-        margin-top: calc(10px + (20 - 10) * ((100vw - 768px) / (1920 - 768)));
-        .mat-card {
-          padding: calc(10px + (20 - 10) * ((100vw - 768px) / (1920 - 768)));
-        }
-        .image {
-          width: calc(280px + (260 - 280) * ((100vw - 768px) / (1920 - 768)));
-          height: 300px;
-          margin: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          &__src {
-            max-width: 100%;
-            max-height: 100%;
+      .catalog-card {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        &-item {
+          width: 20%;
+          height: 480px;
+          @media (max-width: 1250px) {
+            width: 25%;
           }
-        }
-        .mat-title {
-          p {
-            margin: 0;
-            font-size: calc(
-              12px + (20 - 12) * ((100vw - 768px) / (1920 - 768))
-            );
+          @media (max-width: 767px) {
+            width: 33.3%;
           }
-        }
-        .price {
-          p {
-            margin: 0;
-          }
-        }
-        mat-card-content {
-          margin-bottom: 5px;
         }
       }
-
-      .notcart {
+      .not-card {
         width: 100%;
         &__title {
           color: #535353;

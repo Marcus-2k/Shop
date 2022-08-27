@@ -15,46 +15,17 @@
     </div>
     <!--  -->
     <div class="product__content-card">
-      <div class="card" *ngFor="let product of productList; let i = index">
-        <mat-card XSmall>
-          <div class="image">
-            <img [src]="url_server + product.imageSrc[0]" class="image__src" />
-          </div>
-          <mat-card-content>
-            <div class="mat-title">
-              <p
-                [matTooltip]="product.name"
-                matTooltipClass="example-tooltip-primary"
-              >
-                {{ product.name.slice(0, 20) }}
-                <span *ngIf="product.name.length > 20">...</span>
-              </p>
-            </div>
-            <div class="price">
-              <p class="mat-subheading-1">{{ product.price | price }}&#8372;</p>
-            </div>
-          </mat-card-content>
-          <mat-card-actions>
-            <button
-              mat-button
-              color="primary"
-              [routerLink]="'new/' + product._id"
-            >
-              Змінити
-            </button>
-            <button
-              mat-button
-              color="warn"
-              (click)="deleteProduct(product._id, i)"
-            >
-              Видалити
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+      <ul class="catalog-card">
+        <li class="catalog-card-item" *ngFor="let product of productList">
+          <app-product-card-user
+            [productItem]="product"
+            (transferDeleteProduct)="deleteProductServer($event)"
+          ></app-product-card-user>
+        </li>
+      </ul>
       <!--  -->
-      <div class="notcart" *ngIf="productList.length === 0 && loader === false">
-        <h2 class="notcart__title">
+      <div class="not-card" *ngIf="productList.length === 0">
+        <h2 class="not-card__title">
           У вас ще не має товарів, виставлених на продаж.
         </h2>
       </div>

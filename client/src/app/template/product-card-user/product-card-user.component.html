@@ -1,1 +1,84 @@
-<p>product-card-user works!</p>
+<!--  -->
+<div class="user-card">
+  <div class="user-card-content">
+    <!--  -->
+    <div class="display-none">{{ productItem?._id }}</div>
+    <!--  -->
+    <div class="content-action">
+      <p class="user-card__action" *ngIf="productItem?.action">Акція</p>
+    </div>
+    <!--  -->
+    <div
+      class="content-img"
+      [routerLink]="'/card/' + productItem?._id + '/info'"
+      (mouseenter)="hoverEnter(pictureLogo, pictureSubLogo)"
+    >
+      <div
+        class="content-img-block"
+        (mouseleave)="hoverLeave(pictureLogo, pictureSubLogo)"
+      >
+        <img
+          class="placeholder__img display-block"
+          [src]="url_server_folder + images[0]"
+          [alt]="productItem?.name"
+          #pictureLogo
+        />
+        <img
+          class="placeholder__img display-none"
+          [src]="url_server_folder + images[1]"
+          [alt]="productItem?.name"
+          #pictureSubLogo
+        />
+      </div>
+    </div>
+    <!--  -->
+    <div
+      class="content-title"
+      [routerLink]="'/card/' + productItem?._id + '/info'"
+    >
+      <p class="user-card__title">{{ productItem?.name }}</p>
+    </div>
+    <!--  -->
+    <div class="content-action-price">
+      <p class="user-card__action-price" *ngIf="productItem?.action">
+        {{ productItem?.price | price }}
+        <span class="currency">₴</span>
+      </p>
+    </div>
+    <div class="content-about">
+      <div class="content-about-price">
+        <app-product-card-element-price
+          [action]="productItem?.action"
+          [price]="productItem?.price"
+          [actionPrice]="productItem?.actionPrice"
+        ></app-product-card-element-price>
+      </div>
+    </div>
+    <!--  -->
+    <div class="content-status">
+      <app-product-card-element-statuses
+        [status]="productItem?.status"
+      ></app-product-card-element-statuses>
+    </div>
+    <!--  -->
+    <div class="content-btn">
+      <button
+        class="button btn-edit"
+        mat-raised-button
+        color="primary"
+        [routerLink]="'new/' + productItem?._id"
+      >
+        Змінити
+      </button>
+      <button
+        class="button btn-delete"
+        mat-raised-button
+        color="warn"
+        (click)="deleteProduct()"
+      >
+        Видалити
+      </button>
+    </div>
+    <!--  -->
+  </div>
+</div>

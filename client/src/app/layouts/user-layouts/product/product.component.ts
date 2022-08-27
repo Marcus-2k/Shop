@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { Product } from "src/app/shared/interface/interfaces";
-import { CategoryProductService } from "src/app/shared/service/category-product.service";
+
+import { Product, ProductDelete } from "src/app/shared/interface/interfaces";
+
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
@@ -14,45 +15,43 @@ export class ProductComponent implements OnInit {
   constructor(
     private requestProduct: RequestProductService,
     private showNotice: ShowNoticeService,
-    private categoryProduct: CategoryProductService,
     private renameTitle: RenameTitleService
   ) {}
 
-  /* Development */
-  url_server = "http://localhost:5000/";
-
   ngOnInit(): void {
-    console.log("Start ngOnInit PRODUCT");
+    console.log("Start ngOnInit Product");
 
-    this.categoryList = this.categoryProduct.categoryList;
     this.requestProduct.getUserProduct().subscribe(
       (response) => {
         console.log(response);
 
         this.productList = response;
+
         this.loader = false;
       },
-      (e) => {}
+      (error) => {
+        console.log(error);
+      }
     );
 
     this.renameTitle.renameTitleSite("Мої товари");
   }
 
-  deleteProduct(id: any, index: number): void {
-    this.requestProduct.deleteById(id).subscribe(
-      (res) => {
-        this.showNotice.message(res.message);
-        this.productList.splice(index, 1);
-      },
-      (e) => {
-        console.log(e);
-      }
-    );
-  }
-
-  // Loader site
-  loader: boolean = false;
+  loader: boolean = true;
 
   productList: Product[] = [];
-  categoryList: any = [];
+
+  deleteProductServer(event: ProductDelete): void {
+    //
+    this.requestProduct.deleteById(event._id).subscribe(
+      (res) => {
+        this.showNotice.message(res.message);
+        // this.productList.splice(index, 1);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    //
+  }
 }
