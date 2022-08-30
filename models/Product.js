@@ -2,24 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
+  imageSrc: {
+    type: Array, // [ 'product.jpg', 'product.jpg', 'product.jpg' ]
+    required: true,
+  },
   name: {
     type: String, // Samsung S21 32ГБ
     required: true,
   },
-  imageSrc: {
-    type: Array, // [ 'product.jpng', 'product.jpng', 'product.jpng' ]
-    required: true,
-  },
   price: {
-    type: Number, // 30300
-    required: true,
-  },
-  category: {
-    type: Array, // [ 0, 0, 9 ]
-    required: true,
-  },
-  options: {
-    type: Array, // [ 0, 0, 9 ]
+    type: Number, // 30000
     required: true,
   },
   action: {
@@ -27,28 +19,24 @@ const productSchema = new Schema({
     required: true,
   },
   actionPrice: {
-    type: Number, // 29500
+    type: Number, // action === true >>> 27000 | action === false >>> -1
     required: false,
   },
   counter: {
     type: Number, // 15
     required: true,
   },
-  optionsToString: {
-    type: Array, // [ '32 ГБ', 'Білий', '2 роки' ]
+  category: {
+    type: Array, // [ 1, 2, 9 ]
     required: true,
   },
-  queryParams: {
-    type: Object, // {ram: '32 ГБ', color: 'Білий', guarantee: '2 роки' }
+  characteristics: {
+    type: Array, // [ 0, 0, 9, 13, 4, 8, 21 ]
     required: true,
   },
   status: {
     type: Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується',
     required: true,
-  },
-  seller: {
-    type: String, // '_id'
-    require: true,
   },
   keyWords: {
     type: Array, // [ 'phone', 'телефон', 'samsung']
@@ -59,11 +47,11 @@ const productSchema = new Schema({
   },
   comments: {
     type: Array,
-    required: true, /// ....
+    required: true, // ....
   },
   questions: {
     type: Array,
-    required: true, /// ....
+    required: true, // ....
   },
   user: {
     ref: "users",

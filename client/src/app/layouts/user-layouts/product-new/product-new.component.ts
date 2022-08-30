@@ -1,28 +1,11 @@
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
-import {
-  Component,
-  DoCheck,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-import {
-  MatSelect,
-  MatSelectChange,
-  _MatSelectBase,
-} from "@angular/material/select";
-import { ActivatedRoute, Params } from "@angular/router";
-import {
-  CategoryProduct,
-  Options,
-  Product,
-  Seller,
-} from "src/app/shared/interface/interfaces";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { CategoryProduct, Options } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
-import { NameQueryService } from "src/app/shared/service/name-query.service";
-import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
-import { RequestSellerService } from "src/app/shared/service/server/request-seller.service";
+
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
@@ -34,156 +17,141 @@ export class ProductNewComponent implements OnInit {
   constructor(
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
-    private requestSeller: RequestSellerService,
     private categoryName: CategoryProductService,
-    private route: ActivatedRoute,
-    private nameOptions: NameQueryService,
-    private renameTitle: RenameTitleService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    console.log("Start ngOnInit PRODUCT-NEW");
+    console.log("Start ngOnInit Product-New");
+
     this.categoryList = this.categoryName.categoryList;
+
     this.route.params.subscribe((value) => {
-      const id: string = Object.values(value)[0];
-
-      if (id) {
-        this.renameTitle.renameTitleSite("Змінення товару");
-      } else {
-        this.renameTitle.renameTitleSite("Створення товару");
-      }
-
-      if (this.update) {
-        this.requestProduct.getByIdProduct(id).subscribe(
-          (response) => {
-            this.updateProduct = response;
-            this.newUpdateProduct = response;
-            this.updateOnInit();
-          },
-          (e) => {
-            console.log(e);
-          }
-        );
-      }
+      // const id: string = Object.values(value)[0];
+      // if (id) {
+      //   this.renameTitle.renameTitleSite("Змінення товару");
+      //   this.update = true;
+      // } else {
+      //   this.renameTitle.renameTitleSite("Створення товару");
+      // }
     });
     //
-    this.requestSeller.getSeller().subscribe(
-      (responce) => {
-        // console.log(responce);
+    // this.requestSeller.getSeller().subscribe(
+    //   (responce) => {
+    //     // console.log(responce);
 
-        const _id: string | null = localStorage.getItem("_id");
+    //     const _id: string | null = localStorage.getItem("_id");
 
-        // console.log(_id);
+    //     // console.log(_id);
 
-        const mySeller: Seller = {
-          name: "Від свого імені",
-          logo: "",
-          _id: "",
-        };
+    //     // const mySeller: Seller = {
+    //     //   name: "Від свого імені",
+    //     //   logo: "",
+    //     //   _id: "",
+    //     // };
 
-        if (_id) {
-          mySeller._id = _id;
-        } else {
-          // re-direct page login
-        }
+    //     // if (_id) {
+    //     //   mySeller._id = _id;
+    //     // } else {
+    //     //   // re-direct page login
+    //     // }
 
-        this.sellerList = responce;
-        this.sellerList.splice(0, 0, mySeller);
-      },
-      (error) => {
-        this.showNotice.message(
-          "Сталася помилка на серверові. Спробуйте пізніше."
-        );
-        console.log(error);
-      }
-    );
+    //     // this.sellerList = responce;
+    //     // this.sellerList.splice(0, 0, mySeller);
+    //   },
+    //   (error) => {
+    //     this.showNotice.message(
+    //       "Сталася помилка на серверові. Спробуйте пізніше."
+    //     );
+    //     console.log(error);
+    //   }
+    // );
     //
-    this.originalName = this.nameOptions.originalName;
-    this.nameQueryParams = this.nameOptions.nameForServer;
+    // this.originalName = this.nameOptions.originalName;
+    // this.nameQueryParams = this.nameOptions.nameForServer;
     //
   }
 
   // Update product START ====
-  update: boolean = false; // Режим update true/false
-  valueId?: string;
-  updateProduct?: Product;
-  newUpdateProduct?: Product;
+  update: boolean = false; // Mode update true/false
+
+  // valueId?: string;
+  // updateProduct?: Product;
+  // newUpdateProduct?: Product;
 
   updateOnInit() {
-    if (this.updateProduct) {
-      console.log(this.updateProduct);
-
-      // Присвоєння name, price, keyWords, description
-      this.nameProduct = this.updateProduct.name;
-      this.priceProduct = this.updateProduct.price;
-      // Присвоєння категорії
-      this.categorySelected = true;
-      this.categoryNumber = this.updateProduct.category;
-      this.oneIndex = this.updateProduct.category[0];
-      this.twoIndex = this.updateProduct.category[1];
-      if (this.updateProduct.category.length > 2) {
-        this.threeIndex = this.updateProduct.category[2];
-      }
-      // Присвоєння опису товару
-      this.description = this.updateProduct.description;
-      // Присвоєння ключових слів товару
-      if (this.updateProduct.keyWords) {
-        this.stringKeysWords = this.updateProduct.keyWords.join(" ");
-        this.keyWordsInput(this.updateProduct.keyWords.join(" "));
-      }
-      // Параметри товару
-      this.optionForUpdate = this.updateProduct.options;
-
-      if (this.categoryNumber.length === 2) {
-        // this.characteristics = this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[this.categoryNumber[1]].options;
-      } else if (this.categoryNumber.length === 3) {
-        this.characteristics =
-          this.categoryName.categoryList[
-            this.categoryNumber[0]
-          ].nameListCategory[this.categoryNumber[1]].subNameListCategory[
-            this.categoryNumber[2]
-          ].options;
-      }
-
-      this.characteristics.forEach((element, idx) => {
-        this.optionsListNumber.push(this.optionForUpdate[idx]);
-      });
-      // this.valueChangeSelect();
-    }
+    // if (this.updateProduct) {
+    //   console.log(this.updateProduct);
+    //   // Присвоєння name, price, keyWords, description
+    //   this.nameProduct = this.updateProduct.name;
+    //   this.priceProduct = this.updateProduct.price;
+    //   // Присвоєння категорії
+    //   this.categorySelected = true;
+    //   this.categoryNumber = this.updateProduct.category;
+    //   this.oneIndex = this.updateProduct.category[0];
+    //   this.twoIndex = this.updateProduct.category[1];
+    //   if (this.updateProduct.category.length > 2) {
+    //     this.threeIndex = this.updateProduct.category[2];
+    //   }
+    //   // Присвоєння опису товару
+    //   this.description = this.updateProduct.description;
+    //   // Присвоєння ключових слів товару
+    //   // if (this.updateProduct.keyWords) {
+    //   //   this.stringKeysWords = this.updateProduct.keyWords.join(" ");
+    //   //   this.keyWordsInput(this.updateProduct.keyWords.join(" "));
+    //   // }
+    //   // Параметри товару
+    //   this.optionForUpdate = this.updateProduct.options;
+    //   if (this.categoryNumber.length === 2) {
+    //     // this.characteristics = this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[this.categoryNumber[1]].options;
+    //   } else if (this.categoryNumber.length === 3) {
+    //     this.characteristics =
+    //       this.categoryName.categoryList[
+    //         this.categoryNumber[0]
+    //       ].nameListCategory[this.categoryNumber[1]].subNameListCategory[
+    //         this.categoryNumber[2]
+    //       ].options;
+    //   }
+    //   this.characteristics.forEach((element, idx) => {
+    //     this.characteristicsNumber.push(this.optionForUpdate[idx]);
+    //   });
+    //   // this.valueChangeSelect();
+    // }
   }
-
-  test() {
-    // console.log(this.optionsListNumber);
-    // console.log(this.upNewParameters);
-    // this.checkingKeyWordsNew();
-    // console.log(this.action);
-    // console.log(this.actionPrice.toString());
-    // console.log(this.sellerList);
-    console.log(
-      "=============================================================="
-    );
-    console.log(this.images);
-    console.log(this.imagePreview);
-    console.log(
-      "=============================================================="
-    );
-    // console.log(this.imagePreview.reverse());
-  }
-
   // Update product END ====
+  test() {
+    console.log("============================================================");
+    // console.log(this.popuapShow);
+    // console.log(this.categorySelected);
+    // console.log(this.categoryErrorShow);
+    console.log("Index");
+    console.log(this.oneIndex);
+    console.log(this.twoIndex);
+    console.log(this.threeIndex);
 
-  @ViewChild("inputFile") inputFile?: ElementRef;
-  @ViewChild("inputTitle") inputTitle?: ElementRef;
-  @ViewChild("inputPrice") inputPrice?: ElementRef;
-  @ViewChild("inputKeyWords") inputKeyWords?: ElementRef;
-  @ViewChild("selectParams") selectParams?: ElementRef;
+    console.log("Block");
+    console.log(this.oneCategory);
+    console.log(this.twoCategory);
+    console.log(this.threeCategory);
+    console.log("Number");
+    console.log(this.categoryNumber);
+    // console.log(this.upNewParameters);
+    console.log("============================================================");
+    console.log(this.characteristics);
+    console.log(this.characteristicsNumber);
+    console.log(this.validityCharacteristics);
+
+    console.log("============================================================");
+  }
 
   body = document.getElementById("body");
 
-  // File Start ====
-  validImages = false; // if click button "Завантажити фото" but no select photo
-  // images?: File[]; // Download image product
+  // File START ====================================================================================================================================
+  @ViewChild("inputFile") inputFile?: ElementRef;
+
+  errorImagesDownload: boolean = false; // if click button "Завантажити фото" but no select photo
   imagesValidation: boolean = false;
+
   images: File[] | undefined[] = [
     undefined,
     undefined,
@@ -213,15 +181,14 @@ export class ProductNewComponent implements OnInit {
 
   triggerClick() {
     this.inputFile?.nativeElement.click();
-    this.validImages = true;
+
+    this.errorImagesDownload = true;
     this.imagesValidation = false;
-    console.log(this.imagePreview);
   } // Click button "Завантажити фото"
 
   onFileUpload(event: any) {
     this.images = [];
 
-    // const fileList = event.target.files;
     const fileList: File[] = Array.from(event.target.files);
     const fileCounter = event.target.files.length;
     const needCart = this.maxCounterFile - fileCounter;
@@ -245,24 +212,23 @@ export class ProductNewComponent implements OnInit {
       reader.readAsDataURL(fileList[idx]);
       idx = idx - 1;
     }
-    this.validImages = false;
+    this.errorImagesDownload = false;
     this.imagesValidation = true;
   }
-  // File END ====
-
-  // Name Start ====
+  // File END ======================================================================================================================================
+  // Name START ====================================================================================================================================
   nameProduct: string = "";
-  // Name END ====
-
-  // Price Start ====
+  minLengthNameProduct = 5;
+  // Name END ======================================================================================================================================
+  // Price START ===================================================================================================================================
   priceProduct: number = 3300;
-  // Price END ====
-
-  // Action Start ====
+  // Price END =====================================================================================================================================
+  // Action / Action-Price Start ===================================================================================================================
   action: boolean = false;
-  actionProcent = -10;
-  minActionProcent = -5;
   actionPrice: number = 2970;
+
+  actionProcent: number = -10;
+  minActionProcent: number = -5;
 
   procentActionNumber() {
     let newAction: number =
@@ -270,338 +236,265 @@ export class ProductNewComponent implements OnInit {
     let newActionFixed = newAction.toFixed(2);
     this.actionProcent = Number(newActionFixed);
   }
-  // Action END ====
-
-  // Counter START ====
+  // Action / Action-Price END =====================================================================================================================
+  // Counter START =================================================================================================================================
   counterProduct: number = 10;
-  // Counter END ====
-
-  // Popuap Select Category START ====
+  // Counter END ===================================================================================================================================
+  // Popuap Select Category START ==================================================================================================================
   categoryList: CategoryProduct[] = []; // Category List
 
-  oneIndex: number = -1; // Перша цифра категорії для categoryList
-  twoIndex: number = -1; // Друга цифра категорії для categoryList
-  threeIndex: number = -1; // Третя цифра категорії для categoryList, не є обов'язковою, категорія може бути двоцифровою.
-
-  oneCategory: boolean = false; // Відображає блок для вибору категорії першого рівня.
-  twoCategory: boolean = false; // Відображає блок для вибору категорії другого рівня.
-  threeCategory: boolean = false; // Відображає блок для вибору категорії третього рівня.
-
-  categoryNumber: number[] = []; // Перша цифра - це номер обєкта в масиві categoryList, друга цифра це номер массива в середені списку під першою цифрою...
-
+  popuapShow: boolean = false; // Popuap On/Off
+  categorySelected: boolean = false; // Show select option
   categoryErrorShow: boolean = false; // True в тому випадку якщо категорія не вибрана, і при умові що було відкрите вікно вибору.
 
-  selectCategoryPopuapStart(index: number) {
+  oneIndex: number = -1;
+  twoIndex: number = -1;
+  threeIndex: number = -1;
+
+  oneCategory: boolean = false; // Show block for select category "1" lvl
+  twoCategory: boolean = false; // Show block for select category "2" lvl
+  threeCategory: boolean = false; // Show block for select category "3" lvl
+
+  categoryNumber: number[] = [];
+
+  selectCategoryFirst(index: number) {
     this.oneIndex = index;
     this.oneCategory = true;
     this.twoCategory = true;
-    //
-    this.upNewParameters = true;
   }
 
-  // Reselect category
+  // Edit the selected lvl 1 category
   editOneCategory(index: number) {
     this.oneIndex = index;
     this.twoIndex = -1;
     this.threeIndex = -1;
     this.threeCategory = false;
   }
-  // Select and reselect for sub category
+  // Edit the selected lvl 2 category
   editTwoCategory(index: number) {
     this.twoIndex = index;
     this.threeIndex = -1;
     this.threeCategory = true;
   }
-  // Select and reselect for sub list category
+  // Edit the selected lvl 3 category
   editThreeCategory(index: number) {
     this.threeIndex = index;
   }
 
-  buttonSelectThisCategory() {
-    this.body?.classList.remove("active"); // For body style overflow: auto;
+  selectThisCategory() {
     this.createCategoryNumber();
-    this.getOptionsFromService();
-    this.popuapOnOff = false; // Close popuap
-    this.categoryErrorShow = false;
-    this.categorySelected = true; // Відобразить вибрані категорії в form вибір категорії
+
+    this.popuapClose(false);
   }
 
-  resetCategoryBlockAndIndex() {
-    // Зкидання вибраних категорій
+  resetCategory() {
+    // Reset index
     this.oneIndex = -1;
     this.twoIndex = -1;
     this.threeIndex = -1;
 
-    // Закриття блоків для вибірки категорії
+    // Reset block
     this.oneCategory = false;
     this.twoCategory = false;
     this.threeCategory = false;
 
-    this.categoryNumber.splice(0, 2);
-    this.categoryNumber[0] = -1;
-
-    this.categoryErrorShow = true;
-
-    this.resetOptions();
-  } // Зкидання категорії, відкритих рівнів категорій, та номеру категорії.
-
+    this.categoryErrorShow = false;
+  }
   createCategoryNumber() {
-    this.categoryNumber[0] = this.oneIndex;
+    this.categoryNumber = [];
+
+    this.categoryNumber.push(this.oneIndex);
     this.categoryNumber.push(this.twoIndex);
     if (this.threeIndex !== -1) {
       this.categoryNumber.push(this.threeIndex);
     }
-  } // Для categoryNumber задати номер.
 
-  popuapOnOff: boolean = false; // Popuap On/Off
-  categorySelected: boolean = false; // Category in form visibility
-  upNewParameters: boolean = false;
+    this.categorySelected = true;
+    this.categoryErrorShow = false;
+
+    this.resetCharacteristics();
+    this.getCharacteristics();
+  } // Create "categoryNumber" >>> [ 1, 0, 3 ] || [ 1, 2 ]
 
   popuapOpen() {
-    this.popuapOnOff = true; // Open Popuap
+    console.log("Popuap Open");
+
+    this.popuapShow = true; // Open Popuap
+
     this.body?.classList.add("active"); // For body style overflow: hidden;
+
+    // Index
+    this.oneIndex = -1;
+    this.twoIndex = -1;
+    this.threeIndex = -1;
+    // Block
+    this.oneCategory = false;
+    this.twoCategory = false;
+    this.threeCategory = false;
+
     this.categorySelected = false;
-    this.resetCategoryBlockAndIndex(); // Reset
-    this.categoryErrorShow = false;
-  } // Select category window, open popuap
+  }
+  popuapClose(errorSelected: boolean) {
+    console.log("Popuap Close");
 
-  popuapClose(idx: number) {
-    if (idx === 0) {
-      this.popuapOnOff = false; // Close Popuap
+    if (errorSelected === true) {
+      this.popuapShow = false; // Close Popuap
 
-      this.body?.classList.remove("active"); // For body style overflow: auto;
+      this.body?.classList.remove("active"); // Delete class "active"
 
-      this.resetCategoryBlockAndIndex();
-    }
-  } // Close popuap
-  // Popuap Select Category END ====
+      this.categoryErrorShow = true;
+    } else if (errorSelected === false) {
+      this.popuapShow = false; // Close Popuap
 
-  // Options START ====
-  characteristics: Options[] = [];
-  optionForUpdate: number[] = [];
-
-  optionsListNumber: number[] = [];
-
-  selectCollection: HTMLCollection =
-    document.getElementsByClassName("select__params");
-
-  updateSelectValidity: boolean = false;
-  valueChangeSelect() {
-    console.log("ValueChangeSelect");
-    console.log(this.optionsListNumber);
-    //
-    // якщо є в массиві -1
-    if (this.optionsListNumber.indexOf(-1) >= 0) {
-      this.updateSelectValidity = false;
-      //
-
-      // Якщо немає в масиві -1
-    } else if (this.optionsListNumber.indexOf(-1) === -1) {
-      if (this.upNewParameters === true) {
-        this.updateSelectValidity = true;
-      } else {
-        let counterCorrect = 0;
-        this.updateProduct?.options.forEach((element, idx) => {
-          if (this.optionsListNumber[idx] === element) {
-            counterCorrect++;
-          }
-        });
-        if (counterCorrect === this.updateProduct?.options.length) {
-          this.updateSelectValidity = false;
-        } else {
-          this.updateSelectValidity = true;
-        }
-      }
+      this.body?.classList.remove("active"); // Delete class "active"
+      this.categoryErrorShow = false;
     }
   }
-  getOptionsFromService() {
+  // Popuap Select Category END ====================================================================================================================
+  // Characteristics START =========================================================================================================================
+  characteristics: Options[] = [];
+
+  characteristicsNumber: number[] = [];
+
+  selectCollection: HTMLCollection = document.getElementsByClassName(
+    "characteristics-select"
+  );
+
+  validityCharacteristics: boolean = false;
+
+  checkingValidityCharacteristics() {
+    // console.log(this.characteristicsNumber);
+    if (this.characteristicsNumber.indexOf(-1) >= 0) {
+      this.validityCharacteristics = false;
+    } else if (this.characteristicsNumber.indexOf(-1) === -1) {
+      this.validityCharacteristics = true;
+    }
+
+    // // if the array contains -1
+    // if (this.characteristicsNumber.indexOf(-1) >= 0) {
+    //   this.validityCharacteristics = false;
+    //   // if the array does not have -1
+    // } else if (this.characteristicsNumber.indexOf(-1) === -1) {
+    //   if (this.upNewParameters === true) {
+    //     this.validityCharacteristics = true;
+    //   } else {
+    //     let counterCorrect = 0;
+    //     this.updateProduct?.options.forEach((element, idx) => {
+    //       if (this.characteristicsNumber[idx] === element) {
+    //         counterCorrect++;
+    //       }
+    //     });
+    //     if (counterCorrect === this.updateProduct?.options.length) {
+    //       this.validityCharacteristics = false;
+    //     } else {
+    //       this.validityCharacteristics = true;
+    //     }
+    //   }
+    // }
+  }
+  getCharacteristics() {
     this.characteristics =
       this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[
         this.categoryNumber[1]
       ].subNameListCategory[this.categoryNumber[2]].options;
-    this.recordOptionsInArray();
-
-    //
-    this.uniqueParams.push("Параметр відсутній");
-    this.characteristics.forEach((element) => {
-      this.uniqueParams.push(element.name);
-    });
-  } // Отримуємо характеристики для опису товара за його категорією
-  recordOptionsInArray() {
-    this.characteristics.forEach((element, idx) => {
-      this.optionsListNumber.push(-1);
-    });
-    this.valueChangeSelect();
+    this.recordCharacteristicsInArray();
   }
-  resetOptions() {
+  recordCharacteristicsInArray() {
+    this.characteristics.forEach((element, idx) => {
+      this.characteristicsNumber.push(-1);
+    });
+
+    this.checkingValidityCharacteristics();
+  }
+  resetCharacteristics() {
     this.characteristics = [];
 
-    this.optionsListNumber = [];
-
-    this.uniqueParams = [];
-    this.uniqueParamsNumber = 0;
-  } // Видалення характеристик
-  // Options END ====
-
-  // queryParams START ====
-  queryParams: Params = {};
-  originalName: string[] = [];
-  nameQueryParams: string[] = [];
-  // queryParams END ====
-
-  // Unique Params START ====
-  uniqueParams: string[] = [];
-  uniqueParamsNumber: number = -1;
-  // Unique Params END ====
-
-  // Status START ====
+    this.characteristicsNumber = [];
+  }
+  // Characteristics END ===========================================================================================================================
+  // Status START ==================================================================================================================================
   statusNumber: number = -1;
-  // Status END ====
+  // Status END ====================================================================================================================================
+  // KeyWords START ================================================================================================================================
+  keyWordsArray: string[] = [];
+  keyWords: string = "";
 
-  // Seller START ====
-  sellerList: Seller[] = [];
-  sellerNumber: number = -1;
-  // Seller END ====
-
-  // Key Words START ====
-  keyWords: string[] = []; // Ключові слова.
-  stringKeysWords = ""; // Ключові слова в одному рядку. Для відправки на сервер.
-  lengthKeyWords: number = 0; // Кількість символів ключових слів.
-  checkKeyWords: boolean = false; // Для блока видалення не правильних ключових слів.
+  lengthKeyWords: number = 0;
+  validityKeyWords: boolean = true;
 
   minWordLength: number = 2;
   maxWordLength: number = 10;
 
-  keyWordsInput(value: string) {
-    this.keyWords = value.replace(/ +/g, " ").trim().split(" ");
-    this.lengthKeyWords = value.replace(/\s+/g, "").length;
-    if (this.keyWords[0] === "") {
-      this.keyWords = [];
-    }
+  maxLengthKeyWords: number = 200;
 
-    for (let index = 0; index < this.keyWords.length; index++) {
+  keyupInputKeyWords(value: string) {
+    this.keyWordsArray = value.replace(/ +/g, " ").trim().split(" ");
+    this.lengthKeyWords = value.replace(/\s+/g, "").length;
+
+    if (this.keyWordsArray[0].length === 0) {
+      this.keyWordsArray = [];
+      this.validityKeyWords = true;
+    } else {
+      this.checkingValidityKeyWords();
+    }
+  }
+  checkingValidityKeyWords() {
+    for (let index = 0; index < this.keyWordsArray.length; index++) {
       if (
-        this.keyWords[index].length <= 1 ||
-        this.keyWords[index].length > 10
+        this.keyWordsArray[index].length < this.minWordLength ||
+        this.keyWordsArray[index].length > this.maxWordLength
       ) {
-        this.checkKeyWords = true;
+        this.validityKeyWords = false;
         break;
       }
-      this.checkKeyWords = false;
-    } // Перевірка чи всі ключові слова введено корректно
-  } // При введені тексту в "Ключові слова"
-
-  deleteKeyWords() {
-    for (let index = 0; index < this.keyWords.length; index++) {
+      this.validityKeyWords = true;
+    }
+  } // Checking of the all keywords inputted correct
+  deleteErrorKeyWords() {
+    for (let index = 0; index < this.keyWordsArray.length; index++) {
       if (
-        this.keyWords[index].length <= 1 ||
-        this.keyWords[index].length > 10
+        this.keyWordsArray[index].length < this.minWordLength ||
+        this.keyWordsArray[index].length > this.maxWordLength
       ) {
-        this.keyWords.splice(index, 1);
+        this.keyWordsArray.splice(index, 1);
         index--;
       }
-    }
-    this.checkKeyWords = false;
-  }
+    } // ['hi', 'hello', 'n', 'cool', 'description'] >> ['hi', 'hello', 'cool']
 
-  checkingKeyWordsNew() {
-    let counterCorrect: number = 0;
-    console.log(this.keyWords);
-    console.log(this.updateProduct?.keyWords);
-
-    this.updateProduct?.keyWords?.forEach((element, idx) => {
-      // if(element === this.keyWords)
-    });
-  }
-  // Key Words END ====
-
-  // Description Start ====
-  description: string = ""; // Description
+    this.validityKeyWords = true;
+    this.keyWords = this.keyWordsArray.join(" ");
+  } // Delete all error keywords
+  // KeyWords END ==================================================================================================================================
+  // Description Start =============================================================================================================================
+  description: string = "";
   minLengthDescription: number = 60;
   maxLengthDescription: number = 5000;
-  // Description END ====
-
-  // Create/Up product Start ====
-  checkingKeyWords() {
-    for (let index = 0; index < this.keyWords.length; index++) {
-      if (
-        this.keyWords[index].length <= 1 ||
-        this.keyWords[index].length > 10
-      ) {
-        this.showNotice.message(
-          "В ключових словах, є слова в яких кількість символів меньше двох (2), або більше десяти (10)."
-        );
-        this.checkKeyWords = true;
-        break;
-      }
-      this.checkKeyWords = false;
-    } // Перевірка чи всі ключові слова введено правильно
-  }
-
-  checkingOptions(): boolean {
-    for (let idx = 0; idx < this.optionsListNumber.length; idx++) {
-      if (this.optionsListNumber[idx] === -1) {
-        return false;
-      }
-    } // Якщо в масиві один з параметрів -1 то значить якийсь параметр був не вибраний
-    return true;
-  }
-
-  createParams(optionsToString: string[]): Params {
-    let params: Params = {};
-
-    this.characteristics.forEach((element, idx) => {
-      let index = this.originalName.indexOf(element.name);
-      if (index !== -1) {
-        let name = this.nameQueryParams[index];
-        params[name] = optionsToString[idx];
-      } else {
-        console.log("Це не можливо, значіть капец проблеми");
-      }
-    });
-
-    return params;
-  }
-
-  createOptionToString(): string[] {
-    let optionsToString: string[] = [];
-    this.optionsListNumber.forEach((item, idx) => {
-      optionsToString.push(
-        this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[
-          this.categoryNumber[1]
-        ].subNameListCategory[this.categoryNumber[2]].options[idx].select[
-          this.optionsListNumber[idx]
-        ]
-      );
-    });
-    return optionsToString;
-  }
-
+  // Description END ===============================================================================================================================
+  // Create/Up Start ===============================================================================================================================
   createProduct() {
     console.log("Button Create");
 
-    this.checkingKeyWords();
-    const optionsValidity: boolean = this.checkingOptions();
-    const optionsToString: string[] = this.createOptionToString();
-
     if (
       this.imagesValidation &&
-      this.nameProduct.length > 5 &&
-      this.priceProduct &&
-      !this.checkKeyWords &&
-      this.lengthKeyWords <= 200 &&
-      this.description.length >= 60 &&
-      this.description.length <= 5000 &&
-      optionsValidity
-      // true
+      this.nameProduct.length >= this.minLengthNameProduct &&
+      ((this.action && this.actionProcent < this.minActionProcent) ||
+        this.action === false) &&
+      this.counterProduct >= 0 &&
+      this.validityCharacteristics &&
+      (this.statusNumber === 0 ||
+        this.statusNumber === 1 ||
+        this.statusNumber === 2 ||
+        this.statusNumber === 3) &&
+      this.validityKeyWords &&
+      this.lengthKeyWords <= this.maxLengthKeyWords &&
+      this.description.length > this.minLengthDescription &&
+      this.description.length < this.maxLengthDescription
     ) {
       console.log("Create FormData");
-      const params: Params = this.createParams(optionsToString);
 
       const formData = new FormData();
 
       const imagesArray = Array.from(this.images);
-
       imagesArray.forEach((img, idx) => {
         if (img) {
           formData.append(`image-${idx}`, img, img.name); // Add photo product
@@ -610,26 +503,25 @@ export class ProductNewComponent implements OnInit {
         console.log(formData.get(`image-${idx}`));
       });
 
-      formData.append("name", this.nameProduct); // Add name product
-      formData.append("price", String(this.priceProduct)); // Add price product (type string)
+      formData.append("name", this.nameProduct);
+      formData.append("price", String(this.priceProduct)); // Add 4500 >>> "4500"
+
       if (this.action === true) {
-        formData.append("action", "1");
-        formData.append("actionPrice", this.actionPrice.toString());
+        formData.append("action", "1"); // "1" >>> true
+        formData.append("actionPrice", this.actionPrice.toString()); // 4050 >>> "4050"
       } else if (this.action === false) {
-        formData.append("action", "0");
+        formData.append("action", "0"); // "0" >>> false
       }
-      formData.append("counter", this.counterProduct.toString());
-      formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
-      formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
-      formData.append("optionsToString", optionsToString.join(","));
-      formData.append("queryParams", Object.entries(params).join(","));
-      formData.append("uniqueParams", this.uniqueParamsNumber.toString());
-      formData.append("status", this.statusNumber.toString());
-      formData.append("seller", this.sellerList[this.sellerNumber]._id);
-      formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
-      formData.append("description", this.description); // Add description (type string)
+
+      formData.append("counter", this.counterProduct.toString()); // 5 >>> "5"
+      formData.append("category", this.categoryNumber.join(" ")); //  [ 5, 0, 8 ] >>> "5 0 8"
+      formData.append("characteristics", this.characteristicsNumber.join(" ")); // [ 4, 1, 2, 13, 0, 21 ] >>> "4 1 2 13 0 21"
+      formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
+      formData.append("keyWords", this.keyWordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
+      formData.append("description", this.description); // Екран 14" IPS (1920x1080) Full HD, матовий / Intel Core i3-1115G4
 
       console.log("Send FormData");
+
       this.requestProduct.createProduct(formData).subscribe(
         (res) => {
           this.showNotice.message("Товар створено успішно.");
@@ -647,75 +539,68 @@ export class ProductNewComponent implements OnInit {
   }
 
   upProduct() {
-    console.log("Button Save");
-
-    this.checkingKeyWords();
-    const optionsValidity: boolean = this.checkingOptions();
-    const optionsToString: string[] = this.createOptionToString();
-
-    if (
-      this.update &&
-      this.updateProduct &&
-      this.nameProduct.length > 5 &&
-      this.priceProduct &&
-      !this.checkKeyWords &&
-      this.lengthKeyWords <= 200 &&
-      this.description.length >= 60 &&
-      this.description.length <= 5000 &&
-      optionsValidity
-    ) {
-      console.log("Create FormData");
-      const params: Params = this.createParams(optionsToString);
-
-      const formData = new FormData();
-
-      if (this.images) {
-        // formData.append("image", this.images, this.images.name); // Add photo product
-      }
-      if (this.nameProduct !== this.updateProduct.name) {
-        formData.append("name", this.nameProduct); // Add name product
-      }
-      if (this.priceProduct !== this.updateProduct.price) {
-        formData.append("price", String(this.priceProduct)); // Add price product (type string)
-      }
-      if (this.upNewParameters) {
-        formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
-        formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
-        formData.append("optionsToString", optionsToString.join(","));
-        formData.append("queryParams", Object.entries(params).join(","));
-      } else if (this.updateSelectValidity) {
-        formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
-        formData.append("optionsToString", optionsToString.join(","));
-        formData.append("queryParams", Object.entries(params).join(","));
-      }
-
-      formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
-      if (this.description !== this.updateProduct.description) {
-        formData.append("description", this.description); // Add description (type string)
-      }
-      if (Boolean(this.action) !== this.updateProduct.action) {
-        formData.append("action", this.action.toString()); // Add action (type string)
-      }
-
-      console.log("Send FormData");
-
-      const id = this.updateProduct._id;
-      this.requestProduct.updateById(formData, id).subscribe(
-        (res) => {
-          this.showNotice.message("Товар збережено успішно.");
-        },
-        (e) => {
-          console.log(e);
-          this.showNotice.message(
-            "Товар не було змінено, дані заповнено не коректно"
-          );
-        }
-      ); //Відправили на сервер
-    } else {
-      this.showNotice.message(
-        "Товар не було збережено, дані заповнено не коректно"
-      );
-    }
+    // console.log("Button Save");
+    // this.checkingKeyWords();
+    // const optionsValidity: boolean = this.checkingOptions();
+    // const optionsToString: string[] = this.createOptionToString();
+    // if (
+    //   // this.update &&
+    //   // this.updateProduct &&
+    //   // this.nameProduct.length > 5 &&
+    //   // this.priceProduct &&
+    //   // // !this.checkKeyWords &&
+    //   // this.lengthKeyWords <= 200 &&
+    //   // this.description.length >= 60 &&
+    //   // this.description.length <= 5000 &&
+    //   // optionsValidity
+    // ) {
+    //   console.log("Create FormData");
+    //   const params: Params = this.createParams(optionsToString);
+    //   const formData = new FormData();
+    //   // if (this.images) {
+    //   //   // formData.append("image", this.images, this.images.name); // Add photo product
+    //   // }
+    //   // if (this.nameProduct !== this.updateProduct.name) {
+    //   //   formData.append("name", this.nameProduct); // Add name product
+    //   // }
+    //   // if (this.priceProduct !== this.updateProduct.price) {
+    //   //   formData.append("price", String(this.priceProduct)); // Add price product (type string)
+    //   // }
+    //   // if (this.upNewParameters) {
+    //   //   formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
+    //   //   formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
+    //   //   formData.append("optionsToString", optionsToString.join(","));
+    //   //   formData.append("queryParams", Object.entries(params).join(","));
+    //   // } else if (this.updateSelectValidity) {
+    //   //   formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
+    //   //   formData.append("optionsToString", optionsToString.join(","));
+    //   //   formData.append("queryParams", Object.entries(params).join(","));
+    //   // }
+    //   // formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
+    //   // if (this.description !== this.updateProduct.description) {
+    //   //   formData.append("description", this.description); // Add description (type string)
+    //   // }
+    //   // if (Boolean(this.action) !== this.updateProduct.action) {
+    //   //   formData.append("action", this.action.toString()); // Add action (type string)
+    //   // }
+    //   console.log("Send FormData");
+    //   const id = this.updateProduct._id;
+    //   this.requestProduct.updateById(formData, id).subscribe(
+    //     (res) => {
+    //       this.showNotice.message("Товар збережено успішно.");
+    //     },
+    //     (e) => {
+    //       console.log(e);
+    //       this.showNotice.message(
+    //         "Товар не було змінено, дані заповнено не коректно"
+    //       );
+    //     }
+    //   ); //Відправили на сервер
+    // } else {
+    //   this.showNotice.message(
+    //     "Товар не було збережено, дані заповнено не коректно"
+    //   );
+    // }
   }
-  // Create/Up product END ====
+  // Create/Up END =================================================================================================================================
 }
