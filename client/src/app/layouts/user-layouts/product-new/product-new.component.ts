@@ -116,9 +116,9 @@ export class ProductNewComponent implements OnInit {
       // Status
       this.statusNumber = product.status;
 
-      // KeyWords
-      this.keyWords = product.keywords.join(" ");
-      this.keyupInputKeyWords(product.keywords.join(" "));
+      // Keywords
+      this.keywords = product.keywords.join(" ");
+      this.keyupInputKeywords(product.keywords.join(" "));
 
       // Description
       this.description = product.description;
@@ -425,75 +425,75 @@ export class ProductNewComponent implements OnInit {
   // Status START ==================================================================================================================================
   statusNumber: number = -1;
   // Status END ====================================================================================================================================
-  // KeyWords START ================================================================================================================================
-  keyWordsArray: string[] = [];
-  keyWords: string = "";
+  // Keywords START ================================================================================================================================
+  keywordsArray: string[] = [];
+  keywords: string = "";
 
-  lengthKeyWords: number = 0;
-  validityKeyWords: boolean = true;
-  up_validityKeyWords: boolean = true;
+  lengthKeywords: number = 0;
+  validityKeywords: boolean = true;
+  up_validityKeywords: boolean = true;
 
-  minWordLength: number = 2;
-  maxWordLength: number = 10;
+  minwordLength: number = 2;
+  maxwordLength: number = 10;
 
-  maxLengthKeyWords: number = 200;
+  maxLengthKeywords: number = 200;
 
-  keyupInputKeyWords(value: string) {
-    this.keyWordsArray = value.replace(/ +/g, " ").trim().split(" ");
-    this.lengthKeyWords = value.replace(/\s+/g, "").length;
+  keyupInputKeywords(value: string) {
+    this.keywordsArray = value.replace(/ +/g, " ").trim().split(" ");
+    this.lengthKeywords = value.replace(/\s+/g, "").length;
 
-    if (this.keyWordsArray[0].length === 0) {
-      this.keyWordsArray = [];
-      this.validityKeyWords = true;
+    if (this.keywordsArray[0].length === 0) {
+      this.keywordsArray = [];
+      this.validityKeywords = true;
     } else {
-      this.checkingValidityKeyWords();
+      this.checkingValidityKeywords();
     }
   }
-  checkingValidityKeyWords() {
-    for (let index = 0; index < this.keyWordsArray.length; index++) {
+  checkingValidityKeywords() {
+    for (let index = 0; index < this.keywordsArray.length; index++) {
       if (
-        this.keyWordsArray[index].length < this.minWordLength ||
-        this.keyWordsArray[index].length > this.maxWordLength
+        this.keywordsArray[index].length < this.minwordLength ||
+        this.keywordsArray[index].length > this.maxwordLength
       ) {
-        this.validityKeyWords = false;
+        this.validityKeywords = false;
         break;
       }
-      this.validityKeyWords = true;
+      this.validityKeywords = true;
     }
     if (this.update) {
-      this.up_checheckingKeyWords();
+      this.up_checheckingKeywords();
     }
   } // Checking of the all keywords inputted correct
-  deleteErrorKeyWords() {
-    for (let index = 0; index < this.keyWordsArray.length; index++) {
+  deleteErrorKeywords() {
+    for (let index = 0; index < this.keywordsArray.length; index++) {
       if (
-        this.keyWordsArray[index].length < this.minWordLength ||
-        this.keyWordsArray[index].length > this.maxWordLength
+        this.keywordsArray[index].length < this.minwordLength ||
+        this.keywordsArray[index].length > this.maxwordLength
       ) {
-        this.keyWordsArray.splice(index, 1);
+        this.keywordsArray.splice(index, 1);
         index--;
       }
     } // ['hi', 'hello', 'n', 'cool', 'description'] >> ['hi', 'hello', 'cool']
 
-    this.validityKeyWords = true;
-    this.keyWords = this.keyWordsArray.join(" ");
+    this.validityKeywords = true;
+    this.keywords = this.keywordsArray.join(" ");
   } // Delete all error keywords
-  up_checheckingKeyWords() {
+  up_checheckingKeywords() {
     let counterRepeat: number = 0;
 
     this.up_Product?.keywords.forEach((word) => {
-      if (this.keyWordsArray.indexOf(word) >= 0) {
+      if (this.keywordsArray.indexOf(word) >= 0) {
         counterRepeat++;
       }
     });
 
-    if (counterRepeat === this.keyWordsArray.length) {
-      this.up_validityKeyWords = true;
+    if (counterRepeat === this.keywordsArray.length) {
+      this.up_validityKeywords = true;
     } else {
-      this.up_validityKeyWords = false;
+      this.up_validityKeywords = false;
     }
   }
-  // KeyWords END ==================================================================================================================================
+  // Keywords END ==================================================================================================================================
   // Description Start =============================================================================================================================
   description: string = "";
   minLengthDescription: number = 60;
@@ -514,8 +514,8 @@ export class ProductNewComponent implements OnInit {
         this.statusNumber === 1 ||
         this.statusNumber === 2 ||
         this.statusNumber === 3) &&
-      this.validityKeyWords &&
-      this.lengthKeyWords <= this.maxLengthKeyWords &&
+      this.validityKeywords &&
+      this.lengthKeywords <= this.maxLengthKeywords &&
       this.description.length > this.minLengthDescription &&
       this.description.length < this.maxLengthDescription
     ) {
@@ -546,7 +546,7 @@ export class ProductNewComponent implements OnInit {
       formData.append("category", this.categoryNumber.join(" ")); //  [ 5, 0, 8 ] >>> "5 0 8"
       formData.append("characteristics", this.characteristicsNumber.join(" ")); // [ 4, 1, 2, 13, 0, 21 ] >>> "4 1 2 13 0 21"
       formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
-      formData.append("keywords", this.keyWordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
+      formData.append("keywords", this.keywordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
       formData.append("description", this.description); // Екран 14" IPS (1920x1080) Full HD, матовий / Intel Core i3-1115G4
 
       console.log("Send FormData");
@@ -627,8 +627,8 @@ export class ProductNewComponent implements OnInit {
       if (this.up_Product.status !== this.statusNumber) {
         formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
       }
-      if (!this.up_validityKeyWords) {
-        formData.append("keywords", this.keyWordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
+      if (!this.up_validityKeywords) {
+        formData.append("keywords", this.keywordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
       }
       if (this.up_Product.description !== this.description) {
         formData.append("description", this.description); // Екран 14" IPS (1920x1080) Full HD, матовий / Intel Core i3-1115G4

@@ -33,7 +33,7 @@ export interface Product {
   queryParams: Params;
   status: 0 | 1 | 2 | 3;
   seller: string;
-  keyWords?: string[];
+  keywords: string[];
   description: string;
   comments: [];
   questions: [];
@@ -54,7 +54,7 @@ export interface ProductInfo {
   // queryParams: Params;
   status: 0 | 1 | 2 | 3;
   seller: string;
-  keyWords?: string[];
+  keywords: string[];
   description: string;
   // comments: [];
   // questions: [];

@@ -298,35 +298,35 @@
             matInput
             type="text"
             class="input-keywords"
-            [(ngModel)]="keyWords"
-            #inputKeyWords
-            (keyup)="keyupInputKeyWords(inputKeyWords.value)"
+            [(ngModel)]="keywords"
+            #inputKeywords
+            (keyup)="keyupInputKeywords(inputKeywords.value)"
           ></textarea>
         </mat-form-field>
 
         <div class="form-words-length">
-          <span [ngClass]="{ error: lengthKeyWords > maxLengthKeyWords }"
+          <span [ngClass]="{ error: lengthKeywords > maxLengthKeywords }"
             >Символів
-            <span>{{ lengthKeyWords }}</span>
+            <span>{{ lengthKeywords }}</span>
             <span>/</span>
-            <span>{{ maxLengthKeyWords }}</span>
+            <span>{{ maxLengthKeywords }}</span>
           </span>
         </div>
 
         <div class="form-words-item">
-          <ng-container *ngFor="let word of keyWordsArray">
+          <ng-container *ngFor="let word of keywordsArray">
             <div
               class="form-words-item-word"
               *ngIf="word.length >= 1"
               [ngClass]="{
                 error:
-                  word.length < minWordLength || word.length > maxWordLength
+                  word.length < minwordLength || word.length > maxwordLength
               }"
               [title]="
-                word.length < minWordLength
-                  ? 'Мінімальна кількість символів ' + minWordLength
-                  : word.length > maxWordLength
-                  ? 'Максимальна кількість символів ' + maxWordLength
+                word.length < minwordLength
+                  ? 'Мінімальна кількість символів ' + minwordLength
+                  : word.length > maxwordLength
+                  ? 'Максимальна кількість символів ' + maxwordLength
                   : ''
               "
             >
@@ -335,12 +335,12 @@
           </ng-container>
         </div>
 
-        <div class="form-words-delete" *ngIf="!validityKeyWords">
+        <div class="form-words-delete" *ngIf="!validityKeywords">
           <button
             class="delete-button"
             mat-raised-button
             color="warn"
-            (click)="deleteErrorKeyWords()"
+            (click)="deleteErrorKeywords()"
           >
             Видалити всі не правильні кілючові слова
           </button>
@@ -394,8 +394,8 @@
             counterProduct <= -1 ||
             !validityCharacteristics ||
             statusNumber === -1 ||
-            !validityKeyWords ||
-            lengthKeyWords > maxLengthKeyWords ||
+            !validityKeywords ||
+            lengthKeywords > maxLengthKeywords ||
             description.length < minLengthDescription ||
             description.length > maxLengthDescription
           "
@@ -418,7 +418,7 @@
               up_Product?.counter === counterProduct &&
               (!validityCharacteristics || up_validityCharacteristics) &&
               up_Product?.status === statusNumber &&
-              (!validityKeyWords || up_validityKeyWords) &&
+              (!validityKeywords || up_validityKeywords) &&
               (up_Product?.description === description ||
                 description.length < minLengthDescription ||
                 description.length > maxLengthDescription)) ||
