@@ -16,7 +16,22 @@ module.exports.getAllProduct = async function (req, res) {
 module.exports.getById = async function (req, res) {
   console.log("Server getById");
   try {
-    const productId = await Product.findById(req.params.id);
+    const productId = await Product.findById(
+      { _id: req.params.id },
+      {
+        imageSrc: 1,
+        name: 1,
+        price: 1,
+        action: 1,
+        actionPrice: 1,
+        counter: 1,
+        category: 1,
+        characteristics: 1,
+        status: 1,
+        keywords: 1,
+        description: 1,
+      }
+    );
     res.status(200).json(productId);
   } catch (error) {
     console.log(error);
@@ -91,16 +106,25 @@ module.exports.create = async function (req, res) {
 
 module.exports.update = async function (req, res) {
   console.log("Server update");
-  console.log(req.body);
+  // console.log(req.body);
+  // console.log(req.files);
 
   const updateProduct = {};
 
-  if (req.file) {
-    updateProduct.imageSrc = req.file.path;
+  if (Object.keys(req.files).length >= 1) {
+    const files = Object.values(req.files);
+    const imageSrc = [];
+    files.forEach((image) => {
+      imageSrc.push(image[0].path);
+    });
 
-    const product = await Product.findById(req.params.id);
+    updateProduct.imageSrc = imageSrc;
 
-    deleteImgFromFolder(product.imageSrc);
+    const product = await Product.findById({ _id: req.params.id });
+
+    product.imageSrc.forEach((item) => {
+      deleteImgFromFolder(item);
+    }); // Delete file from folder uploads
   }
 
   if (req.body.name) {
@@ -111,6 +135,18 @@ module.exports.update = async function (req, res) {
     updateProduct.price = Number(req.body.price);
   }
 
+  if (req.body.action === "1") {
+    updateProduct.action = true;
+    updateProduct.actionPrice = Number(req.body.actionPrice);
+  } else if (req.body.action === "0") {
+    updateProduct.action = false;
+    updateProduct.actionPrice = -1;
+  }
+
+  if (req.body.counter) {
+    updateProduct.counter = Number(req.body.counter);
+  }
+
   if (req.body.category) {
     // ============================================================
     const category = req.body.category.split(" ");
@@ -119,54 +155,34 @@ module.exports.update = async function (req, res) {
     });
     updateProduct.category = category;
     // ============================================================
-    const options = req.body.options.split(" ");
-    options.forEach((item, idx) => {
-      options[idx] = Number(item);
+    const characteristics = req.body.characteristics.split(" ");
+    characteristics.forEach((item, idx) => {
+      characteristics[idx] = Number(item);
     });
-    updateProduct.options = options;
+    updateProduct.characteristics = characteristics;
     // ============================================================
-    updateProduct.optionsToString = req.body.optionsToString.split(",");
+  } else if (req.body.characteristics) {
     // ============================================================
-    const queryParams = {};
-    const params = req.body.queryParams.split(",");
-    params.forEach((element, idx) => {
-      if (idx % 2 === 0) {
-        idx++;
-        queryParams[element] = params[idx];
-      }
+    const characteristics = req.body.characteristics.split(" ");
+    characteristics.forEach((item, idx) => {
+      characteristics[idx] = Number(item);
     });
-    updateProduct.queryParams = queryParams;
-    // ============================================================
-  } else if (req.body.options) {
-    // ============================================================
-    const options = req.body.options.split(" ");
-    options.forEach((item, idx) => {
-      options[idx] = Number(item);
-    });
-    updateProduct.options = options;
-    // ============================================================
-    updateProduct.optionsToString = req.body.optionsToString.split(",");
-    // ============================================================
-    const queryParams = {};
-    const params = req.body.queryParams.split(",");
-    params.forEach((element, idx) => {
-      if (idx % 2 === 0) {
-        idx++;
-        queryParams[element] = params[idx];
-      }
-    });
-    updateProduct.queryParams = queryParams;
+    updateProduct.characteristics = characteristics;
     // ============================================================
   }
 
-  if (req.body.keyWords) {
-    updateProduct.keyWords = req.body.keyWords.split(" ");
+  if (req.body.status) {
+    updateProduct.status = Number(req.body.status);
+  }
+
+  if (req.body.keywords) {
+    updateProduct.keywords = req.body.keywords.split(" ");
   }
   if (req.body.description) {
     updateProduct.description = req.body.description;
   }
 
-  console.log(updateProduct);
+  // console.log(updateProduct);
 
   try {
     const product = await Product.findOneAndUpdate(

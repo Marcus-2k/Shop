@@ -1,8 +1,13 @@
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { CategoryProduct, Options } from "src/app/shared/interface/interfaces";
+import {
+  CategoryProduct,
+  Options,
+  ProductUpdate,
+} from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 
@@ -18,7 +23,8 @@ export class ProductNewComponent implements OnInit {
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
     private categoryName: CategoryProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private renameTitle: RenameTitleService
   ) {}
 
   ngOnInit(): void {
@@ -26,126 +32,101 @@ export class ProductNewComponent implements OnInit {
 
     this.categoryList = this.categoryName.categoryList;
 
-    this.route.params.subscribe((value) => {
-      // const id: string = Object.values(value)[0];
-      // if (id) {
-      //   this.renameTitle.renameTitleSite("Змінення товару");
-      //   this.update = true;
-      // } else {
-      //   this.renameTitle.renameTitleSite("Створення товару");
-      // }
+    this.route.params.subscribe((params) => {
+      const id: string = params["id"];
+
+      if (params["id"]) {
+        this.renameTitle.renameTitleSite("Змінення товару");
+
+        this.update = true;
+
+        this.requestProduct.getByIdProduct(id).subscribe(
+          (responce) => {
+            this.updateOnInit(responce);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        this.renameTitle.renameTitleSite("Створення товару");
+      }
     });
-    //
-    // this.requestSeller.getSeller().subscribe(
-    //   (responce) => {
-    //     // console.log(responce);
-
-    //     const _id: string | null = localStorage.getItem("_id");
-
-    //     // console.log(_id);
-
-    //     // const mySeller: Seller = {
-    //     //   name: "Від свого імені",
-    //     //   logo: "",
-    //     //   _id: "",
-    //     // };
-
-    //     // if (_id) {
-    //     //   mySeller._id = _id;
-    //     // } else {
-    //     //   // re-direct page login
-    //     // }
-
-    //     // this.sellerList = responce;
-    //     // this.sellerList.splice(0, 0, mySeller);
-    //   },
-    //   (error) => {
-    //     this.showNotice.message(
-    //       "Сталася помилка на серверові. Спробуйте пізніше."
-    //     );
-    //     console.log(error);
-    //   }
-    // );
-    //
-    // this.originalName = this.nameOptions.originalName;
-    // this.nameQueryParams = this.nameOptions.nameForServer;
-    //
   }
 
-  // Update product START ====
-  update: boolean = false; // Mode update true/false
-
-  // valueId?: string;
-  // updateProduct?: Product;
-  // newUpdateProduct?: Product;
-
-  updateOnInit() {
-    // if (this.updateProduct) {
-    //   console.log(this.updateProduct);
-    //   // Присвоєння name, price, keyWords, description
-    //   this.nameProduct = this.updateProduct.name;
-    //   this.priceProduct = this.updateProduct.price;
-    //   // Присвоєння категорії
-    //   this.categorySelected = true;
-    //   this.categoryNumber = this.updateProduct.category;
-    //   this.oneIndex = this.updateProduct.category[0];
-    //   this.twoIndex = this.updateProduct.category[1];
-    //   if (this.updateProduct.category.length > 2) {
-    //     this.threeIndex = this.updateProduct.category[2];
-    //   }
-    //   // Присвоєння опису товару
-    //   this.description = this.updateProduct.description;
-    //   // Присвоєння ключових слів товару
-    //   // if (this.updateProduct.keyWords) {
-    //   //   this.stringKeysWords = this.updateProduct.keyWords.join(" ");
-    //   //   this.keyWordsInput(this.updateProduct.keyWords.join(" "));
-    //   // }
-    //   // Параметри товару
-    //   this.optionForUpdate = this.updateProduct.options;
-    //   if (this.categoryNumber.length === 2) {
-    //     // this.characteristics = this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[this.categoryNumber[1]].options;
-    //   } else if (this.categoryNumber.length === 3) {
-    //     this.characteristics =
-    //       this.categoryName.categoryList[
-    //         this.categoryNumber[0]
-    //       ].nameListCategory[this.categoryNumber[1]].subNameListCategory[
-    //         this.categoryNumber[2]
-    //       ].options;
-    //   }
-    //   this.characteristics.forEach((element, idx) => {
-    //     this.characteristicsNumber.push(this.optionForUpdate[idx]);
-    //   });
-    //   // this.valueChangeSelect();
-    // }
-  }
-  // Update product END ====
   test() {
-    console.log("============================================================");
-    // console.log(this.popuapShow);
-    // console.log(this.categorySelected);
-    // console.log(this.categoryErrorShow);
-    console.log("Index");
-    console.log(this.oneIndex);
-    console.log(this.twoIndex);
-    console.log(this.threeIndex);
-
-    console.log("Block");
-    console.log(this.oneCategory);
-    console.log(this.twoCategory);
-    console.log(this.threeCategory);
-    console.log("Number");
-    console.log(this.categoryNumber);
-    // console.log(this.upNewParameters);
-    console.log("============================================================");
-    console.log(this.characteristics);
-    console.log(this.characteristicsNumber);
-    console.log(this.validityCharacteristics);
-
-    console.log("============================================================");
+    console.log("======================================");
+    // console.log(this.imagesValidation);
+    // console.log(this.images);
+    // console.log(this.imagePreview);
+    // console.log(this.validityCharacteristics);
+    // console.log(this.up_validityCharacteristics);
+    // console.log(this.up_newCharacteristics);
+    console.log("======================================");
   }
 
   body = document.getElementById("body");
+  // Update product START ==========================================================================================================================
+  update: boolean = false; // Mode update true/false
 
+  up_Product?: ProductUpdate;
+
+  url_server_forlder: string = "http://localhost:5000/";
+
+  updateOnInit(product: ProductUpdate) {
+    if (this.update) {
+      this.up_Product = product;
+
+      // Image
+      this.imagePreview = product.imageSrc;
+      const needItem = this.maxCounterFile - product.imageSrc.length;
+      for (let idx = 0; idx < needItem; idx++) {
+        this.imagePreview.push(undefined);
+      }
+
+      // Name
+      this.nameProduct = product.name;
+
+      // Price
+      this.priceProduct = product.price;
+
+      // Action / Price
+      this.action = product.action;
+      if (product.action) {
+        this.actionPrice = product.actionPrice;
+        this.procentActionNumber();
+      }
+
+      // Counter
+      this.counterProduct = product.counter;
+
+      // Category
+      this.oneIndex = product.category[0];
+      this.twoIndex = product.category[1];
+      this.threeIndex = product.category[2];
+      this.createCategoryNumber();
+
+      // Characteristics
+      this.characteristicsNumber = Object.assign([], product.characteristics);
+
+      this.up_newCharacteristics = true;
+      this.up_validityCharacteristics = true;
+      this.checkingValidityCharacteristics();
+
+      // Status
+      this.statusNumber = product.status;
+
+      // KeyWords
+      this.keyWords = product.keywords.join(" ");
+      this.keyupInputKeyWords(product.keywords.join(" "));
+
+      // Description
+      this.description = product.description;
+
+      console.log(product);
+    }
+  }
+  // Update product END ============================================================================================================================
   // File START ====================================================================================================================================
   @ViewChild("inputFile") inputFile?: ElementRef;
 
@@ -184,10 +165,11 @@ export class ProductNewComponent implements OnInit {
 
     this.errorImagesDownload = true;
     this.imagesValidation = false;
-  } // Click button "Завантажити фото"
+  } // Click button "Download photo"
 
   onFileUpload(event: any) {
     this.images = [];
+    this.url_server_forlder = "";
 
     const fileList: File[] = Array.from(event.target.files);
     const fileCounter = event.target.files.length;
@@ -214,6 +196,31 @@ export class ProductNewComponent implements OnInit {
     }
     this.errorImagesDownload = false;
     this.imagesValidation = true;
+  }
+
+  deletePhoto() {
+    if (this.update && this.imagesValidation && this.up_Product?.imageSrc) {
+      this.images = [
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+      ];
+
+      this.imagePreview = this.up_Product?.imageSrc;
+
+      const needItem = this.maxCounterFile - this.up_Product?.imageSrc.length;
+      for (let idx = 0; idx < needItem; idx++) {
+        this.imagePreview.push(undefined);
+      }
+
+      this.imagesValidation = false;
+      this.url_server_forlder = "http://localhost:5000/";
+    }
   }
   // File END ======================================================================================================================================
   // Name START ====================================================================================================================================
@@ -312,6 +319,11 @@ export class ProductNewComponent implements OnInit {
     this.categorySelected = true;
     this.categoryErrorShow = false;
 
+    if (this.update) {
+      this.up_validityCharacteristics = false;
+      this.up_newCharacteristics = false;
+    }
+
     this.resetCharacteristics();
     this.getCharacteristics();
   } // Create "categoryNumber" >>> [ 1, 0, 3 ] || [ 1, 2 ]
@@ -360,37 +372,35 @@ export class ProductNewComponent implements OnInit {
     "characteristics-select"
   );
 
-  validityCharacteristics: boolean = false;
+  validityCharacteristics: boolean = false; // if there is -1 >>> false
+  up_validityCharacteristics: boolean = false; // this.characteristicsNumber === this.up_Product.characteristics | update mode
+  up_newCharacteristics: boolean = false; // | update mode
 
   checkingValidityCharacteristics() {
-    // console.log(this.characteristicsNumber);
+    // if the array contains -1
     if (this.characteristicsNumber.indexOf(-1) >= 0) {
       this.validityCharacteristics = false;
+
+      // if the array does not have -1
     } else if (this.characteristicsNumber.indexOf(-1) === -1) {
       this.validityCharacteristics = true;
-    }
 
-    // // if the array contains -1
-    // if (this.characteristicsNumber.indexOf(-1) >= 0) {
-    //   this.validityCharacteristics = false;
-    //   // if the array does not have -1
-    // } else if (this.characteristicsNumber.indexOf(-1) === -1) {
-    //   if (this.upNewParameters === true) {
-    //     this.validityCharacteristics = true;
-    //   } else {
-    //     let counterCorrect = 0;
-    //     this.updateProduct?.options.forEach((element, idx) => {
-    //       if (this.characteristicsNumber[idx] === element) {
-    //         counterCorrect++;
-    //       }
-    //     });
-    //     if (counterCorrect === this.updateProduct?.options.length) {
-    //       this.validityCharacteristics = false;
-    //     } else {
-    //       this.validityCharacteristics = true;
-    //     }
-    //   }
-    // }
+      if (this.up_newCharacteristics === true) {
+        let counterRepeat: number = 0;
+
+        this.up_Product?.characteristics.forEach((item, idx) => {
+          if (this.characteristicsNumber[idx] === item) {
+            counterRepeat++;
+          }
+        });
+
+        if (counterRepeat === this.up_Product?.characteristics.length) {
+          this.up_validityCharacteristics = true;
+        } else {
+          this.up_validityCharacteristics = false;
+        }
+      }
+    }
   }
   getCharacteristics() {
     this.characteristics =
@@ -421,6 +431,7 @@ export class ProductNewComponent implements OnInit {
 
   lengthKeyWords: number = 0;
   validityKeyWords: boolean = true;
+  up_validityKeyWords: boolean = true;
 
   minWordLength: number = 2;
   maxWordLength: number = 10;
@@ -449,6 +460,9 @@ export class ProductNewComponent implements OnInit {
       }
       this.validityKeyWords = true;
     }
+    if (this.update) {
+      this.up_checheckingKeyWords();
+    }
   } // Checking of the all keywords inputted correct
   deleteErrorKeyWords() {
     for (let index = 0; index < this.keyWordsArray.length; index++) {
@@ -464,6 +478,21 @@ export class ProductNewComponent implements OnInit {
     this.validityKeyWords = true;
     this.keyWords = this.keyWordsArray.join(" ");
   } // Delete all error keywords
+  up_checheckingKeyWords() {
+    let counterRepeat: number = 0;
+
+    this.up_Product?.keywords.forEach((word) => {
+      if (this.keyWordsArray.indexOf(word) >= 0) {
+        counterRepeat++;
+      }
+    });
+
+    if (counterRepeat === this.keyWordsArray.length) {
+      this.up_validityKeyWords = true;
+    } else {
+      this.up_validityKeyWords = false;
+    }
+  }
   // KeyWords END ==================================================================================================================================
   // Description Start =============================================================================================================================
   description: string = "";
@@ -503,7 +532,7 @@ export class ProductNewComponent implements OnInit {
         console.log(formData.get(`image-${idx}`));
       });
 
-      formData.append("name", this.nameProduct);
+      formData.append("name", this.nameProduct); // Телефон Samsung S21 Ulta
       formData.append("price", String(this.priceProduct)); // Add 4500 >>> "4500"
 
       if (this.action === true) {
@@ -517,7 +546,7 @@ export class ProductNewComponent implements OnInit {
       formData.append("category", this.categoryNumber.join(" ")); //  [ 5, 0, 8 ] >>> "5 0 8"
       formData.append("characteristics", this.characteristicsNumber.join(" ")); // [ 4, 1, 2, 13, 0, 21 ] >>> "4 1 2 13 0 21"
       formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
-      formData.append("keyWords", this.keyWordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
+      formData.append("keywords", this.keyWordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
       formData.append("description", this.description); // Екран 14" IPS (1920x1080) Full HD, матовий / Intel Core i3-1115G4
 
       console.log("Send FormData");
@@ -539,68 +568,90 @@ export class ProductNewComponent implements OnInit {
   }
 
   upProduct() {
-    // console.log("Button Save");
-    // this.checkingKeyWords();
-    // const optionsValidity: boolean = this.checkingOptions();
-    // const optionsToString: string[] = this.createOptionToString();
-    // if (
-    //   // this.update &&
-    //   // this.updateProduct &&
-    //   // this.nameProduct.length > 5 &&
-    //   // this.priceProduct &&
-    //   // // !this.checkKeyWords &&
-    //   // this.lengthKeyWords <= 200 &&
-    //   // this.description.length >= 60 &&
-    //   // this.description.length <= 5000 &&
-    //   // optionsValidity
-    // ) {
-    //   console.log("Create FormData");
-    //   const params: Params = this.createParams(optionsToString);
-    //   const formData = new FormData();
-    //   // if (this.images) {
-    //   //   // formData.append("image", this.images, this.images.name); // Add photo product
-    //   // }
-    //   // if (this.nameProduct !== this.updateProduct.name) {
-    //   //   formData.append("name", this.nameProduct); // Add name product
-    //   // }
-    //   // if (this.priceProduct !== this.updateProduct.price) {
-    //   //   formData.append("price", String(this.priceProduct)); // Add price product (type string)
-    //   // }
-    //   // if (this.upNewParameters) {
-    //   //   formData.append("category", this.categoryNumber.join(" ")); // Add category (type string)
-    //   //   formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
-    //   //   formData.append("optionsToString", optionsToString.join(","));
-    //   //   formData.append("queryParams", Object.entries(params).join(","));
-    //   // } else if (this.updateSelectValidity) {
-    //   //   formData.append("options", this.optionsListNumber.join(" ")); // Add option (type string)
-    //   //   formData.append("optionsToString", optionsToString.join(","));
-    //   //   formData.append("queryParams", Object.entries(params).join(","));
-    //   // }
-    //   // formData.append("keyWords", this.keyWords.join(" ")); // Add key word (tpy string)
-    //   // if (this.description !== this.updateProduct.description) {
-    //   //   formData.append("description", this.description); // Add description (type string)
-    //   // }
-    //   // if (Boolean(this.action) !== this.updateProduct.action) {
-    //   //   formData.append("action", this.action.toString()); // Add action (type string)
-    //   // }
-    //   console.log("Send FormData");
-    //   const id = this.updateProduct._id;
-    //   this.requestProduct.updateById(formData, id).subscribe(
-    //     (res) => {
-    //       this.showNotice.message("Товар збережено успішно.");
-    //     },
-    //     (e) => {
-    //       console.log(e);
-    //       this.showNotice.message(
-    //         "Товар не було змінено, дані заповнено не коректно"
-    //       );
-    //     }
-    //   ); //Відправили на сервер
-    // } else {
-    //   this.showNotice.message(
-    //     "Товар не було збережено, дані заповнено не коректно"
-    //   );
-    // }
+    console.log("Button Save");
+
+    if (this.up_Product) {
+      console.log("Create FormData");
+      const formData = new FormData();
+
+      if (this.imagesValidation) {
+        const imagesArray = Array.from(this.images);
+        imagesArray.forEach((img, idx) => {
+          if (img) {
+            formData.append(`image-${idx}`, img, img.name); // Add photo product
+          }
+          console.log(`image-${idx}`);
+          console.log(formData.get(`image-${idx}`));
+        });
+      }
+      if (this.up_Product.name !== this.nameProduct) {
+        formData.append("name", this.nameProduct); // Телефон Samsung S21 Ulta
+      }
+      if (this.up_Product.price !== this.priceProduct) {
+        formData.append("price", String(this.priceProduct)); // Add 4500 >>> "4500"
+      }
+      if (this.action !== this.up_Product.action) {
+        if (this.action === false) {
+          formData.append("action", "0"); // 0 == false
+        } else if (
+          this.action === true &&
+          this.actionProcent < this.minActionProcent
+        ) {
+          formData.append("action", "1"); // 1 == true
+          formData.append("actionPrice", this.actionPrice.toString()); // 4050 >>> "4050"
+        }
+      }
+      if (this.up_Product.counter !== this.counterProduct) {
+        formData.append("counter", this.counterProduct.toString()); // 5 >>> "5"
+      }
+      if (
+        this.validityCharacteristics === true &&
+        this.up_validityCharacteristics === false &&
+        this.up_newCharacteristics === true
+      ) {
+        formData.append(
+          "characteristics",
+          this.characteristicsNumber.join(" ")
+        ); // [ 4, 1, 2, 13, 0, 21 ] >>> "4 1 2 13 0 21"
+      } else if (
+        this.validityCharacteristics === true &&
+        this.up_validityCharacteristics === false &&
+        this.up_newCharacteristics === false
+      ) {
+        formData.append("category", this.categoryNumber.join(" ")); //  [ 5, 0, 8 ] >>> "5 0 8"
+        formData.append(
+          "characteristics",
+          this.characteristicsNumber.join(" ")
+        ); // [ 4, 1, 2, 13, 0, 21 ] >>> "4 1 2 13 0 21"
+      }
+      if (this.up_Product.status !== this.statusNumber) {
+        formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
+      }
+      if (!this.up_validityKeyWords) {
+        formData.append("keywords", this.keyWordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
+      }
+      if (this.up_Product.description !== this.description) {
+        formData.append("description", this.description); // Екран 14" IPS (1920x1080) Full HD, матовий / Intel Core i3-1115G4
+      }
+
+      console.log("Send FormData");
+
+      this.requestProduct.updateById(formData, this.up_Product._id).subscribe(
+        (responce) => {
+          this.showNotice.message("Товар успішно змінено.");
+        },
+        (e) => {
+          console.log(e);
+          this.showNotice.message(
+            "Товар не було змінено, дані заповнено не коректно"
+          );
+        }
+      ); // Send to server
+    } else {
+      this.showNotice.message(
+        "Товар не було збережено, дані заповнено не коректно"
+      );
+    }
   }
   // Create/Up END =================================================================================================================================
 }

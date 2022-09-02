@@ -19,7 +19,16 @@ router.get(
 router.patch(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  upload.single("image"),
+  upload.fields([
+    { name: "image-0" },
+    { name: "image-1" },
+    { name: "image-2" },
+    { name: "image-3" },
+    { name: "image-4" },
+    { name: "image-5" },
+    { name: "image-6" },
+    { name: "image-7" },
+  ]),
   controller.update
 );
 

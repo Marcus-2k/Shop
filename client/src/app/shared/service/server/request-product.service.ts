@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Product } from "src/app/shared/interface/interfaces";
+import { Product, ProductUpdate } from "src/app/shared/interface/interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -17,8 +17,8 @@ export class RequestProductService {
     return this.http.get<Product[]>(`${this.url_server}/product/`);
   }
 
-  getByIdProduct(id: string): Observable<Product> {
-    return this.http.get<Product>(`${this.url_server}/product/${id}`);
+  getByIdProduct(id: string): Observable<ProductUpdate> {
+    return this.http.get<ProductUpdate>(`${this.url_server}/product/${id}`);
   }
 
   updateById(upProduct: any, id: any): Observable<any> {

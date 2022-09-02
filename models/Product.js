@@ -38,7 +38,7 @@ const productSchema = new Schema({
     type: Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується',
     required: true,
   },
-  keyWords: {
+  keywords: {
     type: Array, // [ 'phone', 'телефон', 'samsung']
   },
   description: {

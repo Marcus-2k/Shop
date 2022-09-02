@@ -15,10 +15,18 @@
       >
         <div class="example-box" *ngFor="let image of imagePreview" cdkDrag>
           <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-          <img [src]="image" *ngIf="image !== undefined" />
+          <img [src]="image" *ngIf="image !== undefined && update === false" />
           <img
             src="../../../../assets//img/300x300.png"
-            *ngIf="image === undefined"
+            *ngIf="image === undefined && update === false"
+          />
+          <img
+            [src]="
+              image
+                ? url_server_forlder + image
+                : '../../../../assets//img/300x300.png'
+            "
+            *ngIf="update === true"
           />
         </div>
       </div>
@@ -31,10 +39,25 @@
           <p class="title">Фото вашого товару*</p>
         </div>
 
-        <div class="example-button-row">
-          <button mat-raised-button color="primary" (click)="triggerClick()">
+        <div class="form-photo-btn">
+          <button
+            class="btn-photo btn-download"
+            mat-raised-button
+            color="primary"
+            (click)="triggerClick()"
+          >
             Завантажити фото
             <span class="material-symbols-outlined"> file_download </span>
+          </button>
+          <button
+            class="btn-photo btn-delete"
+            mat-raised-button
+            color="warn"
+            *ngIf="update && imagesValidation"
+            (click)="deletePhoto()"
+          >
+            <span class="material-symbols-outlined"> delete </span>
+            Видалити фото
           </button>
         </div>
 
@@ -81,7 +104,7 @@
           <input
             matInput
             type="number"
-            class="price__input"
+            class="number__input"
             #inputPrice
             required
             placeholder="9 950"
@@ -96,7 +119,10 @@
           <p class="title">Акція на товар*</p>
         </div>
 
-        <mat-checkbox class="form-action-checkbox" [(ngModel)]="action"
+        <mat-checkbox
+          class="form-action-checkbox"
+          (click)="procentActionNumber()"
+          [(ngModel)]="action"
           >Акція на товар</mat-checkbox
         >
 
@@ -118,7 +144,7 @@
             <input
               matInput
               type="number"
-              class="price__input-action"
+              class="number__input"
               required
               [(ngModel)]="actionPrice"
               #actionPriceInput
@@ -140,7 +166,7 @@
             [(ngModel)]="counterProduct"
             (ngModelChange)="statusNumber = -1"
             type="number"
-            class="counter__input"
+            class="number__input"
             [min]="0"
             required
           />
@@ -243,7 +269,7 @@
           >
             <mat-option
               [value]="0"
-              [disabled]="counterProduct === 0 || counterProduct < 10"
+              [disabled]="counterProduct === 0 || counterProduct <= 10"
               >В наявності</mat-option
             >
             <mat-option [value]="1" [disabled]="counterProduct !== 0"
@@ -355,29 +381,27 @@
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-create">
-        <div>
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            *ngIf="!update"
-            (click)="createProduct()"
-            [disabled]="
-              !imagesValidation ||
-              nameProduct.length <= minLengthNameProduct ||
-              (action && actionProcent > minActionProcent) ||
-              counterProduct <= -1 ||
-              !validityCharacteristics ||
-              statusNumber === -1 ||
-              !validityKeyWords ||
-              lengthKeyWords > maxLengthKeyWords ||
-              description.length < minLengthDescription ||
-              description.length > maxLengthDescription
-            "
-          >
-            Створити
-          </button>
-        </div>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          *ngIf="!update"
+          (click)="createProduct()"
+          [disabled]="
+            !imagesValidation ||
+            nameProduct.length <= minLengthNameProduct ||
+            (action && actionProcent > minActionProcent) ||
+            counterProduct <= -1 ||
+            !validityCharacteristics ||
+            statusNumber === -1 ||
+            !validityKeyWords ||
+            lengthKeyWords > maxLengthKeyWords ||
+            description.length < minLengthDescription ||
+            description.length > maxLengthDescription
+          "
+        >
+          Створити
+        </button>
         <!--  -->
         <button
           mat-raised-button
@@ -385,12 +409,22 @@
           type="submit"
           *ngIf="update"
           (click)="upProduct()"
-          [disabled]=""
+          [disabled]="
+            (!imagesValidation &&
+              up_Product?.name === nameProduct &&
+              up_Product?.price === priceProduct &&
+              (up_Product?.action === action ||
+                (action === true && actionProcent > minActionProcent)) &&
+              up_Product?.counter === counterProduct &&
+              (!validityCharacteristics || up_validityCharacteristics) &&
+              up_Product?.status === statusNumber &&
+              (!validityKeyWords || up_validityKeyWords) &&
+              (up_Product?.description === description ||
+                description.length < minLengthDescription ||
+                description.length > maxLengthDescription)) ||
+            statusNumber === -1
+          "
         >
-          <!-- updateProduct?.name === nameProduct &&
-          updateProduct?.price === priceProduct &&
-          updateProduct?.description === description &&
-          !updateSelectValidity -->
           Зберегти
         </button>
       </div>

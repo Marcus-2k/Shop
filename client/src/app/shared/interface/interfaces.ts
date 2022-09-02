@@ -100,6 +100,20 @@ export interface ProductSearch {
 export interface ProductDelete {
   _id: string;
 }
+export interface ProductUpdate {
+  imageSrc: string[];
+  name: string;
+  price: number;
+  action: boolean;
+  actionPrice: number;
+  counter: number;
+  category: number[];
+  characteristics: number[];
+  status: 0 | 1 | 2 | 3;
+  keywords: string[];
+  description: string;
+  _id: string;
+}
 // Product =======================================
 
 // User
