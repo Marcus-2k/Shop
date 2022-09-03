@@ -14,15 +14,6 @@ export class CardSidebarSellerComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.idSeller) {
-      this.requestSeller.getSellerById(this.idSeller).subscribe(
-        (responce: Seller) => {
-          // console.log(responce)
-          this.seller = responce;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
     }
   }
   url_server_folder: string = "http://localhost:5000/";

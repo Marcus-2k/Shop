@@ -27,7 +27,6 @@ export interface Product {
   category: number[];
   options: number[];
   status: 0 | 1 | 2 | 3;
-  seller: string;
   keywords: string[];
   description: string;
   comments: [];
@@ -45,7 +44,6 @@ export interface ProductInfo {
   category: number[];
   options: number[];
   status: 0 | 1 | 2 | 3;
-  seller: string;
   keywords: string[];
   description: string;
   user: string;
