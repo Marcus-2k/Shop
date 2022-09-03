@@ -1,5 +1,4 @@
-import { Params } from "@angular/router";
-// Auth ==========================================
+// Auth START ==========================================================================================
 export interface UserRegister {
   name: string;
   email: string;
@@ -9,17 +8,15 @@ export interface UserLogin {
   email: string;
   password: string;
 }
-// Auth ==========================================
-
-// Seller ========================================
+// Auth END ============================================================================================
+// Seller START ========================================================================================
 export interface Seller {
   name: string;
   logo: string;
   _id: string;
 }
-// Seller ========================================
-
-// Product =======================================
+// Seller END ==========================================================================================
+// Product START =======================================================================================
 export interface Product {
   imageSrc: string[];
   name: string;
@@ -29,17 +26,14 @@ export interface Product {
   counter: number;
   category: number[];
   options: number[];
-  optionsToString: string[];
-  queryParams: Params;
   status: 0 | 1 | 2 | 3;
   seller: string;
   keywords: string[];
   description: string;
   comments: [];
   questions: [];
-  user?: string; // server
-  _id?: string; // server
-  __v?: string; //server
+  user: string;
+  _id: string;
 }
 export interface ProductInfo {
   imageSrc: string[];
@@ -50,30 +44,29 @@ export interface ProductInfo {
   counter: number;
   category: number[];
   options: number[];
-  // optionsToString: string[];
-  // queryParams: Params;
   status: 0 | 1 | 2 | 3;
   seller: string;
   keywords: string[];
   description: string;
-  // comments: [];
-  // questions: [];
-  user?: string; // server
-  _id?: string; // server
-  __v?: string; //server
+  user: string;
+  _id: string;
 }
 export interface ProductCharacteristics {
   category: number[];
   options: number[];
+  _id: string;
 }
 export interface ProductComments {
   comments: [];
+  _id: string;
 }
 export interface ProductQuestions {
   questions: [];
+  _id: string;
 }
 export interface ProductPhoto {
   imageSrc: string[];
+  _id: string;
 }
 export interface ProductAccessories {}
 export interface ProductSearch {
@@ -82,20 +75,10 @@ export interface ProductSearch {
   price: number;
   action: boolean;
   actionPrice: number;
-  // counter: number;
   category: number[];
   options: number[];
-  // optionsToString: string[];
-  // queryParams: Params;
-  // status: 0 | 1 | 2 | 3;
-  // seller: string;
-  // keyWords: string[];
-  // description: string;
-  // comments: [];
-  // questions: [];
   user: string;
   _id: string;
-  // __v: string;
 }
 export interface ProductDelete {
   _id: string;
@@ -114,9 +97,8 @@ export interface ProductUpdate {
   description: string;
   _id: string;
 }
-// Product =======================================
-
-// User
+// Product END =========================================================================================
+// User START ==========================================================================================
 export interface User {
   avatar: string | null | ArrayBuffer;
   name: string;
@@ -139,24 +121,12 @@ export interface Wish {
   price: number;
   action: boolean;
   actionPrice: number;
-  // counter: number;
-  // category: number[];
-  // options: number[];
-  // optionsToString: string[];
-  // queryParams: Params;
   status: 0 | 1 | 2 | 3;
-  // seller: string;
-  // keyWords?: string[];
-  // description: string;
-  // comments: [];
-  // questions: [];
-  // user?: string; // server
-  _id: string; // server
-  // __v?: string; //server
+  _id: string;
 }
 export interface WishChecked {
   checked: boolean;
-  _id: string; // server
+  _id: string;
 }
 
 export interface ShoppingCart {
@@ -166,19 +136,8 @@ export interface ShoppingCart {
   action: boolean;
   actionPrice: number;
   counter: number;
-  // category: number[];
-  // options: number[];
-  // optionsToString: string[];
-  // queryParams: Params;
   status: 0 | 1 | 2 | 3;
-  seller: string;
-  // keyWords?: string[];
-  // description: string;
-  // comments: [];
-  // questions: [];
-  // user?: string; // server
-  _id: string; // server
-  // __v?: string; //server
+  _id: string;
 }
 export interface Order {
   _id: string;
@@ -189,10 +148,8 @@ export interface OrderEvent {
   _id: string;
   counter: number;
 }
-
-// User
-
-// Category ==================================
+// User END ============================================================================================
+// Category START ======================================================================================
 export interface CategoryProduct {
   nameCategory: string;
   nameListCategory: CategorList[];
@@ -210,7 +167,7 @@ export interface Options {
   htmlElement: "select"; // html tag
   select: string[]; // field for option select
 }
-// Category ==================================
+// Category END ========================================================================================
 
 export interface FilterNameParams {
   name: string;
