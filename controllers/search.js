@@ -39,12 +39,12 @@ module.exports.search = async function (req, res) {
       console.log("===========================");
 
       let categoryNoUnique = [];
-      let productOptions = [];
+      let productCharacteristics = [];
 
       product.forEach((element) => {
         categoryNoUnique.push(element.category);
-        productOptions.push(element.options);
-      }); // Category and Options in collection
+        productCharacteristics.push(element.characteristics);
+      }); // Category and Characteristics in collection
 
       product = await Product.find({
         name: { $regex: search_text, $options: "i" },
@@ -63,17 +63,17 @@ module.exports.search = async function (req, res) {
       ); // Counter category, and product in it
       // console.log(counterProductInCategory);
 
-      const productOptionsBlock = productBlock(
+      const productCharacteristicsBlock = productBlock(
         counterProductInCategory,
-        productOptions
+        productCharacteristics
       ); // Product parameters block by category
-      // console.log(productOptionsBlock);
+      // console.log(productCharacteristicsBlock);
       // ===========================================================================
 
       res.status(200).json({
         product,
         uniqueProductCategory,
-        productOptionsBlock,
+        productCharacteristicsBlock,
         currentPage,
         maxPage,
         limit,
@@ -135,12 +135,12 @@ module.exports.search = async function (req, res) {
       });
 
       let categoryNoUnique = [];
-      let productOptions = [];
+      let productCharacteristics = [];
 
       product.forEach((element) => {
         categoryNoUnique.push(element.category);
-        productOptions.push(element.options);
-      }); // Category and Options in collection
+        productCharacteristics.push(element.characteristics);
+      }); // Category and Characteristics in collection
 
       product = await Product.find({
         name: { $regex: search_text, $options: "i" },
@@ -160,17 +160,17 @@ module.exports.search = async function (req, res) {
       ); // Counter category, and product in it
       // console.log(counterProductInCategory);
 
-      const productOptionsBlock = productBlock(
+      const productCharacteristicsBlock = productBlock(
         counterProductInCategory,
-        productOptions
+        productCharacteristics
       ); // Product parameters block by category
-      // console.log(productOptionsBlock);
+      // console.log(productCharacteristicsBlock);
       // ===========================================================================
 
       res.status(200).json({
         product,
         uniqueProductCategory,
-        productOptionsBlock,
+        productCharacteristicsBlock,
         currentPage,
         maxPage,
         limit,
@@ -218,32 +218,37 @@ function counterProduct(uniqueProductCategory, categoryNoUnique) {
   return counterProductInCategory;
 }
 
-// Product Options Block ============================================================
+// Product Characteristics Block ============================================================
 
-function productBlock(counter, productOptions) {
-  const productOptionsBlock = [];
+function productBlock(counter, productCharacteristics) {
+  const productCharacteristicsBlock = [];
   counter.forEach((element) => {
-    let optionsBlock = productOptions.splice(0, element[0]);
-    productOptionsBlock.push(optionsBlock);
+    let characteristicsBlock = productCharacteristics.splice(0, element[0]);
+    productCharacteristicsBlock.push(characteristicsBlock);
   });
 
-  const optionsBlockCategory = [];
-  productOptionsBlock.forEach((element, i) => {
-    optionsBlockCategory.push([]);
+  const characteristicsBlockCategory = [];
+  productCharacteristicsBlock.forEach((element, i) => {
+    characteristicsBlockCategory.push([]);
 
     for (let index = 0; index < element[0].length; index++) {
-      let optionsBlock = [];
+      let characteristicsBlock = [];
       element.forEach((item, idx) => {
-        optionsBlock.push(item[index]);
+        characteristicsBlock.push(item[index]);
       });
-      optionsBlockCategory[i].push(optionsBlock);
+      characteristicsBlockCategory[i].push(characteristicsBlock);
     }
   });
 
-  return optionsBlockCategory;
+  return characteristicsBlockCategory;
 }
 
-async function addOptionsSelected(options, paramsString, search_text, query) {
+async function addCharacteristicsSelected(
+  characteristics,
+  paramsString,
+  search_text,
+  query
+) {
   const product = await Product.find(
     // {},
     {
