@@ -31,6 +31,9 @@ export class CardInfoComponent implements OnInit {
     // Slider Swiper
     Swiper.use([Navigation, Pagination]);
     // Slider Swiper
+    if (document.documentElement.clientWidth < 1024) {
+      this.config.navigation = false;
+    }
   }
 
   url_server_folder: string = "http://localhost:5000/";
