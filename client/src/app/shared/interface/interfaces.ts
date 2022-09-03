@@ -25,7 +25,7 @@ export interface Product {
   actionPrice: number;
   counter: number;
   category: number[];
-  options: number[];
+  characteristics: number[];
   status: 0 | 1 | 2 | 3;
   keywords: string[];
   description: string;
@@ -42,7 +42,7 @@ export interface ProductInfo {
   actionPrice: number;
   counter: number;
   category: number[];
-  options: number[];
+  characteristics: number[];
   status: 0 | 1 | 2 | 3;
   keywords: string[];
   description: string;
@@ -51,7 +51,7 @@ export interface ProductInfo {
 }
 export interface ProductCharacteristics {
   category: number[];
-  options: number[];
+  characteristics: number[];
   _id: string;
 }
 export interface ProductComments {
@@ -74,7 +74,7 @@ export interface ProductSearch {
   action: boolean;
   actionPrice: number;
   category: number[];
-  options: number[];
+  characteristics: number[];
   user: string;
   _id: string;
 }
@@ -158,7 +158,7 @@ export interface CategorList {
 }
 export interface CategorSubList {
   titleSubNameListCategory: string | undefined;
-  options: Options[];
+  characteristics: Options[];
 }
 export interface Options {
   name: string; // example Operating System

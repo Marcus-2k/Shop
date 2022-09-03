@@ -77,7 +77,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           this.uniqueCategory.forEach((element: number[], idx: number) => {
             optionsListBlockCategory.push(
               this.categoryNameDB[element[0]].nameListCategory[element[1]]
-                .subNameListCategory[element[2]].options
+                .subNameListCategory[element[2]].characteristics
             );
           });
           // console.log(optionsListBlockCategory);

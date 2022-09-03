@@ -406,7 +406,7 @@ export class ProductNewComponent implements OnInit {
     this.characteristics =
       this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[
         this.categoryNumber[1]
-      ].subNameListCategory[this.categoryNumber[2]].options;
+      ].subNameListCategory[this.categoryNumber[2]].characteristics;
     this.recordCharacteristicsInArray();
   }
   recordCharacteristicsInArray() {

@@ -25,12 +25,12 @@ export class CardCharacteristicsComponent implements OnInit {
 
         this.loader = false;
         this.category = responce["productCharacteristics"].category;
-        this.options = responce["productCharacteristics"].options;
+        this.options = responce["productCharacteristics"].characteristics;
 
         this.optionsName =
           this.catagoryName.categoryList[this.category[0]].nameListCategory[
             this.category[1]
-          ].subNameListCategory[this.category[2]].options;
+          ].subNameListCategory[this.category[2]].characteristics;
       },
       (error) => {
         console.log(error);

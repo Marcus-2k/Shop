@@ -201,27 +201,27 @@ export class CategoryProductService {
           subNameListCategory: [
             {
               titleSubNameListCategory: "Asus",
-              options: this.optionsLaptop,
+              characteristics: this.optionsLaptop,
             },
             {
               titleSubNameListCategory: "Acer",
-              options: this.optionsLaptop,
+              characteristics: this.optionsLaptop,
             },
             {
               titleSubNameListCategory: "HP (Hewlett Packard)",
-              options: this.optionsLaptop,
+              characteristics: this.optionsLaptop,
             },
             {
               titleSubNameListCategory: "Lenove",
-              options: this.optionsLaptop,
+              characteristics: this.optionsLaptop,
             },
             {
               titleSubNameListCategory: "Dell",
-              options: this.optionsLaptop,
+              characteristics: this.optionsLaptop,
             },
             {
               titleSubNameListCategory: "Apple",
-              options: this.optionsLaptop,
+              characteristics: this.optionsLaptop,
             },
           ],
         },
@@ -337,7 +337,7 @@ export class CategoryProductService {
           subNameListCategory: [
             {
               titleSubNameListCategory: "Смартфони",
-              options: this.optionsSmartphone,
+              characteristics: this.optionsSmartphone,
             },
             // { titleSubNameListCategory: "Кнопкові телефони" },
             // { titleSubNameListCategory: "Офісні телефони" },
