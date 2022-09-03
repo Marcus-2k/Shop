@@ -1,5 +1,4 @@
 const Product = require("../models/Product");
-const Seller = require("../models/Seller");
 const User = require("../models/User");
 const fs = require("fs");
 

@@ -2,20 +2,20 @@ const express = require("express");
 const mongoose = require("mongoose");
 const pasport = require("passport");
 const bodyParser = require("body-parser");
+
 // Router START
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/accountUser");
-
 const cardRoutes = require("./routes/card");
-const sellerRoutes = require("./routes/seller");
-
 const searchRoutes = require("./routes/search");
 // Router END
+
 // Swagger START
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 // Swagger END
+
 const app = express();
 
 const options = {
@@ -59,16 +59,14 @@ app.use(require("cors")());
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)); // link to swagger-docs
 
-// Router function
+// Router START ==========================================================================
 app.use("/api/auth", authRoutes);
 
 app.use("/api/account/product", productRoutes);
 app.use("/api/account/user", userRoutes);
 
 app.use("/api/card", cardRoutes);
-app.use("/api/seller", sellerRoutes);
 
 app.use("/api/search", searchRoutes);
-
-//
+// Router END ============================================================================
 module.exports = app;
