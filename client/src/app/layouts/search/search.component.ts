@@ -50,7 +50,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           console.log("=====================================================");
           console.log(res.product);
           console.log(res.uniqueProductCategory);
-          console.log(res.productOptionsBlock);
+          console.log(res.productCharacteristicsBlock);
           console.log("Відкрита сторінка", res.currentPage);
           console.log("Кількість сторінок", res.maxPage);
           console.log("Товарів на сторінку", res.limit);
@@ -59,7 +59,8 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           // ==============================================================================================
           this.productList = res.product; // List Product
           this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
-          const productOptionsBlock: number[][][] = res.productOptionsBlock; // Parameters by block to categories
+          const productOptionsBlock: number[][][] =
+            res.productCharacteristicsBlock; // Parameters by block to categories
           this.currentPage = Number(res.currentPage); // Current Page
           this.maxPage = res.maxPage; // Max pages site
           this.limit = res.limit; // Limits item site

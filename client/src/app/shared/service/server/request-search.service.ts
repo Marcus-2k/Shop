@@ -20,7 +20,7 @@ export class RequestSearchService {
   ): Observable<{
     product: Product[];
     uniqueProductCategory: number[][];
-    productOptionsBlock: number[][][];
+    productCharacteristicsBlock: number[][][];
     currentPage: number;
     maxPage: number;
     limit: number;
@@ -30,7 +30,7 @@ export class RequestSearchService {
       return this.http.get<{
         product: Product[];
         uniqueProductCategory: number[][];
-        productOptionsBlock: number[][][];
+        productCharacteristicsBlock: number[][][];
         currentPage: number;
         maxPage: number;
         limit: number;
