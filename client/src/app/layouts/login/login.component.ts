@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
+import { OtherDataService } from "src/app/shared/service/other-data.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
+import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
@@ -14,11 +16,10 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private showNotice: ShowNoticeService
+    private showNotice: ShowNoticeService,
+    private requestUser: RequestUserService,
+    private otherData: OtherDataService
   ) {}
-
-  // Form validation for login
-  form: FormGroup = new FormGroup({});
 
   ngOnInit(): void {
     if (this.auth.isAuthenticated()) {
@@ -49,6 +50,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  form: FormGroup = new FormGroup({});
+
   closePopuap() {
     this.router.navigate(["/"]);
   }
@@ -59,10 +62,32 @@ export class LoginComponent implements OnInit {
       (res) => {
         console.log(res);
         this.router.navigate(["/account"]);
+        this.initAfterLogin();
       },
       (e) => {
         console.log(e);
         this.form.enable();
+      }
+    );
+  }
+
+  initAfterLogin() {
+    // Get favorite user
+    this.requestUser.getWishList().subscribe(
+      (responce) => {
+        this.otherData.favoriteNumber = responce.length;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    // Get shopping cart user
+    this.requestUser.getShoppingCartList().subscribe(
+      (responce) => {
+        this.otherData.shoppingCartNumber = responce.length;
+      },
+      (error) => {
+        console.log(error);
       }
     );
   }
