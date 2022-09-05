@@ -36,25 +36,8 @@ module.exports.getByIdCardCharacteristics = async function (req, res) {
     const product = await Product.findById(
       { _id: req.params.id },
       {
-        name: 0,
-        imageSrc: 0,
-        price: 0,
-        action: 0,
-        actionPrice: 0,
-        counter: 0,
-        // category: 0,
-        // options: 0,
-        optionsToString: 0,
-        queryParams: 0,
-        keyWords: 0,
-        description: 0,
-        status: 0,
-        seller: 0,
-        comments: 0,
-        questions: 0,
-        user: 0,
-        __v: 0,
-        _id: 0,
+        category: 1,
+        characteristics: 1,
       }
     );
 

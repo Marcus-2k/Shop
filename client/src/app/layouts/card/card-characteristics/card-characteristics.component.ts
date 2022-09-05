@@ -20,14 +20,15 @@ export class CardCharacteristicsComponent implements OnInit {
 
     this.route.data.subscribe(
       (responce: Data) => {
-        // console.log(responce["productCharacteristics"]);
+        console.log(responce["productCharacteristics"]);
         this.productCharacteristics = responce["productCharacteristics"];
 
         this.loader = false;
         this.category = responce["productCharacteristics"].category;
-        this.options = responce["productCharacteristics"].characteristics;
+        this.characteristics =
+          responce["productCharacteristics"].characteristics;
 
-        this.optionsName =
+        this.characteristicsName =
           this.catagoryName.categoryList[this.category[0]].nameListCategory[
             this.category[1]
           ].subNameListCategory[this.category[2]].characteristics;
@@ -43,7 +44,7 @@ export class CardCharacteristicsComponent implements OnInit {
   productCharacteristics?: ProductCharacteristics;
 
   category: number[] = [];
-  options: number[] = [];
+  characteristics: number[] = [];
 
-  optionsName: Options[] = [];
+  characteristicsName: Options[] = [];
 }
