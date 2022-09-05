@@ -68,6 +68,5 @@ export class RequestUserService {
       `${this.url_server}/user/shopping_cart/`
     );
   }
-
   // Shopping Cart =======================================================
 }

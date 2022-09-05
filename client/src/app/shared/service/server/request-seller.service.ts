@@ -13,11 +13,9 @@ export class RequestSellerService {
   private PORT: string = ":5000";
   private url_server: string = `http://${this.HOST}${this.PORT}/api/`;
 
-  getSeller(): Observable<Seller[]> {
-    return this.http.get<Seller[]>(`${this.url_server}seller/`);
-  }
-
-  getSellerById(id: string): Observable<Seller> {
+  // Seller START ==============================================================
+  getByIdSeller(id: string): Observable<Seller> {
     return this.http.get<Seller>(`${this.url_server}seller/${id}`);
   }
+  // Seller END ================================================================
 }

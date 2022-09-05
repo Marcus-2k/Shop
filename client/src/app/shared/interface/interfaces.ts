@@ -12,7 +12,7 @@ export interface UserLogin {
 // Seller START ========================================================================================
 export interface Seller {
   name: string;
-  logo: string;
+  avatar: string;
   _id: string;
 }
 // Seller END ==========================================================================================
