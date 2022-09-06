@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
@@ -8,6 +8,7 @@ import {
   Options,
   ActiveFilterBlock,
 } from "src/app/shared/interface/interfaces"; // Interface
+
 // Service
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { NameQueryService } from "src/app/shared/service/name-query.service";
@@ -20,7 +21,7 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
   templateUrl: "./search.component.html",
   styleUrls: ["./search.component.scss"],
 })
-export class SearchComponent implements OnInit, DoCheck, OnDestroy {
+export class SearchComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -31,48 +32,45 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     private renameTitle: RenameTitleService
   ) {}
 
-  titleSearch?: string;
+  search_text?: string;
   allQuery: Params = {};
 
   ngOnInit() {
     console.log("Start ngOnInit Search");
     this.route.queryParams.subscribe((queryParam: Params) => {
-      this.titleSearch = queryParam["search_text"];
+      this.search_text = queryParam["search_text"];
+      this.type_sort = queryParam["type_sort"]
+        ? Number(queryParam["type_sort"])
+        : 0;
       this.allQuery = queryParam;
     });
 
     Object.assign(this.queryParams, this.allQuery);
 
-    if (this.titleSearch) {
-      this.searchService.search(this.titleSearch, this.allQuery).subscribe(
-        (res) => {
+    if (this.search_text) {
+      this.searchService.search(this.search_text, this.allQuery).subscribe(
+        (response) => {
           // ==============================================================================================
           console.log("=====================================================");
-          console.log(res.product);
-          console.log(res.uniqueProductCategory);
-          console.log(res.productCharacteristicsBlock);
-          console.log("Відкрита сторінка", res.currentPage);
-          console.log("Кількість сторінок", res.maxPage);
-          console.log("Товарів на сторінку", res.limit);
+          console.log(response.product);
+          console.log(response.uniqueProductCategory);
+          console.log(response.productCharacteristicsBlock);
+          console.log("Відкрита сторінка", response.currentPage);
+          console.log("Кількість сторінок", response.maxPage);
+          console.log("Товарів на сторінку", response.limit);
           console.log("=====================================================");
-
           // ==============================================================================================
-          this.productList = res.product; // List Product
-          this.uniqueCategory = res.uniqueProductCategory; // List Product Category Unique
+          this.productList = response.product; // List Product
+          this.uniqueCategory = response.uniqueProductCategory; // List Product Category Unique
           const productOptionsBlock: number[][][] =
-            res.productCharacteristicsBlock; // Parameters by block to categories
-          this.currentPage = Number(res.currentPage); // Current Page
-          this.maxPage = res.maxPage; // Max pages site
-          this.limit = res.limit; // Limits item site
+            response.productCharacteristicsBlock; // Parameters by block to categories
+          this.currentPage = Number(response.currentPage); // Current Page
+          this.maxPage = response.maxPage; // Max pages site
+          this.limit = response.limit; // Limits item site
           // ==============================================================================================
           this.categoryNameDB = this.catagoryName.categoryList; // import from category-product.service.ts
           this.originalName = this.originalAndQueryName.originalName;
           this.nameForServer = this.originalAndQueryName.nameForServer;
-          // ==============================================================================================
-          // while (res.maxPage > 0) {
-          //   this.maxPage.push(res.maxPage--);
-          // }
-          // this.maxPage.reverse(); // Кількість сторінок на сайті [ 1, 2, 3, ..., 29 ]
           // ==============================================================================================
           let optionsListBlockCategory: Options[][] = []; // Options Product List
           this.uniqueCategory.forEach((element: number[], idx: number) => {
@@ -81,7 +79,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
                 .subNameListCategory[element[2]].characteristics
             );
           });
-          // console.log(optionsListBlockCategory);
+          console.log(optionsListBlockCategory);
           // ==============================================================================================
           let filterName: ActiveFilterBlock[] = [];
           optionsListBlockCategory.forEach((element: Options[], index) => {
@@ -89,6 +87,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
               let block: ActiveFilterBlock = {
                 name: element[idx].name,
                 inputActive: [],
+                blockActive: true,
               };
               item.forEach((items) => {
                 let item: ActiveFilter = {
@@ -103,7 +102,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           });
           // ==============================================================================================
           const uniqueFilter: ActiveFilterBlock[] = [];
-
           filterName.forEach((element, idx) => {
             if (idx === 0) {
               uniqueFilter.push(element);
@@ -120,14 +118,13 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
               }
             }
           });
-          // console.log(uniqueFilter);
           // ==============================================================================================
-
           let uniqueFilterBlock: ActiveFilterBlock[] = [];
           uniqueFilter.forEach((element) => {
             let uniqueFilterBlockItem: ActiveFilterBlock = {
               name: element.name,
               inputActive: [],
+              blockActive: true,
             };
             let inputActiveItem: ActiveFilter[] = [];
             //
@@ -152,16 +149,14 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
             });
             uniqueFilterBlock.push(uniqueFilterBlockItem);
           });
-          // console.log(uniqueFilterBlock);
           // ==============================================================================================
-
           const parameters: string[] = Object.values(this.queryParams).splice(
             1
           );
-          parameters.pop(); //delete page
-          parameters.pop(); //delete limit
-          // console.log(parameters);
-
+          parameters.pop(); //delete type_sort queryParams
+          parameters.pop(); //delete page queryParams
+          parameters.pop(); //delete limit queryParams
+          // ==============================================================================================
           let sortParameters: string[] = [];
           parameters.forEach((element: string, idx) => {
             if (element.indexOf(",") !== -1) {
@@ -171,7 +166,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
             }
           });
           // this.resetParameters = sortParameters;
-
           uniqueFilterBlock.forEach((element: ActiveFilterBlock, i) => {
             sortParameters.forEach((block) => {
               element.inputActive.forEach((item, idx) => {
@@ -184,39 +178,47 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
           // ==============================================================================================
           this.listFilter = uniqueFilterBlock;
           // ==============================================================================================
-          this.loader = false; // Loader
+          this.loader = false;
           // ==============================================================================================
         },
         (e) => {
           console.log(e);
         }
       );
-    } else if (this.titleSearch === undefined) {
+    } else if (this.search_text === undefined) {
       this.router.navigate([""]);
       this.showNotice.message("Помилка запиту, не введено текст пошуку.");
     }
 
-    this.renameTitle.renameTitleSite(
-      this.titleSearch ? this.titleSearch : "Інтернет-магазин"
-    );
+    this.renameTitle.renameTitleSite("Інтернет-магазин");
+
+    console.log(this.queryParams);
   }
-
-  ngDoCheck(): void {}
-
-  ngOnDestroy(): void {}
 
   private HOST: string = "localhost";
   private PORT: string = ":5000";
   url_server_folder: string = `http://${this.HOST}${this.PORT}/`; // Link to server folder
-
-  // @ElementRef('selectLimit')
-
-  // Loader Site ============================================================================
   loader: boolean = true; // Loader block Select
-  // Loader Site ============================================================================
 
-  // Sidebar ================================================================================
+  // Header START =================================================================================
+  counterProductSearchInDB: number = 0;
 
+  type_sort: number = 0;
+
+  productSort() {
+    if (this.queryParams.hasOwnProperty("type_sort")) {
+      delete this.queryParams["type_sort"];
+    }
+    this.queryParams["type_sort"] = this.type_sort;
+
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.navigate([`search`], {
+      queryParams: this.queryParams,
+    });
+  }
+  // Header END ===================================================================================
+
+  // Sidebar START ================================================================================
   uniqueCategory: number[][] = []; // Category List [ [1,0,0], [1,0,5] ... ]
   categoryNameDB: CategoryProduct[] = []; // All Category, import from category-name.service.ts
 
@@ -228,11 +230,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
   queryParams: Params = {};
 
   filterSearch(nameInput: string, nameBlock: string, checked: boolean) {
-    console.log(nameInput);
-    console.log(nameBlock);
-
-    console.log(checked);
-
     if (checked === true) {
       let positionIndexOriginalName: number =
         this.originalName.indexOf(nameBlock);
@@ -240,9 +237,6 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
 
       if (positionIndexOriginalName >= 0) {
         nameQueryForServer = this.nameForServer[positionIndexOriginalName];
-
-        console.log("==========================");
-        console.log(nameQueryForServer);
 
         if (this.queryParams.hasOwnProperty(nameQueryForServer)) {
           this.queryParams[nameQueryForServer] =
@@ -265,6 +259,13 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
         } else {
           this.queryParams["page"] = this.currentPage;
         }
+        // type_sort
+        if (this.queryParams.hasOwnProperty("type_sort")) {
+          delete this.queryParams["type_sort"];
+          this.queryParams["type_sort"] = this.type_sort;
+        } else {
+          this.queryParams["type_sort"] = this.type_sort;
+        }
 
         console.log(this.queryParams);
         this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
@@ -275,7 +276,7 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.navigate([`search`], {
           queryParams: {
-            search_text: this.titleSearch,
+            search_text: this.search_text,
           },
         });
       }
@@ -314,8 +315,14 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
         } else {
           this.queryParams["page"] = this.currentPage;
         }
+        // type_sort
+        if (this.queryParams.hasOwnProperty("type_sort")) {
+          delete this.queryParams["type_sort"];
+          this.queryParams["type_sort"] = this.type_sort;
+        } else {
+          this.queryParams["type_sort"] = this.type_sort;
+        }
 
-        console.log(this.queryParams);
         this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
         this.router.navigate([`search`], {
           queryParams: this.queryParams,
@@ -324,24 +331,22 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.navigate([`search`], {
           queryParams: {
-            search_text: this.titleSearch,
+            search_text: this.search_text,
           },
         });
       }
     }
   }
-
-  // Sidebar ================================================================================
-
-  // Main Product ===========================================================================
+  // Sidebar END ==================================================================================
+  // Main Product START ===========================================================================
   productList: Product[] = []; // List Product
 
   currentPage: number = 1;
   maxPage: number = 1;
 
-  limit: number = 10;
+  limit: number = 10; // number of products per page
 
-  pageSizeOptions: number[] = [10, 25, 50, 100];
+  pageSizeOptions: number[] = [10, 25, 50, 100]; // select (number of products per page)
 
   pageEvent?: PageEvent;
   onPaginateChange(event: PageEvent) {
@@ -355,13 +360,10 @@ export class SearchComponent implements OnInit, DoCheck, OnDestroy {
     }
     this.queryParams["limit"] = event.pageSize;
 
-    console.log(this.queryParams);
-
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
     this.router.navigate([`search`], {
       queryParams: this.queryParams,
     });
   }
-
-  // Main Product ===========================================================================
+  // Main Product END =============================================================================
 }

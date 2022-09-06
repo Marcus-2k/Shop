@@ -175,6 +175,7 @@ export interface FilterNameParams {
 export interface ActiveFilterBlock {
   name: string;
   inputActive: ActiveFilter[];
+  blockActive: boolean;
 }
 
 export interface ActiveFilter {

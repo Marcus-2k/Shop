@@ -1,10 +1,7 @@
 <!--  -->
 <div class="search">
   <div class="search__content">
-    <div class="search__content-sidebar">
-      <div class="content-element-center" *ngIf="loader">
-        <mat-spinner></mat-spinner>
-      </div>
+    <div class="search__content-header">
       <!--  -->
       <div class="reset" *ngIf="!loader">
         <ng-container *ngFor="let filter of listFilter">
@@ -22,17 +19,62 @@
         </ng-container>
       </div>
       <!--  -->
+      <div class="settings" *ngIf="!loader">
+        <mat-form-field appearance="fill">
+          <mat-label>Відсортувати товари:</mat-label>
+          <mat-select
+            disableRipple
+            class="characteristics-select"
+            #selectSort
+            [(ngModel)]="type_sort"
+            (ngModelChange)="productSort()"
+          >
+            <mat-option [value]="0">За рейтингом</mat-option>
+            <mat-option [value]="1">Від дешевих до дорогих</mat-option>
+            <mat-option [value]="2">Від дорогих до дешевих</mat-option>
+            <mat-option [value]="3">Новинки</mat-option>
+            <mat-option [value]="4">Акційні</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!--  -->
+    </div>
+    <div class="search__content-sidebar">
+      <div class="content-element-center" *ngIf="loader">
+        <mat-spinner></mat-spinner>
+      </div>
+      <!-- Category START -->
       <div class="select" *ngIf="!loader">
         <div class="select__content">
-          <!-- Category STR -->
-          <div class="select__conten-category">
-            <ng-container *ngFor="let filter of listFilter; let i = index">
-              <hr />
-              <p>{{ filter.name }}</p>
-              <ng-container
-                *ngFor="let filterItem of filter.inputActive; let idx = index"
+          <div class="select__conten-category category">
+            <div
+              class="category__block"
+              *ngFor="let filter of listFilter; let i = index"
+            >
+              <div class="category__block-line"></div>
+              <div
+                class="category__block-btn"
+                (click)="filter.blockActive = !filter.blockActive"
               >
-                <p>
+                <button class="btn__filter">
+                  <p class="title">{{ filter.name }}</p>
+                  <p
+                    class="arrow"
+                    [ngClass]="{ active__arrow: filter.blockActive }"
+                  >
+                    <span class="material-symbols-outlined"> expand_more </span>
+                  </p>
+                </button>
+              </div>
+              <!-- *ngIf="" -->
+              <ul
+                class="category__block-list"
+                [ngClass]="{ show: filter.blockActive }"
+              >
+                <li
+                  class="category__block-list-item"
+                  *ngFor="let filterItem of filter.inputActive; let idx = index"
+                >
                   <mat-checkbox
                     (click)="
                       filterSearch(
@@ -50,23 +92,22 @@
                       filterItem.name
                     }}
                     <span class="counter"
-                      >&nbsp;( {{ filterItem.counter + 1 }} )</span
+                      >&nbsp;({{ filterItem.counter + 1 }})</span
                     ></mat-checkbox
                   >
-                </p>
-              </ng-container>
-            </ng-container>
+                </li>
+              </ul>
+            </div>
           </div>
-          <!-- Category END -->
         </div>
       </div>
+      <!-- Category END -->
     </div>
     <div class="search__content-body">
+      <!--  -->
       <div class="content-element-center" *ngIf="loader">
         <mat-spinner></mat-spinner>
       </div>
-      <!--  -->
-      <div class="settings" *ngIf="!loader"></div>
       <!--  -->
       <!-- Card START -->
       <div class="cards" *ngIf="!loader">
@@ -92,6 +133,7 @@
           >
         </mat-paginator>
       </div>
+      <!--  -->
     </div>
   </div>
 </div>
