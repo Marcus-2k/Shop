@@ -164,6 +164,7 @@
               justify-content: center;
               transition: 0.4s;
               color: #000;
+              border-radius: 5px;
               .google-icon {
                 font-size: calc(
                   24px + (36 - 24) * ((100vw - 768px) / (1920 - 768))
@@ -179,7 +180,6 @@
               &:hover {
                 transition: 0.4s;
                 background-color: #fff;
-                border-radius: 5px;
               }
             }
           }

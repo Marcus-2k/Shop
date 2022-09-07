@@ -40,15 +40,17 @@
       <ng-container>
         <nav class="nav">
           <li *ngFor="let item of linkNavigate; let idx = index">
-            <a
+            <button
               class="nav__item"
               [routerLink]="item.link"
               routerLinkActive="nav__item-active"
               (click)="navBar(item.link)"
-              >{{ item.name }}
+              [disabled]="idx === 2 || idx === 3 || idx === 5"
+            >
+              {{ item.name }}
               <span class="info__number" *ngIf="idx === 2">14</span>
               <span class="info__number" *ngIf="idx === 3">6</span>
-            </a>
+            </button>
           </li>
           <div
             class="nav_link_bar"

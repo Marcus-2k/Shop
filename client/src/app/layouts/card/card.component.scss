@@ -57,6 +57,12 @@
           white-space: nowrap;
           cursor: pointer;
           transition: 0.4s;
+          border: none;
+          background-color: #fff;
+          &:disabled {
+            opacity: 0.75;
+            cursor: not-allowed;
+          }
           .info__number {
             color: #000;
             margin-left: 5px;
