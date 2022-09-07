@@ -61,6 +61,7 @@ export class HeaderComponent implements OnInit, DoCheck {
         search_text: title,
         limit: 10,
         page: 1,
+        type_sort: 5,
       },
     });
   }
