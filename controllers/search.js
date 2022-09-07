@@ -20,7 +20,15 @@ module.exports.search = async function (req, res) {
     let maxPage; // Max page site
     // Pagination === END
 
-    if (lengthQueryParams === 3) {
+    const type_sort = req.query.type_sort ? Number(req.query.type_sort) : 5; // Type sorting
+    // 0 = Від дешевих до дорогих (cheap)
+    // 1 = Від дорогих до дешевих (expensive)
+    // 2 = Популярні (popularity)
+    // 3 = Новинки (novelty)
+    // 4 = Акція (action)
+    // 5 = За рейтингом (grade)
+
+    if (lengthQueryParams === 4) {
       console.log("IF");
 
       count = await Product.find({
@@ -34,9 +42,6 @@ module.exports.search = async function (req, res) {
         name: { $regex: search_text, $options: "i" },
         // $regex >> partial keywords, options "i" >> case insensitivity
       });
-      console.log("===========================");
-      // console.log(product);
-      console.log("===========================");
 
       let categoryNoUnique = [];
       let productCharacteristics = [];
@@ -46,12 +51,51 @@ module.exports.search = async function (req, res) {
         productCharacteristics.push(element.characteristics);
       }); // Category and Characteristics in collection
 
-      product = await Product.find({
-        name: { $regex: search_text, $options: "i" },
-        // $regex >> partial keywords, options "i" >> case insensitivity
-      })
-        .limit(limit)
-        .skip(limit * --page); // Search in DB, all product by keywors
+      // Type sorting ==============================================================
+      if (type_sort === 0) {
+        // Сheap
+        product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        })
+          .sort({ price: 1 })
+          .limit(limit)
+          .skip(limit * --page);
+      } else if (type_sort === 1) {
+        // Expensive
+        product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        })
+          .sort({ price: -1 })
+          .limit(limit)
+          .skip(limit * --page);
+      } else if (type_sort === 2) {
+        // Popularity <Disabled Client>
+      } else if (type_sort === 3) {
+        // Novelty <Disabled Client>
+      } else if (type_sort === 4) {
+        // Action
+        product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        })
+          .sort({ action: -1 })
+          .limit(limit)
+          .skip(limit * --page);
+
+        // Delete item product if action = true
+        for (let idx = 0; idx < product.length; idx++) {
+          if (product[idx].action === false) {
+            product.splice(idx, 1);
+            idx--;
+          }
+        }
+      } else if (type_sort === 5) {
+        // Grade
+        product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        })
+          .limit(limit)
+          .skip(limit * --page);
+      }
 
       // ===========================================================================
       const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Category Product
@@ -142,13 +186,51 @@ module.exports.search = async function (req, res) {
         productCharacteristics.push(element.characteristics);
       }); // Category and Characteristics in collection
 
-      product = await Product.find({
-        name: { $regex: search_text, $options: "i" },
-        // $regex >> partial keywords, options "i" >> case insensitivity
-        optionsToString: { $in: parametersToString },
-      })
-        .limit(limit)
-        .skip(limit * --page); // Search in DB, all product by keywors
+      // Type sorting ==============================================================
+      if (type_sort === 0) {
+        // Сheap
+        product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        })
+          .sort({ price: 1 })
+          .limit(limit)
+          .skip(limit * --page);
+      } else if (type_sort === 1) {
+        // Expensive
+        product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        })
+          .sort({ price: -1 })
+          .limit(limit)
+          .skip(limit * --page);
+      } else if (type_sort === 2) {
+        // Popularity <Disabled Client>
+      } else if (type_sort === 3) {
+        // Novelty <Disabled Client>
+      } else if (type_sort === 4) {
+        // Action
+        product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        })
+          .sort({ action: -1 })
+          .limit(limit)
+          .skip(limit * --page);
+
+        // Delete item product if action = true
+        for (let idx = 0; idx < product.length; idx++) {
+          if (product[idx].action === false) {
+            product.splice(idx, 1);
+            idx--;
+          }
+        }
+      } else if (type_sort === 5) {
+        // Grade
+        product = await Product.find({
+          name: { $regex: search_text, $options: "i" },
+        })
+          .limit(limit)
+          .skip(limit * --page);
+      }
 
       // ===========================================================================
       const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Category Product
