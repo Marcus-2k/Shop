@@ -29,11 +29,12 @@
             [(ngModel)]="type_sort"
             (ngModelChange)="productSort()"
           >
-            <mat-option [value]="0">За рейтингом</mat-option>
-            <mat-option [value]="1">Від дешевих до дорогих</mat-option>
-            <mat-option [value]="2">Від дорогих до дешевих</mat-option>
-            <mat-option [value]="3">Новинки</mat-option>
+            <mat-option [value]="0">Від дешевих до дорогих</mat-option>
+            <mat-option [value]="1">Від дорогих до дешевих</mat-option>
+            <mat-option [value]="2" [disabled]="true">Популярні</mat-option>
+            <mat-option [value]="3" [disabled]="true">Новинки</mat-option>
             <mat-option [value]="4">Акційні</mat-option>
+            <mat-option [value]="5">За рейтингом</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

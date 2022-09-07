@@ -41,7 +41,7 @@ export class SearchComponent implements OnInit {
       this.search_text = queryParam["search_text"];
       this.type_sort = queryParam["type_sort"]
         ? Number(queryParam["type_sort"])
-        : 0;
+        : 5;
       this.allQuery = queryParam;
     });
 
