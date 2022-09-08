@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
-    console.log("Start ngOnInit HEADER");
+    console.log("Start ngOnInit Header");
 
     if (this.potentialToken) {
       // get favorite user, if user authorize
@@ -49,12 +49,23 @@ export class HeaderComponent implements OnInit, DoCheck {
     this.lengthCart = this.otherData.shoppingCartNumber;
   }
 
-  lengthFavorite: number = 0;
-  lengthCart: number = 0;
+  body: HTMLBodyElement = document.getElementsByTagName("body")[0];
 
-  // Щоб показувати відповідні іконки, (login / exit, account, favorite, cart)
-  potentialToken: string | null = localStorage.getItem("auth-token");
+  // Menu START ===========================================================
+  catalogShow: boolean = false;
 
+  catalogOnOff() {
+    this.catalogShow = !this.catalogShow;
+
+    if (this.catalogShow) {
+      this.body.classList.add("active");
+    } else {
+      this.body.classList.remove("active");
+    }
+  }
+
+  // Menu END =============================================================
+  // Search START =========================================================
   search(title: string) {
     this.router.navigate([`search`], {
       queryParams: {
@@ -65,6 +76,13 @@ export class HeaderComponent implements OnInit, DoCheck {
       },
     });
   }
+  // Search END ===========================================================
+  // User START ===========================================================
+  lengthFavorite: number = 0;
+  lengthCart: number = 0;
+
+  potentialToken: string | null = localStorage.getItem("auth-token");
+
   logout() {
     this.auth.logout().subscribe(
       (res) => {
@@ -76,5 +94,6 @@ export class HeaderComponent implements OnInit, DoCheck {
         console.log(e);
       }
     );
-  } // logout site
+  }
+  // User END =============================================================
 }

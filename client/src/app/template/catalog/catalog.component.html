@@ -1,0 +1,57 @@
+<!--  -->
+<div class="catalog">
+  <div class="catalog__content category">
+    <!--  -->
+    <div class="category-first">
+      <ul class="category-first-list">
+        <li
+          class="category-first-list-item list__item"
+          *ngFor="let categoryOne of category; let idx = index"
+          [ngClass]="{ link__active: idx === activeCategory }"
+          (mouseenter)="editActiveCategory(idx)"
+        >
+          <a href="" class="list__item-link">
+            <span class="list__item-link-text">
+              {{ categoryOne.nameCategory }}
+            </span>
+            <span class="material-symbols-outlined"> expand_more </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!--  -->
+    <div class="category-subfirst">
+      <ul class="category-subfirst-list">
+        <li
+          class="category-subfirst-list-item"
+          *ngFor="
+            let categoryTwo of category[activeCategory].nameListCategory;
+            let index = index
+          "
+        >
+          <a href="" class="list__item-link">
+            <span class="list__item-link-text">
+              {{ categoryTwo.subNameCategory }}
+            </span>
+          </a>
+          <ul class="group-subfirst-list">
+            <li
+              class="group-subfirst-list-item"
+              *ngFor="
+                let categoryThree of categoryTwo.subNameListCategory;
+                let index = index
+              "
+            >
+              <a href="" class="sublist__item-link">
+                <span class="sublist__item-link-text">
+                  {{ categoryThree.titleSubNameListCategory }}
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!--  -->
+  </div>
+</div>

@@ -81,6 +81,7 @@ import { ProductCardElementStatusesComponent } from "./template/components/produ
 import { ProductCardElementPriceComponent } from "./template/components/product-card-element-price/product-card-element-price.component";
 import { ProductCardComponent } from "./template/product-card/product-card.component";
 import { ProductCardUserComponent } from './template/product-card-user/product-card-user.component';
+import { CatalogComponent } from './template/catalog/catalog.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import { ProductCardUserComponent } from './template/product-card-user/product-c
     ProductCardElementPriceComponent,
     ProductCardComponent,
     ProductCardUserComponent,
+    CatalogComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,8 +12,13 @@
         </div>
       </div>
       <div class="menu-catalog">
-        <button class="menu-catalog--button">
-          <span class="material-symbols-outlined"> category </span>
+        <button class="menu-catalog--button" (click)="catalogOnOff()">
+          <span class="material-symbols-outlined" *ngIf="!catalogShow">
+            category
+          </span>
+          <span class="material-symbols-outlined" *ngIf="catalogShow">
+            close
+          </span>
           Каталог
         </button>
       </div>
@@ -104,5 +109,9 @@
       </div>
     </div>
     <!--  -->
+  </div>
+
+  <div class="header__catalog" *ngIf="catalogShow">
+    <app-catalog class="header__catalog-content"></app-catalog>
   </div>
 </header>
