@@ -8,6 +8,7 @@ const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/accountUser");
 const sellerRoutes = require("./routes/seller");
+const newsRoutes = require("./routes/news");
 const cardRoutes = require("./routes/card");
 const searchRoutes = require("./routes/search");
 // Router END
@@ -65,9 +66,10 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/account/product", productRoutes);
 app.use("/api/account/user", userRoutes);
-app.use("/api/seller", sellerRoutes);
 
 app.use("/api/card", cardRoutes);
+app.use("/api/seller", sellerRoutes);
+app.use("/api/news", newsRoutes);
 
 app.use("/api/search", searchRoutes);
 // Router END ============================================================================
