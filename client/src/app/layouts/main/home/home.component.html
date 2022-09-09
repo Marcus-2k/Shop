@@ -1,10 +1,23 @@
 <!--  -->
-
 <div class="home">
   <div class="home__content">
-    <div class="home__content-title">
-      <h1 class="title">Інтернет-Магазин</h1>
+    <!--  -->
+    <aside class="home__content-aside"></aside>
+    <!--  -->
+    <div class="home__content-main">
+      <swiper [config]="config">
+        <ng-template swiperSlide *ngFor="let itemNews of news">
+          <div class="image__container">
+            <img
+              [src]="url_server_folder + itemNews.imageSrc"
+              alt=""
+              class=""
+            />
+          </div>
+        </ng-template>
+      </swiper>
     </div>
+    <!--  -->
   </div>
 </div>
 
