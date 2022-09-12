@@ -22,8 +22,6 @@ import { SliderSwiperModule } from "./shared/slider/slider.module";
 import { AppComponent } from "./app.component";
 // 404 Component
 import { NotFoundComponent } from "./not-found/not-found.component";
-// Body Site
-import { MainComponent } from "./layouts/main/main.component";
 // Body Main
 import { HomeComponent } from "./layouts/main/home/home.component";
 // Body || Header Component
@@ -80,14 +78,13 @@ import { ProductCardShoppingCartComponent } from "./template/product-card-shoppi
 import { ProductCardElementStatusesComponent } from "./template/components/product-card-element-statuses/product-card-element-statuses.component";
 import { ProductCardElementPriceComponent } from "./template/components/product-card-element-price/product-card-element-price.component";
 import { ProductCardComponent } from "./template/product-card/product-card.component";
-import { ProductCardUserComponent } from './template/product-card-user/product-card-user.component';
-import { CatalogComponent } from './template/catalog/catalog.component';
+import { ProductCardUserComponent } from "./template/product-card-user/product-card-user.component";
+import { CatalogComponent } from "./template/catalog/catalog.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
-    MainComponent,
     HeaderComponent,
     FooterComponent,
     SearchComponent,
