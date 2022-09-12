@@ -56,20 +56,19 @@
         &-item {
           margin: 0 10px 15px 10px;
           .list__item-link {
+            display: block;
             &:hover {
               text-decoration: underline;
-              .list__item-link-text {
-                color: #3f51b5;
-              }
             }
             &-text {
               font-size: 16px;
-              color: #000;
+              color: #3f51b5;
             }
           }
           .group-subfirst-list {
             &-item {
               .sublist__item-link {
+                display: block;
                 &:hover {
                   text-decoration: underline;
                   .sublist__item-link-text {

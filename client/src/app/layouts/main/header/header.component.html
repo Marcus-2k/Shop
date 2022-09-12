@@ -12,11 +12,21 @@
         </div>
       </div>
       <div class="menu-catalog">
-        <button class="menu-catalog--button" (click)="catalogOnOff()">
-          <span class="material-symbols-outlined" *ngIf="!catalogShow">
+        <button
+          class="menu-catalog--button catalog__button"
+          #catalog
+          (click)="catalogOnOff()"
+        >
+          <span
+            class="material-symbols-outlined catalog__button"
+            *ngIf="!catalogShow"
+          >
             category
           </span>
-          <span class="material-symbols-outlined" *ngIf="catalogShow">
+          <span
+            class="material-symbols-outlined catalog__button"
+            *ngIf="catalogShow"
+          >
             close
           </span>
           Каталог

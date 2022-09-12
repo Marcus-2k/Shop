@@ -7,7 +7,7 @@ import { CategoryProduct, Options } from "../interface/interfaces";
 export class CategoryProductService {
   constructor() {}
 
-  optionOperatingSystem: Options = {
+  optionOperatingSystem_PC: Options = {
     name: "Операційна система",
     htmlElement: "select",
     select: [
@@ -20,6 +20,18 @@ export class CategoryProductService {
       "Windows 11 Home",
       "Chrome OS",
       "Endles OS",
+    ],
+  };
+  optionOperatingSystem_MP: Options = {
+    name: "Операційна система",
+    htmlElement: "select",
+    select: [
+      "Android",
+      "iOS",
+      "Windows Phone 8.1",
+      "BlackBerry OS",
+      "Harmony OS",
+      "Інша",
     ],
   };
   optionCPU_PC: Options = {
@@ -45,6 +57,19 @@ export class CategoryProductService {
       "AMD Ryzen 9",
     ],
   };
+  optionCPU_MP: Options = {
+    name: "Процесор",
+    htmlElement: "select",
+    select: [
+      "Apple A15",
+      "Apple A14",
+      "Apple A13",
+      "Apple A12",
+      "Qualcomm Snapdragon",
+      "Exynos",
+      "Kryo",
+    ],
+  };
   optionGraphics: Options = {
     name: "Відеокарта",
     htmlElement: "select",
@@ -60,13 +85,6 @@ export class CategoryProductService {
       "GeForce RTX 3060 Ti",
       "GeForce RTX 3070 Ti",
       "GeForce RTX 3080 Ti",
-      "GeForce",
-      "GeForce",
-      "GeForce",
-      "GeForce",
-      "GeForce",
-      "GeForce",
-      "GeForce",
     ],
   };
   optionScreenDiagonal: Options = {
@@ -101,15 +119,14 @@ export class CategoryProductService {
     name: "Колір",
     htmlElement: "select",
     select: [
+      "Інші",
       "Білий",
       "Жовтий",
-      "Жовтогарячий",
+      "Зелений",
       "Золотий",
-      "Коричневий",
       "Рожевий",
       "Синій",
       "Сріблястий",
-      "Сірий",
       "Сірий",
       "Фіолетовий",
       "Червоний",
@@ -170,27 +187,115 @@ export class CategoryProductService {
       "8 Т",
     ],
   };
-  // option:Options = {}
+  optionTypeMatrix: Options = {
+    name: "Тип матриці",
+    htmlElement: "select",
+    select: [
+      "AMOLED",
+      "Dynamic AMOLED",
+      "Super AMOLED",
+      "Super AMOLED Plus",
+      "Super AMOLED + Dynamic AMOLED 2X",
+      "Fluid AMOLED",
+      "Fluid AMOLED with LTPO",
+      "IGZO",
+      "IPS",
+      "Super IPS+",
+      "LCD",
+      "LTPS",
+      "OGS",
+      "OLED",
+      "TFN",
+      "TN",
+      "sAMOLED",
+    ],
+  };
+  optionScreenRefreshRate: Options = {
+    name: "Частота оновлення екрану",
+    htmlElement: "select",
+    select: ["30 ГЦ", "60 ГЦ", "90 ГЦ", "120 ГЦ", "144 ГЦ", "165 ГЦ"],
+  };
+  optionGuard: Options = {
+    name: "Безпека",
+    htmlElement: "select",
+    select: [
+      "Розблокування за обличчям",
+      "Сканер відбитків пальця збоку",
+      "Сканер відбитків пальця ззаду",
+      "Сканер відбитків пальця на екрані",
+    ],
+  };
+  optionBodyMaterial: Options = {
+    name: "Матеріал корпусу",
+    htmlElement: "select",
+    select: ["Метал", "Пластик", "Скло", "Інший"],
+  };
+  optionMadeIn: Options = {
+    name: "Країна-виробник",
+    htmlElement: "select",
+    select: [
+      "Індія",
+      "В'єтнам",
+      "Китай",
+      "Тайвань",
+      "Мексика",
+      "Німеччина",
+      "Польща",
+      "Румунія",
+      "США",
+      "Словаччина",
+      "Таїланд",
+      "Туреччина",
+      "Угорщина",
+      "Україна",
+      "Японія",
+    ],
+  };
+  optionCommunication: Options = {
+    name: "Стандарт зв'язку",
+    htmlElement: "select",
+    select: [
+      "2G (GPRS/EDGE/GSM)",
+      "3G (UMTS/HSUPA/HSPA/WSDMA/CDM)",
+      "4G (LTE)",
+      "5G",
+    ],
+  };
+  // Example
+  // option__: Options = {
+  //   name: "Тип матриці",
+  //   htmlElement: "select",
+  //   select: [
+  //     "AMOLED",
+  //   ],
+  // };
 
   optionsLaptop: Options[] = [
-    this.optionOperatingSystem,
+    this.optionOperatingSystem_PC,
     this.optionCPU_PC,
     this.optionGraphics,
     this.optionScreenDiagonal,
-    // this.optionTypeMemory,
+    this.optionTypeMemory,
     this.optionRAM,
     this.optionColor,
     this.optionNewUsed,
-    // this.optionGuarantee,
-    // this.optionSizeSSD,
-    // this.optionSizeHDD,
-  ];
-
-  optionsSmartphone: Options[] = [
-    this.optionRAM,
-    this.optionColor,
     this.optionGuarantee,
+    this.optionSizeSSD,
+    this.optionSizeHDD,
+    this.optionMadeIn,
   ];
+  optionsSmartphone: Options[] = [
+    this.optionCPU_MP,
+    this.optionRAM,
+    this.optionTypeMatrix,
+    this.optionColor,
+    this.optionGuard,
+    this.optionGuarantee,
+    this.optionScreenRefreshRate,
+    this.optionCommunication,
+    this.optionMadeIn,
+  ];
+  optionsDevelop: Options[] = [this.optionColor];
 
   categoryList: CategoryProduct[] = [
     {
@@ -225,63 +330,144 @@ export class CategoryProductService {
             },
           ],
         },
-        // {
-        //   subNameCategory: "Аксесуари для ноутбуків і ПК",
-        //   subNameListCategory: [
-        //     { titleSubNameListCategory: "Флеш пам'ять USB" },
-        //     { titleSubNameListCategory: "Сумки та рюкзаки для ноутбуків" },
-        //     { titleSubNameListCategory: "Підставки та столики для ноутбуків" },
-        //     { titleSubNameListCategory: "Веб-камери" },
-        //     { titleSubNameListCategory: "Універсальні мобільні батареї" },
-        //     { titleSubNameListCategory: "Кабелі та перехідники" },
-        //   ],
-        // },
+        {
+          subNameCategory: "Аксесуари для ноутбуків і ПК",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Флеш пам'ять USB",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Сумки та рюкзаки для ноутбуків",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Підставки та столики для ноутбуків",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Веб-камери",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Універсальні мобільні батареї",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Кабелі та перехідники",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
         // {
         //   subNameCategory: "Планшети",
         //   // options: {},
         //   subNameListCategory: [{ titleSubNameListCategory: undefined }],
         // },
-        // {
-        //   subNameCategory: "Аксесуари для планшетів",
-        //   subNameListCategory: [
-        //     { titleSubNameListCategory: "Чохли та клавіатури для планшетів" },
-        //     { titleSubNameListCategory: "Захисні плівки та скло" },
-        //   ],
-        // },
-        // {
-        //   subNameCategory: "Електронні книги",
-        //   subNameListCategory: [
-        //     { titleSubNameListCategory: "Аксесуари для електронних книг" },
-        //   ],
-        // },
-        // {
-        //   subNameCategory: "Комплектуючі",
-        //   subNameListCategory: [
-        //     { titleSubNameListCategory: "Відеокарта" },
-        //     { titleSubNameListCategory: "Жорсткі диски" },
-        //     { titleSubNameListCategory: "Процесори" },
-        //     { titleSubNameListCategory: "SSD" },
-        //     { titleSubNameListCategory: "HDD" },
-        //     { titleSubNameListCategory: "ОЗП" },
-        //     { titleSubNameListCategory: "Материнські плати" },
-        //     { titleSubNameListCategory: "Блоки живлення" },
-        //     { titleSubNameListCategory: "Корпуси" },
-        //     { titleSubNameListCategory: "Джерела безперебійного живлення" },
-        //     { titleSubNameListCategory: "Системне охолодження" },
-        //     { titleSubNameListCategory: "Стабілізатори напруги" },
-        //     { titleSubNameListCategory: "Оптичні приводи" },
-        //     { titleSubNameListCategory: "Звукові карти" },
-        //   ],
-        // },
-        // {
-        //   subNameCategory: "Комп'ютери",
-        //   subNameListCategory: [
-        //     { titleSubNameListCategory: "Монітори" },
-        //     { titleSubNameListCategory: "Миші" },
-        //     { titleSubNameListCategory: "Комплект клавіатура + миша" },
-        //     { titleSubNameListCategory: "Мереживе сховище (NAS)" },
-        //   ],
-        // },
+        {
+          subNameCategory: "Аксесуари для планшетів",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Чохли та клавіатури для планшетів",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Захисні плівки та скло",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
+        {
+          subNameCategory: "Електронні книги",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Аксесуари для електронних книг",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
+        {
+          subNameCategory: "Комплектуючі",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Відеокарта",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Жорсткі диски",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Процесори",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "SSD",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "HDD",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "ОЗП",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Материнські плати",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Блоки живлення",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Корпуси",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Джерела безперебійного живлення",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Системне охолодження",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Стабілізатори напруги",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Оптичні приводи",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Звукові карти",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
+        {
+          subNameCategory: "Комп'ютери",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Монітори",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Миші",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Комплект клавіатура + миша",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Мереживе сховище (NAS)",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
         // {
         //   subNameCategory: "Серверне обладнання",
         //   subNameListCategory: [{ titleSubNameListCategory: undefined }],
@@ -452,104 +638,224 @@ export class CategoryProductService {
         // },
       ],
     },
-    // {
-    //   nameCategory: "Товари для геймерів",
-    //   nameListCategory: [
-    //     {
-    //       subNameCategory: "Ігрові приставки",
-    //       subNameListCategory: [{ titleSubNameListCategory: undefined }],
-    //     },
-    //     {
-    //       subNameCategory: "Ігри",
-    //       subNameListCategory: [{ titleSubNameListCategory: undefined }],
-    //     },
-    //     {
-    //       subNameCategory: "Play Station",
-    //       subNameListCategory: [
-    //         { titleSubNameListCategory: "Ігрові приставки PlayStation 5" },
-    //         { titleSubNameListCategory: "Ігрові приставки PlayStation 4" },
-    //         { titleSubNameListCategory: "Ігрові приставки PlayStation" },
-    //         { titleSubNameListCategory: "Геймпади PlayStation" },
-    //         { titleSubNameListCategory: "Шоломи VR PlayStation" },
-    //         { titleSubNameListCategory: "Гарнітури PlayStation" },
-    //         { titleSubNameListCategory: "Аксесуари PlayStation" },
-    //         { titleSubNameListCategory: "Ігри для PlayStation" },
-    //         { titleSubNameListCategory: "Підписки PS Plus" },
-    //         { titleSubNameListCategory: "Поповнення гаманця PS Store" },
-    //       ],
-    //     },
-    //     {
-    //       subNameCategory: "Ігрові приставки Nintendo",
-    //       subNameListCategory: [{ titleSubNameListCategory: undefined }],
-    //     },
-    //     {
-    //       subNameCategory: "Ігрові приставки Xbox",
-    //       subNameListCategory: [{ titleSubNameListCategory: undefined }],
-    //     },
-    //     {
-    //       subNameCategory: "Ігрові ноутбуки",
-    //       subNameListCategory: [
-    //         { titleSubNameListCategory: undefined },
-    //         //     { titleSubNameListCategory: "Asus" },
-    //         //     { titleSubNameListCategory: "HP" },
-    //         //     { titleSubNameListCategory: "Acer" },
-    //         //     { titleSubNameListCategory: "MSI" },
-    //         //     { titleSubNameListCategory: "Dell" },
-    //         //     { titleSubNameListCategory: "Lenovo" },
-    //       ],
-    //     },
-    //     {
-    //       subNameCategory: "Ігрові комп'ютери",
-    //       subNameListCategory: [
-    //         { titleSubNameListCategory: "ARTLINE" },
-    //         { titleSubNameListCategory: "QUBE" },
-    //         { titleSubNameListCategory: "Cobra" },
-    //       ],
-    //     },
-    //     {
-    //       subNameCategory: "Комплектуючі для геймерів",
-    //       subNameListCategory: [
-    //         { titleSubNameListCategory: "Відеокарти" },
-    //         { titleSubNameListCategory: "Процесори" },
-    //         { titleSubNameListCategory: "Оперативна пам'ять" },
-    //         { titleSubNameListCategory: "Материнські плати" },
-    //         { titleSubNameListCategory: "Жорсткі диски" },
-    //         { titleSubNameListCategory: "Блоки живлення" },
-    //         { titleSubNameListCategory: "Система охолодження" },
-    //         { titleSubNameListCategory: "Корпуси" },
-    //       ],
-    //     },
-    //     {
-    //       subNameCategory: "Ігрова перефирія",
-    //       subNameListCategory: [
-    //         { titleSubNameListCategory: "Навушники" },
-    //         { titleSubNameListCategory: "Миші" },
-    //         { titleSubNameListCategory: "Клавіатури" },
-    //         { titleSubNameListCategory: "Маніпулятори, джойстики" },
-    //         { titleSubNameListCategory: "Геймерські крісла" },
-    //         { titleSubNameListCategory: "Комп'ютерні столи" },
-    //         { titleSubNameListCategory: "Геймерські рюкзаки" },
-    //       ],
-    //     },
-    //     {
-    //       subNameCategory: "Атрибутика й сувеніри",
-    //       subNameListCategory: [
-    //         { titleSubNameListCategory: "Браслети" },
-    //         { titleSubNameListCategory: "Брелоки" },
-    //         { titleSubNameListCategory: "Гаманці" },
-    //         { titleSubNameListCategory: "Подушки" },
-    //         { titleSubNameListCategory: "Чашки" },
-    //         { titleSubNameListCategory: "Фігурки і статуетки" },
-    //         { titleSubNameListCategory: "Одяг для геймерів" },
-    //         { titleSubNameListCategory: "Кепки і головні убори" },
-    //         { titleSubNameListCategory: "Рюкзаки та сумки" },
-    //         { titleSubNameListCategory: "М'які іграшки" },
-    //         { titleSubNameListCategory: "Падарункові набори для геймерів" },
-    //         { titleSubNameListCategory: "Картинки і постери" },
-    //       ],
-    //     },
-    //   ],
-    // },
+    {
+      nameCategory: "Товари для геймерів",
+      nameListCategory: [
+        // {
+        //   subNameCategory: "Ігрові приставки",
+        //   subNameListCategory: [{ titleSubNameListCategory: undefined }],
+        // },
+        // {
+        //   subNameCategory: "Ігри",
+        //   subNameListCategory: [{ titleSubNameListCategory: undefined }],
+        // },
+        {
+          subNameCategory: "Play Station",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Ігрові приставки PlayStation 5",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Ігрові приставки PlayStation 4",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Ігрові приставки PlayStation",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Геймпади PlayStation",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Шоломи VR PlayStation",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Гарнітури PlayStation",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Аксесуари PlayStation",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Ігри для PlayStation",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Підписки PS Plus",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Поповнення гаманця PS Store",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
+        // {
+        //   subNameCategory: "Ігрові приставки Nintendo",
+        //   subNameListCategory: [{ titleSubNameListCategory: undefined }],
+        // },
+        // {
+        //   subNameCategory: "Ігрові приставки Xbox",
+        //   subNameListCategory: [{ titleSubNameListCategory: undefined }],
+        // },
+        // {
+        //   subNameCategory: "Ігрові ноутбуки",
+        //   subNameListCategory: [
+        //     { titleSubNameListCategory: undefined },
+        //     // { titleSubNameListCategory: "Asus" },
+        //     // { titleSubNameListCategory: "HP" },
+        //     // { titleSubNameListCategory: "Acer" },
+        //     // { titleSubNameListCategory: "MSI" },
+        //     // { titleSubNameListCategory: "Dell" },
+        //     // { titleSubNameListCategory: "Lenovo" },
+        //   ],
+        // },
+        {
+          subNameCategory: "Ігрові комп'ютери",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "ARTLINE",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "QUBE",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Cobra",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
+        {
+          subNameCategory: "Комплектуючі для геймерів",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Відеокарти",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Процесори",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Оперативна пам'ять",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Материнські плати",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Жорсткі диски",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Блоки живлення",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Система охолодження",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Корпуси",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
+        {
+          subNameCategory: "Ігрова перефирія",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Навушники",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Миші",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Клавіатури",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Маніпулятори, джойстики",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Геймерські крісла",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Комп'ютерні столи",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Геймерські рюкзаки",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
+        {
+          subNameCategory: "Атрибутика й сувеніри",
+          subNameListCategory: [
+            {
+              titleSubNameListCategory: "Браслети",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Брелоки",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Гаманці",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Подушки",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Чашки",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Фігурки і статуетки",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Одяг для геймерів",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Кепки і головні убори",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Рюкзаки та сумки",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "М'які іграшки",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Падарункові набори для геймерів",
+              characteristics: this.optionsDevelop,
+            },
+            {
+              titleSubNameListCategory: "Картинки і постери",
+              characteristics: this.optionsDevelop,
+            },
+          ],
+        },
+      ],
+    },
     // {
     //   nameCategory: "...........",
     //   nameListCategory: [

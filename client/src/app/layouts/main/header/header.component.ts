@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from "@angular/core";
+import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { OtherDataService } from "src/app/shared/service/other-data.service";
@@ -10,7 +10,7 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.scss"],
 })
-export class HeaderComponent implements OnInit, DoCheck {
+export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -41,12 +41,20 @@ export class HeaderComponent implements OnInit, DoCheck {
         }
       );
     }
-  }
 
+    this.body.addEventListener("click", (event: Event) => {
+      this.catalogOff(event);
+    });
+  }
   ngDoCheck(): void {
     this.potentialToken = localStorage.getItem("auth-token");
     this.lengthFavorite = this.otherData.favoriteNumber;
     this.lengthCart = this.otherData.shoppingCartNumber;
+  }
+  ngOnDestroy(): void {
+    this.body.removeEventListener("click", (event: Event) => {
+      this.catalogOff(event);
+    });
   }
 
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];
@@ -60,6 +68,16 @@ export class HeaderComponent implements OnInit, DoCheck {
     if (this.catalogShow) {
       this.body.classList.add("active");
     } else {
+      this.body.classList.remove("active");
+    }
+  }
+  catalogOff(event: any) {
+    if (
+      this.catalogShow === true &&
+      !event.path[0].classList.contains("catalog__button")
+    ) {
+      console.log("sdsds");
+      this.catalogShow = false;
       this.body.classList.remove("active");
     }
   }
