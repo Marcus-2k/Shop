@@ -2,17 +2,24 @@
 <div class="home">
   <div class="home__content">
     <!--  -->
-    <aside class="home__content-aside"></aside>
+    <aside class="home__content-aside">
+      <ul class="aside-list">
+        <li class="aside-list-item" *ngFor="let category of categoryProduct">
+          <span class="material-symbols-outlined aside-list-item-image">
+            settings
+          </span>
+          <a href="" class="aside-list-item-link">
+            {{ category.nameCategory }}
+          </a>
+        </li>
+      </ul>
+    </aside>
     <!--  -->
     <div class="home__content-main">
       <swiper [config]="config">
         <ng-template swiperSlide *ngFor="let itemNews of news">
           <div class="image__container">
-            <img
-              [src]="url_server_folder + itemNews.imageSrc"
-              alt=""
-              class=""
-            />
+            <img [src]="url_server_folder + itemNews.imageSrc" />
           </div>
         </ng-template>
       </swiper>
@@ -21,4 +28,5 @@
   </div>
 </div>
 
+<!-- Login / Register -->
 <router-outlet></router-outlet>

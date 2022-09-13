@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { News } from "src/app/shared/interface/interfaces";
+import { CategoryProduct, News } from "src/app/shared/interface/interfaces";
+import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestNewsService } from "src/app/shared/service/server/request-news.service";
 
-import Swiper, { Autoplay, Parallax } from "swiper";
+import Swiper, { Autoplay } from "swiper";
 import { Navigation, Pagination, SwiperOptions } from "swiper";
 
 @Component({
@@ -14,7 +15,8 @@ import { Navigation, Pagination, SwiperOptions } from "swiper";
 export class HomeComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
-    private requestNews: RequestNewsService
+    private requestNews: RequestNewsService,
+    private categoryName: CategoryProductService
   ) {}
 
   ngOnInit(): void {
@@ -35,11 +37,13 @@ export class HomeComponent implements OnInit {
       this.config.navigation = false;
     }
 
+    this.categoryProduct = this.categoryName.categoryList;
+
     this.renameTitle.renameTitleSite("Інтернет-Магазин");
   }
 
   // Aside START ===========================================================================
-
+  categoryProduct: CategoryProduct[] = [];
   // Aside END =============================================================================
   // Main START ============================================================================
   config: SwiperOptions = {
