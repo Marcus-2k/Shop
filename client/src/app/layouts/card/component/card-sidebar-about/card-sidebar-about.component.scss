@@ -15,8 +15,12 @@
         justify-content: center;
         position: relative;
         &__title {
-          font-size: calc(16px + (30 - 16) * ((100vw - 320px) / (1920 - 320)));
           margin: 0;
+          &-text {
+            font-size: calc(
+              16px + (30 - 16) * ((100vw - 320px) / (1920 - 320))
+            );
+          }
           &-currency {
             font-size: calc(
               12px + (24 - 12) * ((100vw - 320px) / (1920 - 320))
@@ -29,17 +33,16 @@
         &__action {
           position: absolute;
           top: -35px;
-          background-color: #fff;
-          font-size: calc(16px + (30 - 16) * ((100vw - 320px) / (1920 - 320)));
+
+          margin: 0;
+          padding: 0 5px;
+
           color: gray;
+          background-color: #fff;
+
           text-decoration: line-through;
           text-decoration-color: red;
-          @media (max-width: 1200px) {
-            top: -15px;
-          }
-          &-currency {
-            font-size: 14px;
-          }
+          font-size: calc(10px + (22 - 10) * ((100vw - 320px) / (1920 - 320)));
         }
       }
     }
@@ -62,6 +65,11 @@
       min-height: auto;
       &-price {
         grid-area: 1 / 1 / 2 / 2;
+        .price {
+          &__action {
+            top: -15px;
+          }
+        }
       }
       &-btn {
         margin: 0;
