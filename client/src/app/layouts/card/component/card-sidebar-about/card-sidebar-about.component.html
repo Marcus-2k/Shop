@@ -15,10 +15,10 @@
       </div>
     </div>
     <div class="about__content-btn">
-      <button mat-raised-button color="primary" class="button-cart">
-        <span class="material-symbols-outlined icon"> shopping_cart </span
-        >Придбати
-      </button>
+      <app-card-shopping-cart
+        [_idProduct]="_id"
+        [type]="1"
+      ></app-card-shopping-cart>
     </div>
     <div class="about__content-favorite">
       <app-card-favorite [_idProduct]="_id"></app-card-favorite>

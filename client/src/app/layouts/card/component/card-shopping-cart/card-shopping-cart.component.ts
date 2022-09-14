@@ -19,10 +19,17 @@ export class CardShoppingCartComponent implements OnInit {
   ) {}
 
   @Input() _idProduct?: string;
+  @Input() type?: number;
 
   ngOnInit(): void {
     this.listShoppingCart = this.otherData.shoppingCartListUser;
+
+    if (this.type) {
+      this.typeBtn = this.type;
+    }
   }
+
+  typeBtn: number = 0; // 0 = icon, 1 = icon + text;
 
   buttonDisabled: boolean = false;
   addRemovefavorite() {
