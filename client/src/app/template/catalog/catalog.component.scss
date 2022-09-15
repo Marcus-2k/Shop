@@ -52,7 +52,10 @@
       width: 66%;
       &-list {
         display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
+        max-height: 600px;
+        max-width: 33%;
         &-item {
           margin: 0 10px 15px 10px;
           .list__item-link {
@@ -76,7 +79,13 @@
                   }
                 }
                 &-text {
+                  display: block;
                   color: #000;
+                  white-space: nowrap;
+                  text-overflow: clip;
+                  overflow: hidden;
+                  width: 100%;
+                  max-width: 220px;
                 }
               }
             }
