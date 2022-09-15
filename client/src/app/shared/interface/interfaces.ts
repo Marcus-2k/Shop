@@ -146,6 +146,9 @@ export interface OrderEvent {
   _id: string;
   counter: number;
 }
+export interface DeleteCart {
+  _id: string;
+}
 // User END ============================================================================================
 // News START ==========================================================================================
 export interface News {

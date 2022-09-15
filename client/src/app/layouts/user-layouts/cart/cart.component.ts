@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import {
+  DeleteCart,
   Order,
   OrderEvent,
   ShoppingCart,
@@ -20,10 +21,6 @@ export class CartComponent implements OnInit {
     private requestUser: RequestUserService
   ) {}
 
-  test() {
-    console.log(this.order);
-  }
-
   ngOnInit() {
     console.log("Start ngOnInit Cart");
 
@@ -36,7 +33,6 @@ export class CartComponent implements OnInit {
 
         const userID = localStorage.getItem("_id");
 
-        // const potentialToken = localStorage.getItem("auth-token");
         responce.forEach((element) => {
           if (userID) {
             const itemOrder: Order = {
@@ -48,21 +44,8 @@ export class CartComponent implements OnInit {
           }
         });
 
-        // The total amount of purchased goods
-        this.order.forEach((element) => {
-          this.totalCounterProduct += element.counter;
-        });
-
-        // Total price
-        this.shoppingCart.forEach((element) => {
-          this.totalPrice += element.price;
-
-          if (element.action) {
-            this.totalActionPrice += element.actionPrice;
-          } else {
-            this.totalActionPrice += element.price;
-          }
-        });
+        this.calcTotalCounterProduct();
+        this.calcTotalPrice();
 
         console.log(this.order);
       },
@@ -94,6 +77,81 @@ export class CartComponent implements OnInit {
   totalCounterProduct: number = 0;
   totalPrice: number = 0;
   totalActionPrice: number = 0;
+
+  calcTotalPrice() {
+    this.shoppingCart.forEach((element) => {
+      this.totalPrice += element.price;
+
+      if (element.action) {
+        this.totalActionPrice += element.actionPrice;
+      } else {
+        this.totalActionPrice += element.price;
+      }
+    });
+  } // Total price
+  calcTotalCounterProduct() {
+    this.order.forEach((element) => {
+      this.totalCounterProduct += element.counter;
+    });
+  } // The total amount of purchased goods
+
+  gettingCounter(event: OrderEvent) {
+    let positionInList = -1;
+    this.order.forEach((element, idx) => {
+      if (element._id === event._id) {
+        positionInList = idx;
+        // return;
+      }
+    });
+    console.log(positionInList);
+
+    if (positionInList >= 0) {
+      this.order[positionInList].counter = event.counter;
+      if (
+        this.order[positionInList].counter >
+        this.shoppingCart[positionInList].counter
+      ) {
+        this.stepper.validityCart = false;
+      }
+
+      for (let idx = 0; idx < this.order.length; idx++) {
+        if (this.order[idx].counter > this.shoppingCart[idx].counter) {
+          this.stepper.validityCart = false;
+          break;
+        } else {
+          this.stepper.validityCart = true;
+        }
+      }
+    }
+
+    this.totalCounterProduct = 0;
+    this.order.forEach((element) => {
+      this.totalCounterProduct += element.counter;
+    });
+  }
+
+  gettingIdDelete(event: DeleteCart) {
+    this.requestUser.removeShoppingCart(event._id).subscribe(
+      (responce) => {
+        let index: number = 0;
+        for (let idx = 0; idx < this.shoppingCart.length; idx++) {
+          if (this.shoppingCart[idx]._id === event._id) {
+            index = idx;
+            break;
+          }
+        }
+
+        this.shoppingCart.splice(index, 1);
+        this.order.splice(index, 1);
+
+        this.calcTotalCounterProduct();
+        this.calcTotalPrice();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
   // Step Cart ========================================
 
   // Step Contacts ====================================
@@ -144,40 +202,5 @@ export class CartComponent implements OnInit {
       this.stepper.touchPayment = true;
       console.log("sds");
     }
-  }
-
-  gettingCounter(event: OrderEvent) {
-    let positionInList = -1;
-    this.order.forEach((element, idx) => {
-      if (element._id === event._id) {
-        positionInList = idx;
-        // return;
-      }
-    });
-    console.log(positionInList);
-
-    if (positionInList >= 0) {
-      this.order[positionInList].counter = event.counter;
-      if (
-        this.order[positionInList].counter >
-        this.shoppingCart[positionInList].counter
-      ) {
-        this.stepper.validityCart = false;
-      }
-
-      for (let idx = 0; idx < this.order.length; idx++) {
-        if (this.order[idx].counter > this.shoppingCart[idx].counter) {
-          this.stepper.validityCart = false;
-          break;
-        } else {
-          this.stepper.validityCart = true;
-        }
-      }
-    }
-
-    this.totalCounterProduct = 0;
-    this.order.forEach((element) => {
-      this.totalCounterProduct += element.counter;
-    });
   }
 }

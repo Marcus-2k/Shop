@@ -1,11 +1,9 @@
 .cart {
   width: 100%;
   &-header {
+    max-width: 1600px;
+    margin: 0 auto;
     margin-top: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 10px 0;
     @media (max-width: 1600px) {
       padding: 0 calc(10px + (15 - 10) * ((100vw - 320px) / (1600 - 320)));
     }

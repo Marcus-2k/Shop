@@ -6,7 +6,6 @@
 <div class="cart" *ngIf="!loader">
   <div class="cart-header">
     <h2 class="cart-header-title">Оформити замовлення</h2>
-    <button mat-raised-button (click)="test()">Test Function</button>
   </div>
   <div class="cart-content">
     <!--  -->
@@ -55,6 +54,7 @@
                   <app-product-card-shopping-cart
                     [productItem]="product"
                     (transferCounter)="gettingCounter($event)"
+                    (transferDelete)="gettingIdDelete($event)"
                   ></app-product-card-shopping-cart>
                 </li>
               </ul>

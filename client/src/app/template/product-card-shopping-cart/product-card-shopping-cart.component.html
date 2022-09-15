@@ -1,5 +1,4 @@
 <!--  -->
-<button mat-raised-button (click)="test()">TEST</button>
 <div class="shopping__card">
   <div class="display-none">{{ productItem?._id }}</div>
   <div class="shopping__card-content">
@@ -57,7 +56,9 @@
     </div>
     <!--  -->
     <div class="content-delete content-item">
-      <span class="material-symbols-outlined"> delete </span>
+      <button class="content-delete-btn" (click)="deleteProductCart()">
+        <span class="material-symbols-outlined"> delete </span>
+      </button>
     </div>
     <!--  -->
   </div>
