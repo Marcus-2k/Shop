@@ -12,4 +12,5 @@ export class CardSidebarAboutComponent {
   @Input() action?: boolean;
   @Input() actionPrice?: number;
   @Input() _id?: string;
+  @Input() counter?: number;
 }

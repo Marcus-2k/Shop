@@ -59,6 +59,7 @@
       <div class="content-about-cart">
         <app-card-shopping-cart
           [_idProduct]="productItem?._id"
+          *ngIf="productItem?.counter !== 0"
         ></app-card-shopping-cart>
       </div>
     </div>
