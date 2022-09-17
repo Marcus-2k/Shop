@@ -140,6 +140,8 @@ module.exports.update = async function (req, res) {
   } else if (req.body.action === "0") {
     updateProduct.action = false;
     updateProduct.actionPrice = -1;
+  } else if (req.body.actionPrice) {
+    updateProduct.actionPrice = Number(req.body.actionPrice);
   }
 
   if (req.body.counter) {
@@ -181,7 +183,7 @@ module.exports.update = async function (req, res) {
     updateProduct.description = req.body.description;
   }
 
-  // console.log(updateProduct);
+  console.log(updateProduct);
 
   try {
     const product = await Product.findOneAndUpdate(
