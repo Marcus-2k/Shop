@@ -6,6 +6,7 @@ import {
   OrderEvent,
   ShoppingCart,
 } from "src/app/shared/interface/interfaces";
+import { OtherDataService } from "src/app/shared/service/other-data.service";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
@@ -18,7 +19,8 @@ import { RequestUserService } from "src/app/shared/service/server/request-user.s
 export class CartComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
-    private requestUser: RequestUserService
+    private requestUser: RequestUserService,
+    private otherData: OtherDataService
   ) {}
 
   ngOnInit() {
@@ -89,8 +91,6 @@ export class CartComponent implements OnInit {
         this.totalActionPrice += element.price * this.order[idx].counter;
       }
     });
-    console.log(this.order);
-    console.log(this.shoppingCart);
   } // Total price
   calcTotalCounterProduct() {
     this.totalCounterProduct = 0;
@@ -132,7 +132,7 @@ export class CartComponent implements OnInit {
   }
   gettingIdDelete(event: DeleteCart) {
     this.requestUser.removeShoppingCart(event._id).subscribe(
-      (responce) => {
+      (responce: ShoppingCart) => {
         let index: number = 0;
         for (let idx = 0; idx < this.shoppingCart.length; idx++) {
           if (this.shoppingCart[idx]._id === event._id) {
@@ -143,6 +143,9 @@ export class CartComponent implements OnInit {
 
         this.shoppingCart.splice(index, 1);
         this.order.splice(index, 1);
+
+        this.otherData.shoppingCartListUser = responce.shoppingCart;
+        this.otherData.shoppingCartNumber = responce.shoppingCart.length;
 
         this.calcTotalCounterProduct();
         this.calcTotalPrice();
