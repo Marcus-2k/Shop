@@ -139,19 +139,14 @@
       width: 34.75%;
       position: sticky;
       top: 25px;
-      background-color: #fff;
+      background-color: whitesmoke;
       border-radius: 4px;
       padding: calc(5px + (20 - 5) * ((100vw - 320px) / (1920 - 320)));
       height: 500px;
-      .develop {
-        color: rgb(255, 25, 25);
-        font-size: 50px;
-        margin: 10px 0;
-        text-align: center;
-      }
       .sidebar-title {
         .title {
           font-size: 32px;
+          color: #535353;
         }
       }
       .sidebar-about {
@@ -172,6 +167,13 @@
             &-text {
               font-size: 16px;
               font-weight: 500;
+            }
+            .price {
+              color: gray;
+              text-decoration: line-through;
+            }
+            .price__action {
+              color: red;
             }
           }
         }

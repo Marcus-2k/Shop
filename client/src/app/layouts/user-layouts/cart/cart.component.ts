@@ -46,8 +46,6 @@ export class CartComponent implements OnInit {
 
         this.calcTotalCounterProduct();
         this.calcTotalPrice();
-
-        console.log(this.order);
       },
       (error) => {
         console.log(error);
@@ -79,22 +77,27 @@ export class CartComponent implements OnInit {
   totalActionPrice: number = 0;
 
   calcTotalPrice() {
-    this.shoppingCart.forEach((element) => {
-      this.totalPrice += element.price;
+    this.totalPrice = 0;
+    this.totalActionPrice = 0;
+
+    this.shoppingCart.forEach((element, idx) => {
+      this.totalPrice += element.price * this.order[idx].counter;
 
       if (element.action) {
-        this.totalActionPrice += element.actionPrice;
+        this.totalActionPrice += element.actionPrice * this.order[idx].counter;
       } else {
-        this.totalActionPrice += element.price;
+        this.totalActionPrice += element.price * this.order[idx].counter;
       }
     });
+    console.log(this.order);
+    console.log(this.shoppingCart);
   } // Total price
   calcTotalCounterProduct() {
+    this.totalCounterProduct = 0;
     this.order.forEach((element) => {
       this.totalCounterProduct += element.counter;
     });
   } // The total amount of purchased goods
-
   gettingCounter(event: OrderEvent) {
     let positionInList = -1;
     this.order.forEach((element, idx) => {
@@ -124,12 +127,9 @@ export class CartComponent implements OnInit {
       }
     }
 
-    this.totalCounterProduct = 0;
-    this.order.forEach((element) => {
-      this.totalCounterProduct += element.counter;
-    });
+    this.calcTotalCounterProduct();
+    this.calcTotalPrice();
   }
-
   gettingIdDelete(event: DeleteCart) {
     this.requestUser.removeShoppingCart(event._id).subscribe(
       (responce) => {

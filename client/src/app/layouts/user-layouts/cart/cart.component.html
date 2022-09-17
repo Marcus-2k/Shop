@@ -235,8 +235,6 @@
     <!--  -->
     <aside class="cart-content-sidebar">
       <!--  -->
-      <div class="develop">IN DEVELOP</div>
-
       <div class="sidebar-title">
         <h2 class="title">Разом</h2>
       </div>
@@ -252,23 +250,22 @@
           </div>
           <!--  -->
           <div class="price-content">
-            <!-- <p class="price-action">
-              {{ totalActionPrice | price }}
-              <span class="currency">₴</span>
-            </p> -->
-            <p class="price-content-text">
+            <p
+              class="price-content-text price"
+              *ngIf="totalActionPrice < totalPrice"
+            >
               {{ totalPrice | price }}
+              <span class="currency">₴</span>
+            </p>
+            <p
+              class="price-content-text"
+              [ngClass]="{ price__action: totalActionPrice < totalPrice }"
+            >
+              {{ totalActionPrice | price }}
               <span class="currency">₴</span>
             </p>
           </div>
           <!--  -->
-        </div>
-        <div class="about-result">
-          <p class="result-title">До сплати</p>
-          <p class="result-price">
-            {{ totalPrice | price }}
-            <span class="currency">₴</span>
-          </p>
         </div>
       </div>
       <!--  -->
