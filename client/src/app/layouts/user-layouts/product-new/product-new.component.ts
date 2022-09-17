@@ -600,6 +600,8 @@ export class ProductNewComponent implements OnInit {
           formData.append("action", "1"); // 1 == true
           formData.append("actionPrice", this.actionPrice.toString()); // 4050 >>> "4050"
         }
+      } else if (this.up_Product.actionPrice !== this.actionPrice) {
+        formData.append("actionPrice", this.actionPrice.toString()); // 4050 >>> "4050"
       }
       if (this.up_Product.counter !== this.counterProduct) {
         formData.append("counter", this.counterProduct.toString()); // 5 >>> "5"
