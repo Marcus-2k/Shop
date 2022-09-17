@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, DoCheck } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { LinkNavigate, Product } from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
@@ -9,7 +9,7 @@ import { RenameTitleService } from "src/app/shared/service/rename-title.service"
   templateUrl: "./card.component.html",
   styleUrls: ["./card.component.scss"],
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, DoCheck {
   constructor(
     private route: ActivatedRoute,
     private categoryName: CategoryProductService,
@@ -17,8 +17,9 @@ export class CardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log("Start ngOnInit Card");
+
     this.route.data.subscribe((responce: any) => {
-      console.log("Start ngOnInit Card");
       // console.log(responce["product"]);
       this.product = responce["product"];
 
@@ -49,7 +50,10 @@ export class CardComponent implements OnInit {
       // Navigation
     });
   }
-
+  ngDoCheck(): void {
+    const locationPage = window.location.pathname.split("/")[3];
+    this.navBar(locationPage);
+  }
   // Bread Crumbs ==========================================================================================================
   levelOne?: string;
   levelTwo?: string;
