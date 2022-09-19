@@ -9,12 +9,16 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   controller.getUserInfo
 );
-
 router.patch(
   "/",
   passport.authenticate("jwt", { session: false }),
   upload.single("image"),
   controller.editUser
+);
+router.patch(
+  "/password/",
+  passport.authenticate("jwt", { session: false }),
+  controller.editPasswordUser
 );
 
 // ==== Favorite ====================================================================================================

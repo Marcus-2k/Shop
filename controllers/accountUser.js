@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Product = require("../models/Product");
 const jwt_decode = require("jwt-decode");
 const fs = require("fs");
+const bcrypt = require("bcryptjs");
 
 module.exports.getUserInfo = async function (req, res) {
   try {
@@ -21,7 +22,6 @@ module.exports.getUserInfo = async function (req, res) {
     });
   }
 };
-
 module.exports.editUser = async function (req, res) {
   console.log("Сервер editUser");
 
@@ -70,6 +70,43 @@ module.exports.editUser = async function (req, res) {
       res
         .status(404)
         .json({ message: "Помилка такого користувача немає в БД." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Помилка: Користувача не оновлено, спробуйте пізнеше.",
+    });
+  }
+};
+module.exports.editPasswordUser = async function (req, res) {
+  console.log("Server editPasswordUser");
+
+  try {
+    const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
+
+    const user = await User.findOne({ email: tokenDecode.email });
+
+    const passwordResult = bcrypt.compareSync(
+      req.body.oldPassword,
+      user.password
+    ); // Password validity check
+
+    console.log(passwordResult);
+    if (passwordResult) {
+      const salt = bcrypt.genSaltSync(10);
+      const newPassword = {
+        password: bcrypt.hashSync(req.body.newPassword, salt),
+      };
+
+      const newUser = await User.findByIdAndUpdate(
+        { _id: user._id },
+        { $set: newPassword },
+        { new: true }
+      );
+
+      res.status(200).json({ message: true });
+    } else {
+      res.status(200).json({ message: false });
     }
   } catch (error) {
     console.log(error);
