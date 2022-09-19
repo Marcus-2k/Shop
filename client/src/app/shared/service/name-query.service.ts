@@ -18,11 +18,17 @@ export class NameQueryService {
     "Гарантія",
     "Обсяг SSD",
     "Обсяг HDD",
+    "Тип матриці",
+    "Частота оновлення екрану",
+    "Безпека",
+    "Матеріал корпусу",
+    "Країна-виробник",
+    "Стандарт зв'язку",
   ];
 
   nameForServer: string[] = [
     "operating_system",
-    "cpu_pc",
+    "cpu",
     "video_card",
     "screen_diagonal",
     "drive_type",
@@ -32,5 +38,11 @@ export class NameQueryService {
     "guarantee",
     "ssd",
     "hdd",
+    "type_matrix",
+    "screen_refresh_rate",
+    "guard",
+    "body_material",
+    "made_in",
+    "communication",
   ];
 }
