@@ -1,0 +1,42 @@
+.settings {
+  margin-top: 25px;
+  &__content {
+    max-width: 1600px;
+    margin: 0 auto;
+    &-header {
+    }
+    .header {
+      &__title {
+        color: #535353;
+      }
+    }
+    &-form {
+    }
+    .form {
+      &-item {
+        &-section {
+          display: flex;
+          align-items: center;
+          &-title {
+            color: #535353;
+            width: 200px;
+          }
+          &-error {
+            margin-left: 25px;
+            .error__input {
+              color: red;
+            }
+          }
+        }
+      }
+      &-password {
+      }
+    }
+  }
+}
+
+@media (max-width: 1600px) {
+  .settings {
+    padding: 0 15px;
+  }
+}

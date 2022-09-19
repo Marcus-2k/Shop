@@ -1,1 +1,126 @@
-<p>settings works!</p>
+<!--  -->
+<div class="settings">
+  <div class="settings__content">
+    <!--  -->
+    <div class="settings__content-header header">
+      <h2 class="header__title">Налаштування облікового запису</h2>
+      <hr />
+    </div>
+    <!--  -->
+    <div class="settings__content-form form">
+      <!-- ============================================================== -->
+      <div class="form-item form-password">
+        <div class="form-item-section">
+          <p class="form-item-section-title">Новий пароль</p>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Новий пароль</mat-label>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              required
+              id="password"
+              [(ngModel)]="password"
+              [min]="minPassword"
+              [max]="maxPassword"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hidePassword = !hidePassword"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hidePassword"
+            >
+              <mat-icon>{{
+                hidePassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <div class="form-item-section">
+          <p class="form-item-section-title">Повторіть новий пароль</p>
+
+          <mat-form-field appearance="fill" #form>
+            <mat-label>Повторіть новий пароль</mat-label>
+            <input
+              matInput
+              [type]="hideRepeatPassword ? 'password' : 'text'"
+              required
+              id="repeat__password"
+              [(ngModel)]="repeatPassword"
+              [min]="minPassword"
+              [max]="maxPassword"
+              #inputRepeatPassword
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hideRepeatPassword = !hideRepeatPassword"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hideRepeatPassword"
+            >
+              <mat-icon>{{
+                hideRepeatPassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <div
+            class="form-item-section-error"
+            *ngIf="password !== repeatPassword"
+          >
+            <p class="error__input">Паролі повинні співпадати</p>
+          </div>
+        </div>
+
+        <div class="form-item-section">
+          <p class="form-item-section-title">Введіть старий пароль</p>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Старий пароль</mat-label>
+            <input
+              matInput
+              [type]="hideOldPassword ? 'password' : 'text'"
+              required
+              id="old__password"
+              [(ngModel)]="oldPassword"
+              [min]="minPassword"
+              [max]="maxPassword"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hideOldPassword = !hideOldPassword"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hideOldPassword"
+            >
+              <mat-icon>{{
+                hideOldPassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-item form-submit">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="submitForm()"
+          [disabled]="
+            password !== repeatPassword ||
+            password.length <= minPassword ||
+            password.length > maxPassword ||
+            oldPassword.length > maxPassword ||
+            oldPassword.length <= minPassword ||
+            buttonValidity
+          "
+        >
+          Зберегти
+        </button>
+      </div>
+      <!-- ============================================================== -->
+    </div>
+    <!--  -->
+  </div>
+</div>

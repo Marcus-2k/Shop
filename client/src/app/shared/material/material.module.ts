@@ -17,6 +17,7 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { MatTabsModule } from "@angular/material/tabs";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatIconModule } from "@angular/material/icon";
 
 const Material = [
   MatSelectModule,
@@ -36,6 +37,7 @@ const Material = [
   MatTabsModule,
   DragDropModule,
   MatPaginatorModule,
+  MatIconModule,
 ];
 
 @NgModule({

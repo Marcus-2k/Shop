@@ -21,11 +21,22 @@ export class RequestUserService {
   getUserInfo(): Observable<User> {
     return this.http.get<User>(`${this.url_server}/user/`);
   }
-
   userUpInfo(newUser: FormData): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(
       `${this.url_server}/user/`,
       newUser
+    );
+  }
+  editPassword(
+    newPassword: string,
+    oldPassword: string
+  ): Observable<{ message: boolean }> {
+    return this.http.patch<{ message: boolean }>(
+      `${this.url_server}/user/password/`,
+      {
+        newPassword,
+        oldPassword,
+      }
     );
   }
 
