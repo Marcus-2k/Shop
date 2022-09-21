@@ -106,7 +106,8 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
       (res) => {
         console.log(res.message);
         this.auth.setToken(null); // Delete token client
-        localStorage.clear(); // Delete token localStorage
+        localStorage.removeItem("auth-token"); // Delete token localStorage
+        localStorage.removeItem("_id"); // Delete _id user localStorage
       },
       (e) => {
         console.log(e);
