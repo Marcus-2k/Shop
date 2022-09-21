@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   Favorite,
+  Product,
   ShoppingCart,
   User,
   Wish,
@@ -38,6 +39,16 @@ export class RequestUserService {
         oldPassword,
       }
     );
+  }
+  getAuthUserHistoryView(): Observable<{ history__view: Product[] }> {
+    return this.http.get<{ history__view: Product[] }>(
+      `${this.url_server}/user/history/`
+    );
+  }
+  newHistoryView(id: string): Observable<any> {
+    return this.http.patch<any>(`${this.url_server}/user/history/`, {
+      id,
+    });
   }
 
   // Favorite ============================================================

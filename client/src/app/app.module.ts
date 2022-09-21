@@ -80,6 +80,7 @@ import { ProductCardElementPriceComponent } from "./template/components/product-
 import { ProductCardComponent } from "./template/product-card/product-card.component";
 import { ProductCardUserComponent } from "./template/product-card-user/product-card-user.component";
 import { CatalogComponent } from "./template/catalog/catalog.component";
+import { HistoryViewComponent } from "./template/history-view/history-view.component";
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import { CatalogComponent } from "./template/catalog/catalog.component";
     ProductCardComponent,
     ProductCardUserComponent,
     CatalogComponent,
+    HistoryViewComponent,
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@
     </aside>
     <!--  -->
     <div class="home__content-main">
+      <!-- Slider Swiper START -->
       <swiper [config]="config">
         <ng-template swiperSlide *ngFor="let itemNews of news">
           <div class="image__container">
@@ -23,6 +24,15 @@
           </div>
         </ng-template>
       </swiper>
+      <!-- Slider Swiper END -->
+      <!-- History-View START -->
+      <div class="main-history">
+        <h2 class="main-history-title" *ngIf="history__view.length > 0">
+          Історія останніх переглядів
+        </h2>
+        <app-history-view [history]="history__view"></app-history-view>
+      </div>
+      <!-- History-View END -->
     </div>
     <!--  -->
   </div>

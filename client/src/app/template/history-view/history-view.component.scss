@@ -1,0 +1,16 @@
+.main-history-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  .history__list-item {
+    width: 25%;
+    height: 450px;
+    @media (max-width: 1250px) {
+      width: 33.3%;
+    }
+    @media (max-width: 767px) {
+      width: 25%;
+    }
+  }
+}

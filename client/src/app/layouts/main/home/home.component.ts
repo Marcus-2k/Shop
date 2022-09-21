@@ -1,8 +1,15 @@
 import { Component, OnInit } from "@angular/core";
-import { CategoryProduct, News } from "src/app/shared/interface/interfaces";
+import {
+  CategoryProduct,
+  News,
+  Product,
+} from "src/app/shared/interface/interfaces";
 import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { AuthService } from "src/app/shared/service/server/auth.service";
+import { RequestGuestService } from "src/app/shared/service/server/request-guest.service";
 import { RequestNewsService } from "src/app/shared/service/server/request-news.service";
+import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 
 import Swiper, { Autoplay } from "swiper";
 import { Navigation, Pagination, SwiperOptions } from "swiper";
@@ -16,7 +23,10 @@ export class HomeComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
     private requestNews: RequestNewsService,
-    private categoryName: CategoryProductService
+    private categoryName: CategoryProductService,
+    private auth: AuthService,
+    private requestUser: RequestUserService,
+    private requestGuest: RequestGuestService
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +45,32 @@ export class HomeComponent implements OnInit {
     Swiper.use([Navigation, Pagination, Autoplay]);
     if (document.documentElement.clientWidth < 1024) {
       this.config.navigation = false;
+    }
+
+    if (this.auth.isAuthenticated()) {
+      this.requestUser.getAuthUserHistoryView().subscribe(
+        (responce) => {
+          console.log(responce);
+          this.history__view = responce.history__view;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } else {
+      const history = localStorage.getItem("history-view");
+
+      if (history) {
+        this.requestGuest.getGuestHistoryView(history.split(",")).subscribe(
+          (responce) => {
+            console.log(responce);
+            this.history__view = responce.history__view;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     }
 
     this.categoryProduct = this.categoryName.categoryList;
@@ -62,5 +98,6 @@ export class HomeComponent implements OnInit {
 
   news: News[] = [];
 
+  history__view: Product[] = [];
   // Main END ==============================================================================
 }
