@@ -32,6 +32,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  history__view: {
+    type: Array,
+    required: true,
+  },
   favorite: {
     type: Array,
     require: true,

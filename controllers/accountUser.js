@@ -115,6 +115,78 @@ module.exports.editPasswordUser = async function (req, res) {
     });
   }
 };
+module.exports.getHistoryUser = async function (req, res) {
+  console.log("Server getHistoryUser");
+
+  try {
+    const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
+
+    const user = await User.findOne({ email: tokenDecode.email });
+    if (user) {
+      let product = [];
+
+      for (let i = 0; i < user.history__view.length; i++) {
+        const itemProduct = await Product.findById(user.history__view[i]);
+        product.push(itemProduct);
+      }
+
+      product.reverse();
+
+      res.status(200).json({ history__view: product });
+    } else {
+      res.status(200).json({ message: "Користувач не існує" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Помилка: Користувача не оновлено, спробуйте пізніше",
+    });
+  }
+};
+module.exports.newHistoryUser = async function (req, res) {
+  console.log("Server newHistoryUser");
+
+  try {
+    const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
+
+    let user = await User.findOne({ email: tokenDecode.email });
+
+    if (user) {
+      if (user.history__view.indexOf(req.body.id) === -1) {
+        await User.updateOne(
+          { _id: user._id },
+          { $push: { history__view: req.body.id } },
+          { new: true }
+        );
+        res
+          .status(200)
+          .json({ message: "Успішно додано в історію переглядів" });
+      } else {
+        // Delete product from history and add to the first place
+        await User.updateOne(
+          { _id: user._id },
+          { $pull: { history__view: req.body.id } },
+          { new: true }
+        );
+        await User.updateOne(
+          { _id: user._id },
+          { $push: { history__view: req.body.id } },
+          { new: true }
+        );
+        res
+          .status(200)
+          .json({ message: "Успішно додано в історію на перше місце" });
+      }
+    } else {
+      res.status(401).json({ message: "Користувач не існує" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      message: "Помилка: Користувача не оновлено, спробуйте пізніше",
+    });
+  }
+};
 
 // ==== Favorite ====================================================================================================
 module.exports.getFavorite = async function (req, res) {

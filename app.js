@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/accountUser");
+const guestRoutes = require("./routes/guest");
 const sellerRoutes = require("./routes/seller");
 const newsRoutes = require("./routes/news");
 const cardRoutes = require("./routes/card");
@@ -66,6 +67,7 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/account/product", productRoutes);
 app.use("/api/account/user", userRoutes);
+app.use("/api/guest/", guestRoutes);
 
 app.use("/api/card", cardRoutes);
 app.use("/api/seller", sellerRoutes);

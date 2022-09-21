@@ -20,6 +20,16 @@ router.patch(
   passport.authenticate("jwt", { session: false }),
   controller.editPasswordUser
 );
+router.get(
+  "/history/",
+  passport.authenticate("jwt", { session: false }),
+  controller.getHistoryUser
+);
+router.patch(
+  "/history/",
+  passport.authenticate("jwt", { session: false }),
+  controller.newHistoryUser
+);
 
 // ==== Favorite ====================================================================================================
 router.get(
