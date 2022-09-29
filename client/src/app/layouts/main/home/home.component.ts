@@ -1,12 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  CategoryProduct,
-  News,
-  Product,
-} from "src/app/shared/interface/interfaces";
-import { CategoryProductService } from "src/app/shared/service/category-product.service";
+import { News, Product } from "src/app/shared/interface/interfaces";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
+import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 import { RequestGuestService } from "src/app/shared/service/server/request-guest.service";
 import { RequestNewsService } from "src/app/shared/service/server/request-news.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
@@ -23,14 +19,14 @@ export class HomeComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
     private requestNews: RequestNewsService,
-    private categoryName: CategoryProductService,
+    private requestCatalog: RequestCatalogService,
     private auth: AuthService,
     private requestUser: RequestUserService,
     private requestGuest: RequestGuestService
   ) {}
 
   ngOnInit(): void {
-    console.log("Start ngOnInit HOME");
+    console.log("Start ngOnInit Home");
 
     this.requestNews.getAllNews().subscribe(
       (responce) => {
@@ -73,13 +69,21 @@ export class HomeComponent implements OnInit {
       }
     }
 
-    this.categoryProduct = this.categoryName.categoryList;
+    this.requestCatalog.getCategoryHome().subscribe(
+      (responce) => {
+        console.log(responce);
+        this.categoryProductList = responce;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
 
     this.renameTitle.renameTitleSite("Інтернет-Магазин");
   }
 
   // Aside START ===========================================================================
-  categoryProduct: CategoryProduct[] = [];
+  categoryProductList: string[] = [];
   // Aside END =============================================================================
   // Main START ============================================================================
   config: SwiperOptions = {
