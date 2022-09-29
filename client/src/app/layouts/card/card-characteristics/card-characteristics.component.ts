@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Data } from "@angular/router";
 import { Options } from "src/app/shared/interface/interfaces";
-import { ProductCharacteristics } from "src/app/shared/interface/interfaces";
-import { CategoryProductService } from "src/app/shared/service/category-product.service";
 
 @Component({
   selector: "app-card-characteristics",
@@ -10,10 +8,7 @@ import { CategoryProductService } from "src/app/shared/service/category-product.
   styleUrls: ["./card-characteristics.component.scss"],
 })
 export class CardCharacteristicsComponent implements OnInit {
-  constructor(
-    private route: ActivatedRoute,
-    private catagoryName: CategoryProductService
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Characteristics");
@@ -21,17 +16,13 @@ export class CardCharacteristicsComponent implements OnInit {
     this.route.data.subscribe(
       (responce: Data) => {
         console.log(responce["productCharacteristics"]);
-        this.productCharacteristics = responce["productCharacteristics"];
 
-        this.loader = false;
-        this.category = responce["productCharacteristics"].category;
         this.characteristics =
           responce["productCharacteristics"].characteristics;
-
         this.characteristicsName =
-          this.catagoryName.categoryList[this.category[0]].nameListCategory[
-            this.category[1]
-          ].subNameListCategory[this.category[2]].characteristics;
+          responce["productCharacteristics"].characteristicsName;
+
+        this.loader = false;
       },
       (error) => {
         console.log(error);
@@ -41,10 +32,6 @@ export class CardCharacteristicsComponent implements OnInit {
 
   loader: boolean = true;
 
-  productCharacteristics?: ProductCharacteristics;
-
-  category: number[] = [];
   characteristics: number[] = [];
-
   characteristicsName: Options[] = [];
 }

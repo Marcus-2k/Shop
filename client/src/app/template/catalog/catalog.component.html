@@ -2,7 +2,11 @@
 <div class="catalog">
   <div class="catalog__content category">
     <!--  -->
-    <div class="category-first">
+    <div class="content-element-center" *ngIf="loader">
+      <mat-spinner></mat-spinner>
+    </div>
+    <!--  -->
+    <div class="category-first" *ngIf="!loader">
       <ul class="category-first-list">
         <li
           class="category-first-list-item list__item"
@@ -20,7 +24,7 @@
       </ul>
     </div>
     <!--  -->
-    <div class="category-subfirst">
+    <div class="category-subfirst" *ngIf="!loader">
       <ul class="category-subfirst-list">
         <li
           class="category-subfirst-list-item"

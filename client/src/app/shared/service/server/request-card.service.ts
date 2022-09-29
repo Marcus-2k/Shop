@@ -2,13 +2,13 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
-  Product,
-  ProductAccessories,
+  ProductCard,
+  ProductInfo,
   ProductCharacteristics,
   ProductComments,
-  ProductInfo,
-  ProductPhoto,
   ProductQuestions,
+  ProductAccessories,
+  ProductPhoto,
 } from "../../interface/interfaces";
 
 @Injectable({
@@ -21,8 +21,8 @@ export class RequestCardService {
   private PORT: string = ":5000";
   private url_server: string = `http://${this.HOST}${this.PORT}/api/card`;
 
-  getByIdCard(id: string): Observable<Product> {
-    return this.http.get<Product>(`${this.url_server}/${id}`);
+  getByIdCard(id: string): Observable<ProductCard> {
+    return this.http.get<ProductCard>(`${this.url_server}/${id}`);
   }
 
   getByIdCardInfo(id: string): Observable<ProductInfo> {

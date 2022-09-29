@@ -18,12 +18,15 @@
         >{{ levelOne }}</span
       >
 
-      <span class="material-symbols-outlined"> navigate_next </span>
+      <span class="material-symbols-outlined" *ngIf="levelTwo">
+        navigate_next
+      </span>
 
       <span
         [matTooltip]="levelTwo ? levelTwo : ''"
         routerLink="/"
         class="breadcrumbs-item"
+        *ngIf="levelTwo"
         >{{ levelTwo }}</span
       >
 
