@@ -62,7 +62,7 @@ module.exports.register = async function (req, res) {
     const salt = bcrypt.genSaltSync(10);
     const password = req.body.password;
     const user = new User({
-      avatar: "",
+      avatar: null,
       name: req.body.name,
       lastName: null,
       email: req.body.email,

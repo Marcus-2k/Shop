@@ -8,10 +8,9 @@ module.exports.getUserInfo = async function (req, res) {
   try {
     console.log("Сервер getUserInfo");
 
-    const user = await User.findOne(
-      {},
-      { password: 0, __v: 0, _id: 1 },
-      { _id: req.user.id }
+    const user = await User.findById(
+      { _id: req.user.id },
+      { password: 0, __v: 0, _id: 1 }
     );
 
     res.status(200).json(user);
@@ -149,7 +148,9 @@ module.exports.newHistoryUser = async function (req, res) {
   try {
     const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
 
-    let user = await User.findOne({ email: tokenDecode.email });
+    console.log(tokenDecode);
+    console.log(req.body);
+    let user = await User.findById({ _id: tokenDecode.userId });
 
     if (user) {
       if (user.history__view.indexOf(req.body.id) === -1) {

@@ -51,7 +51,7 @@ module.exports.create = async function (req, res) {
     });
 
     // Keywords ========================================================================
-    const keyWords = req.body.keyWords.split(" ");
+    const keywords = req.body.keywords.split(" ");
 
     // Category ========================================================================
     const category = req.body.category.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
@@ -83,7 +83,7 @@ module.exports.create = async function (req, res) {
       category,
       characteristics,
       status,
-      keyWords,
+      keywords,
       description: req.body.description,
       comments: [],
       questions: [],
