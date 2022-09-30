@@ -2,17 +2,17 @@ import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
-  CategoryProduct,
   Product,
   ActiveFilter,
   Options,
   ActiveFilterBlock,
+  CategoryProduct_Characteristics,
 } from "src/app/shared/interface/interfaces"; // Interface
 
 // Service
-import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { NameQueryService } from "src/app/shared/service/name-query.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private searchService: RequestSearchService,
-    private catagoryName: CategoryProductService,
+    private requestCatalog: RequestCatalogService,
     private originalAndQueryName: NameQueryService,
     private showNotice: ShowNoticeService,
     private renameTitle: RenameTitleService
@@ -68,118 +68,128 @@ export class SearchComponent implements OnInit {
           this.maxPage = response.maxPage; // Max pages site
           this.limit = response.limit; // Limits item site
           // ==============================================================================================
-          this.categoryNameDB = this.catagoryName.categoryList; // import from category-product.service.ts
-          this.originalName = this.originalAndQueryName.originalName;
-          this.nameForServer = this.originalAndQueryName.nameForServer;
-          // ==============================================================================================
-          let optionsListBlockCategory: Options[][] = []; // Options Product List
-          this.uniqueCategory.forEach((element: number[], idx: number) => {
-            optionsListBlockCategory.push(
-              this.categoryNameDB[element[0]].nameListCategory[element[1]]
-                .subNameListCategory[element[2]].characteristics
-            );
-          });
-          console.log(optionsListBlockCategory);
-          // ==============================================================================================
-          let filterName: ActiveFilterBlock[] = [];
-          optionsListBlockCategory.forEach((element: Options[], index) => {
-            productOptionsBlock[index].forEach((item, idx) => {
-              let block: ActiveFilterBlock = {
-                name: element[idx].name,
-                inputActive: [],
-                blockActive: true,
-              };
-              item.forEach((items) => {
-                let item: ActiveFilter = {
-                  name: element[idx].select[items],
-                  counter: 0,
-                  active: false,
-                };
-                block.inputActive.push(item);
+          this.requestCatalog.getCategoryAndCharacteristics().subscribe(
+            (res: CategoryProduct_Characteristics[]) => {
+              console.log(res);
+              this.categoryNameDB = res;
+              this.originalName = this.originalAndQueryName.originalName;
+              this.nameForServer = this.originalAndQueryName.nameForServer;
+              // ==============================================================================================
+              let optionsListBlockCategory: Options[][] = []; // Options Product List
+              this.uniqueCategory.forEach((element: number[], idx: number) => {
+                optionsListBlockCategory.push(
+                  this.categoryNameDB[element[0]].nameListCategory[element[1]]
+                    .subNameListCategory[element[2]].characteristics
+                );
               });
-              filterName.push(block);
-            });
-          });
-          // ==============================================================================================
-          const uniqueFilter: ActiveFilterBlock[] = [];
-          filterName.forEach((element, idx) => {
-            if (idx === 0) {
-              uniqueFilter.push(element);
-            } else if (idx > 0) {
-              let flag = true;
-              for (let key of uniqueFilter) {
-                if (key.name === element.name) {
-                  key.inputActive = key.inputActive.concat(element.inputActive);
-                  flag = false;
-                }
-              }
-              if (flag) {
-                uniqueFilter.push(element);
-              }
-            }
-          });
-          // ==============================================================================================
-          let uniqueFilterBlock: ActiveFilterBlock[] = [];
-          uniqueFilter.forEach((element) => {
-            let uniqueFilterBlockItem: ActiveFilterBlock = {
-              name: element.name,
-              inputActive: [],
-              blockActive: true,
-            };
-            let inputActiveItem: ActiveFilter[] = [];
-            //
-            element.inputActive.forEach((item, index) => {
-              //
-              if (index === 0) {
-                inputActiveItem.push(item);
-              } else if (index > 0) {
-                //
-                let flag = true;
-                for (let key of inputActiveItem) {
-                  if (key.name === item.name) {
-                    flag = false;
-                    key.counter++;
+              console.log(optionsListBlockCategory);
+              // ==============================================================================================
+              let filterName: ActiveFilterBlock[] = [];
+              optionsListBlockCategory.forEach((element: Options[], index) => {
+                productOptionsBlock[index].forEach((item, idx) => {
+                  let block: ActiveFilterBlock = {
+                    name: element[idx].name,
+                    inputActive: [],
+                    blockActive: true,
+                  };
+                  item.forEach((items) => {
+                    let item: ActiveFilter = {
+                      name: element[idx].select[items],
+                      counter: 0,
+                      active: false,
+                    };
+                    block.inputActive.push(item);
+                  });
+                  filterName.push(block);
+                });
+              });
+              // ==============================================================================================
+              const uniqueFilter: ActiveFilterBlock[] = [];
+              filterName.forEach((element, idx) => {
+                if (idx === 0) {
+                  uniqueFilter.push(element);
+                } else if (idx > 0) {
+                  let flag = true;
+                  for (let key of uniqueFilter) {
+                    if (key.name === element.name) {
+                      key.inputActive = key.inputActive.concat(
+                        element.inputActive
+                      );
+                      flag = false;
+                    }
+                  }
+                  if (flag) {
+                    uniqueFilter.push(element);
                   }
                 }
-                if (flag) {
-                  inputActiveItem.push(item);
-                }
-              }
-              uniqueFilterBlockItem.inputActive = inputActiveItem;
-            });
-            uniqueFilterBlock.push(uniqueFilterBlockItem);
-          });
-          // ==============================================================================================
-          const parameters: string[] = Object.values(this.queryParams).splice(
-            1
-          );
-          parameters.pop(); //delete type_sort queryParams
-          parameters.pop(); //delete page queryParams
-          parameters.pop(); //delete limit queryParams
-          // ==============================================================================================
-          let sortParameters: string[] = [];
-          parameters.forEach((element: string, idx) => {
-            if (element.indexOf(",") !== -1) {
-              sortParameters = sortParameters.concat(element.split(","));
-            } else {
-              sortParameters.push(element);
-            }
-          });
-          // this.resetParameters = sortParameters;
-          uniqueFilterBlock.forEach((element: ActiveFilterBlock, i) => {
-            sortParameters.forEach((block) => {
-              element.inputActive.forEach((item, idx) => {
-                if (block === item.name) {
-                  uniqueFilterBlock[i].inputActive[idx].active = true;
+              });
+              // ==============================================================================================
+              let uniqueFilterBlock: ActiveFilterBlock[] = [];
+              uniqueFilter.forEach((element) => {
+                let uniqueFilterBlockItem: ActiveFilterBlock = {
+                  name: element.name,
+                  inputActive: [],
+                  blockActive: true,
+                };
+                let inputActiveItem: ActiveFilter[] = [];
+                //
+                element.inputActive.forEach((item, index) => {
+                  //
+                  if (index === 0) {
+                    inputActiveItem.push(item);
+                  } else if (index > 0) {
+                    //
+                    let flag = true;
+                    for (let key of inputActiveItem) {
+                      if (key.name === item.name) {
+                        flag = false;
+                        key.counter++;
+                      }
+                    }
+                    if (flag) {
+                      inputActiveItem.push(item);
+                    }
+                  }
+                  uniqueFilterBlockItem.inputActive = inputActiveItem;
+                });
+                uniqueFilterBlock.push(uniqueFilterBlockItem);
+              });
+              // ==============================================================================================
+              const parameters: string[] = Object.values(
+                this.queryParams
+              ).splice(1);
+              parameters.pop(); //delete type_sort queryParams
+              parameters.pop(); //delete page queryParams
+              parameters.pop(); //delete limit queryParams
+              // ==============================================================================================
+              let sortParameters: string[] = [];
+              parameters.forEach((element: string, idx) => {
+                if (element.indexOf(",") !== -1) {
+                  sortParameters = sortParameters.concat(element.split(","));
+                } else {
+                  sortParameters.push(element);
                 }
               });
-            });
-          });
-          // ==============================================================================================
-          this.listFilter = uniqueFilterBlock;
-          // ==============================================================================================
-          this.loader = false;
-          // ==============================================================================================
+              // this.resetParameters = sortParameters;
+              uniqueFilterBlock.forEach((element: ActiveFilterBlock, i) => {
+                sortParameters.forEach((block) => {
+                  element.inputActive.forEach((item, idx) => {
+                    if (block === item.name) {
+                      uniqueFilterBlock[i].inputActive[idx].active = true;
+                    }
+                  });
+                });
+              });
+              // ==============================================================================================
+              this.listFilter = uniqueFilterBlock;
+              // ==============================================================================================
+              this.loader = false;
+              // ==============================================================================================
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
         },
         (e) => {
           console.log(e);
@@ -220,7 +230,7 @@ export class SearchComponent implements OnInit {
 
   // Sidebar START ================================================================================
   uniqueCategory: number[][] = []; // Category List [ [1,0,0], [1,0,5] ... ]
-  categoryNameDB: CategoryProduct[] = []; // All Category, import from category-name.service.ts
+  categoryNameDB: CategoryProduct_Characteristics[] = []; // All Category, import from category-name.service.ts
 
   listFilter: ActiveFilterBlock[] = [];
 

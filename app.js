@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 // Router START
 const authRoutes = require("./routes/auth");
+const catalogRoutes = require("./routes/catalog");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/accountUser");
 const guestRoutes = require("./routes/guest");
@@ -64,6 +65,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)); // link to swagge
 
 // Router START ==========================================================================
 app.use("/api/auth", authRoutes);
+app.use("/api/catalog", catalogRoutes);
 
 app.use("/api/account/product", productRoutes);
 app.use("/api/account/user", userRoutes);

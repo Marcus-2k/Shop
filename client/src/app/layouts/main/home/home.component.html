@@ -4,12 +4,15 @@
     <!--  -->
     <aside class="home__content-aside">
       <ul class="aside-list">
-        <li class="aside-list-item" *ngFor="let category of categoryProduct">
+        <li
+          class="aside-list-item"
+          *ngFor="let category of categoryProductList"
+        >
           <span class="material-symbols-outlined aside-list-item-image">
             settings
           </span>
           <a href="" class="aside-list-item-link">
-            {{ category.nameCategory }}
+            {{ category }}
           </a>
         </li>
       </ul>

@@ -17,6 +17,18 @@ export interface Seller {
 }
 // Seller END ==========================================================================================
 // Product START =======================================================================================
+export interface ProductCard {
+  imageSrc: string[];
+  name: string;
+  price: number;
+  action: boolean;
+  actionPrice: number;
+  counter: number;
+  status: 0 | 1 | 2 | 3;
+  description: string;
+  user: string;
+  _id: string;
+}
 export interface Product {
   imageSrc: string[];
   name: string;
@@ -50,8 +62,8 @@ export interface ProductInfo {
   _id: string;
 }
 export interface ProductCharacteristics {
-  category: number[];
   characteristics: number[];
+  characteristicsName: Options[];
   _id: string;
 }
 export interface ProductComments {
@@ -159,16 +171,25 @@ export interface News {
 // Category START ======================================================================================
 export interface CategoryProduct {
   nameCategory: string;
-  nameListCategory: CategorList[];
+  nameListCategory: {
+    subNameCategory: string;
+    subNameListCategory: {
+      titleSubNameListCategory: string | undefined;
+    }[];
+  }[];
 }
-export interface CategorList {
-  subNameCategory: string;
-  subNameListCategory: CategorSubList[];
+
+export interface CategoryProduct_Characteristics {
+  nameCategory: string;
+  nameListCategory: {
+    subNameCategory: string;
+    subNameListCategory: {
+      titleSubNameListCategory: string | undefined;
+      characteristics: Options[];
+    }[];
+  }[];
 }
-export interface CategorSubList {
-  titleSubNameListCategory: string | undefined;
-  characteristics: Options[];
-}
+
 export interface Options {
   name: string; // example Operating System
   htmlElement: "select"; // html tag

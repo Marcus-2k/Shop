@@ -1,18 +1,33 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CategoryProduct } from "src/app/shared/interface/interfaces";
-import { CategoryProductService } from "src/app/shared/service/category-product.service";
+import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 
 @Component({
   selector: "app-catalog",
   templateUrl: "./catalog.component.html",
   styleUrls: ["./catalog.component.scss"],
 })
-export class CatalogComponent implements OnInit {
-  constructor(private categoryName: CategoryProductService) {}
+export class CatalogComponent implements OnInit, OnDestroy {
+  constructor(private requestCatalog: RequestCatalogService) {}
 
   ngOnInit(): void {
-    this.category = this.categoryName.categoryList;
+    this.requestCatalog.getCategory().subscribe(
+      (responce) => {
+        console.log(responce);
+        this.category = responce;
+
+        this.loader = false;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
+  ngOnDestroy(): void {
+    this.category = [];
+  }
+
+  loader: boolean = true;
 
   category: CategoryProduct[] = [];
 

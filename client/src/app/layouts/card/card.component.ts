@@ -1,7 +1,6 @@
 import { Component, OnInit, DoCheck } from "@angular/core";
 import { ActivatedRoute, Data } from "@angular/router";
 import { LinkNavigate, Product } from "src/app/shared/interface/interfaces";
-import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
@@ -14,7 +13,6 @@ import { RequestUserService } from "src/app/shared/service/server/request-user.s
 export class CardComponent implements OnInit, DoCheck {
   constructor(
     private route: ActivatedRoute,
-    private categoryName: CategoryProductService,
     private renameTitle: RenameTitleService,
     private auth: AuthService,
     private requestUser: RequestUserService
@@ -24,47 +22,37 @@ export class CardComponent implements OnInit, DoCheck {
     console.log("Start ngOnInit Card");
 
     this.route.data.subscribe((responce: Data) => {
-      // console.log(responce["product"]);
-      this.product = responce["product"];
-
-      this.renameTitle.renameTitleSite(responce["product"].name);
+      console.log(responce["product"]);
+      this.product = responce["product"].product;
 
       // Bread Crumbs
-      if (responce["product"].category.length === 3) {
-        this.levelOne =
-          this.categoryName.categoryList[
-            responce["product"].category[0]
-          ].nameListCategory[
-            responce["product"].category[1]
-          ].subNameListCategory[
-            responce["product"].category[2]
-          ].titleSubNameListCategory;
-        this.levelTwo =
-          this.categoryName.categoryList[
-            responce["product"].category[0]
-          ].nameListCategory[responce["product"].category[1]].subNameCategory;
-      }
-      this.location = responce["product"].name;
+      this.levelOne = responce["product"].breadCrumbs.levelOne;
+      this.levelTwo = responce["product"].breadCrumbs.levelTwo;
+      this.location = responce["product"].breadCrumbs.location;
       // Bread Crumbs
 
       // Title
-      this.titleProduct = responce["product"].name;
+      this.titleProduct = responce["product"].product.name;
       // Title
 
       // Navigation
       this.navBar(window.location.pathname.split("/")[3]);
       // Navigation
 
+      this.renameTitle.renameTitleSite(responce["product"].product.name);
+
       // if the user is authorized, we add his history to the database. If it is a guest, then add in localStorage
       if (this.auth.isAuthenticated()) {
-        this.requestUser.newHistoryView(responce["product"]._id).subscribe(
-          (responce) => {
-            console.log(responce); // Успішно додано в історію переглядів | Успішно додано в історію на перше місце
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        this.requestUser
+          .newHistoryView(responce["product"].product._id)
+          .subscribe(
+            (responce) => {
+              console.log(responce); // Успішно додано в історію переглядів | Успішно додано в історію на перше місце
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       } else {
         const historyLS: string | null = localStorage.getItem("history-view");
         if (historyLS) {

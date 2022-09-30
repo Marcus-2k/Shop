@@ -1,16 +1,20 @@
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
 import {
-  CategoryProduct,
+  Component,
+  ElementRef,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+} from "@angular/core";
+import { ActivatedRoute, Data } from "@angular/router";
+import {
+  CategoryProduct_Characteristics,
   Options,
   ProductUpdate,
 } from "src/app/shared/interface/interfaces";
-import { CategoryProductService } from "src/app/shared/service/category-product.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
-
+import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
-
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
@@ -18,21 +22,19 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
   templateUrl: "./product-new.component.html",
   styleUrls: ["./product-new.component.scss"],
 })
-export class ProductNewComponent implements OnInit {
+export class ProductNewComponent implements OnInit, OnDestroy {
   constructor(
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
-    private categoryName: CategoryProductService,
     private route: ActivatedRoute,
-    private renameTitle: RenameTitleService
+    private renameTitle: RenameTitleService,
+    private requestCatalog: RequestCatalogService
   ) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit Product-New");
 
-    this.categoryList = this.categoryName.categoryList;
-
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params: Data) => {
       const id: string = params["id"];
 
       if (params["id"]) {
@@ -52,8 +54,20 @@ export class ProductNewComponent implements OnInit {
         this.renameTitle.renameTitleSite("Створення товару");
       }
     });
-  }
 
+    this.requestCatalog.getCategoryAndCharacteristics().subscribe(
+      (responce) => {
+        console.log(responce);
+        this.categoryList = responce;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  ngOnDestroy(): void {
+    this.categoryList = [];
+  }
   test() {
     console.log("======================================");
     // console.log(this.imagesValidation);
@@ -248,7 +262,7 @@ export class ProductNewComponent implements OnInit {
   counterProduct: number = 10;
   // Counter END ===================================================================================================================================
   // Popuap Select Category START ==================================================================================================================
-  categoryList: CategoryProduct[] = []; // Category List
+  categoryList: CategoryProduct_Characteristics[] = []; // Category List
 
   popuapShow: boolean = false; // Popuap On/Off
   categorySelected: boolean = false; // Show select option
@@ -404,7 +418,7 @@ export class ProductNewComponent implements OnInit {
   }
   getCharacteristics() {
     this.characteristics =
-      this.categoryName.categoryList[this.categoryNumber[0]].nameListCategory[
+      this.categoryList[this.categoryNumber[0]].nameListCategory[
         this.categoryNumber[1]
       ].subNameListCategory[this.categoryNumber[2]].characteristics;
     this.recordCharacteristicsInArray();
