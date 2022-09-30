@@ -22,13 +22,13 @@
     }
     &-card {
       display: flex;
-      // justify-content: space-between;
       justify-content: center;
       flex-wrap: wrap;
       .catalog-card {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        width: 100%;
         &-item {
           width: 20%;
           height: 480px;
