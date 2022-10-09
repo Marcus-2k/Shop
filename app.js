@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const pasport = require("passport");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 // Router START
 const authRoutes = require("./routes/auth");
@@ -20,6 +21,7 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 // Swagger END
 
+require("dotenv").config();
 const app = express();
 
 const options = {
@@ -57,9 +59,12 @@ require("./middleware/passport")(pasport);
 app.use(require("morgan")("dev"));
 
 app.use("/uploads", express.static("uploads"));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(require("cors")());
+
+app.use(require("cors")({ credentials: true, origin: process.env.CLIENT_URL }));
+app.use(cookieParser());
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)); // link to swagger-docs
 
@@ -77,4 +82,5 @@ app.use("/api/news", newsRoutes);
 
 app.use("/api/search", searchRoutes);
 // Router END ============================================================================
+
 module.exports = app;

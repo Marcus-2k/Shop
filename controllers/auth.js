@@ -1,45 +1,41 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const jwt_decode = require("jwt-decode");
-const keys = require("../config/keys");
-// Model
-const User = require("../models/User");
-const Token = require("../models/Token");
+
+const UserDto = require("../dtos/user-dto");
+const UserModel = require("../models/User");
+
+const TokenService = require("../service/token-service");
 
 module.exports.login = async function (req, res) {
   console.log("Server login");
   try {
-    const candidate = await User.findOne({ email: req.body.email });
-    if (candidate) {
-      const passwordResult = bcrypt.compareSync(
-        req.body.password,
-        candidate.password
-      ); // Перевіка чи правильно користувач ввів пароль
-      if (passwordResult) {
-        const tokenDB = await new Token({
-          user_id: candidate._id,
-        }); // ID токена користувача який ввійшов в систему
-        const token = jwt.sign(
-          {
-            email: candidate.email,
-            userId: candidate._id,
-            tokenId: tokenDB._id,
-          },
-          keys.jwt,
-          { expiresIn: "24h" }
-        );
+    const user = await UserModel.findOne({ email: req.body.email });
 
-        tokenDB.save(); // Токен користувача який в системі
-        res.status(200).json({
-          token: `Bearer ${token}`,
+    if (user) {
+      const passwordValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      ); // Перевіка чи правильно користувач ввів пароль
+
+      if (passwordValid) {
+        const userDto = new UserDto(user);
+
+        const tokens = TokenService.generateTokens({ ...userDto });
+
+        await TokenService.saveToken(userDto.id, tokens.refreshToken);
+
+        res.cookie("refreshToken", tokens.refreshToken, {
+          maxAge: 30 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
         });
+
+        return res.status(201).json(tokens);
       } else {
-        res.status(401).json({
-          message: "Не вірний пароль або пошта.",
+        return res.status(401).json({
+          message: "Не вірний пароль.",
         });
       }
     } else {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Користувача з такою поштою не знайдено.",
       });
     }
@@ -53,64 +49,116 @@ module.exports.login = async function (req, res) {
 
 module.exports.register = async function (req, res) {
   console.log("Server register");
-  const candidate = await User.findOne({ email: req.body.email });
-  if (candidate) {
-    res.status(409).json({
-      message: "Користувач з цим емейлом уже створений, виберіть інший.",
-    });
-  } else {
-    const salt = bcrypt.genSaltSync(10);
-    const password = req.body.password;
-    const user = new User({
-      avatar: null,
-      name: req.body.name,
-      lastName: null,
-      email: req.body.email,
-      birthday: null,
-      country: null,
-      password: bcrypt.hashSync(password, salt),
-    });
-    try {
-      await user.save();
-      res.status(201).json({ user });
-    } catch (error) {
-      errorHandler(res, e);
+
+  console.log(req.body);
+  try {
+    const candidate = await UserModel.findOne({ email: req.body.email });
+
+    if (candidate) {
+      return res.status(409).json({
+        message: "Користувач з таким емейлом уже створений, виберіть інший.",
+      });
+    } else {
+      const salt = bcrypt.genSaltSync(10);
+      const hashPassword = bcrypt.hashSync(req.body.password, salt);
+
+      const user = await UserModel.create({
+        avatar: null,
+        name: req.body.name,
+        lastName: null,
+        email: req.body.email,
+        birthday: null,
+        country: null,
+        password: hashPassword,
+        history__view: [],
+        favorite: [],
+        shoppingCart: [],
+      });
+
+      const userDto = new UserDto(user);
+      const tokens = TokenService.generateTokens({ ...userDto });
+
+      await TokenService.saveToken(userDto.id, tokens.refreshToken);
+
+      res.cookie("refreshToken", tokens.refreshToken, {
+        httpOnly: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+
+      return res.status(201).json(tokens);
     }
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
+  }
+};
+
+module.exports.checking = async function (req, res) {
+  console.log("Server checking");
+
+  try {
+    const { refreshToken } = req.cookies;
+
+    const userData = TokenService.validateRefreshToken(refreshToken);
+    const tokenFromDB = await TokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDB) {
+      return res.status(401).json({ message: "Користувач не авторизований" });
+    }
+
+    return res.status(200);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
+  }
+};
+
+module.exports.refresh = async function (req, res) {
+  console.log("Server refresh");
+  try {
+    const { refreshToken } = req.cookies;
+    if (!refreshToken) {
+      return res.status(401).json({ message: "Користувач не авторизований" });
+    }
+
+    const userData = TokenService.validateRefreshToken(refreshToken);
+    const tokenFromDB = await TokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDB) {
+      return res.status(401).json({ message: "Користувач не авторизований" });
+    }
+
+    const user = await UserModel.findById(userData.id);
+    const userDto = new UserDto(user);
+    const tokens = TokenService.generateTokens({ ...userDto });
+    await TokenService.saveToken(userDto.id, tokens.refreshToken);
+
+    res.cookie("refreshToken", tokens.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+
+    return res.status(200).json(tokens);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
   }
 };
 
 module.exports.logout = async function (req, res) {
   console.log("Server logout");
   try {
-    const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
+    const { refreshToken } = req.cookies;
 
-    const user = await User.findById(tokenDecode.userId).catch((error) => {
-      console.log(error);
-      res.status(404).json({ message: "Такого користувача не знайдено" });
-    }); // Користувач який нажав "Logout"
+    const token = await TokenService.removeToken(refreshToken);
 
-    const token = await Token.findById(tokenDecode.tokenId).catch((error) => {
-      console.log(error);
-      res.status(404).json({ message: "Не коректний токен" });
-    }); // Токен який потрібно видалити з БД
+    res.clearCookie("refreshToken");
 
-    if (user && token) {
-      await Token.findByIdAndRemove(tokenDecode.tokenId)
-        .then(() => {
-          res.status(200).json({ message: "Токен видалено" });
-        })
-        .catch((error) => {
-          console.log(error);
-          res.status(500).json({
-            message: "Токен не видалено",
-          });
-        });
-    } else {
-      res.status(500).json({
-        message: "User and Token undefined",
-      });
-    }
-    // Якщо в БД є токен який потрібно видалити
+    return res.status(200).json(token);
   } catch (error) {
     console.log(error);
     res
