@@ -126,7 +126,7 @@ export interface ShoppingCart {
 }
 
 export interface Wish {
-  imageSrc: string[];
+  imageSrc: [string, string];
   name: string;
   price: number;
   action: boolean;
@@ -139,8 +139,8 @@ export interface WishChecked {
   _id: string;
 }
 
-export interface ShoppingCart {
-  imageSrc: string[];
+export interface ShoppingCartList {
+  imageSrc: [string];
   name: string;
   price: number;
   action: boolean;

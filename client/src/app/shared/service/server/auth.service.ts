@@ -15,23 +15,73 @@ export class AuthService {
   private PORT: string = ":5000";
   private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
-  register(user: UserRegister): Observable<any> {
-    return this.http.post<any>(`${this.url_server}/auth/register`, user);
-  }
-
-  login(user: UserLogin): Observable<{ token: string }> {
+  register(
+    user: UserRegister
+  ): Observable<{ accessToken: string; refreshToken: string }> {
     return this.http
-      .post<{ token: string }>(`${this.url_server}/auth/login`, user)
+      .post<{ accessToken: string; refreshToken: string }>(
+        `${this.url_server}/auth/register`,
+        user,
+        { withCredentials: true }
+      )
       .pipe(
-        tap(({ token }) => {
-          localStorage.setItem("auth-token", token);
-          this.setToken(token);
+        tap(({ accessToken }) => {
+          localStorage.setItem("auth-token", accessToken);
+          this.setToken(accessToken);
         })
       );
   }
 
-  logout(): Observable<{ message: string }> {
-    return this.http.get<{ message: string }>(`${this.url_server}/auth/logout`);
+  login(
+    user: UserLogin
+  ): Observable<{ accessToken: string; refreshToken: string }> {
+    return this.http
+      .post<{ accessToken: string; refreshToken: string }>(
+        `${this.url_server}/auth/login`,
+        user,
+        { withCredentials: true }
+      )
+      .pipe(
+        tap(({ accessToken }) => {
+          localStorage.setItem("auth-token", accessToken);
+          this.setToken(accessToken);
+        })
+      );
+  }
+
+  checking(): Observable<{ authorization: boolean }> {
+    return this.http.get<{ authorization: boolean }>(
+      `${this.url_server}/auth/checking`,
+      { withCredentials: true }
+    );
+  }
+
+  refresh(): Observable<{ accessToken: string; refreshToken: string }> {
+    return this.http
+      .get<{ accessToken: string; refreshToken: string }>(
+        `${this.url_server}/auth/refresh`,
+        { withCredentials: true }
+      )
+      .pipe(
+        tap(({ accessToken }) => {
+          localStorage.setItem("auth-token", accessToken);
+          this.setToken(accessToken);
+        })
+      );
+  }
+
+  logout(): Observable<any> {
+    return this.http
+      .get<any>(`${this.url_server}/auth/logout`, {
+        withCredentials: true,
+      })
+      .pipe(
+        tap(() => {
+          this.setToken(null);
+          localStorage.removeItem("auth-token");
+          localStorage.removeItem("_id");
+        })
+      );
   }
 
   setToken(token: string | null) {

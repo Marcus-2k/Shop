@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   avatar: {
-    type: String || undefined,
-    default: undefined,
+    type: String || null,
+    default: null,
     required: false,
   },
   name: {
@@ -12,7 +12,8 @@ const userSchema = new Schema({
     required: true,
   },
   lastName: {
-    type: String,
+    type: String || null,
+    default: null,
     required: false,
   },
   email: {
@@ -21,11 +22,13 @@ const userSchema = new Schema({
     unique: true,
   },
   birthday: {
-    type: Date,
+    type: Date || null,
+    default: null,
     required: false,
   },
   country: {
-    type: String,
+    type: String || null,
+    default: null,
     required: false,
   },
   password: {
@@ -33,15 +36,18 @@ const userSchema = new Schema({
     required: true,
   },
   history__view: {
-    type: Array,
+    type: [String],
+    default: [],
     required: true,
   },
   favorite: {
-    type: Array,
+    type: [String],
+    default: [],
     require: true,
   },
   shoppingCart: {
-    type: Array,
+    type: [String],
+    default: [],
     require: true,
   },
 });

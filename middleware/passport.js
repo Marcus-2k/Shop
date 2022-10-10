@@ -1,40 +1,21 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
-const mongoose = require("mongoose");
-const User = mongoose.model("users");
-const keys = require("../config/keys");
+
+const UserModel = require("../models/User");
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: keys.jwt,
+  secretOrKey: process.env.ACCESS_SECRET_JWT,
 };
 
 module.exports = (passport) => {
   passport.use(
     new JwtStrategy(options, async (payload, done) => {
-      // try {
-      //   const user = await User.findById(payload.userId).select(
-      //     "email id tokeId"
-      //   );
-      //   if (user) {
-      //     const token = await Token.find({ _id: payload.tokenId });
-      //     if (token.length !== 0) {
-      //       console.log("Токен є в БД");
-      //       done(null, user);
-      //     } else if (token.length === 0) {
-      //       console.log("Токена немає в БД");
-      //       done(null, false);
-      //     }
-      //   } else {
-      //     console.log("У токена закінчився час");
-      //     done(null, false);
-      //   }
-      // } catch (e) {
-      //   console.log(e);
-      // }
-      // console.log("Passport");
       try {
-        const user = await User.findById(payload.userId).select("email id");
+        const user = await UserModel.findById(
+          { _id: payload.id },
+          { email: 1 }
+        );
         if (user) {
           done(null, user);
         } else {

@@ -5,6 +5,7 @@ import {
   Order,
   OrderEvent,
   ShoppingCart,
+  ShoppingCartList,
 } from "src/app/shared/interface/interfaces";
 import { OtherDataService } from "src/app/shared/service/other-data.service";
 
@@ -27,8 +28,8 @@ export class CartComponent implements OnInit {
     console.log("Start ngOnInit Cart");
 
     this.requestUser.getShoppingCartList().subscribe(
-      (responce: ShoppingCart[]) => {
-        // console.log(responce);
+      (responce: ShoppingCartList[]) => {
+        console.log(responce);
         this.shoppingCart = responce;
 
         this.loader = false;
@@ -71,7 +72,7 @@ export class CartComponent implements OnInit {
   loader: boolean = true;
 
   // Step Cart ========================================
-  shoppingCart: ShoppingCart[] = [];
+  shoppingCart: ShoppingCartList[] = [];
   order: Order[] = [];
 
   totalCounterProduct: number = 0;

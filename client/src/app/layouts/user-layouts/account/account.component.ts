@@ -17,7 +17,7 @@ export class AccountComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
-    console.log("Start ngOnInit ACCOUNT");
+    console.log("Start ngOnInit Account");
 
     this.router.navigate(["/account/user"]);
     this.route.queryParams.subscribe((params: Params) => {
@@ -32,13 +32,6 @@ export class AccountComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    if (!this.auth.isAuthenticated()) {
-      this.router.navigate(["/login"], {
-        queryParams: {
-          sessionFail: true,
-        },
-      });
-    }
     if (this.router.url === "/account") {
       this.router.navigate(["/account/user"]);
     }
@@ -46,14 +39,12 @@ export class AccountComponent implements OnInit, DoCheck {
 
   logout() {
     this.auth.logout().subscribe(
-      (res) => {
-        console.log(res.message);
-        this.auth.setToken(null); // Delete token client
-        localStorage.clear(); // Delete token localStorage
+      (response) => {
+        console.log(response);
       },
       (e) => {
         console.log(e);
       }
     );
-  } // logout
+  }
 }
