@@ -58,20 +58,20 @@ export class CardComponent implements OnInit, DoCheck {
         if (historyLS) {
           let historyArray = historyLS.split(",");
 
-          if (historyArray.indexOf(responce["product"]._id) === -1) {
-            historyArray.unshift(responce["product"]._id);
+          if (historyArray.indexOf(responce["product"].product._id) === -1) {
+            historyArray.unshift(responce["product"].product._id);
 
             localStorage.setItem("history-view", historyArray.join(","));
           } else {
-            const index = historyArray.indexOf(responce["product"]._id);
+            const index = historyArray.indexOf(responce["product"].product._id);
 
             historyArray.splice(index, 1);
-            historyArray.unshift(responce["product"]._id);
+            historyArray.unshift(responce["product"].product._id);
 
             localStorage.setItem("history-view", historyArray.join(","));
           }
         } else {
-          localStorage.setItem("history-view", responce["product"]._id);
+          localStorage.setItem("history-view", responce["product"].product._id);
         }
       }
     });
