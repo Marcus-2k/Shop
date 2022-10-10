@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
   DeleteCart,
   OrderEvent,
-  ShoppingCart,
+  ShoppingCartList,
 } from "src/app/shared/interface/interfaces";
 
 @Component({
@@ -25,7 +25,7 @@ export class ProductCardShoppingCartComponent implements OnInit {
     }
   }
 
-  @Input() productItem?: ShoppingCart;
+  @Input() productItem?: ShoppingCartList;
 
   @Output() transferCounter = new EventEmitter();
   @Output() transferDelete = new EventEmitter();
