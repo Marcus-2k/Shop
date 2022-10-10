@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
+import { Favorite, ShoppingCart } from "src/app/shared/interface/interfaces";
 import { OtherDataService } from "src/app/shared/service/other-data.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
@@ -61,7 +62,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.form.value).subscribe(
       (res) => {
         console.log(res);
-        this.router.navigate(["/account"]);
+        this.router.navigate(["/account/user"]);
         this.initAfterLogin();
       },
       (e) => {
@@ -73,18 +74,20 @@ export class LoginComponent implements OnInit {
 
   initAfterLogin() {
     // Get favorite user
-    this.requestUser.getWishList().subscribe(
-      (responce) => {
-        this.otherData.favoriteNumber = responce.length;
+    this.requestUser.getFavorite().subscribe(
+      (responce: Favorite) => {
+        this.otherData.favoriteListUser = responce.favorite;
+        this.otherData.favoriteNumber = responce.favorite.length;
       },
       (error) => {
         console.log(error);
       }
     );
     // Get shopping cart user
-    this.requestUser.getShoppingCartList().subscribe(
-      (responce) => {
-        this.otherData.shoppingCartNumber = responce.length;
+    this.requestUser.getShoppingCart().subscribe(
+      (responce: ShoppingCart) => {
+        this.otherData.shoppingCartListUser = responce.shoppingCart;
+        this.otherData.shoppingCartNumber = responce.shoppingCart.length;
       },
       (error) => {
         console.log(error);

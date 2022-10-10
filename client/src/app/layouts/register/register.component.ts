@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
+import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
 @Component({
   selector: "app-register",
@@ -9,7 +10,11 @@ import { AuthService } from "src/app/shared/service/server/auth.service";
   styleUrls: ["./register.component.scss"],
 })
 export class RegisterComponent implements OnInit {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private showNotice: ShowNoticeService
+  ) {}
 
   form: FormGroup = new FormGroup({});
 
@@ -42,16 +47,15 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.form.disable();
     this.auth.register(this.form.value).subscribe(
-      (res) => {
-        console.log(res);
-        this.router.navigate(["/login"], {
-          queryParams: {
-            registered: true,
-          },
-        });
+      (response) => {
+        console.log(response);
+        this.router.navigate(["/account/user"]);
       },
-      (e) => {
-        console.log(e);
+      (error) => {
+        console.log(error);
+        if (error.error.message) {
+          this.showNotice.message(error.error.message);
+        }
         this.form.enable();
       }
     );
