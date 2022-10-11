@@ -2,10 +2,10 @@
 <div class="shopping__cart">
   <button
     class="shopping__cart-btn"
-    [ngClass]="{ btn__icon: typeBtn === 0, btn__text: typeBtn === 1 }"
     mat-button
+    [ngClass]="{ btn__icon: typeBtn === 0, btn__text: typeBtn === 1 }"
     (click)="addRemovefavorite()"
-    [disabled]="buttonDisabled"
+    [disabled]="buttonDisabled || counter === 0"
   >
     <span
       class="material-symbols-outlined"

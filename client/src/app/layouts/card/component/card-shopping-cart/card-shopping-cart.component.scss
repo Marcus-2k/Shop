@@ -3,6 +3,19 @@
   }
   .btn__icon {
     transition: 0.4s;
+    background-color: #fff;
+    border: 1px solid #fff;
+    &:disabled {
+      cursor: not-allowed;
+      &:hover {
+        color: #fff;
+        background-color: #fff;
+        border: 1px solid #fff;
+        .material-symbols-outlined {
+          color: green;
+        }
+      }
+    }
     &:hover {
       transition: 0.4s;
       background-color: rgba(0, 128, 0, 0.1);
@@ -22,6 +35,17 @@
     color: #fff;
     background-color: #3f51b5;
     border: 1px solid #3f51b5;
+    &:disabled {
+      cursor: not-allowed;
+      &:hover {
+        color: #fff;
+        background-color: #3f51b5;
+        border: 1px solid #3f51b5;
+        .material-symbols-outlined {
+          color: #fff;
+        }
+      }
+    }
     &:hover {
       transition: 0.4s;
       color: #3f51b5;

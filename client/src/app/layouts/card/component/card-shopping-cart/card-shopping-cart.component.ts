@@ -19,6 +19,7 @@ export class CardShoppingCartComponent implements OnInit {
   ) {}
 
   @Input() _idProduct?: string;
+  @Input() counter?: number;
   @Input() type?: number;
 
   ngOnInit(): void {
