@@ -36,6 +36,8 @@ export class WishlistComponent implements OnInit {
   }
 
   calcTotolPrice() {
+    this.totolPriceAction = 0;
+    this.totolPrice = 0;
     this.wishList.forEach((item) => {
       if (item.action) {
         this.totolPrice = this.totolPrice + item.actionPrice;
