@@ -1,23 +1,17 @@
-const User = require("../models/User");
+const UserModel = require("../models/User");
 
-// Seller START =====================================================================================================================
 module.exports.getByIdSeller = async function (req, res) {
+  console.log("Server getByIdSeller");
+
   try {
-    console.log("Server getByIdSeller");
-
-    console.log(req.params.id);
-
-    const seller = await User.findById(req.params.id, {
+    const seller = await UserModel.findById(req.params.id, {
       avatar: 1,
       name: 1,
     });
 
-    res.status(200).json(seller);
+    return res.status(200).json(seller);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
-// Seller END =======================================================================================================================

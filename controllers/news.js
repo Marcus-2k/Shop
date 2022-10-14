@@ -1,18 +1,14 @@
-const News = require("../models/News");
+const NewsModel = require("../models/News");
 
-// News START =====================================================================================================================
 module.exports.getAllNews = async function (req, res) {
+  console.log("Server getAllNews");
+
   try {
-    console.log("Server getAllNews");
+    const news = await NewsModel.find();
 
-    const news = await News.find();
-
-    res.status(200).json(news);
+    return res.status(200).json(news);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
-// News END =======================================================================================================================

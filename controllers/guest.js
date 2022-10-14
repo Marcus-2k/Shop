@@ -1,4 +1,4 @@
-const Product = require("../models/Product");
+const ProductModel = require("../models/Product");
 
 module.exports.getHistoryGuest = async function (req, res) {
   console.log("Server getHistoryGuest");
@@ -9,17 +9,15 @@ module.exports.getHistoryGuest = async function (req, res) {
     let product = [];
 
     for (let i = 0; i < idProducts.length; i++) {
-      let itemProduct = await Product.findById(idProducts[i]);
+      const itemProduct = await ProductModel.findById(idProducts[i]);
 
       itemProduct.imageSrc.splice(2, 7);
       product.push(itemProduct);
     }
 
-    res.status(200).json({ history__view: product });
+    return res.status(200).json({ history__view: product });
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Помилка: Користувача не оновлено, спробуйте пізніше",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
