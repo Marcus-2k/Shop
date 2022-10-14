@@ -17,18 +17,6 @@ export interface Seller {
 }
 // Seller END ==========================================================================================
 // Product START =======================================================================================
-export interface ProductCard {
-  imageSrc: string[];
-  name: string;
-  price: number;
-  action: boolean;
-  actionPrice: number;
-  counter: number;
-  status: 0 | 1 | 2 | 3;
-  description: string;
-  user: string;
-  _id: string;
-}
 export interface Product {
   imageSrc: string[];
   name: string;
@@ -46,39 +34,37 @@ export interface Product {
   user: string;
   _id: string;
 }
-export interface ProductInfo {
+export interface ProductCard {
   imageSrc: string[];
   name: string;
   price: number;
   action: boolean;
   actionPrice: number;
   counter: number;
-  category: number[];
-  characteristics: number[];
   status: 0 | 1 | 2 | 3;
-  keywords: string[];
   description: string;
   user: string;
-  _id: string;
+}
+export interface ProductInfo {
+  imageSrc: string[];
+  description: string;
 }
 export interface ProductCharacteristics {
   characteristics: number[];
   characteristicsName: Options[];
-  _id: string;
 }
 export interface ProductComments {
   comments: [];
-  _id: string;
 }
 export interface ProductQuestions {
   questions: [];
-  _id: string;
 }
 export interface ProductPhoto {
   imageSrc: string[];
-  _id: string;
 }
-export interface ProductAccessories {}
+export interface ProductAccessories {
+  accessories: [];
+}
 export interface ProductSearch {
   imageSrc: [string, string];
   name: string;
