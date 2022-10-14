@@ -53,6 +53,10 @@ const productSchema = new Schema({
     type: Array,
     required: true, // ....
   },
+  accessories: {
+    type: Array,
+    required: true, // ....
+  },
   user: {
     ref: "users",
     type: Schema.Types.ObjectId,

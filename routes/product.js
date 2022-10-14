@@ -13,7 +13,7 @@ router.get(
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  controller.getById
+  controller.getByIdProduct
 );
 
 router.patch(
@@ -29,7 +29,7 @@ router.patch(
     { name: "image-6" },
     { name: "image-7" },
   ]),
-  controller.update
+  controller.updateProduct
 );
 
 router.post(
@@ -45,13 +45,13 @@ router.post(
     { name: "image-6" },
     { name: "image-7" },
   ]),
-  controller.create
+  controller.createProduct
 );
 
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  controller.delete
+  controller.deleteProduct
 );
 
 module.exports = router;
