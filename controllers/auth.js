@@ -7,6 +7,7 @@ const TokenService = require("../service/token-service");
 
 module.exports.login = async function (req, res) {
   console.log("Server login");
+
   try {
     const user = await UserModel.findOne({ email: req.body.email });
 
@@ -14,7 +15,7 @@ module.exports.login = async function (req, res) {
       const passwordValid = bcrypt.compareSync(
         req.body.password,
         user.password
-      ); // Перевіка чи правильно користувач ввів пароль
+      ); // Перевіка чи правильно користувач ввів пароль >> true || false
 
       if (passwordValid) {
         const userDto = new UserDto(user);
@@ -30,7 +31,7 @@ module.exports.login = async function (req, res) {
 
         return res.status(201).json(tokens);
       } else {
-        return res.status(401).json({
+        return res.status(404).json({
           message: "Не вірний пароль.",
         });
       }
@@ -41,16 +42,13 @@ module.exports.login = async function (req, res) {
     }
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 module.exports.register = async function (req, res) {
   console.log("Server register");
 
-  console.log(req.body);
   try {
     const candidate = await UserModel.findOne({ email: req.body.email });
 
@@ -89,9 +87,7 @@ module.exports.register = async function (req, res) {
     }
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -104,20 +100,19 @@ module.exports.checking = async function (req, res) {
     const userData = TokenService.validateRefreshToken(refreshToken);
     const tokenFromDB = await TokenService.findToken(refreshToken);
     if (!userData || !tokenFromDB) {
-      return res.status(401).json({ message: "Користувач не авторизований" });
+      return res.status(401);
     }
 
-    return res.status(200);
+    return res.status(200).json({ authorization: true });
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 module.exports.refresh = async function (req, res) {
   console.log("Server refresh");
+
   try {
     const { refreshToken } = req.cookies;
     if (!refreshToken) {
@@ -143,14 +138,13 @@ module.exports.refresh = async function (req, res) {
     return res.status(200).json(tokens);
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 module.exports.logout = async function (req, res) {
   console.log("Server logout");
+
   try {
     const { refreshToken } = req.cookies;
 
@@ -161,8 +155,6 @@ module.exports.logout = async function (req, res) {
     return res.status(200).json(token);
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
+    return res.status(500).json({ message: "Server error" });
   }
 };
