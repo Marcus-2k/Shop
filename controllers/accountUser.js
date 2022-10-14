@@ -1,34 +1,35 @@
+const bcrypt = require("bcryptjs");
+const jwt_decode = require("jwt-decode");
+
+const fs = require("fs");
+
 const User = require("../models/User");
 const Product = require("../models/Product");
-const jwt_decode = require("jwt-decode");
-const fs = require("fs");
-const bcrypt = require("bcryptjs");
 
 module.exports.getUserInfo = async function (req, res) {
+  console.log("Server getUserInfo");
+
   try {
-    console.log("Сервер getUserInfo");
+    const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(
-      { _id: req.user.id },
-      { password: 0, __v: 0, _id: 1 }
-    );
+    const user = await User.findById(token_decode.id, {
+      password: 0,
+    });
 
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.editUser = async function (req, res) {
-  console.log("Сервер editUser");
-
-  const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
-
-  const user = await User.findOne({ email: tokenDecode.email });
+  console.log("Server editUser");
 
   try {
+    const token_decode = jwt_decode(req.headers.authorization);
+
+    const user = await User.findById(token_decode.id);
+
     if (user) {
       const updatedUser = {};
 
@@ -58,23 +59,19 @@ module.exports.editUser = async function (req, res) {
         updatedUser.birthday = req.body.birthday;
       }
 
-      const newUser = await User.findByIdAndUpdate(
+      await User.findByIdAndUpdate(
         { _id: user._id },
         { $set: updatedUser },
         { new: true }
       );
 
-      res.status(200).json({ message: "Користувача успішно оновлено." });
+      return res.status(200).json({ message: "Користувача успішно оновлено." });
     } else {
-      res
-        .status(404)
-        .json({ message: "Помилка такого користувача немає в БД." });
+      return res.status(401);
     }
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Помилка: Користувача не оновлено, спробуйте пізнеше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.editPasswordUser = async function (req, res) {
@@ -85,42 +82,44 @@ module.exports.editPasswordUser = async function (req, res) {
 
     const user = await User.findOne({ email: tokenDecode.email });
 
-    const passwordResult = bcrypt.compareSync(
-      req.body.oldPassword,
-      user.password
-    ); // Password validity check
+    if (user) {
+      const passwordResult = bcrypt.compareSync(
+        req.body.oldPassword,
+        user.password
+      ); // Password validity check
 
-    console.log(passwordResult);
-    if (passwordResult) {
-      const salt = bcrypt.genSaltSync(10);
-      const newPassword = {
-        password: bcrypt.hashSync(req.body.newPassword, salt),
-      };
+      if (passwordResult) {
+        const salt = bcrypt.genSaltSync(10);
+        const newPassword = {
+          password: bcrypt.hashSync(req.body.newPassword, salt),
+        };
 
-      const newUser = await User.findByIdAndUpdate(
-        { _id: user._id },
-        { $set: newPassword },
-        { new: true }
-      );
+        await User.findByIdAndUpdate(
+          { _id: user._id },
+          { $set: newPassword },
+          { new: true }
+        );
 
-      res.status(200).json({ message: true });
+        return res.status(200).json({ message: true });
+      } else {
+        return res.status(200).json({ message: false });
+      }
     } else {
-      res.status(200).json({ message: false });
+      return res.status(401);
     }
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Помилка: Користувача не оновлено, спробуйте пізнеше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
+// History =========================================================================================================
 module.exports.getHistoryUser = async function (req, res) {
   console.log("Server getHistoryUser");
 
   try {
-    const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
+    const token_decode = jwt_decode(req.headers.authorization);
+    const user = await User.findById(token_decode.id);
 
-    const user = await User.findOne({ email: tokenDecode.email });
     if (user) {
       let product = [];
 
@@ -131,26 +130,21 @@ module.exports.getHistoryUser = async function (req, res) {
 
       product.reverse();
 
-      res.status(200).json({ history__view: product });
+      return res.status(200).json({ history__view: product });
     } else {
-      res.status(200).json({ message: "Користувач не існує" });
+      return res.status(401);
     }
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Помилка: Користувача не оновлено, спробуйте пізніше",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.newHistoryUser = async function (req, res) {
   console.log("Server newHistoryUser");
 
   try {
-    const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
-
-    console.log(tokenDecode);
-    console.log(req.body);
-    let user = await User.findById({ _id: tokenDecode.userId });
+    const token_decode = jwt_decode(req.headers.authorization);
+    const user = await User.findById(token_decode.id);
 
     if (user) {
       if (user.history__view.indexOf(req.body.id) === -1) {
@@ -159,7 +153,7 @@ module.exports.newHistoryUser = async function (req, res) {
           { $push: { history__view: req.body.id } },
           { new: true }
         );
-        res
+        return res
           .status(200)
           .json({ message: "Успішно додано в історію переглядів" });
       } else {
@@ -174,133 +168,117 @@ module.exports.newHistoryUser = async function (req, res) {
           { $push: { history__view: req.body.id } },
           { new: true }
         );
-        res
-          .status(200)
-          .json({ message: "Успішно додано в історію на перше місце" });
+        return res.status(200).json({
+          message: "Успішно додано в історію переглядів на перше місце",
+        });
       }
     } else {
-      res.status(401).json({ message: "Користувач не існує" });
+      return res.status(401);
     }
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Помилка: Користувача не оновлено, спробуйте пізніше",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
-
-// ==== Favorite ====================================================================================================
+// History =========================================================================================================
+// Favorite ========================================================================================================
 module.exports.getFavorite = async function (req, res) {
+  console.log("Server getFavorite");
+
   try {
-    console.log("Server getFavorite");
+    const token_decode = jwt_decode(req.headers.authorization);
 
-    const toker_decode = jwt_decode(req.headers.authorization);
+    const userFavorite = await User.findById(token_decode.id, {
+      favorite: 1,
+      _id: 0,
+    });
 
-    const userFavorite = await User.findOne(
-      {},
-      { favorite: 1, _id: 0 },
-      { _id: toker_decode.userId }
-    );
-
-    res.status(200).json({ favorite: userFavorite.favorite });
+    return res.status(200).json({ favorite: userFavorite.favorite });
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.addFavorite = async function (req, res) {
+  console.log("Server addFavorite");
+
   try {
-    console.log("Server addFavorite");
+    const token_decode = jwt_decode(req.headers.authorization);
 
-    const toker_decode = jwt_decode(req.headers.authorization);
-
-    const user = await User.findOne({ _id: toker_decode.userId });
-
-    const addFavorite = await User.updateOne(
-      { _id: user._id },
+    await User.updateOne(
+      { _id: token_decode.id },
       { $push: { favorite: req.body.id } },
       { new: true }
     );
 
-    const userFavorite = await User.findOne(
-      {},
-      { favorite: 1, _id: 0 },
-      { _id: toker_decode.userId }
-    );
+    const userFavorite = await User.findById(token_decode.id, {
+      favorite: 1,
+      _id: 0,
+    });
 
-    res.status(200).json({
+    return res.status(200).json({
       favorite: userFavorite.favorite,
     });
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.removeFavorite = async function (req, res) {
+  console.log("Server removeFavorite");
+
   try {
-    console.log("Server removeFavorite");
+    const token_decode = jwt_decode(req.headers.authorization);
 
-    const toker_decode = jwt_decode(req.headers.authorization);
+    const user = await User.findById(token_decode.id);
 
-    const user = await User.findOne({ _id: toker_decode.userId });
-
-    const removeFavorite = await User.updateOne(
+    await User.updateOne(
       { _id: user._id },
       { $pull: { favorite: req.params.id } },
       { new: true }
     );
 
-    const userFavorite = await User.findOne(
-      {},
-      { favorite: 1, _id: 0 },
-      { _id: toker_decode.userId }
-    );
+    const userFavorite = await User.findById(token_decode.id, {
+      favorite: 1,
+      _id: 0,
+    });
 
-    res.status(200).json({
+    return res.status(200).json({
       favorite: userFavorite.favorite,
     });
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.getWishList = async function (req, res) {
+  console.log("Server getWishList");
+
   try {
-    console.log("Server getWishList");
+    const token_decode = jwt_decode(req.headers.authorization);
 
-    const toker_decode = jwt_decode(req.headers.authorization);
+    const user = await User.findById(token_decode.id, {
+      favorite: 1,
+      _id: 1,
+    });
 
-    const user = await User.findById(
-      { _id: toker_decode.userId },
-      {
-        favorite: 1,
-        _id: 1,
-      }
-    );
-    const favoriteUser = user.favorite;
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: "Ви не авторизовані для цієї дії" });
+    }
+
+    const wishListUser = user.favorite;
 
     const productWishList = await Product.find(
-      { _id: { $in: favoriteUser } },
+      { _id: { $in: wishListUser } },
       {
-        // imageSrc: 0,
-        category: 0,
-        counter: 0,
-        options: 0,
-        optionsToString: 0,
-        queryParams: 0,
-        seller: 0,
-        keyWords: 0,
-        description: 0,
-        comments: 0,
-        user: 0,
-        questions: 0,
-        __v: 0,
+        imageSrc: 1,
+        name: 1,
+        price: 1,
+        action: 1,
+        actionPrice: 1,
+        status: 1,
       }
     );
 
@@ -308,22 +286,19 @@ module.exports.getWishList = async function (req, res) {
       element.imageSrc = productWishList[idx].imageSrc.splice(0, 2);
     });
 
-    res.status(200).json(productWishList);
+    return res.status(200).json(productWishList);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.patchWishList = async function (req, res) {
-  try {
-    console.log("Server pathWishList");
+  console.log("Server pathWishList");
 
+  try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    console.log(token_decode);
-    const user = await User.findById({ _id: token_decode.userId });
+    const user = await User.findById(token_decode.id);
 
     const updatedFavoriteUser = { favorite: [] };
     user.favorite.forEach((element, idx) => {
@@ -338,14 +313,11 @@ module.exports.patchWishList = async function (req, res) {
       { new: true }
     );
 
-    const favoriteUser = await User.findById(
-      { _id: token_decode.userId },
-      {
-        favorite: 1,
-      }
-    );
+    const favoriteUser = await User.findById(token_decode.id, {
+      favorite: 1,
+      _id: 0,
+    });
 
-    console.log(favoriteUser);
     const productWishList = await Product.find(
       { _id: { $in: favoriteUser.favorite } },
       {
@@ -369,124 +341,114 @@ module.exports.patchWishList = async function (req, res) {
       element.imageSrc = productWishList[idx].imageSrc.splice(0, 2);
     });
 
-    res.status(200).json(productWishList);
+    return res.status(200).json(productWishList);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
-// ==== Favorite ====================================================================================================
-
+// Favorite =========================================================================================================
 // Shopping Cart ====================================================================================================
 module.exports.getShoppingCart = async function (req, res) {
-  try {
-    console.log("Server getShoppingCart");
+  console.log("Server getShoppingCart");
 
+  try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const userShoppingCart = await User.findOne(
-      {},
-      { shoppingCart: 1, _id: 0 },
-      { _id: token_decode.userId }
-    );
+    const userShoppingCart = await User.findById(token_decode.id, {
+      shoppingCart: 1,
+      _id: 0,
+    });
 
-    res.status(200).json({ shoppingCart: userShoppingCart.shoppingCart });
+    return res
+      .status(200)
+      .json({ shoppingCart: userShoppingCart.shoppingCart });
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.addShoppingCart = async function (req, res) {
-  try {
-    console.log("Server addShoppingCart");
+  console.log("Server addShoppingCart");
 
+  try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findOne({ _id: token_decode.userId });
+    const user = await User.findById(token_decode.id);
 
-    const addShoppingCart = await User.updateOne(
+    await User.updateOne(
       { _id: user._id },
       { $push: { shoppingCart: req.body.id } },
       { new: true }
     );
 
-    const userShoppingCart = await User.findOne(
-      {},
-      { shoppingCart: 1, _id: 0 },
-      { _id: token_decode.userId }
-    );
+    const userShoppingCart = await User.findById(token_decode.id, {
+      shoppingCart: 1,
+      _id: 0,
+    });
 
-    // console.log(userShoppingCart);
-    res.status(200).json({
+    return res.status(200).json({
       shoppingCart: userShoppingCart.shoppingCart,
     });
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.removeShoppingCart = async function (req, res) {
-  try {
-    console.log("Server removeShoppingCart");
+  console.log("Server removeShoppingCart");
 
+  try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findOne({ _id: token_decode.userId });
+    const user = await User.findById(token_decode.id);
 
-    const removeShoppingCart = await User.updateOne(
+    await User.updateOne(
       { _id: user._id },
       { $pull: { shoppingCart: req.params.id } },
       { new: true }
     );
 
-    const userShoppingCart = await User.findOne(
-      {},
-      { shoppingCart: 1, _id: 0 },
-      { _id: token_decode.userId }
-    );
+    const userShoppingCart = await User.findById(token_decode.id, {
+      shoppingCart: 1,
+      _id: 0,
+    });
 
-    res.status(200).json({
+    return res.status(200).json({
       shoppingCart: userShoppingCart.shoppingCart,
     });
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.getShoppingCartList = async function (req, res) {
+  console.log("Server getShoppingCartList");
+
   try {
-    console.log("Server getShoppingCartList");
+    const token_decode = jwt_decode(req.headers.authorization);
 
-    const toker_decode = jwt_decode(req.headers.authorization);
+    const user = await User.findById(token_decode.id, {
+      shoppingCart: 1,
+      _id: 1,
+    });
 
-    const user = await User.findById(
-      { _id: toker_decode.userId },
-      {
-        shoppingCart: 1,
-        _id: 1,
-      }
-    );
+    if (!user) {
+      return res.status(401);
+    }
+
     const shoppingCartUser = user.shoppingCart;
 
     const productShoppingCart = await Product.find(
       { _id: { $in: shoppingCartUser } },
       {
-        name: 1,
         imageSrc: 1,
+        name: 1,
         price: 1,
         action: 1,
         actionPrice: 1,
         counter: 1,
         status: 1,
-        seller: 1,
       }
     );
 
@@ -494,23 +456,19 @@ module.exports.getShoppingCartList = async function (req, res) {
       element.imageSrc = productShoppingCart[idx].imageSrc[0];
     });
 
-    // console.log(productShoppingCart);
-    res.status(200).json(productShoppingCart);
+    return res.status(200).json(productShoppingCart);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 module.exports.patchShoppingCartList = async function (req, res) {
-  try {
-    console.log("Server patchShoppingCartList");
+  console.log("Server patchShoppingCartList");
 
+  try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    console.log(token_decode);
-    const user = await User.findById({ _id: token_decode.userId });
+    const user = await User.findById(token_decode.id);
 
     const updatedFavoriteUser = { favorite: [] };
     user.favorite.forEach((element, idx) => {
@@ -525,14 +483,10 @@ module.exports.patchShoppingCartList = async function (req, res) {
       { new: true }
     );
 
-    const favoriteUser = await User.findById(
-      { _id: token_decode.userId },
-      {
-        favorite: 1,
-      }
-    );
+    const favoriteUser = await User.findById(token_decode.id, {
+      favorite: 1,
+    });
 
-    console.log(favoriteUser);
     const productWishList = await Product.find(
       { _id: { $in: favoriteUser.favorite } },
       {
@@ -556,12 +510,10 @@ module.exports.patchShoppingCartList = async function (req, res) {
       element.imageSrc = productWishList[idx].imageSrc.splice(0, 2);
     });
 
-    res.status(200).json(productWishList);
+    return res.status(200).json(productWishList);
   } catch (error) {
     console.log(error);
-    res.status(401).json({
-      message: "Сталася помилка на сервері спробуйте пізніше.",
-    });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 // Shopping Cart ====================================================================================================
