@@ -3,7 +3,7 @@
   <mat-spinner></mat-spinner>
 </div>
 
-<div class="cart" *ngIf="!loader">
+<div class="cart" *ngIf="!emptyCart && !loader">
   <div class="cart-header">
     <h2 class="cart-header-title">Оформити замовлення</h2>
   </div>
@@ -279,4 +279,10 @@
     <!--  -->
   </div>
 </div>
-<!--  -->
+
+<div class="empty__cart" *ngIf="emptyCart && !loader">
+  <div class="empty__cart-content">
+    <h2>Ваш кошик порожній, але це не пізно виправити</h2>
+    <img src="../../../../assets/img/empty.png" alt="empty" />
+  </div>
+</div>

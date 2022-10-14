@@ -33,22 +33,25 @@ export class CartComponent implements OnInit {
         this.shoppingCart = responce;
 
         this.loader = false;
+        if (responce.length !== 0) {
+          const userID = localStorage.getItem("_id");
 
-        const userID = localStorage.getItem("_id");
+          responce.forEach((element) => {
+            if (userID) {
+              const itemOrder: Order = {
+                _id: element._id,
+                counter: 1,
+                merchant: userID,
+              };
+              this.order.push(itemOrder);
+            }
+          });
 
-        responce.forEach((element) => {
-          if (userID) {
-            const itemOrder: Order = {
-              _id: element._id,
-              counter: 1,
-              merchant: userID,
-            };
-            this.order.push(itemOrder);
-          }
-        });
-
-        this.calcTotalCounterProduct();
-        this.calcTotalPrice();
+          this.calcTotalCounterProduct();
+          this.calcTotalPrice();
+        } else {
+          this.emptyCart = true;
+        }
       },
       (error) => {
         console.log(error);
@@ -70,6 +73,8 @@ export class CartComponent implements OnInit {
   }
 
   loader: boolean = true;
+
+  emptyCart: boolean = false;
 
   // Step Cart ========================================
   shoppingCart: ShoppingCartList[] = [];
