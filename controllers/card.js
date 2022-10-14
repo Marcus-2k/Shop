@@ -15,7 +15,6 @@ module.exports.getByIdCard = async function (req, res) {
       category: 1,
       status: 1,
       user: 1,
-      _id: 0,
     }).catch((error) => {
       console.log(error);
     });

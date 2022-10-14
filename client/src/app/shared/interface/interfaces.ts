@@ -44,6 +44,7 @@ export interface ProductCard {
   status: 0 | 1 | 2 | 3;
   description: string;
   user: string;
+  _id: string;
 }
 export interface ProductInfo {
   imageSrc: string[];
