@@ -1,5 +1,6 @@
 const optionOperatingSystem_PC = {
   name: "Операційна система",
+  query_name: "operating_system_pc",
   htmlElement: "select",
   select: [
     "Без ОС",
@@ -15,6 +16,7 @@ const optionOperatingSystem_PC = {
 };
 const optionOperatingSystem_MP = {
   name: "Операційна система",
+  query_name: "operating_system_mp",
   htmlElement: "select",
   select: [
     "Android",
@@ -27,6 +29,7 @@ const optionOperatingSystem_MP = {
 };
 const optionCPU_PC = {
   name: "Процесор",
+  query_name: "cpu_pc",
   htmlElement: "select",
   select: [
     "Apple M",
@@ -50,6 +53,7 @@ const optionCPU_PC = {
 };
 const optionCPU_MP = {
   name: "Процесор",
+  query_name: "cpu_mp",
   htmlElement: "select",
   select: [
     "Apple A15",
@@ -63,6 +67,7 @@ const optionCPU_MP = {
 };
 const optionGraphics = {
   name: "Відеокарта",
+  query_name: "graphics",
   htmlElement: "select",
   select: [
     "GeForce GTX 1050",
@@ -80,16 +85,19 @@ const optionGraphics = {
 };
 const optionScreenDiagonal = {
   name: "Діагональ екрана",
+  query_name: "screen_diagonal",
   htmlElement: "select",
   select: ["9", "12.5", "13", "14", "15", "15.6", "16", "17", "18", "20"],
 };
 const optionTypeMemory = {
   name: "Тип накопичувача",
+  query_name: "type_memory",
   htmlElement: "select",
   select: ["HDD", "SSD", "SSD + HDD", "eMMC"],
 };
 const optionRAM = {
   name: "Обсяг оперативної пам'яті",
+  query_name: "ram",
   htmlElement: "select",
   select: [
     "Без оперативної пам'яті",
@@ -108,6 +116,7 @@ const optionRAM = {
 };
 const optionColor = {
   name: "Колір",
+  query_name: "color",
   htmlElement: "select",
   select: [
     "Інші",
@@ -126,16 +135,19 @@ const optionColor = {
 };
 const optionNewUsed = {
   name: "Новий - б/в",
+  query_name: "new_used",
   htmlElement: "select",
   select: ["Новий", "Б/в"],
 };
 const optionGuarantee = {
   name: "Гарантія",
+  query_name: "guarantee",
   htmlElement: "select",
   select: ["Немає", "1 рік", "2 роки"],
 };
 const optionSizeSSD = {
   name: "Обсяг SSD",
+  query_name: "size_ssd",
   htmlElement: "select",
   select: [
     "128 ГБ",
@@ -158,6 +170,7 @@ const optionSizeSSD = {
 };
 const optionSizeHDD = {
   name: "Обсяг HDD",
+  query_name: "size_hdd",
   htmlElement: "select",
   select: [
     "128 ГБ",
@@ -180,6 +193,7 @@ const optionSizeHDD = {
 };
 const optionTypeMatrix = {
   name: "Тип матриці",
+  query_name: "type_matrix",
   htmlElement: "select",
   select: [
     "AMOLED",
@@ -203,11 +217,13 @@ const optionTypeMatrix = {
 };
 const optionScreenRefreshRate = {
   name: "Частота оновлення екрану",
+  query_name: "screen_refresh_rate",
   htmlElement: "select",
   select: ["30 ГЦ", "60 ГЦ", "90 ГЦ", "120 ГЦ", "144 ГЦ", "165 ГЦ"],
 };
 const optionGuard = {
   name: "Безпека",
+  query_name: "guard",
   htmlElement: "select",
   select: [
     "Розблокування за обличчям",
@@ -218,11 +234,13 @@ const optionGuard = {
 };
 const optionBodyMaterial = {
   name: "Матеріал корпусу",
+  query_name: "body_material",
   htmlElement: "select",
   select: ["Метал", "Пластик", "Скло", "Інший"],
 };
 const optionMadeIn = {
   name: "Країна-виробник",
+  query_name: "made_in",
   htmlElement: "select",
   select: [
     "Індія",
@@ -244,6 +262,7 @@ const optionMadeIn = {
 };
 const optionCommunication = {
   name: "Стандарт зв'язку",
+  query_name: "communication",
   htmlElement: "select",
   select: [
     "2G (GPRS/EDGE/GSM)",

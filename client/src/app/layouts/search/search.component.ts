@@ -10,7 +10,6 @@ import {
 } from "src/app/shared/interface/interfaces"; // Interface
 
 // Service
-import { NameQueryService } from "src/app/shared/service/name-query.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
@@ -27,7 +26,6 @@ export class SearchComponent implements OnInit {
     private router: Router,
     private searchService: RequestSearchService,
     private requestCatalog: RequestCatalogService,
-    private originalAndQueryName: NameQueryService,
     private showNotice: ShowNoticeService,
     private renameTitle: RenameTitleService
   ) {}
@@ -37,6 +35,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     console.log("Start ngOnInit Search");
+
     this.route.queryParams.subscribe((queryParam: Params) => {
       this.search_text = queryParam["search_text"];
       this.type_sort = queryParam["type_sort"]
@@ -72,8 +71,6 @@ export class SearchComponent implements OnInit {
             (res: CategoryProduct_Characteristics[]) => {
               console.log(res);
               this.categoryNameDB = res;
-              this.originalName = this.originalAndQueryName.originalName;
-              this.nameForServer = this.originalAndQueryName.nameForServer;
               // ==============================================================================================
               let optionsListBlockCategory: Options[][] = []; // Options Product List
               this.uniqueCategory.forEach((element: number[], idx: number) => {
@@ -95,6 +92,7 @@ export class SearchComponent implements OnInit {
                   item.forEach((items) => {
                     let item: ActiveFilter = {
                       name: element[idx].select[items],
+                      query_name: element[idx].query_name,
                       counter: 0,
                       active: false,
                     };
@@ -234,117 +232,88 @@ export class SearchComponent implements OnInit {
 
   listFilter: ActiveFilterBlock[] = [];
 
-  originalName: string[] = []; // Original name params product
-  nameForServer: string[] = []; // Special name for query params
-
   queryParams: Params = {};
 
-  filterSearch(nameInput: string, nameBlock: string, checked: boolean) {
+  filterSearch(nameInput: string, nameQuery: string, checked: boolean) {
     if (checked === true) {
-      let positionIndexOriginalName: number =
-        this.originalName.indexOf(nameBlock);
-      let nameQueryForServer: string = "";
+      const nameQueryForServer: string = nameQuery;
 
-      if (positionIndexOriginalName >= 0) {
-        nameQueryForServer = this.nameForServer[positionIndexOriginalName];
-
-        if (this.queryParams.hasOwnProperty(nameQueryForServer)) {
-          this.queryParams[nameQueryForServer] =
-            this.queryParams[nameQueryForServer] + "," + nameInput;
-        } else {
-          this.queryParams[nameQueryForServer] = nameInput;
-        }
-
-        // Limit
-        if (this.queryParams.hasOwnProperty("limit")) {
-          delete this.queryParams["limit"];
-          this.queryParams["limit"] = this.limit;
-        } else {
-          this.queryParams["limit"] = this.limit;
-        }
-        // Page
-        if (this.queryParams.hasOwnProperty("page")) {
-          delete this.queryParams["page"];
-          this.queryParams["page"] = this.currentPage;
-        } else {
-          this.queryParams["page"] = this.currentPage;
-        }
-        // type_sort
-        if (this.queryParams.hasOwnProperty("type_sort")) {
-          delete this.queryParams["type_sort"];
-          this.queryParams["type_sort"] = this.type_sort;
-        } else {
-          this.queryParams["type_sort"] = this.type_sort;
-        }
-
-        console.log(this.queryParams);
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
-        this.router.navigate([`search`], {
-          queryParams: this.queryParams,
-        });
+      if (this.queryParams.hasOwnProperty(nameQueryForServer)) {
+        this.queryParams[nameQueryForServer] =
+          this.queryParams[nameQueryForServer] + "," + nameInput;
       } else {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.navigate([`search`], {
-          queryParams: {
-            search_text: this.search_text,
-          },
-        });
+        this.queryParams[nameQueryForServer] = nameInput;
       }
+
+      // Limit
+      if (this.queryParams.hasOwnProperty("limit")) {
+        delete this.queryParams["limit"];
+        this.queryParams["limit"] = this.limit;
+      } else {
+        this.queryParams["limit"] = this.limit;
+      }
+      // Page
+      if (this.queryParams.hasOwnProperty("page")) {
+        delete this.queryParams["page"];
+        this.queryParams["page"] = this.currentPage;
+      } else {
+        this.queryParams["page"] = this.currentPage;
+      }
+      // type_sort
+      if (this.queryParams.hasOwnProperty("type_sort")) {
+        delete this.queryParams["type_sort"];
+        this.queryParams["type_sort"] = this.type_sort;
+      } else {
+        this.queryParams["type_sort"] = this.type_sort;
+      }
+
+      console.log(this.queryParams);
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
+      this.router.navigate([`search`], {
+        queryParams: this.queryParams,
+      });
     } else if (checked === false) {
-      let positionIndexOriginalName: number =
-        this.originalName.indexOf(nameBlock);
-      let nameQueryForServer: string = "";
+      const nameQueryForServer: string = nameQuery;
 
-      if (positionIndexOriginalName >= 0) {
-        nameQueryForServer = this.nameForServer[positionIndexOriginalName];
+      let deleteSubString: string[] =
+        this.queryParams[nameQueryForServer].split(",");
 
-        let deleteSubString: string[] =
-          this.queryParams[nameQueryForServer].split(",");
+      let deleteIndex: number = deleteSubString.indexOf(nameInput);
 
-        let deleteIndex: number = deleteSubString.indexOf(nameInput);
+      deleteSubString.splice(deleteIndex, 1);
 
-        deleteSubString.splice(deleteIndex, 1);
+      this.queryParams[nameQueryForServer] = deleteSubString.join(",");
 
-        this.queryParams[nameQueryForServer] = deleteSubString.join(",");
-
-        if (this.queryParams[nameQueryForServer].length === 0) {
-          delete this.queryParams[nameQueryForServer];
-        }
-
-        // Limit
-        if (this.queryParams.hasOwnProperty("limit")) {
-          delete this.queryParams["limit"];
-          this.queryParams["limit"] = this.limit;
-        } else {
-          this.queryParams["limit"] = this.limit;
-        }
-        // Page
-        if (this.queryParams.hasOwnProperty("page")) {
-          delete this.queryParams["page"];
-          this.queryParams["page"] = this.currentPage;
-        } else {
-          this.queryParams["page"] = this.currentPage;
-        }
-        // type_sort
-        if (this.queryParams.hasOwnProperty("type_sort")) {
-          delete this.queryParams["type_sort"];
-          this.queryParams["type_sort"] = this.type_sort;
-        } else {
-          this.queryParams["type_sort"] = this.type_sort;
-        }
-
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
-        this.router.navigate([`search`], {
-          queryParams: this.queryParams,
-        });
-      } else {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.navigate([`search`], {
-          queryParams: {
-            search_text: this.search_text,
-          },
-        });
+      if (this.queryParams[nameQueryForServer].length === 0) {
+        delete this.queryParams[nameQueryForServer];
       }
+
+      // Limit
+      if (this.queryParams.hasOwnProperty("limit")) {
+        delete this.queryParams["limit"];
+        this.queryParams["limit"] = this.limit;
+      } else {
+        this.queryParams["limit"] = this.limit;
+      }
+      // Page
+      if (this.queryParams.hasOwnProperty("page")) {
+        delete this.queryParams["page"];
+        this.queryParams["page"] = this.currentPage;
+      } else {
+        this.queryParams["page"] = this.currentPage;
+      }
+      // type_sort
+      if (this.queryParams.hasOwnProperty("type_sort")) {
+        delete this.queryParams["type_sort"];
+        this.queryParams["type_sort"] = this.type_sort;
+      } else {
+        this.queryParams["type_sort"] = this.type_sort;
+      }
+
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
+      this.router.navigate([`search`], {
+        queryParams: this.queryParams,
+      });
     }
   }
   // Sidebar END ==================================================================================

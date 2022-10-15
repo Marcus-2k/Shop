@@ -179,6 +179,7 @@ export interface CategoryProduct_Characteristics {
 
 export interface Options {
   name: string; // example Operating System
+  query_name: string;
   htmlElement: "select"; // html tag
   select: string[]; // field for option select
 }
@@ -197,6 +198,7 @@ export interface ActiveFilterBlock {
 
 export interface ActiveFilter {
   name: string;
+  query_name: string;
   counter: number;
   active: boolean;
 }

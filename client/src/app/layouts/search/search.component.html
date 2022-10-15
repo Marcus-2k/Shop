@@ -10,7 +10,9 @@
               <button
                 mat-stroked-button
                 style="margin-right: 5px; margin-top: 5px"
-                (click)="filterSearch(filterItem.name, filter.name, false)"
+                (click)="
+                  filterSearch(filterItem.name, filterItem.query_name, false)
+                "
               >
                 {{ filterItem.name }}&nbsp;&Cross;
               </button>
@@ -44,7 +46,7 @@
       <div class="content-element-center" *ngIf="loader">
         <mat-spinner></mat-spinner>
       </div>
-      <!-- Category START -->
+      <!-- Filter START -->
       <div class="select" *ngIf="!loader">
         <div class="select__content">
           <div class="select__conten-category category">
@@ -53,6 +55,7 @@
               *ngFor="let filter of listFilter; let i = index"
             >
               <div class="category__block-line"></div>
+              <!--  -->
               <div
                 class="category__block-btn"
                 (click)="filter.blockActive = !filter.blockActive"
@@ -67,7 +70,7 @@
                   </p>
                 </button>
               </div>
-              <!-- *ngIf="" -->
+              <!--  -->
               <ul
                 class="category__block-list"
                 [ngClass]="{ show: filter.blockActive }"
@@ -80,7 +83,7 @@
                     (click)="
                       filterSearch(
                         filterItem.name,
-                        filter.name,
+                        filterItem.query_name,
                         !checkboxInput.checked
                       )
                     "
@@ -102,7 +105,7 @@
           </div>
         </div>
       </div>
-      <!-- Category END -->
+      <!-- Filter END -->
     </div>
     <div class="search__content-body">
       <!--  -->
