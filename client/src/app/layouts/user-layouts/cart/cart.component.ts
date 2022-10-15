@@ -153,6 +153,10 @@ export class CartComponent implements OnInit {
         this.userData.shoppingCartListUser = responce.shoppingCart;
         this.userData.shoppingCartNumber.next(responce.shoppingCart.length);
 
+        if (responce.shoppingCart.length === 0) {
+          this.emptyCart = true;
+        }
+
         this.calcTotalCounterProduct();
         this.calcTotalPrice();
       },
