@@ -56,13 +56,21 @@
         <ul class="user__list">
           <!--  -->
           <li class="user__list-link" *ngIf="!potentialToken">
-            <a routerLink="/login" routerLinkActive="" class="link-item">
+            <a
+              routerLink="/login"
+              link-item-active="link-item-active"
+              class="link-item"
+            >
               <span class="material-symbols-outlined google-icon"> login </span>
             </a>
           </li>
           <!--  -->
           <li class="user__list-link" *ngIf="potentialToken">
-            <a routerLink="/account/user" routerLinkActive="" class="link-item">
+            <a
+              routerLink="/account"
+              routerLinkActive="link-item-active"
+              class="link-item"
+            >
               <span class="material-symbols-outlined google-icon">
                 person
               </span>
@@ -72,7 +80,7 @@
           <li class="user__list-link" *ngIf="potentialToken">
             <a
               routerLink="/wishlist"
-              routerLinkActive=""
+              routerLinkActive="link-item-active"
               class="link-item"
               [matBadge]="
                 lengthFavorite === 0
@@ -93,7 +101,7 @@
           <li class="user__list-link" *ngIf="potentialToken">
             <a
               routerLink="/cart"
-              routerLinkActive=""
+              routerLinkActive="link-item-active"
               class="link-item"
               [matBadge]="
                 lengthFavorite === 0
@@ -112,12 +120,7 @@
           </li>
           <!--  -->
           <li class="user__list-link" *ngIf="potentialToken">
-            <a
-              routerLink="/"
-              routerLinkActive=""
-              class="link-item"
-              (click)="logout()"
-            >
+            <a routerLink="/" class="link-item" (click)="logout()">
               <span class="material-symbols-outlined google-icon">
                 logout
               </span>

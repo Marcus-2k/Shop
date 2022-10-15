@@ -159,21 +159,29 @@
               transition: 0.4s;
               color: #000;
               border-radius: 5px;
+              .material-symbols-outlined {
+                transition: 0.4s;
+                font-variation-settings: "FILL" 0;
+              }
               .google-icon {
                 font-size: calc(
                   24px + (36 - 24) * ((100vw - 768px) / (1920 - 768))
                 );
-                .favorite__number .cart__number {
-                  position: absolute;
-                  span {
-                    font-size: 22px;
-                    font-weight: 400;
-                  }
-                }
               }
               &:hover {
                 transition: 0.4s;
                 background-color: #fff;
+                .material-symbols-outlined {
+                  font-variation-settings: "FILL" 1;
+                }
+              }
+            }
+            .link-item-active {
+              transition: 0.4s;
+              background-color: #fff;
+              .material-symbols-outlined {
+                transition: 0.4s;
+                font-variation-settings: "FILL" 1;
               }
             }
           }
