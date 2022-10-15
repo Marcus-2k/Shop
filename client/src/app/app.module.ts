@@ -66,13 +66,13 @@ import { CardAccessoriesComponent } from "./layouts/card/card-accessories/card-a
 import { CardSmallSidebarComponent } from "./layouts/card/card-small-sidebar/card-small-sidebar.component";
 import { CardBigSidebarComponent } from "./layouts/card/card-big-sidebar/card-big-sidebar.component";
 
-import { CardSidebarAboutComponent } from "./layouts/card/component/card-sidebar-about/card-sidebar-about.component";
-import { CardSidebarStatusesComponent } from "./layouts/card/component/card-sidebar-statuses/card-sidebar-statuses.component";
-import { CardSidebarSellerComponent } from "./layouts/card/component/card-sidebar-seller/card-sidebar-seller.component";
-import { CardFavoriteComponent } from "./layouts/card/component/card-favorite/card-favorite.component";
-import { CardDescriptionComponent } from "./layouts/card/component/card-description/card-description.component";
-import { CardKeyWordsComponent } from "./layouts/card/component/card-key-words/card-key-words.component";
-import { CardShoppingCartComponent } from "./layouts/card/component/card-shopping-cart/card-shopping-cart.component";
+import { CardSidebarAboutComponent } from "./layouts/card/components/card-sidebar-about/card-sidebar-about.component";
+import { CardSidebarStatusesComponent } from "./layouts/card/components/card-sidebar-statuses/card-sidebar-statuses.component";
+import { CardSidebarSellerComponent } from "./layouts/card/components/card-sidebar-seller/card-sidebar-seller.component";
+import { CardFavoriteComponent } from "./layouts/card/components/card-favorite/card-favorite.component";
+import { CardDescriptionComponent } from "./layouts/card/components/card-description/card-description.component";
+import { CardKeyWordsComponent } from "./layouts/card/components/card-key-words/card-key-words.component";
+import { CardShoppingCartComponent } from "./layouts/card/components/card-shopping-cart/card-shopping-cart.component";
 import { ProductCardWishComponent } from "./template/product-card-wish/product-card-wish.component";
 import { ProductCardShoppingCartComponent } from "./template/product-card-shopping-cart/product-card-shopping-cart.component";
 import { ProductCardElementStatusesComponent } from "./template/components/product-card-element-statuses/product-card-element-statuses.component";
