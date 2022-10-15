@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Wish, WishChecked } from "src/app/shared/interface/interfaces";
-import { OtherDataService } from "src/app/shared/service/other-data.service";
+import { UserDataService } from "src/app/shared/service/user-data.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 
@@ -13,7 +13,7 @@ export class WishlistComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
     private requestUser: RequestUserService,
-    private otherData: OtherDataService
+    private userData: UserDataService
   ) {}
 
   ngOnInit(): void {
@@ -89,8 +89,9 @@ export class WishlistComponent implements OnInit {
           this.wishChecked = [];
           this.requestUser.getFavorite().subscribe(
             (responce) => {
-              this.otherData.favoriteListUser = responce.favorite;
-              this.otherData.favoriteNumber = responce.favorite.length;
+              this.userData.favoriteListUser = responce.favorite;
+              this.userData.favoriteNumber.next(responce.favorite.length);
+
               this.calcTotolPrice();
             },
             (error) => {

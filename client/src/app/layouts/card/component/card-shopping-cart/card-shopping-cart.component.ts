@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ShoppingCart } from "src/app/shared/interface/interfaces";
-import { OtherDataService } from "src/app/shared/service/other-data.service";
+import { UserDataService } from "src/app/shared/service/user-data.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 
@@ -15,7 +15,7 @@ export class CardShoppingCartComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private requestUser: RequestUserService,
-    private otherData: OtherDataService
+    private userData: UserDataService
   ) {}
 
   @Input() _idProduct?: string;
@@ -23,7 +23,7 @@ export class CardShoppingCartComponent implements OnInit {
   @Input() type?: number;
 
   ngOnInit(): void {
-    this.listShoppingCart = this.otherData.shoppingCartListUser;
+    this.listShoppingCart = this.userData.shoppingCartListUser;
 
     if (this.type) {
       this.typeBtn = this.type;
@@ -44,8 +44,10 @@ export class CardShoppingCartComponent implements OnInit {
           this.requestUser.addShoppingCart(this._idProduct).subscribe(
             (responce: ShoppingCart) => {
               this.listShoppingCart = responce.shoppingCart;
-              this.otherData.shoppingCartListUser = responce.shoppingCart;
-              this.otherData.shoppingCartNumber = responce.shoppingCart.length;
+              this.userData.shoppingCartListUser = responce.shoppingCart;
+              this.userData.shoppingCartNumber.next(
+                responce.shoppingCart.length
+              );
               this.buttonDisabled = false;
             },
             (error) => {
@@ -58,8 +60,10 @@ export class CardShoppingCartComponent implements OnInit {
           this.requestUser.removeShoppingCart(this._idProduct).subscribe(
             (responce: ShoppingCart) => {
               this.listShoppingCart = responce.shoppingCart;
-              this.otherData.shoppingCartListUser = responce.shoppingCart;
-              this.otherData.shoppingCartNumber = responce.shoppingCart.length;
+              this.userData.shoppingCartListUser = responce.shoppingCart;
+              this.userData.shoppingCartNumber.next(
+                responce.shoppingCart.length
+              );
               this.buttonDisabled = false;
             },
             (error) => {
@@ -74,7 +78,7 @@ export class CardShoppingCartComponent implements OnInit {
     }
   }
 
-  listShoppingCart: string[] = this.otherData.shoppingCartListUser;
+  listShoppingCart: string[] = this.userData.shoppingCartListUser;
   checkingShoppingCart(): boolean {
     if (this._idProduct) {
       if (this.listShoppingCart.indexOf(this._idProduct) === -1) {

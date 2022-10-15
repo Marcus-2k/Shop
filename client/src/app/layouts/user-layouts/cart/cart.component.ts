@@ -7,7 +7,7 @@ import {
   ShoppingCart,
   ShoppingCartList,
 } from "src/app/shared/interface/interfaces";
-import { OtherDataService } from "src/app/shared/service/other-data.service";
+import { UserDataService } from "src/app/shared/service/user-data.service";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
@@ -21,7 +21,7 @@ export class CartComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
     private requestUser: RequestUserService,
-    private otherData: OtherDataService
+    private userData: UserDataService
   ) {}
 
   ngOnInit() {
@@ -150,8 +150,8 @@ export class CartComponent implements OnInit {
         this.shoppingCart.splice(index, 1);
         this.order.splice(index, 1);
 
-        this.otherData.shoppingCartListUser = responce.shoppingCart;
-        this.otherData.shoppingCartNumber = responce.shoppingCart.length;
+        this.userData.shoppingCartListUser = responce.shoppingCart;
+        this.userData.shoppingCartNumber.next(responce.shoppingCart.length);
 
         this.calcTotalCounterProduct();
         this.calcTotalPrice();

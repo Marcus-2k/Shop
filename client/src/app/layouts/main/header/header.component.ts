@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
-import { OtherDataService } from "src/app/shared/service/other-data.service";
+import { UserDataService } from "src/app/shared/service/user-data.service";
 
 @Component({
   selector: "app-header",
@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private otherData: OtherDataService
+    private userData: UserDataService
   ) {}
 
   ngOnInit(): void {
@@ -21,18 +21,26 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
     this.body.addEventListener("click", (event: Event) => {
       this.catalogOff(event);
     });
+
+    this.userData.favoriteNumber.subscribe((counter: number) => {
+      this.lengthFavorite = counter;
+    });
+    this.userData.shoppingCartNumber.subscribe((counter: number) => {
+      this.lengthCart = counter;
+    });
   }
 
   ngDoCheck(): void {
     this.potentialToken = localStorage.getItem("auth-token");
-    this.lengthFavorite = this.otherData.favoriteNumber;
-    this.lengthCart = this.otherData.shoppingCartNumber;
   }
 
   ngOnDestroy(): void {
     this.body.removeEventListener("click", (event: Event) => {
       this.catalogOff(event);
     });
+
+    this.userData.favoriteNumber.unsubscribe();
+    this.userData.shoppingCartNumber.unsubscribe();
   }
 
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];

@@ -1,11 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
 
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 import { User } from "src/app/shared/interface/interfaces";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
-import { OtherDataService } from "src/app/shared/service/other-data.service";
 
 @Component({
   selector: "app-user",

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "./shared/service/server/auth.service";
 import { RequestUserService } from "./shared/service/server/request-user.service";
-import { OtherDataService } from "./shared/service/other-data.service";
+import { UserDataService } from "./shared/service/user-data.service";
 import { Favorite, ShoppingCart } from "./shared/interface/interfaces";
 
 @Component({
@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private requestUser: RequestUserService,
-    private otherData: OtherDataService
+    private userData: UserDataService
   ) {}
 
   ngOnInit(): void {
@@ -27,8 +27,8 @@ export class AppComponent implements OnInit {
         (responce) => {
           this.requestUser.getFavorite().subscribe(
             (responce: Favorite) => {
-              this.otherData.favoriteListUser = responce.favorite;
-              this.otherData.favoriteNumber = responce.favorite.length;
+              this.userData.favoriteListUser = responce.favorite;
+              this.userData.favoriteNumber.next(responce.favorite.length);
             },
             (error) => {
               console.log(error);
@@ -37,8 +37,10 @@ export class AppComponent implements OnInit {
 
           this.requestUser.getShoppingCart().subscribe(
             (responce: ShoppingCart) => {
-              this.otherData.shoppingCartListUser = responce.shoppingCart;
-              this.otherData.shoppingCartNumber = responce.shoppingCart.length;
+              this.userData.shoppingCartListUser = responce.shoppingCart;
+              this.userData.shoppingCartNumber.next(
+                responce.shoppingCart.length
+              );
             },
             (error) => {
               console.log(error);

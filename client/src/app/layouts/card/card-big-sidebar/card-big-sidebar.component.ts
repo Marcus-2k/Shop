@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Product } from "src/app/shared/interface/interfaces";
-import { OtherDataService } from "src/app/shared/service/other-data.service";
 import { RequestSellerService } from "src/app/shared/service/server/request-seller.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
@@ -13,7 +12,6 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 export class CardBigSidebarComponent implements OnInit {
   constructor(
     private requestSeller: RequestSellerService,
-    private otherData: OtherDataService,
     private showNotice: ShowNoticeService,
     private requestUser: RequestUserService
   ) {}

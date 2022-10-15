@@ -1,7 +1,7 @@
 import { Component, DoCheck, Input } from "@angular/core";
 import { Router } from "@angular/router";
 import { Favorite } from "src/app/shared/interface/interfaces";
-import { OtherDataService } from "src/app/shared/service/other-data.service";
+import { UserDataService } from "src/app/shared/service/user-data.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 
@@ -12,7 +12,7 @@ import { RequestUserService } from "src/app/shared/service/server/request-user.s
 })
 export class CardFavoriteComponent implements DoCheck {
   constructor(
-    private otherData: OtherDataService,
+    private userData: UserDataService,
     private requestUser: RequestUserService,
     private auth: AuthService,
     private router: Router
@@ -21,7 +21,7 @@ export class CardFavoriteComponent implements DoCheck {
   @Input() _idProduct?: string;
 
   ngDoCheck() {
-    this.listFavorite = this.otherData.favoriteListUser;
+    this.listFavorite = this.userData.favoriteListUser;
   }
 
   buttonDisabled: boolean = false;
@@ -36,8 +36,8 @@ export class CardFavoriteComponent implements DoCheck {
         if (this.listFavorite.indexOf(this._idProduct) === -1) {
           this.requestUser.addFavorite(this._idProduct).subscribe(
             (responce: Favorite) => {
-              this.otherData.favoriteListUser = responce.favorite;
-              this.otherData.favoriteNumber = responce.favorite.length;
+              this.userData.favoriteListUser = responce.favorite;
+              this.userData.favoriteNumber.next(responce.favorite.length);
               this.buttonDisabled = false;
             },
             (error) => {
@@ -49,8 +49,8 @@ export class CardFavoriteComponent implements DoCheck {
         } else if (this.listFavorite.indexOf(this._idProduct) >= 0) {
           this.requestUser.removeFavorite(this._idProduct).subscribe(
             (responce: Favorite) => {
-              this.otherData.favoriteListUser = responce.favorite;
-              this.otherData.favoriteNumber = responce.favorite.length;
+              this.userData.favoriteListUser = responce.favorite;
+              this.userData.favoriteNumber.next(responce.favorite.length);
               this.buttonDisabled = false;
             },
             (error) => {
@@ -65,7 +65,7 @@ export class CardFavoriteComponent implements DoCheck {
     }
   }
 
-  listFavorite: string[] = this.otherData.favoriteListUser;
+  listFavorite: string[] = this.userData.favoriteListUser;
   checkingFavorite(): boolean {
     if (this._idProduct) {
       if (this.listFavorite.indexOf(this._idProduct) === -1) {
