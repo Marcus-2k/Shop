@@ -54,54 +54,63 @@
       <div class="menu"></div>
       <div class="user">
         <ul class="user__list">
+          <!--  -->
           <li class="user__list-link" *ngIf="!potentialToken">
             <a routerLink="/login" routerLinkActive="" class="link-item">
-              <!-- <img src="../../../../assets/img/enter.png" alt="enter" /> -->
               <span class="material-symbols-outlined google-icon"> login </span>
             </a>
           </li>
+          <!--  -->
           <li class="user__list-link" *ngIf="potentialToken">
             <a routerLink="/account/user" routerLinkActive="" class="link-item">
-              <!-- <img src="../../../../assets/img/user.png" alt="user" /> -->
               <span class="material-symbols-outlined google-icon">
                 person
               </span>
             </a>
           </li>
+          <!--  -->
           <li class="user__list-link" *ngIf="potentialToken">
-            <a routerLink="/wishlist" routerLinkActive="" class="link-item">
-              <!-- <img src="../../../../assets/img/love.png" alt="love" /> -->
+            <a
+              routerLink="/wishlist"
+              routerLinkActive=""
+              class="link-item"
+              [matBadge]="
+                lengthFavorite === 0
+                  ? ''
+                  : lengthFavorite && lengthFavorite >= 100
+                  ? '99+'
+                  : lengthFavorite
+              "
+              matBadgeColor="primary"
+              matBadgeSize="medium"
+            >
               <span class="material-symbols-outlined google-icon">
                 favorite
-                <!-- matBadgePosition="above before" -->
-                <span
-                  *ngIf="lengthFavorite > 0"
-                  class="favorite__number"
-                  [matBadge]="lengthFavorite"
-                  matBadgeColor="primary"
-                  matBadgeSize="medium"
-                >
-                </span>
               </span>
             </a>
           </li>
+          <!--  -->
           <li class="user__list-link" *ngIf="potentialToken">
-            <a routerLink="/cart" routerLinkActive="" class="link-item">
-              <!-- <img src="../../../../assets/img/shopping-cart.png" alt="shopping-cart" /> -->
+            <a
+              routerLink="/cart"
+              routerLinkActive=""
+              class="link-item"
+              [matBadge]="
+                lengthFavorite === 0
+                  ? ''
+                  : lengthFavorite && lengthFavorite >= 100
+                  ? '99+'
+                  : lengthFavorite
+              "
+              matBadgeColor="primary"
+              matBadgeSize="medium"
+            >
               <span class="material-symbols-outlined google-icon">
                 shopping_cart
-                <!-- matBadgePosition="before" -->
-                <span
-                  *ngIf="lengthCart > 0"
-                  class="cart__number"
-                  [matBadge]="lengthCart"
-                  matBadgeColor="primary"
-                  matBadgeSize="medium"
-                >
-                </span>
               </span>
             </a>
           </li>
+          <!--  -->
           <li class="user__list-link" *ngIf="potentialToken">
             <a
               routerLink="/"
@@ -109,12 +118,12 @@
               class="link-item"
               (click)="logout()"
             >
-              <!-- <img src="../../../../assets/img/logout.png" alt="logout /> -->
               <span class="material-symbols-outlined google-icon">
                 logout
               </span>
             </a>
           </li>
+          <!--  -->
         </ul>
       </div>
     </div>
