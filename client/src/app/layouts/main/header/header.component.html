@@ -104,11 +104,11 @@
               routerLinkActive="link-item-active"
               class="link-item"
               [matBadge]="
-                lengthFavorite === 0
+                lengthCart === 0
                   ? ''
-                  : lengthFavorite && lengthFavorite >= 100
+                  : lengthCart && lengthCart >= 100
                   ? '99+'
-                  : lengthFavorite
+                  : lengthCart
               "
               matBadgeColor="primary"
               matBadgeSize="medium"
