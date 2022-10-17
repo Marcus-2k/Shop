@@ -67,6 +67,9 @@ export class LoginComponent implements OnInit {
       },
       (e) => {
         console.log(e);
+        if (e.error.message) {
+          this.showNotice.message(e.error.message);
+        }
         this.form.enable();
       }
     );
