@@ -168,7 +168,7 @@ module.exports.updateProduct = async function (req, res) {
       updateProduct.description = req.body.description;
     }
 
-    await Product.findOneAndUpdate(
+    await Product.findByIdAndUpdate(
       req.params.id,
       { $set: updateProduct },
       { new: true }
