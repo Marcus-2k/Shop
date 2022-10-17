@@ -19,6 +19,8 @@ export class RegisterComponent implements OnInit {
   form: FormGroup = new FormGroup({});
 
   ngOnInit(): void {
+    console.log("Start ngOnInit Register");
+
     if (this.auth.isAuthenticated()) {
       this.router.navigate(["/account"], {
         queryParams: {
@@ -30,6 +32,7 @@ export class RegisterComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
+        Validators.pattern("[a-zA-Z ]*"),
         Validators.minLength(4),
       ]),
       email: new FormControl(null, [Validators.required, Validators.email]),
@@ -46,6 +49,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.form.disable();
+
     this.auth.register(this.form.value).subscribe(
       (response) => {
         console.log(response);

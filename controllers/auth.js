@@ -62,7 +62,7 @@ module.exports.register = async function (req, res) {
 
       const user = await UserModel.create({
         avatar: null,
-        name: req.body.name,
+        name: req.body.name.split(/\s+/).join(""),
         lastName: null,
         email: req.body.email,
         birthday: null,

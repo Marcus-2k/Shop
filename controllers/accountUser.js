@@ -44,10 +44,10 @@ module.exports.editUser = async function (req, res) {
       }
 
       if (req.body.name) {
-        updatedUser.name = req.body.name;
+        updatedUser.name = req.body.name.split(/\s+/).join("");
       }
       if (req.body.lastName) {
-        updatedUser.lastName = req.body.lastName;
+        updatedUser.lastName = req.body.lastName.split(/\s+/).join("");
       }
       if (req.body.email) {
         updatedUser.email = req.body.email;

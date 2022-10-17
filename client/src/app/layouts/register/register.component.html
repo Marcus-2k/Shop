@@ -57,6 +57,11 @@
           >
             Ім'я занадто короте.</span
           >
+          <span
+            class="error-intut-data"
+            *ngIf="form.controls['name'].errors?.['pattern']"
+            >Дозволині символи (a-zA-Z).</span
+          >
         </span>
       </div>
 
