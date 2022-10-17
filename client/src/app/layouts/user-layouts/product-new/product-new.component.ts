@@ -6,7 +6,7 @@ import {
   OnDestroy,
   ViewChild,
 } from "@angular/core";
-import { ActivatedRoute, Data } from "@angular/router";
+import { ActivatedRoute, Data, Router } from "@angular/router";
 import {
   CategoryProduct_Characteristics,
   Options,
@@ -27,6 +27,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
     private route: ActivatedRoute,
+    private router: Router,
     private renameTitle: RenameTitleService,
     private requestCatalog: RequestCatalogService
   ) {}
@@ -568,6 +569,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       this.requestProduct.createProduct(formData).subscribe(
         (res) => {
           this.showNotice.message("Товар створено успішно.");
+          this.afterCreateUpdateProduct();
         },
         (e) => {
           console.log(e);
@@ -655,6 +657,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       this.requestProduct.updateById(formData, this.up_Product._id).subscribe(
         (responce) => {
           this.showNotice.message("Товар успішно змінено.");
+          this.afterCreateUpdateProduct();
         },
         (e) => {
           console.log(e);
@@ -668,6 +671,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         "Товар не було збережено, дані заповнено не коректно"
       );
     }
+  }
+
+  afterCreateUpdateProduct() {
+    this.router.navigate(["/account/product"]);
   }
   // Create/Up END =================================================================================================================================
 }
