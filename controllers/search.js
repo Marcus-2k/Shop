@@ -116,7 +116,7 @@ module.exports.search = async function (req, res) {
       // console.log(productCharacteristicsBlock);
       // ===========================================================================
 
-      res.status(200).json({
+      return res.status(200).json({
         product,
         uniqueProductCategory,
         productCharacteristicsBlock,
@@ -251,7 +251,7 @@ module.exports.search = async function (req, res) {
       // console.log(productCharacteristicsBlock);
       // ===========================================================================
 
-      res.status(200).json({
+      return res.status(200).json({
         product,
         uniqueProductCategory,
         productCharacteristicsBlock,
@@ -262,13 +262,13 @@ module.exports.search = async function (req, res) {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Сталася помилка. Спробуйте пізніше." });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 // All function this controller ==================================================================================
 
-// Delete Duplicate Category ========================================================
+// Delete Duplicate Category ====================================================================
 function deleteDuplicateCategory(categoryNoUnique) {
   categoryNoUnique.forEach((element, i) => {
     categoryNoUnique[i] = element.join("");
@@ -279,9 +279,9 @@ function deleteDuplicateCategory(categoryNoUnique) {
     uniqueProductCategory[i] = ("" + element).split("").map(Number);
   }); // [ '105', '100' ... ] >>> [ [1,0,5], [1,0,0] ... ]
   return uniqueProductCategory;
-}
+} // return [ [1,0,5], [1,0,5], [1,0,0] ] >>> [ [1, 0, 5], [1, 0, 0] ]
 
-// Counter Product ==================================================================
+// Counter Product In Category ==================================================================
 function counterProduct(uniqueProductCategory, categoryNoUnique) {
   const counterProductInCategory = [];
   let uniqueCategory = [];
@@ -300,10 +300,9 @@ function counterProduct(uniqueProductCategory, categoryNoUnique) {
   }); // counterProductInCategory = [ [ 1 ], [ 6 ], [ 10 ] ]
 
   return counterProductInCategory;
-}
+} // return [ [ 1 ], [ 6 ], [ 10 ] ]
 
-// Product Characteristics Block ============================================================
-
+// Product Characteristics Block ================================================================
 function productBlock(counter, productCharacteristics) {
   const productCharacteristicsBlock = [];
   counter.forEach((element) => {
@@ -325,37 +324,4 @@ function productBlock(counter, productCharacteristics) {
   });
 
   return characteristicsBlockCategory;
-}
-
-async function addCharacteristicsSelected(
-  characteristics,
-  paramsString,
-  search_text,
-  query
-) {
-  const product = await Product.find(
-    // {},
-    {
-      // name: { $regex: search_text, $options: "i" },
-      // queryParams: {
-      //   $or: [
-      //     { ram: "32 ГБ", color: "Білий", guarantee: "1 рік" },
-      //     { ram: "24 ГБ", color: "Білий", guarantee: "1 рік" },
-      //     { ram: "16 ГБ", color: "Жовтий", guarantee: "1 рік" },
-      //   ],
-      // },
-      // optionsToString: {
-      //   $in: [
-      //     "Білий",
-      //     ["16 ГБ", "Жовтий", ""],
-      //     ["32 ГБ", "Білий", "1 рік"],
-      //     ["24 ГБ", "Білий", "1 рік"],
-      //   ],
-      // },
-    }
-  );
-
-  // console.log(product);
-
-  return 0;
 }
