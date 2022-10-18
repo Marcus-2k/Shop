@@ -28,6 +28,11 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
     this.userData.shoppingCartNumber.subscribe((counter: number) => {
       this.lengthCart = counter;
     });
+
+    const history = localStorage.getItem("history-search");
+    if (history) {
+      this.historySearchArray = history.split(",");
+    }
   }
 
   ngDoCheck(): void {
@@ -69,7 +74,42 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
 
   // Menu END =============================================================
   // Search START =========================================================
+  searchText: string = "";
+
+  searchSiteInputFocus: boolean = false;
+
   search(title: string) {
+    this.searchText = title;
+
+    const historyLocalStorage: string | null =
+      localStorage.getItem("history-search");
+
+    if (historyLocalStorage) {
+      let historySearch: string[] = historyLocalStorage.split(",");
+
+      let index: number = -1;
+
+      for (let idx = 0; idx < historySearch.length; idx++) {
+        if (historySearch[idx] === title) {
+          index = idx;
+          break;
+        }
+      }
+
+      if (index === -1) {
+        historySearch.unshift(title);
+      } else if (index >= 0) {
+        historySearch.splice(index, 1);
+        historySearch.unshift(title);
+      }
+
+      localStorage.setItem("history-search", historySearch.join(","));
+      this.historySearchArray = historySearch;
+    } else {
+      localStorage.setItem("history-search", title);
+      this.historySearchArray.push(title);
+    }
+
     this.router.navigate([`search`], {
       queryParams: {
         search_text: title,
@@ -79,6 +119,22 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
       },
     });
   }
+
+  focusout() {
+    let interval = setInterval(() => {
+      this.searchSiteInputFocus = false;
+
+      clearInterval(interval);
+    }, 100);
+  }
+
+  clearHistorySearch() {
+    localStorage.removeItem("history-search");
+
+    this.historySearchArray = [];
+  }
+
+  historySearchArray: string[] = [];
   // Search END ===========================================================
   // User START ===========================================================
   lengthFavorite: number = 0;

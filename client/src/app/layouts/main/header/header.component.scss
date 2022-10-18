@@ -81,39 +81,21 @@
     &-search {
       width: 100%;
       max-width: 800px;
-      width: 100%;
       .search {
-        form {
+        .form {
           display: flex;
           justify-content: center;
           position: relative;
           .search__site {
             height: 40px;
-            border-radius: 5px 0 0 5px;
+            border-radius: 5px 0 0 0;
             padding: 0 0 0 20px;
             width: 100%;
             max-width: 480px;
             font-size: 16px;
             font-family: "Mont";
             border: none;
-            border-bottom: 2px solid #fff;
             transition: 0.4s;
-          }
-          .input-disabled {
-            transition: 0.4s;
-            border-bottom: 2px solid red;
-            &::placeholder {
-              color: red;
-              transition: 0.4s;
-            }
-          }
-          .help__text {
-            position: absolute;
-            bottom: -20px;
-            left: 105px;
-            font-weight: 700;
-            color: rgb(216, 66, 66);
-            font-size: 14px;
           }
           .button__search {
             background-color: #faa627;
@@ -123,7 +105,7 @@
             font-size: 16px;
             height: 40px;
             width: 80px;
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 5px 0 0;
             border: none;
             cursor: pointer;
             transition: 0.4s;
@@ -131,9 +113,40 @@
               transition: 0.4s;
               background-color: #d48d21;
             }
-            &:disabled {
-              transition: 0.4s;
-              opacity: 0.7;
+          }
+
+          &__history {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            &-content {
+              // padding: 10px;
+              background-color: #fff;
+              .history__header {
+                padding: 10px 10px 5px 10px;
+                display: flex;
+                justify-content: space-between;
+                &-title {
+                }
+                &-clear {
+                  color: #3f51b5;
+                  cursor: pointer;
+                }
+              }
+              .history__list {
+                &-item {
+                  padding: 5px;
+                  cursor: pointer;
+                  transition: 0.4s;
+                  &:hover {
+                    transition: 0.4s;
+                    background-color: #3f51b5;
+                    color: #fff;
+                  }
+                }
+              }
             }
           }
         }

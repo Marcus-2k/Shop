@@ -36,16 +36,47 @@
     <!--  -->
     <div class="header__content-search">
       <div class="search">
-        <form action="" method="get" (ngSubmit)="search(searchSite.value)">
+        <form
+          class="form"
+          action=""
+          method="get"
+          (ngSubmit)="search(searchSiteInput.value)"
+        >
           <input
             type="text"
-            name=""
+            name="search"
             id="searchSite"
-            #searchSite
+            autocomplete="off"
+            #searchSiteInput
             class="search__site"
             placeholder="Пошук..."
+            [(ngModel)]="searchText"
+            (focus)="searchSiteInputFocus = true"
+            (focusout)="focusout()"
           />
           <button type="submit" class="button__search">Найти</button>
+          <div
+            class="form__history"
+            *ngIf="historySearchArray.length >= 1 && searchSiteInputFocus"
+          >
+            <div class="form__history-content">
+              <div class="history__header">
+                <p class="history__header-title">Історія пошуку</p>
+                <p class="history__header-clear" (click)="clearHistorySearch()">
+                  Очистити пошук
+                </p>
+              </div>
+              <ul class="history__list">
+                <li
+                  class="history__list-item"
+                  *ngFor="let history of historySearchArray"
+                  (click)="search(history)"
+                >
+                  {{ history }}
+                </li>
+              </ul>
+            </div>
+          </div>
         </form>
       </div>
     </div>
