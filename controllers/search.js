@@ -1,5 +1,4 @@
 const Product = require("../models/Product");
-// const categoryNumberTitle = [{ category: [1, 0, 0], lengthOption: 3 }];
 
 module.exports.search = async function (req, res) {
   console.log("Server search");
@@ -12,7 +11,10 @@ module.exports.search = async function (req, res) {
     const search_text = req.query.search_text;
 
     // Pagination === START
-    const limit = req.query.limit ? Number(req.query.limit) : 10; // Скільки товарів на сторінку
+    let limit = req.query.limit ? Number(req.query.limit) : 10; // Скільки товарів на сторінку
+    if (limit < 10) {
+      limit = 10;
+    }
     let page = req.query.page ? Number(req.query.page) : 1; // Сторінка яку нада відобразити
 
     let currentPage = page; // Open page
