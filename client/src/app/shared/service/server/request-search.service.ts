@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Params } from "@angular/router";
 import { Observable } from "rxjs";
-import { Product } from "src/app/shared/interface/interfaces";
+import { Options, Product } from "src/app/shared/interface/interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +21,7 @@ export class RequestSearchService {
     product: Product[];
     uniqueProductCategory: number[][];
     productCharacteristicsBlock: number[][][];
+    productCharacteristicsName: Options[][];
     currentPage: number;
     maxPage: number;
     limit: number;
@@ -31,14 +32,21 @@ export class RequestSearchService {
         product: Product[];
         uniqueProductCategory: number[][];
         productCharacteristicsBlock: number[][][];
+        productCharacteristicsName: Options[][];
         currentPage: number;
         maxPage: number;
         limit: number;
       }>(`${this.url_server}/search?${query.toString()}`);
     } else {
-      return this.http.get<any>(
-        `${this.url_server}/search?search_text=${title}`
-      );
+      return this.http.get<{
+        product: Product[];
+        uniqueProductCategory: number[][];
+        productCharacteristicsBlock: number[][][];
+        productCharacteristicsName: Options[][];
+        currentPage: number;
+        maxPage: number;
+        limit: number;
+      }>(`${this.url_server}/search?search_text=${title}`);
     }
   }
 }

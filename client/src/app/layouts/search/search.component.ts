@@ -3,15 +3,12 @@ import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
   Product,
-  ActiveFilter,
   Options,
+  ActiveFilter,
   ActiveFilterBlock,
-  CategoryProduct_Characteristics,
-} from "src/app/shared/interface/interfaces"; // Interface
+} from "src/app/shared/interface/interfaces";
 
-// Service
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
-import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
@@ -25,35 +22,34 @@ export class SearchComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private searchService: RequestSearchService,
-    private requestCatalog: RequestCatalogService,
     private showNotice: ShowNoticeService,
     private renameTitle: RenameTitleService
   ) {}
 
-  search_text?: string;
-  allQuery: Params = {};
-
   ngOnInit() {
     console.log("Start ngOnInit Search");
 
-    this.route.queryParams.subscribe((queryParam: Params) => {
-      this.search_text = queryParam["search_text"];
-      this.type_sort = queryParam["type_sort"]
-        ? Number(queryParam["type_sort"])
+    let queryPage: Params = {};
+
+    this.route.queryParams.subscribe((queryParams: Params) => {
+      this.search_text = queryParams["search_text"];
+      this.type_sort = queryParams["type_sort"]
+        ? Number(queryParams["type_sort"])
         : 5;
-      this.allQuery = queryParam;
+      queryPage = queryParams;
     });
 
-    Object.assign(this.queryParams, this.allQuery);
+    Object.assign(this.queryParams, queryPage);
 
     if (this.search_text) {
-      this.searchService.search(this.search_text, this.allQuery).subscribe(
+      this.searchService.search(this.search_text, queryPage).subscribe(
         (response) => {
           // ==============================================================================================
           console.log("=====================================================");
           console.log(response.product);
           console.log(response.uniqueProductCategory);
           console.log(response.productCharacteristicsBlock);
+          console.log(response.productCharacteristicsName);
           console.log("Відкрита сторінка", response.currentPage);
           console.log("Кількість сторінок", response.maxPage);
           console.log("Товарів на сторінку", response.limit);
@@ -67,134 +63,115 @@ export class SearchComponent implements OnInit {
           this.maxPage = response.maxPage; // Max pages site
           this.limit = response.limit; // Limits item site
           // ==============================================================================================
-          this.requestCatalog.getCategoryAndCharacteristics().subscribe(
-            (res: CategoryProduct_Characteristics[]) => {
-              console.log(res);
-              this.categoryNameDB = res;
-              // ==============================================================================================
-              let optionsListBlockCategory: Options[][] = []; // Options Product List
-              this.uniqueCategory.forEach((element: number[], idx: number) => {
-                optionsListBlockCategory.push(
-                  this.categoryNameDB[element[0]].nameListCategory[element[1]]
-                    .subNameListCategory[element[2]].characteristics
-                );
-              });
-              console.log(optionsListBlockCategory);
-              // ==============================================================================================
-              let filterName: ActiveFilterBlock[] = [];
-              optionsListBlockCategory.forEach((element: Options[], index) => {
-                productOptionsBlock[index].forEach((item, idx) => {
-                  let block: ActiveFilterBlock = {
-                    name: element[idx].name,
-                    inputActive: [],
-                    blockActive: true,
-                  };
-                  item.forEach((items) => {
-                    let item: ActiveFilter = {
-                      name: element[idx].select[items],
-                      query_name: element[idx].query_name,
-                      counter: 0,
-                      active: false,
-                    };
-                    block.inputActive.push(item);
-                  });
-                  filterName.push(block);
-                });
-              });
-              // ==============================================================================================
-              const uniqueFilter: ActiveFilterBlock[] = [];
-              filterName.forEach((element, idx) => {
-                if (idx === 0) {
-                  uniqueFilter.push(element);
-                } else if (idx > 0) {
-                  let flag = true;
-                  for (let key of uniqueFilter) {
-                    if (key.name === element.name) {
-                      key.inputActive = key.inputActive.concat(
-                        element.inputActive
-                      );
-                      flag = false;
-                    }
-                  }
-                  if (flag) {
-                    uniqueFilter.push(element);
-                  }
-                }
-              });
-              // ==============================================================================================
-              let uniqueFilterBlock: ActiveFilterBlock[] = [];
-              uniqueFilter.forEach((element) => {
-                let uniqueFilterBlockItem: ActiveFilterBlock = {
-                  name: element.name,
+          let filterName: ActiveFilterBlock[] = [];
+          response.productCharacteristicsName.forEach(
+            (element: Options[], index) => {
+              productOptionsBlock[index].forEach((item, idx) => {
+                let block: ActiveFilterBlock = {
+                  name: element[idx].name,
                   inputActive: [],
                   blockActive: true,
                 };
-                let inputActiveItem: ActiveFilter[] = [];
-                //
-                element.inputActive.forEach((item, index) => {
-                  //
-                  if (index === 0) {
-                    inputActiveItem.push(item);
-                  } else if (index > 0) {
-                    //
-                    let flag = true;
-                    for (let key of inputActiveItem) {
-                      if (key.name === item.name) {
-                        flag = false;
-                        key.counter++;
-                      }
-                    }
-                    if (flag) {
-                      inputActiveItem.push(item);
-                    }
-                  }
-                  uniqueFilterBlockItem.inputActive = inputActiveItem;
+                item.forEach((items) => {
+                  let item: ActiveFilter = {
+                    name: element[idx].select[items],
+                    query_name: element[idx].query_name,
+                    counter: 0,
+                    active: false,
+                  };
+                  block.inputActive.push(item);
                 });
-                uniqueFilterBlock.push(uniqueFilterBlockItem);
+                filterName.push(block);
               });
-              // ==============================================================================================
-              const parameters: string[] = Object.values(
-                this.queryParams
-              ).splice(1);
-              parameters.pop(); //delete type_sort queryParams
-              parameters.pop(); //delete page queryParams
-              parameters.pop(); //delete limit queryParams
-              // ==============================================================================================
-              let sortParameters: string[] = [];
-              parameters.forEach((element: string, idx) => {
-                if (element.indexOf(",") !== -1) {
-                  sortParameters = sortParameters.concat(element.split(","));
-                } else {
-                  sortParameters.push(element);
-                }
-              });
-              // this.resetParameters = sortParameters;
-              uniqueFilterBlock.forEach((element: ActiveFilterBlock, i) => {
-                sortParameters.forEach((block) => {
-                  element.inputActive.forEach((item, idx) => {
-                    if (block === item.name) {
-                      uniqueFilterBlock[i].inputActive[idx].active = true;
-                    }
-                  });
-                });
-              });
-              // ==============================================================================================
-              this.listFilter = uniqueFilterBlock;
-              // ==============================================================================================
-              this.loader = false;
-              // ==============================================================================================
-            },
-            (error) => {
-              console.log(error);
             }
           );
+          // console.log(filterName);
+          // ==============================================================================================
+          let uniqueFilter: ActiveFilterBlock[] = [];
+          filterName.forEach((element, idx) => {
+            if (idx === 0) {
+              uniqueFilter.push(element);
+            } else if (idx > 0) {
+              let flag = true;
+              for (let key of uniqueFilter) {
+                if (key.name === element.name) {
+                  key.inputActive = key.inputActive.concat(element.inputActive);
+                  flag = false;
+                }
+              }
+              if (flag) {
+                uniqueFilter.push(element);
+              }
+            }
+          });
+          // console.log(uniqueFilter);
+          // ==============================================================================================
+          let uniqueFilterBlock: ActiveFilterBlock[] = [];
+          uniqueFilter.forEach((element) => {
+            let uniqueFilterBlockItem: ActiveFilterBlock = {
+              name: element.name,
+              inputActive: [],
+              blockActive: true,
+            };
+            let inputActiveItem: ActiveFilter[] = [];
+            //
+            element.inputActive.forEach((item, index) => {
+              //
+              if (index === 0) {
+                inputActiveItem.push(item);
+              } else if (index > 0) {
+                //
+                let flag = true;
+                for (let key of inputActiveItem) {
+                  if (key.name === item.name) {
+                    flag = false;
+                    key.counter++;
+                  }
+                }
+                if (flag) {
+                  inputActiveItem.push(item);
+                }
+              }
+              uniqueFilterBlockItem.inputActive = inputActiveItem;
+            });
+            uniqueFilterBlock.push(uniqueFilterBlockItem);
+          });
+          // console.log(uniqueFilterBlock);
+          // ==============================================================================================
+          let parameters: string[] = Object.values(this.queryParams).splice(1);
+          parameters.pop(); //delete type_sort queryParams
+          parameters.pop(); //delete page queryParams
+          parameters.pop(); //delete limit queryParams
+          // ==============================================================================================
+          let sortParameters: string[] = [];
+          parameters.forEach((element: string) => {
+            if (element.indexOf(",") !== -1) {
+              sortParameters = sortParameters.concat(element.split(","));
+            } else {
+              sortParameters.push(element);
+            }
+          });
+          uniqueFilterBlock.forEach((element: ActiveFilterBlock, i) => {
+            sortParameters.forEach((block) => {
+              element.inputActive.forEach((item, idx) => {
+                if (block === item.name) {
+                  uniqueFilterBlock[i].inputActive[idx].active = true;
+                }
+              });
+            });
+          });
+          // ==============================================================================================
+          this.listFilter = uniqueFilterBlock;
+          // ==============================================================================================
+          this.loader = false;
+          // ==============================================================================================
         },
         (e) => {
           console.log(e);
         }
       );
-    } else if (this.search_text === undefined) {
-      this.router.navigate([""]);
+    } else if (this.search_text === "") {
+      this.router.navigate(["/"]);
       this.showNotice.message("Помилка запиту, не введено текст пошуку.");
     }
 
@@ -206,11 +183,11 @@ export class SearchComponent implements OnInit {
   private HOST: string = "localhost";
   private PORT: string = ":5000";
   url_server_folder: string = `http://${this.HOST}${this.PORT}/`; // Link to server folder
+
+  search_text?: string;
   loader: boolean = true; // Loader block Select
 
   // Header START =================================================================================
-  counterProductSearchInDB: number = 0;
-
   type_sort: number = 0;
 
   productSort() {
@@ -228,7 +205,6 @@ export class SearchComponent implements OnInit {
 
   // Sidebar START ================================================================================
   uniqueCategory: number[][] = []; // Category List [ [1,0,0], [1,0,5] ... ]
-  categoryNameDB: CategoryProduct_Characteristics[] = []; // All Category, import from category-name.service.ts
 
   listFilter: ActiveFilterBlock[] = [];
 
