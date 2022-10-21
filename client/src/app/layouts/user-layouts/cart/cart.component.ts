@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import {
   DeleteCart,
   Order,
@@ -58,10 +58,10 @@ export class CartComponent implements OnInit {
       }
     );
 
-    this.formContacts = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      tel: new FormControl(null, [
+    this.formContacts = new UntypedFormGroup({
+      name: new UntypedFormControl(null, [Validators.required]),
+      email: new UntypedFormControl(null, [Validators.required, Validators.email]),
+      tel: new UntypedFormControl(null, [
         Validators.required,
         Validators.minLength(13),
         Validators.maxLength(13),
@@ -168,7 +168,7 @@ export class CartComponent implements OnInit {
   // Step Cart ========================================
 
   // Step Contacts ====================================
-  formContacts: FormGroup = new FormGroup({});
+  formContacts: UntypedFormGroup = new UntypedFormGroup({});
   // Step Contacts ====================================
 
   // Step Shipping ====================================

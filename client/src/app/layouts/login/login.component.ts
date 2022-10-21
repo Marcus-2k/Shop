@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Favorite, ShoppingCart } from "src/app/shared/interface/interfaces";
 import { UserDataService } from "src/app/shared/service/user-data.service";
@@ -31,9 +31,9 @@ export class LoginComponent implements OnInit {
       });
     }
 
-    this.form = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [
+    this.form = new UntypedFormGroup({
+      email: new UntypedFormControl(null, [Validators.required, Validators.email]),
+      password: new UntypedFormControl(null, [
         Validators.required,
         Validators.minLength(6),
       ]),
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  form: FormGroup = new FormGroup({});
+  form: UntypedFormGroup = new UntypedFormGroup({});
 
   closePopuap() {
     this.router.navigate(["/"]);
