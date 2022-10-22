@@ -3,6 +3,7 @@
   margin-top: 10px;
   .status__item {
     p {
+      font-size: calc(14px + (16 - 14) * ((100vw - 320px) / (1920 - 320)));
       margin: 0px;
     }
   }

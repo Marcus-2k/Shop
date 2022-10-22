@@ -7,10 +7,8 @@
     margin: 0 auto;
     height: auto;
     display: grid;
-    // grid-template-columns: 24% 74%;
     grid-template-columns: 25% 75%;
     grid-template-rows: 10% 90%;
-    // grid-column-gap: 2%;
     grid-column-gap: 0;
     grid-row-gap: 0px;
     &-header {
@@ -116,6 +114,13 @@
       .pagination {
         margin: 20px 0;
       }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .search {
+    &__content {
     }
   }
 }

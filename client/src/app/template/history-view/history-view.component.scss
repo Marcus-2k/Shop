@@ -9,8 +9,14 @@
     @media (max-width: 1250px) {
       width: 33.3%;
     }
-    @media (max-width: 767px) {
+    @media (max-width: 1000px) {
       width: 25%;
+    }
+    @media (max-width: 767px) {
+      width: 33.3%;
+    }
+    @media (max-width: 600px) {
+      width: 50%;
     }
   }
 }

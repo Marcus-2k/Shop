@@ -37,6 +37,12 @@
           @media (max-width: 767px) {
             width: 33.3%;
           }
+          @media (max-width: 600px) {
+            width: 50%;
+          }
+          @media (max-width: 400px) {
+            width: 100%;
+          }
         }
         &-none {
           border: 1px solid #e9e9e9;

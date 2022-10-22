@@ -6,8 +6,8 @@
       <div class="menu-logo">
         <div class="logo">
           <a routerLink="/" class="logo__link">
-            <img src="../../../../assets/img/globe.png" alt="" />
-            <h1 class="title__site">&nbsp;Globe Site</h1>
+            <span class="material-symbols-outlined"> home_app_logo </span>
+            <h1 class="title__site">&nbsp;Online Store</h1>
           </a>
         </div>
       </div>
@@ -34,13 +34,17 @@
       </div>
     </div>
     <!--  -->
-    <div class="header__content-search">
+    <div
+      class="header__content-search"
+      [ngClass]="{ search__focus: searchSiteInputFocus }"
+    >
       <div class="search">
         <form
           class="form"
           action=""
           method="get"
           (ngSubmit)="search(searchSiteInput.value)"
+          [ngClass]="{ form__focus: searchSiteInputFocus }"
         >
           <input
             type="text"
@@ -48,13 +52,13 @@
             id="searchSite"
             autocomplete="off"
             #searchSiteInput
-            class="search__site"
+            class="form__input"
             placeholder="Пошук..."
             [(ngModel)]="searchText"
-            (focus)="searchSiteInputFocus = true"
+            (focus)="focus()"
             (focusout)="focusout()"
           />
-          <button type="submit" class="button__search">Найти</button>
+          <button type="submit" class="form__button">Знайти</button>
           <div
             class="form__history"
             *ngIf="historySearchArray.length >= 1 && searchSiteInputFocus"
@@ -81,9 +85,26 @@
       </div>
     </div>
     <!--  -->
-    <div class="header__content-user">
-      <div class="menu"></div>
+    <div class="header__content-burger__menu">
+      <div
+        class="menu"
+        (click)="clickBurgerMenu()"
+        [ngClass]="{ menu__active: burgerMenu }"
+      >
+        <span class="menu__line"></span>
+      </div>
+    </div>
+    <!--  -->
+    <div class="header__content-user" [ngClass]="{ user__burger: burgerMenu }">
       <div class="user">
+        <div class="user__header-burger" *ngIf="burgerMenu">
+          <div class="logo">
+            <a routerLink="/" class="logo__link" (click)="clickBurgerMenu()">
+              <span class="material-symbols-outlined"> home_app_logo </span>
+              <h1 class="title__site">&nbsp;Online Store</h1>
+            </a>
+          </div>
+        </div>
         <ul class="user__list">
           <!--  -->
           <li class="user__list-link" *ngIf="!potentialToken">
@@ -91,8 +112,10 @@
               routerLink="/login"
               link-item-active="link-item-active"
               class="link-item"
+              (click)="clickBurgerMenu()"
             >
               <span class="material-symbols-outlined google-icon"> login </span>
+              <span *ngIf="burgerMenu">Вхід</span>
             </a>
           </li>
           <!--  -->
@@ -101,10 +124,12 @@
               routerLink="/account"
               routerLinkActive="link-item-active"
               class="link-item"
+              (click)="clickBurgerMenu()"
             >
               <span class="material-symbols-outlined google-icon">
                 person
               </span>
+              <span *ngIf="burgerMenu">Персональний кабінет</span>
             </a>
           </li>
           <!--  -->
@@ -122,10 +147,13 @@
               "
               matBadgeColor="primary"
               matBadgeSize="medium"
+              matBadgePosition="above before"
+              (click)="clickBurgerMenu()"
             >
               <span class="material-symbols-outlined google-icon">
                 favorite
               </span>
+              <span *ngIf="burgerMenu">Вподобані товари</span>
             </a>
           </li>
           <!--  -->
@@ -143,18 +171,26 @@
               "
               matBadgeColor="primary"
               matBadgeSize="medium"
+              matBadgePosition="above before"
+              (click)="clickBurgerMenu()"
             >
               <span class="material-symbols-outlined google-icon">
                 shopping_cart
               </span>
+              <span *ngIf="burgerMenu">Корзина товарів</span>
             </a>
           </li>
           <!--  -->
           <li class="user__list-link" *ngIf="potentialToken">
-            <a routerLink="/" class="link-item" (click)="logout()">
+            <a
+              routerLink="/"
+              class="link-item"
+              (click)="logout(); clickBurgerMenu()"
+            >
               <span class="material-symbols-outlined google-icon">
                 logout
               </span>
+              <span *ngIf="burgerMenu">Вихід</span>
             </a>
           </li>
           <!--  -->

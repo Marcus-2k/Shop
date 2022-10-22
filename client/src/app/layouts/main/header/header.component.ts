@@ -120,9 +120,16 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
     });
   }
 
+  focus() {
+    this.searchSiteInputFocus = true;
+
+    this.body.classList.add("placeholder__background");
+  }
+
   focusout() {
     let interval = setInterval(() => {
       this.searchSiteInputFocus = false;
+      this.body.classList.remove("placeholder__background");
 
       clearInterval(interval);
     }, 100);
@@ -151,6 +158,18 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
         console.log(e);
       }
     );
+  }
+
+  burgerMenu: boolean = false;
+
+  clickBurgerMenu() {
+    if (this.body.classList.contains("active__menu")) {
+      this.burgerMenu = false;
+      this.body.classList.remove("active__menu");
+    } else {
+      this.burgerMenu = true;
+      this.body.classList.add("active__menu");
+    }
   }
   // User END =============================================================
 }
