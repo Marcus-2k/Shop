@@ -447,12 +447,12 @@
             }
             &__history {
               width: 100%;
-              max-width: 400px;
             }
           }
           .form__focus {
             .form__input {
               width: 100%;
+              max-width: 100%;
               transition: 0s;
             }
             .form__history {
@@ -478,10 +478,7 @@
         .search {
           .form {
             &__input {
-              max-width: 300px;
-            }
-            &__history {
-              max-width: 300px;
+              max-width: 350px;
             }
           }
         }
@@ -497,9 +494,6 @@
           .form {
             &__input {
               max-width: 260px;
-            }
-            &__history {
-              max-width: 2600px;
             }
           }
         }

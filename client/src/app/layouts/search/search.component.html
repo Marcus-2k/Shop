@@ -21,28 +21,49 @@
         </ng-container>
       </div>
       <!--  -->
-      <div class="settings" *ngIf="!loader">
-        <mat-form-field appearance="fill">
-          <mat-label>Відсортувати товари:</mat-label>
-          <mat-select
-            disableRipple
-            class="characteristics-select"
-            #selectSort
-            [(ngModel)]="type_sort"
-            (ngModelChange)="productSort()"
+      <div
+        class="settings"
+        [ngClass]="{ mobile: widthWindow <= 1000 }"
+        *ngIf="!loader"
+      >
+        <div class="settings__filter-mobile" *ngIf="widthWindow <= 1000">
+          <button
+            class="filter__button"
+            mat-raised-button
+            color="primary"
+            (focus)="inputShowFilterFocus()"
+            (focusout)="inputShowFilterFocusout()"
           >
-            <mat-option [value]="0">Від дешевих до дорогих</mat-option>
-            <mat-option [value]="1">Від дорогих до дешевих</mat-option>
-            <mat-option [value]="2" [disabled]="true">Популярні</mat-option>
-            <mat-option [value]="3" [disabled]="true">Новинки</mat-option>
-            <mat-option [value]="4">Акційні</mat-option>
-            <mat-option [value]="5">За рейтингом</mat-option>
-          </mat-select>
-        </mat-form-field>
+            <span class="material-symbols-outlined"> filter_alt </span>
+            <span class="filter__button-text">Фільтри</span>
+          </button>
+        </div>
+        <div class="settings__sort">
+          <mat-form-field appearance="fill" class="settings__sort-select">
+            <mat-label>Відсортувати товари:</mat-label>
+            <mat-select
+              disableRipple
+              class="characteristics-select"
+              #selectSort
+              [(ngModel)]="type_sort"
+              (ngModelChange)="productSort()"
+            >
+              <mat-option [value]="0">Від дешевих до дорогих</mat-option>
+              <mat-option [value]="1">Від дорогих до дешевих</mat-option>
+              <mat-option [value]="2" [disabled]="true">Популярні</mat-option>
+              <mat-option [value]="3" [disabled]="true">Новинки</mat-option>
+              <mat-option [value]="4">Акційні</mat-option>
+              <mat-option [value]="5">За рейтингом</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
       <!--  -->
     </div>
-    <div class="search__content-sidebar">
+    <div
+      class="search__content-sidebar"
+      [ngClass]="{ mobile__sidebar: showFilter }"
+    >
       <div class="content-element-center" *ngIf="loader">
         <mat-spinner></mat-spinner>
       </div>
@@ -92,9 +113,8 @@
                     color="primary"
                     #checkboxInput
                   >
-                    ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp;{{
-                      filterItem.name
-                    }}
+                    <!-- ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp; -->
+                    {{ filterItem.name }}
                     <span class="counter"
                       >&nbsp;({{ filterItem.counter + 1 }})</span
                     ></mat-checkbox

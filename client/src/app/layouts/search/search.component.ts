@@ -186,6 +186,7 @@ export class SearchComponent implements OnInit {
 
   search_text?: string;
   loader: boolean = true; // Loader block Select
+  body: HTMLBodyElement = document.getElementsByTagName("body")[0];
 
   // Header START =================================================================================
   type_sort: number = 0;
@@ -321,4 +322,21 @@ export class SearchComponent implements OnInit {
     });
   }
   // Main Product END =============================================================================
+  // Media Adaptability START =====================================================================
+  widthWindow: number = window.innerWidth;
+  showFilter: boolean = false;
+
+  inputShowFilterFocus() {
+    this.showFilter = true;
+    this.body.classList.add("active__filter");
+  }
+  inputShowFilterFocusout() {
+    let interval = setInterval(() => {
+      this.showFilter = false;
+      this.body.classList.remove("active__filter");
+
+      clearInterval(interval);
+    }, 100);
+  }
+  // Media Adaptability END =======================================================================
 }
