@@ -3,7 +3,7 @@
   &__content {
     max-width: 1600px;
     margin: 0 auto;
-    @media screen and(max-width:1600px) {
+    @media (max-width: 1600px) {
       padding: 0 15px;
     }
     &-breadcrumbs {
@@ -29,7 +29,7 @@
     }
     &-navigation {
       padding: 10px 0;
-      @media screen and (max-width: 989px) {
+      @media (max-width: 989px) {
         overflow-x: scroll;
       }
       &::-webkit-scrollbar {
