@@ -14,7 +14,6 @@
       <div class="menu-catalog">
         <button
           class="menu-catalog--button catalog__button"
-          #catalog
           (click)="catalogOnOff()"
         >
           <span
@@ -106,6 +105,24 @@
           </div>
         </div>
         <ul class="user__list">
+          <!--  -->
+          <li class="user__list-link" *ngIf="windowWidth <= 767">
+            <a class="link-item" (click)="catalogOnOff()">
+              <span
+                class="material-symbols-outlined catalog__button"
+                *ngIf="!catalogShow"
+              >
+                category
+              </span>
+              <span
+                class="material-symbols-outlined catalog__button"
+                *ngIf="catalogShow"
+              >
+                close
+              </span>
+              <span *ngIf="burgerMenu"> Каталог товарів </span>
+            </a>
+          </li>
           <!--  -->
           <li class="user__list-link" *ngIf="!potentialToken">
             <a

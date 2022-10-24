@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy,
+} from "@angular/core";
 import { CategoryProduct } from "src/app/shared/interface/interfaces";
 import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 
@@ -16,6 +22,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
         console.log(responce);
         this.category = responce;
 
+        if (this.windowWidth <= 1024) {
+          this.activeCategory = -1;
+        }
+
         this.loader = false;
       },
       (error) => {
@@ -30,10 +40,24 @@ export class CatalogComponent implements OnInit, OnDestroy {
   loader: boolean = true;
 
   category: CategoryProduct[] = [];
-
   activeCategory: number = 0;
 
-  editActiveCategory(idx: number) {
+  mouseEnterEditActiveCategory(idx: number) {
     this.activeCategory = idx;
   }
+  clickEditActiveCategory(idx: number) {
+    this.activeCategory = idx;
+    this.activeBlockMobile = true;
+  }
+
+  // Media Adaptability START =============================================
+  windowWidth: number = window.innerWidth;
+
+  activeBlockMobile: boolean = false;
+
+  returnToCategorySelection() {
+    this.activeCategory = -1;
+    this.activeBlockMobile = false;
+  }
+  // Media Adaptability END =============================================
 }

@@ -18,10 +18,6 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
   ngOnInit(): void {
     console.log("Start ngOnInit Header");
 
-    this.body.addEventListener("click", (event: Event) => {
-      this.catalogOff(event);
-    });
-
     this.userData.favoriteNumber.subscribe((counter: number) => {
       this.lengthFavorite = counter;
     });
@@ -40,10 +36,6 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.body.removeEventListener("click", (event: Event) => {
-      this.catalogOff(event);
-    });
-
     this.userData.favoriteNumber.unsubscribe();
     this.userData.shoppingCartNumber.unsubscribe();
   }
@@ -57,19 +49,14 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
     this.catalogShow = !this.catalogShow;
 
     if (this.catalogShow) {
-      this.body.classList.add("active");
+      this.body.classList.add("active__catalog");
     } else {
-      this.body.classList.remove("active");
+      this.body.classList.remove("active__catalog");
     }
   }
-  catalogOff(event: any) {
-    if (
-      this.catalogShow === true &&
-      !event.path[0].classList.contains("catalog__button")
-    ) {
-      this.catalogShow = false;
-      this.body.classList.remove("active");
-    }
+  catalogOff() {
+    this.catalogShow = false;
+    this.body.classList.remove("active__catalog");
   }
 
   // Menu END =============================================================
@@ -160,16 +147,25 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
     );
   }
 
+  // User END =============================================================
+  // Media Adaptability START =============================================
   burgerMenu: boolean = false;
+  windowWidth: number = window.innerWidth;
 
   clickBurgerMenu() {
-    if (this.body.classList.contains("active__menu")) {
-      this.burgerMenu = false;
-      this.body.classList.remove("active__menu");
-    } else {
-      this.burgerMenu = true;
-      this.body.classList.add("active__menu");
+    if (this.windowWidth <= 767) {
+      if (this.body.classList.contains("active__menu")) {
+        this.burgerMenu = false;
+        this.body.classList.remove("active__menu");
+      } else {
+        this.burgerMenu = true;
+        this.body.classList.add("active__menu");
+      }
+
+      if (this.catalogShow === true) {
+        this.catalogOff();
+      }
     }
   }
-  // User END =============================================================
+  // Media Adaptability END ===============================================
 }

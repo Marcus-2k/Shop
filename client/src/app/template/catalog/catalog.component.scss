@@ -18,6 +18,9 @@
     &-first {
       width: 33%;
       margin-right: 0.5%;
+      .category-first-return {
+        display: none;
+      }
       &-list {
         &-item {
           margin-top: 5px;
@@ -29,6 +32,8 @@
             padding: 5px;
             color: #000;
             font-size: 16px;
+            cursor: pointer;
+            margin: 0;
             .material-symbols-outlined {
               transition: 0.4s;
             }
@@ -50,6 +55,9 @@
     &-subfirst {
       margin-left: 0.5%;
       width: 66%;
+      .category-subfirst-return {
+        display: none;
+      }
       &-list {
         display: flex;
         flex-direction: column;
@@ -89,6 +97,97 @@
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .catalog {
+    &__content {
+    }
+    .category {
+      &-first {
+        width: 28%;
+        margin: 0;
+      }
+      &-subfirst {
+        width: 72%;
+        margin: 0;
+      }
+    }
+  }
+}
+@media (max-width: 1024px) {
+  .catalog {
+    .category {
+      position: relative;
+
+      padding: 0;
+      &-first {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+
+        width: 98%;
+        margin: 0 1%;
+
+        transition: 0.4s;
+      }
+
+      &-subfirst {
+        position: absolute;
+        top: 0px;
+        left: -1100px;
+
+        width: 98%;
+        margin: 0 1%;
+
+        transition: 0.4s;
+        .category-subfirst-return {
+          display: block;
+
+          .return-to-selection {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 10px;
+          }
+        }
+        &-list {
+          max-width: 100%;
+        }
+      }
+    }
+    .category.category__mobile {
+      transition: 0.4s;
+      .category-first {
+        left: -1100px;
+      }
+      .category-subfirst {
+        left: 0px;
+      }
+    }
+  }
+}
+@media (max-width: 767px) {
+  .catalog {
+    &__content {
+      max-width: 100%;
+      height: 100%;
+      border-radius: 0px;
+    }
+    .category {
+      &-first {
+        .category-first-return {
+          display: block;
+          .return-to-home {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 10px;
           }
         }
       }
