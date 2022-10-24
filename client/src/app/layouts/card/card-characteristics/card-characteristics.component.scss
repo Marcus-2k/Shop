@@ -6,7 +6,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        // background-color: #e2e2e2;
         border-radius: 4px;
         margin-top: 10px;
         padding: 5px 10px;
@@ -14,6 +13,7 @@
         &-title {
           .title-option {
             margin: 0;
+            word-break: break-word;
           }
         }
         &-empty {
@@ -21,17 +21,46 @@
           height: 100%;
           max-width: 1000px;
           margin: 0 15px;
-
           border-bottom: 1px dashed #c4c4c4;
         }
         &-info {
           .title-info {
             margin: 0;
+            word-break: break-word;
           }
         }
         .title {
           font-size: 20px;
           white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .card__characteristics {
+    &-content {
+      .params {
+        &__item {
+          margin-top: 20px;
+          height: auto;
+          padding: 5px 0;
+          &-title {
+            flex: 1;
+            padding-right: 10px;
+          }
+          &-empty {
+            display: none;
+          }
+          &-info {
+            flex: 1;
+            padding-left: 10px;
+          }
+          .title {
+            font-size: 16px;
+            white-space: normal;
+          }
         }
       }
     }
