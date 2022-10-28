@@ -145,16 +145,12 @@
       <!--  -->
       <div class="pagination" *ngIf="!loader">
         <mat-paginator
-          [length]="maxPage"
+          [length]="maxPage * limit"
           [pageSize]="limit"
           [pageIndex]="currentPage - 1"
           [pageSizeOptions]="pageSizeOptions"
-          itemsPerPageLabel="Товарів на сторінку"
-          nextPageLabel="Наступна сторінка"
-          previousPageLabel="Попередня сторінка"
           (page)="pageEvent = $event; onPaginateChange($event)"
         >
-          >
         </mat-paginator>
       </div>
       <!--  -->
