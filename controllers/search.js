@@ -261,11 +261,21 @@ module.exports.search = async function (req, res) {
       ); // Product parameters block by category
       // console.log(productCharacteristicsBlock);
       // ===========================================================================
+      let productCharacteristicsName = [];
+      uniqueProductCategory.forEach((element) => {
+        if (element.length === 3) {
+          productCharacteristicsName.push(
+            Catalog.categoryList[element[0]].nameListCategory[element[1]]
+              .subNameListCategory[element[2]].characteristics
+          );
+        }
+      });
 
       return res.status(200).json({
         product,
         uniqueProductCategory,
         productCharacteristicsBlock,
+        productCharacteristicsName,
         currentPage,
         maxPage,
         limit,
