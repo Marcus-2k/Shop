@@ -14,7 +14,7 @@ export class AuthService {
 
   private HOST: string = environment.HOST;
   private PORT: string = environment.PORT;
-  private url_server: string = `http://${this.HOST}${this.PORT}/api/`;
+  private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
   register(
     user: UserRegister

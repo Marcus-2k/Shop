@@ -100,7 +100,7 @@ module.exports.checking = async function (req, res) {
     const userData = TokenService.validateRefreshToken(refreshToken);
     const tokenFromDB = await TokenService.findToken(refreshToken);
     if (!userData || !tokenFromDB) {
-      return res.status(401);
+      return res.status(401).json({ message: "Користувач не авторизований" });
     }
 
     return res.status(200).json({ authorization: true });

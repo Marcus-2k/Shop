@@ -8,11 +8,16 @@ import {
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { catchError, Observable, switchMap, tap, throwError } from "rxjs";
+import { environment } from "src/environments/environment";
 import { AuthService } from "../service/server/auth.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService, private router: Router) {}
+
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
   intercept(
     req: HttpRequest<any>,
@@ -30,7 +35,7 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
         if (
           err.status === 401 &&
-          err.url !== "http://localhost:5000/api/auth/refresh"
+          err.url !== `${this.url_server}/auth/refresh`
         ) {
           return this.auth.refresh().pipe(
             switchMap((res) => {
@@ -48,7 +53,7 @@ export class TokenInterceptor implements HttpInterceptor {
           );
         } else if (
           err.status === 401 &&
-          err.url === "http://localhost:5000/api/auth/refresh"
+          err.url === `${this.url_server}/auth/refresh`
         ) {
           return this.auth.logout().pipe(
             tap(() => {
@@ -60,8 +65,8 @@ export class TokenInterceptor implements HttpInterceptor {
             })
           );
         } else {
+          return throwError(err);
         }
-        return throwError(err);
       })
     );
   }
