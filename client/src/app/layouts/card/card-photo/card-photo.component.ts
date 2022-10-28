@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Data } from "@angular/router";
 import { ProductPhoto } from "src/app/shared/interface/interfaces";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-card-photo",
@@ -26,7 +27,9 @@ export class CardPhotoComponent implements OnInit {
     );
   }
 
-  url_server_folder: string = "http://localhost:5000/";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   loader: boolean = true;
 

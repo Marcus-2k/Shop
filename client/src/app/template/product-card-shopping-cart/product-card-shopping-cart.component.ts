@@ -4,6 +4,7 @@ import {
   OrderEvent,
   ShoppingCartList,
 } from "src/app/shared/interface/interfaces";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-product-card-shopping-cart",
@@ -30,7 +31,9 @@ export class ProductCardShoppingCartComponent implements OnInit {
   @Output() transferCounter = new EventEmitter();
   @Output() transferDelete = new EventEmitter();
 
-  url_server_folder: string = "http://185.235.218.108:5000/";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   price: number = 0;
   actionPrice: number = 0;

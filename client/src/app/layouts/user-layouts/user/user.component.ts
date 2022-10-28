@@ -4,6 +4,7 @@ import { RequestUserService } from "src/app/shared/service/server/request-user.s
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 import { User } from "src/app/shared/interface/interfaces";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-user",
@@ -70,11 +71,9 @@ export class UserComponent implements OnInit {
 
   loader: boolean = true;
 
-  // Developer mode === START
-  private HOST: string = "185.235.218.108";
-  private PORT: string = ":5000";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
   url_server: string = `http://${this.HOST}${this.PORT}/`;
-  // Developer mode === END
 
   // Avatar user === START
   @ViewChild("fileAvatar") fileAvatar?: ElementRef;

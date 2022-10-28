@@ -16,6 +16,7 @@ import { RenameTitleService } from "src/app/shared/service/rename-title.service"
 import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-product-new",
@@ -86,7 +87,9 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   up_Product?: ProductUpdate;
 
-  url_server_forlder: string = "http://185.235.218.108:5000/";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   updateOnInit(product: ProductUpdate) {
     if (this.update) {
@@ -184,7 +187,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   onFileUpload(event: any) {
     this.images = [];
-    this.url_server_forlder = "";
+    this.url_server_folder = "";
 
     const fileList: File[] = Array.from(event.target.files);
     const fileCounter = event.target.files.length;
@@ -234,7 +237,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       }
 
       this.imagesValidation = false;
-      this.url_server_forlder = "http://localhost:5000/";
+      this.url_server_folder = `http://${this.HOST}${this.PORT}/api`;
     }
   }
   // File END ======================================================================================================================================

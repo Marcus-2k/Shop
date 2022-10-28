@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { UserLogin, UserRegister } from "../../interface/interfaces";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -11,9 +12,9 @@ export class AuthService {
 
   private token: string | null = null;
 
-  private HOST: string = "185.235.218.108";
-  private PORT: string = ":5000";
-  private url_server: string = `http://${this.HOST}${this.PORT}/api`;
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  private url_server: string = `http://${this.HOST}${this.PORT}/api/`;
 
   register(
     user: UserRegister

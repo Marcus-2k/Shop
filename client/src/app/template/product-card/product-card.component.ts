@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Product } from "src/app/shared/interface/interfaces";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-product-card",
@@ -19,7 +20,9 @@ export class ProductCardComponent implements OnInit {
 
   @Input() productItem?: Product;
 
-  url_server_folder: string = "http://185.235.218.108:5000/";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   images: string[] = []; // two images product
 

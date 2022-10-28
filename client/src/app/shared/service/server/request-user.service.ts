@@ -9,6 +9,7 @@ import {
   User,
   Wish,
 } from "src/app/shared/interface/interfaces";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -16,8 +17,8 @@ import {
 export class RequestUserService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = "185.235.218.108";
-  private PORT: string = ":5000";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
   private url_server: string = `http://${this.HOST}${this.PORT}/api/account`;
 
   getUserInfo(): Observable<User> {

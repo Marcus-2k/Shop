@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 import { Product } from "../../interface/interfaces";
 
 @Injectable({
@@ -9,8 +10,8 @@ import { Product } from "../../interface/interfaces";
 export class RequestGuestService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = "185.235.218.108";
-  private PORT: string = ":5000";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
   private url_server: string = `http://${this.HOST}${this.PORT}/api/guest`;
 
   getGuestHistoryView(

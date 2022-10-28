@@ -3,6 +3,7 @@ import { Product } from "src/app/shared/interface/interfaces";
 import { RequestSellerService } from "src/app/shared/service/server/request-seller.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-card-big-sidebar",
@@ -24,5 +25,7 @@ export class CardBigSidebarComponent implements OnInit {
     }
   }
 
-  url_server_folder: string = "http://localhost:5000/";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 }

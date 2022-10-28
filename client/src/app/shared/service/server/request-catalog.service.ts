@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 import {
   CategoryProduct,
   CategoryProduct_Characteristics,
@@ -12,8 +13,8 @@ import {
 export class RequestCatalogService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = "185.235.218.108";
-  private PORT: string = ":5000";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
   private url_server: string = `http://${this.HOST}${this.PORT}/api/`;
 
   getCategory(): Observable<CategoryProduct[]> {

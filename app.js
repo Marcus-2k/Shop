@@ -64,7 +64,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(
-  require("cors")({ credentials: true, origin: process.env.CLIENT_URL_DOMEN })
+  require("cors")({
+    credentials: true,
+    origin: process.env.CLIENT_URL_LOCALHOST,
+  })
 );
 app.use(cookieParser());
 

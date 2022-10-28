@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Product } from "src/app/shared/interface/interfaces";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-card-small-sidebar",
@@ -22,7 +23,9 @@ export class CardSmallSidebarComponent implements OnInit {
 
   loader: boolean = true;
 
-  url_server_folder: string = "http://localhost:5000/";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   image: string[] = [];
 }

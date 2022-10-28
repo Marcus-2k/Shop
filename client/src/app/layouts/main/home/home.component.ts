@@ -6,6 +6,7 @@ import { RequestCatalogService } from "src/app/shared/service/server/request-cat
 import { RequestGuestService } from "src/app/shared/service/server/request-guest.service";
 import { RequestNewsService } from "src/app/shared/service/server/request-news.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
+import { environment } from "src/environments/environment";
 
 import Swiper, { Autoplay } from "swiper";
 import { Navigation, Pagination, SwiperOptions } from "swiper";
@@ -98,7 +99,9 @@ export class HomeComponent implements OnInit {
     speed: 1800,
   }; // Slider swiper config
 
-  url_server_folder: string = "http://185.235.218.108:5000/";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   news: News[] = [];
 

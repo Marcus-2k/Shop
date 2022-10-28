@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Data } from "@angular/router";
 import { ProductInfo, Seller } from "src/app/shared/interface/interfaces";
+import { environment } from "src/environments/environment";
 
 import Swiper from "swiper";
 import { Navigation, Pagination, SwiperOptions } from "swiper";
@@ -36,7 +37,9 @@ export class CardInfoComponent implements OnInit {
     }
   }
 
-  url_server_folder: string = "http://localhost:5000/";
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   loader: boolean = true;
 
