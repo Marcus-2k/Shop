@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit {
     speed: 1800,
   }; // Slider swiper config
 
-  url_server_folder: string = "http://localhost:5000/";
+  url_server_folder: string = "http://185.235.218.108:5000/";
 
   news: News[] = [];
 
