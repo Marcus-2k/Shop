@@ -185,13 +185,13 @@ module.exports.deleteProduct = async function (req, res) {
   console.log("Server deleteProduct");
 
   try {
-    const product = await Product.findById(req.params.id, { imageSrc: 1 });
+    // const product = await Product.findById(req.params.id, { imageSrc: 1 });
 
-    product.imageSrc.forEach((item) => {
-      deleteImgFromFolder(item);
-    }); // Delete file from folder uploads
+    // product.imageSrc.forEach((item) => {
+    // deleteImgFromFolder(item);
+    // }); // Delete file from folder uploads
 
-    await Product.remove({ _id: req.params.id }); // Delete card in DB
+    // await Product.remove({ _id: req.params.id }); // Delete card in DB
 
     return res.status(200).json({ message: "Товар успішно видалено" });
   } catch (error) {
