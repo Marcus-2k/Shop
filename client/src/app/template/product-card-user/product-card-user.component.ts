@@ -20,7 +20,7 @@ export class ProductCardUserComponent implements OnInit {
   @Input() productItem?: Product;
   @Output() transferDeleteProduct = new EventEmitter();
 
-  url_server_folder: string = "http://localhost:5000/";
+  url_server_folder: string = "http://185.235.218.108:5000/";
 
   images: string[] = []; // two images product
 

@@ -63,7 +63,9 @@ app.use("/uploads", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(require("cors")({ credentials: true, origin: process.env.CLIENT_URL }));
+app.use(
+  require("cors")({ credentials: true, origin: process.env.CLIENT_URL_VPS })
+);
 app.use(cookieParser());
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)); // link to swagger-docs

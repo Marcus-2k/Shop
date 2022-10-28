@@ -9,7 +9,7 @@ import { Product, ProductUpdate } from "src/app/shared/interface/interfaces";
 export class RequestProductService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = "localhost";
+  private HOST: string = "185.235.218.108";
   private PORT: string = ":5000";
   private url_server: string = `http://${this.HOST}${this.PORT}/api/account`;
 

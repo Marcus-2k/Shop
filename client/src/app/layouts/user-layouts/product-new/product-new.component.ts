@@ -86,7 +86,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   up_Product?: ProductUpdate;
 
-  url_server_forlder: string = "http://localhost:5000/";
+  url_server_forlder: string = "http://185.235.218.108:5000/";
 
   updateOnInit(product: ProductUpdate) {
     if (this.update) {

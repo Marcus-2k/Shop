@@ -9,7 +9,7 @@ import { News } from "../../interface/interfaces";
 export class RequestNewsService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = "localhost";
+  private HOST: string = "185.235.218.108";
   private PORT: string = ":5000";
   private url_server: string = `http://${this.HOST}${this.PORT}/api/`;
 

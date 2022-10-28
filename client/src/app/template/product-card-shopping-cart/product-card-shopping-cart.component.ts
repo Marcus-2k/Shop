@@ -30,7 +30,7 @@ export class ProductCardShoppingCartComponent implements OnInit {
   @Output() transferCounter = new EventEmitter();
   @Output() transferDelete = new EventEmitter();
 
-  url_server_folder: string = "http://localhost:5000/";
+  url_server_folder: string = "http://185.235.218.108:5000/";
 
   price: number = 0;
   actionPrice: number = 0;
