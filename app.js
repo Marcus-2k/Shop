@@ -64,7 +64,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(
-  require("cors")({ credentials: true, origin: process.env.CLIENT_URL_VPS })
+  require("cors")({ credentials: true, origin: process.env.CLIENT_URL_DOMEN })
 );
 app.use(cookieParser());
 
