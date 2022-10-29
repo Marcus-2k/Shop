@@ -28,6 +28,14 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
     const history = localStorage.getItem("history-search");
     if (history) {
       this.historySearchArray = history.split(",");
+
+      this.historySearchArray = this.historySearchArray.filter((searchText) => {
+        if (searchText === "") {
+          return false;
+        } else {
+          return true;
+        }
+      });
     }
   }
 
