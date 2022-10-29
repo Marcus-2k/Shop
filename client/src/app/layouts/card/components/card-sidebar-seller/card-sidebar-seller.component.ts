@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Seller } from "src/app/shared/interface/interfaces";
 import { RequestSellerService } from "src/app/shared/service/server/request-seller.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-card-sidebar-seller",
@@ -15,9 +16,9 @@ export class CardSidebarSellerComponent implements OnInit {
   ngOnInit(): void {
     if (this.idSeller) {
       this.requestSeller.getByIdSeller(this.idSeller).subscribe(
-        (responce) => {
-          console.log(responce);
-          this.seller = responce;
+        (response) => {
+          console.log(response);
+          this.seller = response;
         },
         (error) => {
           console.log(error);
@@ -25,7 +26,10 @@ export class CardSidebarSellerComponent implements OnInit {
       );
     }
   }
-  url_server_folder: string = "http://localhost:5000/";
+
+  private HOST: string = environment.HOST;
+  private PORT: string = environment.PORT;
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   seller?: Seller;
 }
