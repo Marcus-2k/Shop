@@ -24,9 +24,9 @@ import { AppComponent } from "./app.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 // Body Main
 import { HomeComponent } from "./layouts/main/home/home.component";
-// Body || Header Component
+// Body >>> Header Component
 import { HeaderComponent } from "./layouts/main/header/header.component";
-// Body || Footer Component
+// Body >>> Footer Component
 import { FooterComponent } from "./layouts/main/footer/footer.component";
 
 // Auth Layouts
@@ -49,7 +49,7 @@ import { CartComponent } from "./layouts/user-layouts/cart/cart.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MaterialModule } from "./shared/material/material.module";
 
-// Card ========================================================================================================================
+// Card
 import { CardComponent } from "./layouts/card/card.component";
 // Card >>> Info
 import { CardInfoComponent } from "./layouts/card/card-info/card-info.component";
@@ -63,9 +63,10 @@ import { CardQuestionsComponent } from "./layouts/card/card-questions/card-quest
 import { CardPhotoComponent } from "./layouts/card/card-photo/card-photo.component";
 // Card >>> Accessories
 import { CardAccessoriesComponent } from "./layouts/card/card-accessories/card-accessories.component";
+// Card >>> Sidebar Big or Small
 import { CardSmallSidebarComponent } from "./layouts/card/card-small-sidebar/card-small-sidebar.component";
 import { CardBigSidebarComponent } from "./layouts/card/card-big-sidebar/card-big-sidebar.component";
-
+// Card >>> components
 import { CardSidebarAboutComponent } from "./layouts/card/components/card-sidebar-about/card-sidebar-about.component";
 import { CardSidebarStatusesComponent } from "./layouts/card/components/card-sidebar-statuses/card-sidebar-statuses.component";
 import { CardSidebarSellerComponent } from "./layouts/card/components/card-sidebar-seller/card-sidebar-seller.component";
@@ -73,13 +74,15 @@ import { CardFavoriteComponent } from "./layouts/card/components/card-favorite/c
 import { CardDescriptionComponent } from "./layouts/card/components/card-description/card-description.component";
 import { CardKeyWordsComponent } from "./layouts/card/components/card-key-words/card-key-words.component";
 import { CardShoppingCartComponent } from "./layouts/card/components/card-shopping-cart/card-shopping-cart.component";
+// Catalog
+import { CatalogComponent } from "./template/catalog/catalog.component";
+// Other
 import { ProductCardWishComponent } from "./template/product-card-wish/product-card-wish.component";
 import { ProductCardShoppingCartComponent } from "./template/product-card-shopping-cart/product-card-shopping-cart.component";
 import { ProductCardElementStatusesComponent } from "./template/components/product-card-element-statuses/product-card-element-statuses.component";
 import { ProductCardElementPriceComponent } from "./template/components/product-card-element-price/product-card-element-price.component";
 import { ProductCardComponent } from "./template/product-card/product-card.component";
 import { ProductCardUserComponent } from "./template/product-card-user/product-card-user.component";
-import { CatalogComponent } from "./template/catalog/catalog.component";
 import { HistoryViewComponent } from "./template/history-view/history-view.component";
 
 @NgModule({

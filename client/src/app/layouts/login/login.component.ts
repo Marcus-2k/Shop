@@ -1,11 +1,16 @@
 import { Component, OnInit } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Favorite, ShoppingCart } from "src/app/shared/interface/interfaces";
 import { UserDataService } from "src/app/shared/service/user-data.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 
 @Component({
   selector: "app-login",
@@ -19,6 +24,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private showNotice: ShowNoticeService,
     private requestUser: RequestUserService,
+    private renameTitle: RenameTitleService,
     private userData: UserDataService
   ) {}
 
@@ -32,7 +38,10 @@ export class LoginComponent implements OnInit {
     }
 
     this.form = new UntypedFormGroup({
-      email: new UntypedFormControl(null, [Validators.required, Validators.email]),
+      email: new UntypedFormControl(null, [
+        Validators.required,
+        Validators.email,
+      ]),
       password: new UntypedFormControl(null, [
         Validators.required,
         Validators.minLength(6),
@@ -49,11 +58,14 @@ export class LoginComponent implements OnInit {
         this.showNotice.message("Потрібно авторизуватися.");
       }
     });
+
+    this.renameTitle.renameTitleSite("Вхід");
   }
 
   form: UntypedFormGroup = new UntypedFormGroup({});
 
   closePopuap() {
+    this.renameTitle.renameTitleSite("Інтернет-магазин");
     this.router.navigate(["/"]);
   }
 

@@ -1,9 +1,0 @@
-
-# Node
-/node_modules
-
-# Angular
-.angular
-
-# Other
-/dist

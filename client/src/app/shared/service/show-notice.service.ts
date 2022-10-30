@@ -6,6 +6,8 @@ declare const M: any;
   providedIn: "root",
 })
 export class ShowNoticeService {
+  constructor() {}
+
   message(message: string) {
     M.toast({ html: message });
   }

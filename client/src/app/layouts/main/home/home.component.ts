@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
       }
     );
 
-    this.renameTitle.renameTitleSite("Інтернет-Магазин");
+    this.renameTitle.renameTitleSite("Інтернет-магазин");
   }
 
   // Aside START ===========================================================================

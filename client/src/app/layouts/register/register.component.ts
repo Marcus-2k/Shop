@@ -1,6 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { Router } from "@angular/router";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
@@ -13,6 +18,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private router: Router,
+    private renameTitle: RenameTitleService,
     private showNotice: ShowNoticeService
   ) {}
 
@@ -35,15 +41,21 @@ export class RegisterComponent implements OnInit {
         Validators.pattern("[a-zA-Z ]*"),
         Validators.minLength(4),
       ]),
-      email: new UntypedFormControl(null, [Validators.required, Validators.email]),
+      email: new UntypedFormControl(null, [
+        Validators.required,
+        Validators.email,
+      ]),
       password: new UntypedFormControl(null, [
         Validators.required,
         Validators.minLength(6),
       ]),
     });
+
+    this.renameTitle.renameTitleSite("Реєстрація");
   }
 
   closePopuap() {
+    this.renameTitle.renameTitleSite("Інтернет-магазин");
     this.router.navigate(["/"]);
   }
 

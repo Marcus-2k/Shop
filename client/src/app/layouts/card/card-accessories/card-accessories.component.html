@@ -1,1 +1,8 @@
-<p>card-accessories works!</p>
+<!--  -->
+<div *ngIf="loader" class="content-element-center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="card__accessories">
+  <div class="card__accessories-content" *ngIf="!loader"></div>
+</div>

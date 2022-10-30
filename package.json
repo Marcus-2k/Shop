@@ -1,7 +1,7 @@
 {
   "name": "server-shop",
   "version": "1.0.0",
-  "description": "Back-end for my Front-end Todo",
+  "description": "server for online-store",
   "main": "index.js",
   "scripts": {
     "start": "node index",

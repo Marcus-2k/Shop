@@ -1,5 +1,6 @@
-# Node
+# Server
 node_modules
 
-# Angular
+# Client
 .angular
+dist

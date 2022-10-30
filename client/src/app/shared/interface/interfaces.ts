@@ -165,7 +165,6 @@ export interface CategoryProduct {
     }[];
   }[];
 }
-
 export interface CategoryProduct_Characteristics {
   nameCategory: string;
   nameListCategory: {
@@ -176,7 +175,6 @@ export interface CategoryProduct_Characteristics {
     }[];
   }[];
 }
-
 export interface Options {
   name: string; // example Operating System
   query_name: string;
@@ -184,31 +182,24 @@ export interface Options {
   select: string[]; // field for option select
 }
 // Category END ========================================================================================
-
+// PAge Search START ===================================================================================
 export interface FilterNameParams {
   name: string;
   params: string[];
 }
-
 export interface ActiveFilterBlock {
   name: string;
   inputActive: ActiveFilter[];
   blockActive: boolean;
 }
-
 export interface ActiveFilter {
   name: string;
   query_name: string;
   counter: number;
   active: boolean;
 }
+// PAge Search END =====================================================================================
 
-export interface QueryParams {
-  name: string;
-  query: string[];
-}
-
-// ============================
 export interface LinkNavigate {
   name: string;
   link: string;
