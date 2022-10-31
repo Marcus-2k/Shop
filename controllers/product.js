@@ -41,7 +41,7 @@ module.exports.getByIdProduct = async function (req, res) {
 
 module.exports.createProduct = async function (req, res) {
   console.log("Server createProduct");
-
+  console.log(req.body);
   try {
     const files = Object.values(req.files);
     const imageSrc = []; // ["folder/name.extension", ...]
@@ -56,10 +56,16 @@ module.exports.createProduct = async function (req, res) {
       category[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
 
-    const characteristics = req.body.characteristics.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
-    characteristics.forEach((element, idx) => {
-      characteristics[idx] = Number(element);
-    }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
+    const characteristicsArray = req.body.characteristics.split("-"); // 3-2-4-2-3-0,3-1-1-2,3-1-1,2 >>> ['3','2','4','2','3','0,3','1','1','2,3','1','1,2']
+    let characteristics = [];
+    characteristicsArray.forEach((item, i) => {
+      characteristics.push(item.split(","));
+    }); // ['3','2','4','2','3','0,3','1','1','2,3','1','1,2'] >>> [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']]
+    characteristics.forEach((item, i) => {
+      item.forEach((element, idx) => {
+        characteristics[i][idx] = Number(element);
+      });
+    }); // [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']] >>> [[3],[2],[4],[2],[3],[0,3],[1],[1],[2,3],[1],[1,2]]
 
     const status = Number(req.body.status); // 0 = В наявнності, 1 = Очікується постачання , 2 = Немає в наявності, 3 = Закінчується
 
@@ -85,7 +91,6 @@ module.exports.createProduct = async function (req, res) {
     });
 
     await product.save();
-
     return res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
     console.log(error);
@@ -173,8 +178,9 @@ module.exports.updateProduct = async function (req, res) {
       { $set: updateProduct },
       { new: true }
     );
-
-    return res.status(200).json({ message: "Товар успішно змінено" });
+    console.log(updateProduct);
+    // return res.status(200).json({ message: "Товар успішно змінено" });
+    return res.status(500).json({ message: "Server error" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });

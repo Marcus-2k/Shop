@@ -13,6 +13,7 @@ const optionOperatingSystem_PC = {
     "Chrome OS",
     "Endles OS",
   ],
+  multiple: false,
 };
 const optionOperatingSystem_MP = {
   name: "Операційна система",
@@ -26,6 +27,7 @@ const optionOperatingSystem_MP = {
     "Harmony OS",
     "Інша",
   ],
+  multiple: false,
 };
 const optionCPU_PC = {
   name: "Процесор",
@@ -50,6 +52,7 @@ const optionCPU_PC = {
     "AMD Ryzen 7",
     "AMD Ryzen 9",
   ],
+  multiple: false,
 };
 const optionCPU_MP = {
   name: "Процесор",
@@ -64,6 +67,7 @@ const optionCPU_MP = {
     "Exynos",
     "Kryo",
   ],
+  multiple: false,
 };
 const optionGraphics = {
   name: "Відеокарта",
@@ -82,18 +86,21 @@ const optionGraphics = {
     "GeForce RTX 3070 Ti",
     "GeForce RTX 3080 Ti",
   ],
+  multiple: false,
 };
 const optionScreenDiagonal = {
   name: "Діагональ екрана",
   query_name: "screen_diagonal",
   htmlElement: "select",
   select: ["9", "12.5", "13", "14", "15", "15.6", "16", "17", "18", "20"],
+  multiple: false,
 };
 const optionTypeMemory = {
   name: "Тип накопичувача",
   query_name: "type_memory",
   htmlElement: "select",
   select: ["HDD", "SSD", "SSD + HDD", "eMMC"],
+  multiple: false,
 };
 const optionRAM = {
   name: "Обсяг оперативної пам'яті",
@@ -113,6 +120,7 @@ const optionRAM = {
     "48 ГБ",
     "64 ГБ",
   ],
+  multiple: false,
 };
 const optionColor = {
   name: "Колір",
@@ -132,18 +140,21 @@ const optionColor = {
     "Червоний",
     "Чорний",
   ],
+  multiple: false,
 };
 const optionNewUsed = {
-  name: "Новий - б/в",
+  name: "Новий - Вживаний",
   query_name: "new_used",
   htmlElement: "select",
-  select: ["Новий", "Б/в"],
+  select: ["Новий", "Вживаний"],
+  multiple: false,
 };
 const optionGuarantee = {
   name: "Гарантія",
   query_name: "guarantee",
   htmlElement: "select",
   select: ["Немає", "1 рік", "2 роки"],
+  multiple: false,
 };
 const optionSizeSSD = {
   name: "Обсяг SSD",
@@ -167,6 +178,7 @@ const optionSizeSSD = {
     "4 Т",
     "8 Т",
   ],
+  multiple: false,
 };
 const optionSizeHDD = {
   name: "Обсяг HDD",
@@ -190,6 +202,7 @@ const optionSizeHDD = {
     "4 Т",
     "8 Т",
   ],
+  multiple: false,
 };
 const optionTypeMatrix = {
   name: "Тип матриці",
@@ -214,12 +227,14 @@ const optionTypeMatrix = {
     "TN",
     "sAMOLED",
   ],
+  multiple: false,
 };
 const optionScreenRefreshRate = {
   name: "Частота оновлення екрану",
   query_name: "screen_refresh_rate",
   htmlElement: "select",
   select: ["30 ГЦ", "60 ГЦ", "90 ГЦ", "120 ГЦ", "144 ГЦ", "165 ГЦ"],
+  multiple: false,
 };
 const optionGuard = {
   name: "Безпека",
@@ -231,12 +246,14 @@ const optionGuard = {
     "Сканер відбитків пальця ззаду",
     "Сканер відбитків пальця на екрані",
   ],
+  multiple: true,
 };
 const optionBodyMaterial = {
   name: "Матеріал корпусу",
   query_name: "body_material",
   htmlElement: "select",
   select: ["Метал", "Пластик", "Скло", "Інший"],
+  multiple: true,
 };
 const optionMadeIn = {
   name: "Країна-виробник",
@@ -259,6 +276,7 @@ const optionMadeIn = {
     "Україна",
     "Японія",
   ],
+  multiple: false,
 };
 const optionCommunication = {
   name: "Стандарт зв'язку",
@@ -270,9 +288,10 @@ const optionCommunication = {
     "4G (LTE)",
     "5G",
   ],
+  multiple: true,
 };
 
-const optionsDevelop = [optionColor];
+const optionsDevelop = [optionColor, optionMadeIn];
 const optionsLaptop = [
   optionOperatingSystem_PC,
   optionCPU_PC,
