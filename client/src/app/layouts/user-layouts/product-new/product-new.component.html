@@ -232,21 +232,47 @@
             <div class="item">
               <mat-form-field appearance="fill">
                 <mat-label>№{{ idx }}&nbsp;{{ options.name }}</mat-label>
-                <mat-select
-                  disableRipple
-                  class="characteristics-select"
-                  #selectedValue
-                  [(ngModel)]="characteristicsNumber[idx]"
-                  (ngModelChange)="checkingValidityCharacteristics()"
-                  required
-                >
-                  <!-- <mat-option [value]="-1">-1-Параметр не вибрано</mat-option> -->
-                  <ng-container
-                    *ngFor="let option of options.select; let i = index"
+                <ng-container *ngIf="options.multiple">
+                  <mat-select
+                    disableRipple
+                    class="characteristics-select"
+                    #selectedValue
+                    [(ngModel)]="characteristicsNumber[idx]"
+                    (ngModelChange)="checkingValidityCharacteristics()"
+                    multiple
+                    required
                   >
-                    <mat-option [value]="i">{{ i + "-" + option }}</mat-option>
-                  </ng-container>
-                </mat-select>
+                    <!-- <mat-option [value]="-1">-1-Параметр не вибрано</mat-option> -->
+                    <ng-container
+                      *ngFor="let option of options.select; let i = index"
+                    >
+                      <mat-option [value]="i">
+                        <!-- {{ i + "-" }} -->
+                        {{ option }}
+                      </mat-option>
+                    </ng-container>
+                  </mat-select>
+                </ng-container>
+                <ng-container *ngIf="options.multiple === false">
+                  <mat-select
+                    disableRipple
+                    class="characteristics-select"
+                    #selectedValue
+                    [(ngModel)]="characteristicsNumber[idx][0]"
+                    (ngModelChange)="checkingValidityCharacteristics()"
+                    required
+                  >
+                    <!-- <mat-option [value]="-1">-1-Параметр не вибрано</mat-option> -->
+                    <ng-container
+                      *ngFor="let option of options.select; let i = index"
+                    >
+                      <mat-option [value]="i">
+                        <!-- {{ i + "-" }} -->
+                        {{ option }}
+                      </mat-option>
+                    </ng-container>
+                  </mat-select>
+                </ng-container>
               </mat-form-field>
               <!--  -->
             </div>

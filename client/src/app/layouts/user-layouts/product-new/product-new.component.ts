@@ -45,8 +45,17 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         this.update = true;
 
         this.requestProduct.getByIdProduct(id).subscribe(
-          (responce) => {
-            this.updateOnInit(responce);
+          (response) => {
+            this.requestCatalog.getCategoryAndCharacteristics().subscribe(
+              (res) => {
+                console.log(res);
+                this.categoryList = res;
+                this.updateOnInit(response);
+              },
+              (e) => {
+                console.log(e);
+              }
+            );
           },
           (error) => {
             console.log(error);
@@ -54,30 +63,23 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         );
       } else {
         this.renameTitle.renameTitleSite("Створення товару");
+        this.requestCatalog.getCategoryAndCharacteristics().subscribe(
+          (response) => {
+            console.log(response);
+            this.categoryList = response;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       }
     });
-
-    this.requestCatalog.getCategoryAndCharacteristics().subscribe(
-      (responce) => {
-        console.log(responce);
-        this.categoryList = responce;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
   }
   ngOnDestroy(): void {
     this.categoryList = [];
   }
   test() {
     console.log("======================================");
-    // console.log(this.imagesValidation);
-    // console.log(this.images);
-    // console.log(this.imagePreview);
-    // console.log(this.validityCharacteristics);
-    // console.log(this.up_validityCharacteristics);
-    // console.log(this.up_newCharacteristics);
     console.log("======================================");
   }
 
@@ -110,10 +112,9 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
       // Action / Price
       this.action = product.action;
-      if (product.action) {
-        this.actionPrice = product.actionPrice;
-        this.procentActionNumber();
-      }
+
+      this.actionPrice = product.actionPrice;
+      this.procentActionNumber();
 
       // Counter
       this.counterProduct = product.counter;
@@ -125,7 +126,9 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       this.createCategoryNumber();
 
       // Characteristics
-      this.characteristicsNumber = Object.assign([], product.characteristics);
+      this.characteristicsNumber = JSON.parse(
+        JSON.stringify(product.characteristics)
+      );
 
       this.up_newCharacteristics = true;
       this.up_validityCharacteristics = true;
@@ -384,7 +387,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   // Characteristics START =========================================================================================================================
   characteristics: Options[] = [];
 
-  characteristicsNumber: number[] = [];
+  characteristicsNumber: number[][] = [];
 
   selectCollection: HTMLCollection = document.getElementsByClassName(
     "characteristics-select"
@@ -392,33 +395,60 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   validityCharacteristics: boolean = false; // if there is -1 >>> false
   up_validityCharacteristics: boolean = false; // this.characteristicsNumber === this.up_Product.characteristics | update mode
-  up_newCharacteristics: boolean = false; // | update mode
+  up_newCharacteristics: boolean = false;
 
   checkingValidityCharacteristics() {
-    // if the array contains -1
-    if (this.characteristicsNumber.indexOf(-1) >= 0) {
-      this.validityCharacteristics = false;
+    for (let idx = 0; idx < this.characteristicsNumber.length; idx++) {
+      let array: number[] = this.characteristicsNumber[idx];
 
-      // if the array does not have -1
-    } else if (this.characteristicsNumber.indexOf(-1) === -1) {
-      this.validityCharacteristics = true;
+      if (this.characteristicsNumber[idx].length === 0) {
+        this.characteristicsNumber[idx] = [-1];
+        array = [-1];
+        this.validityCharacteristics = false;
+      }
 
-      if (this.up_newCharacteristics === true) {
-        let counterRepeat: number = 0;
+      // if the array contains -1
+      if (array.indexOf(-1) >= 0) {
+        this.validityCharacteristics = false;
+      } else if (array.indexOf(-1) === -1) {
+        this.validityCharacteristics = true;
+      }
+    }
 
-        this.up_Product?.characteristics.forEach((item, idx) => {
-          if (this.characteristicsNumber[idx] === item) {
-            counterRepeat++;
+    if (this.up_newCharacteristics === true) {
+      for (let index = 0; index < this.characteristicsNumber.length; index++) {
+        for (
+          let idx = 0;
+          idx < this.characteristicsNumber[index].length;
+          idx++
+        ) {
+          if (
+            this.characteristicsNumber[index].length !==
+            this.up_Product?.characteristics[index].length
+          ) {
+            if (this.characteristicsNumber[index].indexOf(-1) >= 0) {
+            }
+            this.up_validityCharacteristics = false;
+            break;
           }
-        });
 
-        if (counterRepeat === this.up_Product?.characteristics.length) {
-          this.up_validityCharacteristics = true;
-        } else {
-          this.up_validityCharacteristics = false;
+          if (
+            this.characteristicsNumber[index][idx] ===
+            this.up_Product?.characteristics[index][idx]
+          ) {
+            this.up_validityCharacteristics = true;
+          } else {
+            this.up_validityCharacteristics = false;
+            break;
+          }
+        }
+        if (this.up_validityCharacteristics === false) {
+          break;
         }
       }
     }
+
+    console.log(this.characteristicsNumber);
   }
   getCharacteristics() {
     this.characteristics =
@@ -428,8 +458,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     this.recordCharacteristicsInArray();
   }
   recordCharacteristicsInArray() {
-    this.characteristics.forEach((element, idx) => {
-      this.characteristicsNumber.push(-1);
+    this.characteristics.forEach((item) => {
+      this.characteristicsNumber.push([-1]);
     });
 
     this.checkingValidityCharacteristics();
@@ -562,7 +592,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
       formData.append("counter", this.counterProduct.toString()); // 5 >>> "5"
       formData.append("category", this.categoryNumber.join(" ")); //  [ 5, 0, 8 ] >>> "5 0 8"
-      formData.append("characteristics", this.characteristicsNumber.join(" ")); // [ 4, 1, 2, 13, 0, 21 ] >>> "4 1 2 13 0 21"
+      formData.append("characteristics", this.characteristicsNumber.join("-")); // [ [4], [1], [2], [13, 10, 9] ] >>> "4-1-2-13,10,9"
       formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
       formData.append("keywords", this.keywordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
       formData.append("description", this.description); // Екран 14" IPS (1920x1080) Full HD, матовий / Intel Core i3-1115G4
