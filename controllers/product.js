@@ -41,8 +41,10 @@ module.exports.getByIdProduct = async function (req, res) {
 
 module.exports.createProduct = async function (req, res) {
   console.log("Server createProduct");
-  console.log(req.body);
+
   try {
+    console.log(req.body);
+
     const files = Object.values(req.files);
     const imageSrc = []; // ["folder/name.extension", ...]
     files.forEach((image) => {
@@ -56,16 +58,9 @@ module.exports.createProduct = async function (req, res) {
       category[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
 
-    const characteristicsArray = req.body.characteristics.split("-"); // 3-2-4-2-3-0,3-1-1-2,3-1-1,2 >>> ['3','2','4','2','3','0,3','1','1','2,3','1','1,2']
-    let characteristics = [];
-    characteristicsArray.forEach((item, i) => {
-      characteristics.push(item.split(","));
-    }); // ['3','2','4','2','3','0,3','1','1','2,3','1','1,2'] >>> [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']]
-    characteristics.forEach((item, i) => {
-      item.forEach((element, idx) => {
-        characteristics[i][idx] = Number(element);
-      });
-    }); // [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']] >>> [[3],[2],[4],[2],[3],[0,3],[1],[1],[2,3],[1],[1,2]]
+    const characteristics = transformCharacteristicsStringToArray(
+      req.body.characteristics
+    );
 
     const status = Number(req.body.status); // 0 = В наявнності, 1 = Очікується постачання , 2 = Немає в наявності, 3 = Закінчується
 
@@ -149,16 +144,14 @@ module.exports.updateProduct = async function (req, res) {
       });
       updateProduct.category = category;
 
-      const characteristics = req.body.characteristics.split(" ");
-      characteristics.forEach((item, idx) => {
-        characteristics[idx] = Number(item);
-      });
+      const characteristics = transformCharacteristicsStringToArray(
+        req.body.characteristics
+      );
       updateProduct.characteristics = characteristics;
     } else if (req.body.characteristics) {
-      const characteristics = req.body.characteristics.split(" ");
-      characteristics.forEach((item, idx) => {
-        characteristics[idx] = Number(item);
-      });
+      const characteristics = transformCharacteristicsStringToArray(
+        req.body.characteristics
+      );
       updateProduct.characteristics = characteristics;
     }
 
@@ -169,6 +162,7 @@ module.exports.updateProduct = async function (req, res) {
     if (req.body.keywords) {
       updateProduct.keywords = req.body.keywords.split(" ");
     }
+
     if (req.body.description) {
       updateProduct.description = req.body.description;
     }
@@ -179,8 +173,8 @@ module.exports.updateProduct = async function (req, res) {
       { new: true }
     );
     console.log(updateProduct);
-    // return res.status(200).json({ message: "Товар успішно змінено" });
-    return res.status(500).json({ message: "Server error" });
+
+    return res.status(200).json({ message: "Товар успішно змінено" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -214,4 +208,21 @@ function deleteImgFromFolder(linkImg) {
       console.log(`Deleted file: ${linkImg}`);
     }
   }); // Delete img, in folder uploads
+}
+
+function transformCharacteristicsStringToArray(string) {
+  const characteristicsArray = string.split("-"); // 3-2-4-2-3-0,3-1-1-2,3-1-1,2 >>> ['3','2','4','2','3','0,3','1','1','2,3','1','1,2']
+
+  let characteristics = [];
+  characteristicsArray.forEach((item, i) => {
+    characteristics.push(item.split(","));
+  }); // ['3','2','4','2','3','0,3','1','1','2,3','1','1,2'] >>> [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']]
+
+  characteristics.forEach((item, i) => {
+    item.forEach((element, idx) => {
+      characteristics[i][idx] = Number(element);
+    });
+  }); // [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']] >>> [[3],[2],[4],[2],[3],[0,3],[1],[1],[2,3],[1],[1,2]]
+
+  return characteristics;
 }
