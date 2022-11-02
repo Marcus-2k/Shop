@@ -21,7 +21,7 @@ export class RequestSearchService {
   ): Observable<{
     product: Product[];
     uniqueProductCategory: number[][];
-    productCharacteristicsBlock: number[][][];
+    productCharacteristicsBlock: number[][][][];
     productCharacteristicsName: Options[][];
     currentPage: number;
     maxPage: number;
@@ -32,7 +32,7 @@ export class RequestSearchService {
       return this.http.get<{
         product: Product[];
         uniqueProductCategory: number[][];
-        productCharacteristicsBlock: number[][][];
+        productCharacteristicsBlock: number[][][][];
         productCharacteristicsName: Options[][];
         currentPage: number;
         maxPage: number;
@@ -42,7 +42,7 @@ export class RequestSearchService {
       return this.http.get<{
         product: Product[];
         uniqueProductCategory: number[][];
-        productCharacteristicsBlock: number[][][];
+        productCharacteristicsBlock: number[][][][];
         productCharacteristicsName: Options[][];
         currentPage: number;
         maxPage: number;
