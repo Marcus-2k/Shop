@@ -14,13 +14,13 @@ export class CardCharacteristicsComponent implements OnInit {
     console.log("Start ngOnInit Card-Characteristics");
 
     this.route.data.subscribe(
-      (responce: Data) => {
-        console.log(responce["productCharacteristics"]);
+      (response: Data) => {
+        console.log(response["productCharacteristics"]);
 
         this.characteristics =
-          responce["productCharacteristics"].characteristics;
+        response["productCharacteristics"].characteristics;
         this.characteristicsName =
-          responce["productCharacteristics"].characteristicsName;
+        response["productCharacteristics"].characteristicsName;
 
         this.loader = false;
       },
@@ -32,6 +32,6 @@ export class CardCharacteristicsComponent implements OnInit {
 
   loader: boolean = true;
 
-  characteristics: number[] = [];
+  characteristics: number[][] = [];
   characteristicsName: Options[] = [];
 }

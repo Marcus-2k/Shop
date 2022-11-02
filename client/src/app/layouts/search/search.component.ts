@@ -57,7 +57,7 @@ export class SearchComponent implements OnInit {
           // ==============================================================================================
           this.productList = response.product; // List Product
           this.uniqueCategory = response.uniqueProductCategory; // List Product Category Unique
-          const productOptionsBlock: number[][][] =
+          const productOptionsBlock: number[][][][] =
             response.productCharacteristicsBlock; // Parameters by block to categories
           this.currentPage = Number(response.currentPage); // Current Page
           this.maxPage = response.maxPage; // Max pages site
@@ -73,13 +73,19 @@ export class SearchComponent implements OnInit {
                   blockActive: true,
                 };
                 item.forEach((items) => {
-                  let item: ActiveFilter = {
-                    name: element[idx].select[items],
-                    query_name: element[idx].query_name,
-                    counter: 0,
-                    active: false,
-                  };
-                  block.inputActive.push(item);
+                  for (
+                    let indexItems = 0;
+                    indexItems < items.length;
+                    indexItems++
+                  ) {
+                    let item: ActiveFilter = {
+                      name: element[idx].select[items[indexItems]],
+                      query_name: element[idx].query_name,
+                      counter: 0,
+                      active: false,
+                    };
+                    block.inputActive.push(item);
+                  }
                 });
                 filterName.push(block);
               });

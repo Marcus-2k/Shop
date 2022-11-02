@@ -12,12 +12,16 @@
       >
         <div class="params__item-title">
           <p class="title title-option">{{ option.name }}</p>
+          <p class="line"></p>
         </div>
-        <div class="params__item-empty"></div>
         <div class="params__item-info">
-          <p class="title title-info">
-            {{ option.select[characteristics[idx]] }}
-          </p>
+          <ng-container
+            *ngFor="let params of characteristics[idx]; let i = index"
+          >
+            <p class="title title-info">
+              {{ option.select[params] }}
+            </p>
+          </ng-container>
         </div>
       </div>
     </div>

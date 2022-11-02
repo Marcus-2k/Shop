@@ -31,7 +31,7 @@ const productSchema = new Schema({
     required: true,
   },
   characteristics: {
-    type: Array, // [ 0, 0, 9, 13, 4, 8, 21 ]
+    type: Array, // [ [0], [8], [21, 3, 4] ]
     required: true,
   },
   status: {

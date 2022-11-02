@@ -88,7 +88,7 @@ export interface ProductUpdate {
   actionPrice: number;
   counter: number;
   category: number[];
-  characteristics: number[];
+  characteristics: number[][];
   status: 0 | 1 | 2 | 3;
   keywords: string[];
   description: string;
@@ -180,9 +180,10 @@ export interface Options {
   query_name: string;
   htmlElement: "select"; // html tag
   select: string[]; // field for option select
+  multiple: boolean;
 }
 // Category END ========================================================================================
-// PAge Search START ===================================================================================
+// Page Search START ===================================================================================
 export interface FilterNameParams {
   name: string;
   params: string[];
@@ -198,8 +199,7 @@ export interface ActiveFilter {
   counter: number;
   active: boolean;
 }
-// PAge Search END =====================================================================================
-
+// Page Search END =====================================================================================
 export interface LinkNavigate {
   name: string;
   link: string;
