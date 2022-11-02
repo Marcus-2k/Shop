@@ -410,6 +410,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       // if the array contains -1
       if (array.indexOf(-1) >= 0) {
         this.validityCharacteristics = false;
+        break;
       } else if (array.indexOf(-1) === -1) {
         this.validityCharacteristics = true;
       }
@@ -662,8 +663,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       ) {
         formData.append(
           "characteristics",
-          this.characteristicsNumber.join(" ")
-        ); // [ 4, 1, 2, 13, 0, 21 ] >>> "4 1 2 13 0 21"
+          this.characteristicsNumber.join("-")
+        ); // [ [4], [1], [2], [13, 10, 9] ] >>> "4-1-2-13,10,9"
       } else if (
         this.validityCharacteristics === true &&
         this.up_validityCharacteristics === false &&
@@ -672,8 +673,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         formData.append("category", this.categoryNumber.join(" ")); //  [ 5, 0, 8 ] >>> "5 0 8"
         formData.append(
           "characteristics",
-          this.characteristicsNumber.join(" ")
-        ); // [ 4, 1, 2, 13, 0, 21 ] >>> "4 1 2 13 0 21"
+          this.characteristicsNumber.join("-")
+        ); // [ [4], [1], [2], [13, 10, 9] ] >>> "4-1-2-13,10,9"
       }
       if (this.up_Product.status !== this.statusNumber) {
         formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
