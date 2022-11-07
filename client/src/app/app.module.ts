@@ -84,6 +84,14 @@ import { ProductCardElementPriceComponent } from "./template/components/product-
 import { ProductCardComponent } from "./template/product-card/product-card.component";
 import { ProductCardUserComponent } from "./template/product-card-user/product-card-user.component";
 import { HistoryViewComponent } from "./template/history-view/history-view.component";
+// NgRx
+import { StoreModule } from "@ngrx/store";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { StoreRouterConnectingModule } from "@ngrx/router-store";
+import { EffectsModule } from "@ngrx/effects";
+import { reducers, metaReducers } from "./store";
+import { FavoriteEffects } from "./store/favorite/favorite.effects";
+import { environment } from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -138,6 +146,15 @@ import { HistoryViewComponent } from "./template/history-view/history-view.compo
     BrowserAnimationsModule,
     MaterialModule,
     SliderSwiperModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+    }),
+    StoreRouterConnectingModule.forRoot(),
+    EffectsModule.forRoot([FavoriteEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, multi: true, useClass: TokenInterceptor },

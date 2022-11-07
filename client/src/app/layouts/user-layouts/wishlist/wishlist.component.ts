@@ -1,8 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { Wish, WishChecked } from "src/app/shared/interface/interfaces";
-import { UserDataService } from "src/app/shared/service/user-data.service";
+import {
+  Favorite,
+  Wish,
+  WishChecked,
+} from "src/app/shared/interface/interfaces";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
+import { FavoriteActions } from "src/app/store/favorite/favorite.action";
+import { Store } from "@ngrx/store";
 
 @Component({
   selector: "app-wishlist",
@@ -13,7 +18,7 @@ export class WishlistComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
     private requestUser: RequestUserService,
-    private userData: UserDataService
+    private store$: Store
   ) {}
 
   ngOnInit(): void {
@@ -87,17 +92,14 @@ export class WishlistComponent implements OnInit {
         (responce) => {
           this.wishList = responce;
           this.wishChecked = [];
-          this.requestUser.getFavorite().subscribe(
-            (responce) => {
-              this.userData.favoriteListUser = responce.favorite;
-              this.userData.favoriteNumber.next(responce.favorite.length);
 
-              this.calcTotolPrice();
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
+          let favoriteList: Favorite = { favorite: [] };
+          responce.forEach((element) => {
+            favoriteList.favorite.push(element._id);
+          });
+
+          this.store$.dispatch(FavoriteActions.upFavorite(favoriteList));
+          this.calcTotolPrice();
         },
         (error) => {
           console.log(error);

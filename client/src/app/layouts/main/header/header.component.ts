@@ -2,6 +2,8 @@ import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { UserDataService } from "src/app/shared/service/user-data.service";
+import { Store } from "@ngrx/store";
+import { FavoriteSelector } from "src/app/store/favorite/favorite.selector";
 
 @Component({
   selector: "app-header",
@@ -12,15 +14,19 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
   constructor(
     private router: Router,
     private auth: AuthService,
+    private store$: Store,
     private userData: UserDataService
   ) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit Header");
 
-    this.userData.favoriteNumber.subscribe((counter: number) => {
-      this.lengthFavorite = counter;
-    });
+    this.store$
+      .select(FavoriteSelector.favoriteNumber)
+      .subscribe((counter: number) => {
+        this.lengthFavorite = counter;
+      });
+
     this.userData.shoppingCartNumber.subscribe((counter: number) => {
       this.lengthCart = counter;
     });
@@ -44,7 +50,6 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userData.favoriteNumber.unsubscribe();
     this.userData.shoppingCartNumber.unsubscribe();
   }
 

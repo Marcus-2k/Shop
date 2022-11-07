@@ -1,28 +1,32 @@
-import { Component, DoCheck, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { Router } from "@angular/router";
-import { Favorite } from "src/app/shared/interface/interfaces";
-import { UserDataService } from "src/app/shared/service/user-data.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
-import { RequestUserService } from "src/app/shared/service/server/request-user.service";
+import { ActionReducer, ReducerObservable, Store } from "@ngrx/store";
+import { FavoriteActions } from "src/app/store/favorite/favorite.action";
+import { FavoriteSelector } from "src/app/store/favorite/favorite.selector";
 
 @Component({
   selector: "app-card-favorite",
   templateUrl: "./card-favorite.component.html",
   styleUrls: ["./card-favorite.component.scss"],
 })
-export class CardFavoriteComponent implements DoCheck {
+export class CardFavoriteComponent implements OnInit, OnDestroy {
   constructor(
-    private userData: UserDataService,
-    private requestUser: RequestUserService,
     private auth: AuthService,
+    private store$: Store,
     private router: Router
   ) {}
 
-  @Input() _idProduct?: string;
-
-  ngDoCheck() {
-    this.listFavorite = this.userData.favoriteListUser;
+  ngOnInit() {
+    this.store$.select(FavoriteSelector.favoriteList).subscribe((value) => {
+      console.log(value);
+      this.listFavorite = value;
+    });
   }
+
+  ngOnDestroy(): void {}
+
+  @Input() _idProduct?: string;
 
   buttonDisabled: boolean = false;
   addRemovefavorite() {
@@ -30,34 +34,19 @@ export class CardFavoriteComponent implements DoCheck {
 
     // checking auth user
     if (this.auth.isAuthenticated()) {
-      //
       if (this._idProduct) {
         // if the item was liked
         if (this.listFavorite.indexOf(this._idProduct) === -1) {
-          this.requestUser.addFavorite(this._idProduct).subscribe(
-            (responce: Favorite) => {
-              this.userData.favoriteListUser = responce.favorite;
-              this.userData.favoriteNumber.next(responce.favorite.length);
-              this.buttonDisabled = false;
-            },
-            (error) => {
-              console.log(error);
-              this.buttonDisabled = false;
-            }
+          this.store$.dispatch(
+            FavoriteActions.addFavorite({ id: this._idProduct })
           );
+          this.buttonDisabled = false;
           // if the item was not liked
         } else if (this.listFavorite.indexOf(this._idProduct) >= 0) {
-          this.requestUser.removeFavorite(this._idProduct).subscribe(
-            (responce: Favorite) => {
-              this.userData.favoriteListUser = responce.favorite;
-              this.userData.favoriteNumber.next(responce.favorite.length);
-              this.buttonDisabled = false;
-            },
-            (error) => {
-              console.log(error);
-              this.buttonDisabled = false;
-            }
+          this.store$.dispatch(
+            FavoriteActions.removeFavorite({ id: this._idProduct })
           );
+          this.buttonDisabled = false;
         }
       }
     } else {
@@ -65,7 +54,7 @@ export class CardFavoriteComponent implements DoCheck {
     }
   }
 
-  listFavorite: string[] = this.userData.favoriteListUser;
+  listFavorite: string[] = [];
   checkingFavorite(): boolean {
     if (this._idProduct) {
       if (this.listFavorite.indexOf(this._idProduct) === -1) {

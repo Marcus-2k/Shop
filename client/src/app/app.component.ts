@@ -2,7 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { AuthService } from "./shared/service/server/auth.service";
 import { RequestUserService } from "./shared/service/server/request-user.service";
 import { UserDataService } from "./shared/service/user-data.service";
-import { Favorite, ShoppingCart } from "./shared/interface/interfaces";
+import { ShoppingCart } from "./shared/interface/interfaces";
+import { Store } from "@ngrx/store";
+import { FavoriteActions } from "./store/favorite/favorite.action";
 
 @Component({
   selector: "app-root",
@@ -13,6 +15,7 @@ export class AppComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private requestUser: RequestUserService,
+    private store: Store,
     private userData: UserDataService
   ) {}
 
@@ -24,16 +27,8 @@ export class AppComponent implements OnInit {
       this.auth.setToken(potentialToken);
 
       this.auth.checking().subscribe(
-        (responce) => {
-          this.requestUser.getFavorite().subscribe(
-            (responce: Favorite) => {
-              this.userData.favoriteListUser = responce.favorite;
-              this.userData.favoriteNumber.next(responce.favorite.length);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
+        (response) => {
+          this.store.dispatch(FavoriteActions.getFavorite());
 
           this.requestUser.getShoppingCart().subscribe(
             (responce: ShoppingCart) => {
@@ -46,6 +41,7 @@ export class AppComponent implements OnInit {
               console.log(error);
             }
           );
+
           this.loader = false;
         },
         (error) => {

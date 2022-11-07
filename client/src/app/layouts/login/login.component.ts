@@ -5,12 +5,14 @@ import {
   Validators,
 } from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
-import { Favorite, ShoppingCart } from "src/app/shared/interface/interfaces";
+import { ShoppingCart } from "src/app/shared/interface/interfaces";
 import { UserDataService } from "src/app/shared/service/user-data.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { FavoriteActions } from "src/app/store/favorite/favorite.action";
+import { Store } from "@ngrx/store";
 
 @Component({
   selector: "app-login",
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit {
     private showNotice: ShowNoticeService,
     private requestUser: RequestUserService,
     private renameTitle: RenameTitleService,
+    private store$: Store,
     private userData: UserDataService
   ) {}
 
@@ -89,15 +92,8 @@ export class LoginComponent implements OnInit {
 
   initAfterLogin() {
     // Get favorite user
-    this.requestUser.getFavorite().subscribe(
-      (responce: Favorite) => {
-        this.userData.favoriteListUser = responce.favorite;
-        this.userData.favoriteNumber.next(responce.favorite.length);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.store$.dispatch(FavoriteActions.getFavorite());
+
     // Get shopping cart user
     this.requestUser.getShoppingCart().subscribe(
       (responce: ShoppingCart) => {
