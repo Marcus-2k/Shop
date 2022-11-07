@@ -7,9 +7,6 @@ import { BehaviorSubject } from "rxjs";
 export class UserDataService {
   constructor() {}
 
-  favoriteNumber: BehaviorSubject<number> = new BehaviorSubject(0);
-  favoriteListUser: string[] = [];
-
   shoppingCartNumber: BehaviorSubject<number> = new BehaviorSubject(0);
   shoppingCartListUser: string[] = [];
 }
