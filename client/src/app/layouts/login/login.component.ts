@@ -5,14 +5,12 @@ import {
   Validators,
 } from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
-import { ShoppingCart } from "src/app/shared/interface/interfaces";
-import { UserDataService } from "src/app/shared/service/user-data.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
-import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
-import { FavoriteActions } from "src/app/store/favorite/favorite.action";
 import { Store } from "@ngrx/store";
+import { FavoriteActions } from "src/app/store/favorite/favorite.action";
+import { ShoppingCartActions } from "src/app/store/cart/cart.action";
 
 @Component({
   selector: "app-login",
@@ -25,10 +23,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private showNotice: ShowNoticeService,
-    private requestUser: RequestUserService,
     private renameTitle: RenameTitleService,
-    private store$: Store,
-    private userData: UserDataService
+    private store$: Store
   ) {}
 
   ngOnInit(): void {
@@ -95,14 +91,6 @@ export class LoginComponent implements OnInit {
     this.store$.dispatch(FavoriteActions.getFavorite());
 
     // Get shopping cart user
-    this.requestUser.getShoppingCart().subscribe(
-      (responce: ShoppingCart) => {
-        this.userData.shoppingCartListUser = responce.shoppingCart;
-        this.userData.shoppingCartNumber.next(responce.shoppingCart.length);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.store$.dispatch(ShoppingCartActions.getShoppingCart());
   }
 }

@@ -4,7 +4,7 @@
     class="shopping__cart-btn"
     mat-button
     [ngClass]="{ btn__icon: typeBtn === 0, btn__text: typeBtn === 1 }"
-    (click)="addRemovefavorite()"
+    (click)="addRemoveShoppingCart()"
     [disabled]="buttonDisabled || counter === 0"
   >
     <span

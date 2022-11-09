@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "./shared/service/server/auth.service";
-import { RequestUserService } from "./shared/service/server/request-user.service";
-import { UserDataService } from "./shared/service/user-data.service";
-import { ShoppingCart } from "./shared/interface/interfaces";
+
 import { Store } from "@ngrx/store";
 import { FavoriteActions } from "./store/favorite/favorite.action";
+import { ShoppingCartActions } from "./store/cart/cart.action";
 
 @Component({
   selector: "app-root",
@@ -12,12 +11,7 @@ import { FavoriteActions } from "./store/favorite/favorite.action";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private auth: AuthService,
-    private requestUser: RequestUserService,
-    private store: Store,
-    private userData: UserDataService
-  ) {}
+  constructor(private auth: AuthService, private store: Store) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit App");
@@ -28,20 +22,10 @@ export class AppComponent implements OnInit {
 
       this.auth.checking().subscribe(
         (response) => {
-          this.store.dispatch(FavoriteActions.getFavorite());
-
-          this.requestUser.getShoppingCart().subscribe(
-            (responce: ShoppingCart) => {
-              this.userData.shoppingCartListUser = responce.shoppingCart;
-              this.userData.shoppingCartNumber.next(
-                responce.shoppingCart.length
-              );
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-
+          if (response.authorization) {
+            this.store.dispatch(FavoriteActions.getFavorite());
+            this.store.dispatch(ShoppingCartActions.getShoppingCart());
+          }
           this.loader = false;
         },
         (error) => {

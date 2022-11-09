@@ -84,6 +84,7 @@ import { ProductCardElementPriceComponent } from "./template/components/product-
 import { ProductCardComponent } from "./template/product-card/product-card.component";
 import { ProductCardUserComponent } from "./template/product-card-user/product-card-user.component";
 import { HistoryViewComponent } from "./template/history-view/history-view.component";
+import { environment } from "../environments/environment";
 // NgRx
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
@@ -91,7 +92,7 @@ import { StoreRouterConnectingModule } from "@ngrx/router-store";
 import { EffectsModule } from "@ngrx/effects";
 import { reducers, metaReducers } from "./store";
 import { FavoriteEffects } from "./store/favorite/favorite.effects";
-import { environment } from "../environments/environment";
+import { ShoppingCartEffects } from "./store/cart/cart.effects";
 
 @NgModule({
   declarations: [
@@ -150,7 +151,7 @@ import { environment } from "../environments/environment";
       metaReducers,
     }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([FavoriteEffects]),
+    EffectsModule.forRoot([FavoriteEffects, ShoppingCartEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

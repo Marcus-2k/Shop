@@ -1,9 +1,9 @@
 import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
-import { UserDataService } from "src/app/shared/service/user-data.service";
 import { Store } from "@ngrx/store";
 import { FavoriteSelector } from "src/app/store/favorite/favorite.selector";
+import { ShoppingCartSelector } from "src/app/store/cart/cart.selector";
 
 @Component({
   selector: "app-header",
@@ -14,8 +14,7 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private store$: Store,
-    private userData: UserDataService
+    private store$: Store
   ) {}
 
   ngOnInit(): void {
@@ -26,10 +25,11 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
       .subscribe((counter: number) => {
         this.lengthFavorite = counter;
       });
-
-    this.userData.shoppingCartNumber.subscribe((counter: number) => {
-      this.lengthCart = counter;
-    });
+    this.store$
+      .select(ShoppingCartSelector.shoppingCartNumber)
+      .subscribe((counter: number) => {
+        this.lengthCart = counter;
+      });
 
     const history = localStorage.getItem("history-search");
     if (history) {
@@ -49,9 +49,7 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
     this.potentialToken = localStorage.getItem("auth-token");
   }
 
-  ngOnDestroy(): void {
-    this.userData.shoppingCartNumber.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];
 

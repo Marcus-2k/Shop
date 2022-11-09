@@ -1,16 +1,20 @@
 import { Component, OnInit } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import {
   DeleteCart,
   Order,
   OrderEvent,
-  ShoppingCart,
   ShoppingCartList,
 } from "src/app/shared/interface/interfaces";
-import { UserDataService } from "src/app/shared/service/user-data.service";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
+import { Store } from "@ngrx/store";
+import { ShoppingCartActions } from "src/app/store/cart/cart.action";
 
 @Component({
   selector: "app-cart",
@@ -21,7 +25,7 @@ export class CartComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
     private requestUser: RequestUserService,
-    private userData: UserDataService
+    private store$: Store
   ) {}
 
   ngOnInit() {
@@ -60,7 +64,10 @@ export class CartComponent implements OnInit {
 
     this.formContacts = new UntypedFormGroup({
       name: new UntypedFormControl(null, [Validators.required]),
-      email: new UntypedFormControl(null, [Validators.required, Validators.email]),
+      email: new UntypedFormControl(null, [
+        Validators.required,
+        Validators.email,
+      ]),
       tel: new UntypedFormControl(null, [
         Validators.required,
         Validators.minLength(13),
@@ -137,33 +144,27 @@ export class CartComponent implements OnInit {
     this.calcTotalPrice();
   }
   gettingIdDelete(event: DeleteCart) {
-    this.requestUser.removeShoppingCart(event._id).subscribe(
-      (responce: ShoppingCart) => {
-        let index: number = 0;
-        for (let idx = 0; idx < this.shoppingCart.length; idx++) {
-          if (this.shoppingCart[idx]._id === event._id) {
-            index = idx;
-            break;
-          }
-        }
-
-        this.shoppingCart.splice(index, 1);
-        this.order.splice(index, 1);
-
-        this.userData.shoppingCartListUser = responce.shoppingCart;
-        this.userData.shoppingCartNumber.next(responce.shoppingCart.length);
-
-        if (responce.shoppingCart.length === 0) {
-          this.emptyCart = true;
-        }
-
-        this.calcTotalCounterProduct();
-        this.calcTotalPrice();
-      },
-      (error) => {
-        console.log(error);
-      }
+    this.store$.dispatch(
+      ShoppingCartActions.removeShoppingCart({ id: event._id })
     );
+
+    let index: number = 0;
+    for (let idx = 0; idx < this.shoppingCart.length; idx++) {
+      if (this.shoppingCart[idx]._id === event._id) {
+        index = idx;
+        break;
+      }
+    }
+
+    this.shoppingCart.splice(index, 1);
+    this.order.splice(index, 1);
+
+    if (this.order.length === 0) {
+      this.emptyCart = true;
+    }
+
+    this.calcTotalCounterProduct();
+    this.calcTotalPrice();
   }
   // Step Cart ========================================
 
