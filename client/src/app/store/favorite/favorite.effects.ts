@@ -20,7 +20,7 @@ export class FavoriteEffects {
       mergeMap(() =>
         this.requestUser.getFavorite().pipe(
           map((favorite: Favorite) => {
-            return FavoriteActions.getFavoriteSuccess(favorite);
+            return FavoriteActions.upFavorite(favorite);
           })
         )
       )

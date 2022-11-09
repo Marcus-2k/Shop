@@ -2,12 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import { Favorite } from "../../shared/interface/interfaces";
 
 export namespace FavoriteActions {
-  export const getFavorite = createAction("GET_FAVORITE");
-
-  export const getFavoriteSuccess = createAction(
-    "GET_FAVORITE_SUCCESS",
-    props<Favorite>()
-  );
+  export const getFavorite = createAction("GET_FAVORITE_FROM_SERVER");
 
   export const upFavorite = createAction("upFavorite", props<Favorite>());
 
