@@ -2,8 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
-import { User } from "src/app/shared/interface/interfaces";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { User_Account } from "src/app/shared/interface/interfaces";
+
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -19,78 +20,77 @@ export class UserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("Start ngOnInit USER");
+    console.log("Start ngOnInit User");
 
     this.requestUser.getUserInfo().subscribe(
-      (response) => {
-        // console.log(response);
+      (response: User_Account) => {
+        console.log(response);
+
         localStorage.setItem("_id", response._id);
-        this.user = response;
+
+        this.user_account = response;
 
         if (response.avatar !== null) {
+          this.user_avatar = response.avatar;
           this.imagePreview = response.avatar;
         }
-        this.newUser.avatar = response.avatar;
-        this.newUser.name = response.name;
-        this.newUser.lastName = response.lastName;
-        this.newUser.email = response.email;
-        this.newUser.country = response.country;
-        this.newUser.birthday = response.birthday;
+
+        this.user_name = response.name;
+
+        if (response.lastName !== null) {
+          this.user_lastName = response.lastName;
+        }
+
+        this.user_email = response.email;
+
+        if (response.birthday !== null) {
+          this.user_birthday = response.birthday;
+        }
+
+        if (response.country !== null) {
+          this.user_country = response.country;
+        }
 
         this.loader = false;
-        //
-        this.renameTitle.renameTitleSite("Кабінет");
       },
-      (e) => {
-        this.showNotice.message(e.message);
+      (error: Error) => {
+        console.log(error);
+        this.showNotice.message(error.message);
+
+        this.loader = false;
       }
     );
+
+    this.renameTitle.renameTitleSite("Кабінет");
   }
-
-  // User === START
-  user: User = {
-    avatar: null,
-    name: "",
-    lastName: "",
-    email: "",
-    birthday: "",
-    country: "",
-    _id: "",
-  };
-
-  newUser: User = {
-    avatar: null,
-    name: "",
-    lastName: "",
-    email: "",
-    birthday: "",
-    country: "",
-    _id: "",
-  };
-  // User === END
-
+  // General variables START =======================================================================
   loader: boolean = true;
 
   private HOST: string = environment.HOST;
   private PORT: string = environment.PORT;
   url_server: string = `http://${this.HOST}${this.PORT}/`;
 
-  // Avatar user === START
-  @ViewChild("fileAvatar") fileAvatar?: ElementRef;
+  date: Date = new Date();
+  time: number = this.date.getHours();
+  // General variables END =========================================================================
+  // User info START ===============================================================================
 
-  images?: File;
-  imagePreview: any;
+  // User information
+  user_account: User_Account | undefined = undefined;
 
-  addAvatar() {
-    this.fileAvatar?.nativeElement.click();
-    // console.log(this.user);
-    console.log(this.time);
+  // Avatar
+  user_avatar: string | null = null;
 
-    console.log(this.newUser);
+  images: File | null = null;
+  imagePreview: ArrayBuffer | string | null = null;
+
+  @ViewChild("load_avatar") load_avatar: ElementRef | undefined = undefined;
+
+  clickLoadAvatar() {
+    this.load_avatar?.nativeElement.click();
   }
-
   onFileUpload(event: any) {
-    // console.log(event.target.files);
+    console.log(event.target.files);
 
     const file = event.target.files[0];
     this.images = file;
@@ -99,40 +99,41 @@ export class UserComponent implements OnInit {
 
     reader.onload = () => {
       this.imagePreview = reader.result;
-      this.newUser.avatar = reader.result;
-      this.url_server = "";
     };
 
     reader.readAsDataURL(file);
   }
-
-  deleteAvatar() {
-    this.images = undefined;
-    this.imagePreview = undefined;
-    this.newUser.avatar = "";
-    console.log(this.user);
-    console.log(this.newUser);
+  deleteUserAvatar() {
+    this.images = null;
+    this.imagePreview = null;
   }
-  // Avatar user === END
 
-  // Date === START
-  date: Date = new Date();
-  time: number = this.date.getHours();
+  // Name
+  user_name: string = "";
+  minLengthName: number = 4;
+  maxLengthName: number = 20;
 
-  // Max-date birthday for user === START
-  maxDate = new Date(
+  // Last Name
+  user_lastName: string = "";
+  minLengthLastName: number = 4;
+  maxLengthLastName: number = 20;
+
+  // Email
+  user_email: string = "";
+
+  // Birthday
+  user_birthday: Date | null = null;
+  presentDay = new Date(
     this.date.getFullYear(),
     this.date.getMonth(),
     this.date.getDate() + 1
   )
     .toISOString()
     .split("T")[0];
-  // Max-date birthday for user === END
-  // Date === END
 
-  // Select country === START
+  // Country
+  user_country: string | null = null;
   countryList: string[] = [
-    "No country",
     "Ukraine",
     "Poland",
     "United Kingdom",
@@ -147,46 +148,61 @@ export class UserComponent implements OnInit {
     "China",
     "Mexico",
   ];
-  // Select country === END
+  // User info END =================================================================================
 
-  // Save info about user === START
-  saveInfo() {
-    const newUser = new FormData();
+  updateUser() {
+    const updateUserInfo = new FormData();
 
     if (this.images) {
-      newUser.append("image", this.images, this.images.name);
-    } else if (this.newUser.avatar === "") {
-      newUser.append("image", "");
+      updateUserInfo.append("image", this.images, this.images.name);
+    } else if (this.imagePreview === null && this.user_avatar !== null) {
+      updateUserInfo.append("image", "");
     }
 
-    if (this.user.name !== this.newUser.name) {
-      newUser.append("name", this.newUser.name);
+    if (this.user_name !== this.user_account?.name) {
+      updateUserInfo.append("name", this.user_name);
     }
-    if (this.user.lastName !== this.newUser.lastName) {
-      newUser.append("lastName", this.newUser.lastName);
+
+    if (
+      this.user_lastName.length >= this.minLengthLastName &&
+      this.user_account?.lastName === null
+    ) {
+      updateUserInfo.append("lastName", this.user_lastName);
+    } else if (
+      this.user_lastName !== this.user_account?.lastName &&
+      this.user_lastName.length >= this.minLengthLastName
+    ) {
+      updateUserInfo.append("lastName", this.user_lastName);
     }
+
     // if (this.user.email !== this.newUser.email) {
-    //   newUser.append("email", this.newUser.email);
+    //    newUser.append("email", this.newUser.email);
     // }
-    if (this.user.birthday !== this.newUser.birthday) {
-      newUser.append("birthday", this.newUser.birthday);
-    }
-    if (this.user.country !== this.newUser.country) {
-      newUser.append("country", this.newUser.country);
+
+    if (this.user_birthday !== this.user_account?.birthday) {
+      if (this.user_birthday === null) {
+        updateUserInfo.append("birthday", "");
+      } else {
+        updateUserInfo.append("birthday", this.user_birthday.toString());
+      }
     }
 
-    this.requestUser.userUpInfo(newUser).subscribe(
+    if (this.user_country !== this.user_account?.country) {
+      if (this.user_country === null) {
+        updateUserInfo.append("country", "");
+      } else {
+        updateUserInfo.append("country", this.user_country);
+      }
+    }
+
+    this.requestUser.upUserInfo(updateUserInfo).subscribe(
       (response) => {
         this.showNotice.message(response.message);
-
-        // this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
-        // this.router.onSameUrlNavigation = "reload";
-        // this.router.navigate(["/account/user"], {});
       },
-      (error) => {
+      (error: Error) => {
+        console.log(error);
         this.showNotice.message(error.message);
       }
     );
   }
-  // Save info about user === END
 }

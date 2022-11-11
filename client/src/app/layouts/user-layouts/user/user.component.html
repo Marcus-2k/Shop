@@ -2,6 +2,7 @@
 <div class="content-element-center" *ngIf="loader">
   <mat-spinner></mat-spinner>
 </div>
+
 <div class="user" *ngIf="!loader">
   <div class="user__content">
     <!--  -->
@@ -42,20 +43,18 @@
             (time >= 0 && time < 10) || (time >= 18 && time < 25)
         }"
       >
-        &nbsp;{{ newUser.name }}
+        &nbsp;{{ user_name }}
       </h2>
-      <!--  -->
       <h2
         class="hello__title"
-        *ngIf="newUser.lastName"
+        *ngIf="user_lastName"
         [ngClass]="{
           hello__title__night:
             (time >= 0 && time < 10) || (time >= 18 && time < 25)
         }"
       >
-        &nbsp;{{ newUser.lastName }}
+        &nbsp;{{ user_lastName }}
       </h2>
-      <!--  -->
       <h2
         [ngClass]="{
           hello__title__night:
@@ -73,6 +72,7 @@
           <hr />
         </div>
         <div class="params__user">
+          <!-- ================================================== -->
           <div class="params__user-list user__avatar">
             <div class="info">
               <p class="info__title">Аватар</p>
@@ -81,119 +81,126 @@
               <input
                 type="file"
                 class="file__avatar"
-                #fileAvatar
-                (change)="onFileUpload($event)"
+                #load_avatar
+                (change)="onFileUpload($event); load_avatar.value = ''"
               />
-              <ng-container *ngIf="imagePreview !== undefined">
+              <ng-container *ngIf="user_avatar === null">
                 <img
-                  [src]="url_server + imagePreview"
                   class="placeholder__avatar"
-                  (click)="addAvatar()"
-                />
-              </ng-container>
-              <ng-container
-                *ngIf="
-                  (newUser.avatar === null || newUser.avatar === '') &&
-                  imagePreview === undefined
-                "
-              >
-                <img
                   [src]="'../../../../assets/img/placeholder__avatar.webp'"
+                  (click)="clickLoadAvatar()"
+                  *ngIf="imagePreview === null && images === null"
+                />
+                <img
                   class="placeholder__avatar"
-                  (click)="addAvatar()"
+                  [src]="imagePreview"
+                  (click)="clickLoadAvatar()"
+                  *ngIf="imagePreview !== null && images !== null"
                 />
               </ng-container>
-              <div class="user__avatar-box-button">
+              <ng-container *ngIf="user_avatar !== null">
+                <img
+                  class="placeholder__avatar"
+                  [src]="'../../../../assets/img/placeholder__avatar.webp'"
+                  (click)="clickLoadAvatar()"
+                  *ngIf="imagePreview === null && images === null"
+                />
+                <img
+                  class="placeholder__avatar"
+                  [src]="url_server + user_avatar"
+                  (click)="clickLoadAvatar()"
+                  *ngIf="imagePreview !== null && images === null"
+                />
+                <img
+                  class="placeholder__avatar"
+                  [src]="imagePreview"
+                  (click)="clickLoadAvatar()"
+                  *ngIf="imagePreview !== null && images !== null"
+                />
+              </ng-container>
+              <div
+                class="user__avatar-box-button"
+                *ngIf="images !== null || imagePreview !== null"
+              >
                 <button
                   mat-raised-button
                   color="warn"
-                  (click)="deleteAvatar()"
-                  [disabled]="imagePreview === undefined"
+                  (click)="deleteUserAvatar()"
                 >
                   Видалити аватар
                 </button>
               </div>
             </div>
           </div>
+          <!-- ================================================== -->
           <div class="params__user-list user__name">
             <div class="info">
               <p class="info__title">Ім'я*</p>
             </div>
             <div class="user__name-content">
-              <mat-form-field
-                class="example-full-width input-width"
-                appearance="fill"
-              >
+              <mat-form-field class="input-width" appearance="fill">
                 <mat-label>Ім'я</mat-label>
                 <input
                   matInput
                   type="text"
                   placeholder="Ім'я"
+                  [(ngModel)]="user_name"
+                  [maxlength]="maxLengthName"
                   required
-                  [(ngModel)]="newUser.name"
-                  maxlength="20"
-                  minlength="3"
                 />
               </mat-form-field>
             </div>
           </div>
+          <!-- ================================================== -->
           <div class="params__user-list user__lastname">
             <div class="info">
               <p class="info__title">Прізвище</p>
             </div>
             <div class="user__lastname-content">
-              <mat-form-field
-                class="example-full-width input-width"
-                appearance="fill"
-              >
+              <mat-form-field class="input-width" appearance="fill">
                 <mat-label>Прізвище</mat-label>
                 <input
                   matInput
                   type="text"
                   placeholder="Прізвище"
-                  [(ngModel)]="newUser.lastName"
-                  maxlength="20"
-                  minlength="4"
+                  [(ngModel)]="user_lastName"
+                  [maxlength]="maxLengthLastName"
                 />
               </mat-form-field>
             </div>
           </div>
+          <!-- ================================================== -->
           <div class="params__user-list user__email">
             <div class="info">
               <p class="info__title">Пошта*</p>
             </div>
             <div class="user__email-content">
-              <mat-form-field
-                class="example-full-width input-width"
-                appearance="fill"
-              >
+              <mat-form-field class="input-width" appearance="fill">
                 <mat-label>Пошта</mat-label>
                 <input
                   matInput
                   type="text"
                   placeholder="Пошта"
                   required
-                  [(ngModel)]="newUser.email"
+                  [(ngModel)]="user_email"
                   [disabled]="true"
                 />
               </mat-form-field>
             </div>
           </div>
+          <!-- ================================================== -->
           <div class="params__user-list user__birthday">
             <div class="info">
               <p class="info__title">Дата народження</p>
             </div>
             <div class="user__birthday-content">
-              <mat-form-field
-                class="example-full-width input-width"
-                appearance="fill"
-              >
+              <mat-form-field class="input-width" appearance="fill">
                 <mat-label>Дата народження</mat-label>
                 <input
                   matInput
                   [matDatepicker]="picker"
-                  [(ngModel)]="newUser.birthday"
-                  [max]="maxDate"
+                  [(ngModel)]="user_birthday"
+                  [max]="presentDay"
                 />
                 <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle
@@ -204,6 +211,7 @@
               </mat-form-field>
             </div>
           </div>
+          <!-- ================================================== -->
           <div class="params__user-list user__country">
             <div class="info">
               <p class="info__title">Країна</p>
@@ -211,11 +219,7 @@
             <div class="user__country-content">
               <mat-form-field appearance="fill" class="input-width">
                 <mat-label>Країна</mat-label>
-                <mat-select
-                  [(ngModel)]="newUser.country"
-                  name="country"
-                  #selectCountry
-                >
+                <mat-select [(ngModel)]="user_country" name="country">
                   <mat-option
                     *ngFor="let country of countryList"
                     [value]="country"
@@ -226,25 +230,28 @@
               </mat-form-field>
             </div>
           </div>
+          <!-- ================================================== -->
           <div class="params__user-list user__save">
             <div class="example-button-row">
               <button
                 mat-raised-button
                 color="primary"
-                (click)="saveInfo()"
+                (click)="updateUser()"
                 [disabled]="
-                  user.avatar === newUser.avatar &&
-                  user.name === newUser.name &&
-                  user.lastName === newUser.lastName &&
-                  user.email === newUser.email &&
-                  user.birthday === newUser.birthday &&
-                  user.country === newUser.country
+                  user_avatar === imagePreview &&
+                  user_name === user_account?.name &&
+                  (user_lastName.length < minLengthLastName ||
+                    (user_account?.lastName !== null &&
+                      user_lastName === user_account?.lastName)) &&
+                  user_birthday === user_account?.birthday &&
+                  user_country === user_account?.country
                 "
               >
                 Зберегти
               </button>
             </div>
           </div>
+          <!-- ================================================== -->
         </div>
       </div>
     </div>

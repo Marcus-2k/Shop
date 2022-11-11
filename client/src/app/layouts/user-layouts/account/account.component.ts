@@ -19,7 +19,7 @@ export class AccountComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     console.log("Start ngOnInit Account");
 
-    this.router.navigate(["/account/user"]);
+    // this.router.navigate(["/account/user"]);
     this.route.queryParams.subscribe((params: Params) => {
       if (params["login"]) {
         this.showNotice.message("Ви вже авторизовані в системі.");

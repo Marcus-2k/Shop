@@ -96,15 +96,16 @@ export interface ProductUpdate {
 }
 // Product END =========================================================================================
 // User START ==========================================================================================
-export interface User {
-  avatar: string | null | ArrayBuffer;
+export interface User_Account {
+  avatar: string | null;
   name: string;
-  lastName: string;
+  lastName: string | null;
   email: string;
-  birthday: string;
-  country: string;
+  birthday: Date | null;
+  country: string | null;
   _id: string;
 }
+
 export interface Favorite {
   favorite: string[];
 }

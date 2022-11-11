@@ -13,7 +13,12 @@ module.exports.getUserInfo = async function (req, res) {
     const token_decode = jwt_decode(req.headers.authorization);
 
     const user = await User.findById(token_decode.id, {
-      password: 0,
+      avatar: 1,
+      name: 1,
+      lastName: 1,
+      email: 1,
+      birthday: 1,
+      country: 1,
     });
 
     return res.status(200).json(user);
@@ -49,14 +54,16 @@ module.exports.editUser = async function (req, res) {
       if (req.body.lastName) {
         updatedUser.lastName = req.body.lastName.split(/\s+/).join("");
       }
-      if (req.body.email) {
-        updatedUser.email = req.body.email;
+      // if (req.body.email) {
+      //   updatedUser.email = req.body.email;
+      // }
+      if (req.body.birthday === "") {
+        updatedUser.birthday = null;
+      } else if (req.body.birthday !== "" && req.body.birthday) {
+        updatedUser.birthday = req.body.birthday;
       }
       if (req.body.country) {
         updatedUser.country = req.body.country;
-      }
-      if (req.body.birthday) {
-        updatedUser.birthday = req.body.birthday;
       }
 
       await User.findByIdAndUpdate(

@@ -6,7 +6,7 @@ import {
   Product,
   ShoppingCart,
   ShoppingCartList,
-  User,
+  User_Account,
   Wish,
 } from "src/app/shared/interface/interfaces";
 import { environment } from "src/environments/environment";
@@ -21,15 +21,15 @@ export class RequestUserService {
   private PORT: string = environment.PORT;
   private url_server: string = `http://${this.HOST}${this.PORT}/api/account`;
 
-  getUserInfo(): Observable<User> {
-    return this.http.get<User>(`${this.url_server}/user/`, {
+  getUserInfo(): Observable<User_Account> {
+    return this.http.get<User_Account>(`${this.url_server}/user/`, {
       withCredentials: true,
     });
   }
-  userUpInfo(newUser: FormData): Observable<{ message: string }> {
+  upUserInfo(user: FormData): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(
       `${this.url_server}/user/`,
-      newUser,
+      user,
       { withCredentials: true }
     );
   }
