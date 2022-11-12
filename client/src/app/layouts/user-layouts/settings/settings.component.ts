@@ -35,9 +35,9 @@ export class SettingsComponent implements OnInit {
   submitForm() {
     this.buttonValidity = true;
     this.requestUser.editPassword(this.password, this.oldPassword).subscribe(
-      (responce) => {
-        console.log(responce);
-        if (responce.message) {
+      (response) => {
+        console.log(response);
+        if (response.message) {
           this.showNotice.message("Пароль успішно змінено");
           this.buttonValidity = false;
         } else {

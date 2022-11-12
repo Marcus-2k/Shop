@@ -21,57 +21,55 @@ export class CardComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     console.log("Start ngOnInit Card");
 
-    this.route.data.subscribe((responce: Data) => {
-      console.log(responce["product"]);
-      this.product = responce["product"].product;
+    this.route.data.subscribe((data: Data) => {
+      console.log(data["product"]);
+      this.product = data["product"].product;
 
       // Bread Crumbs
-      this.levelOne = responce["product"].breadCrumbs.levelOne;
-      this.levelTwo = responce["product"].breadCrumbs.levelTwo;
-      this.location = responce["product"].breadCrumbs.location;
+      this.levelOne = data["product"].breadCrumbs.levelOne;
+      this.levelTwo = data["product"].breadCrumbs.levelTwo;
+      this.location = data["product"].breadCrumbs.location;
       // Bread Crumbs
 
       // Title
-      this.titleProduct = responce["product"].product.name;
+      this.titleProduct = data["product"].product.name;
       // Title
 
       // Navigation
       this.navBar(window.location.pathname.split("/")[3]);
       // Navigation
 
-      this.renameTitle.renameTitleSite(responce["product"].product.name);
+      this.renameTitle.renameTitleSite(data["product"].product.name);
 
       // if the user is authorized, we add his history to the database. If it is a guest, then add in localStorage
       if (this.auth.isAuthenticated()) {
-        this.requestUser
-          .newHistoryView(responce["product"].product._id)
-          .subscribe(
-            (responce) => {
-              console.log(responce); // Успішно додано в історію переглядів | Успішно додано в історію на перше місце
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
+        this.requestUser.newHistoryView(data["product"].product._id).subscribe(
+          (response) => {
+            console.log(response); // Успішно додано в історію переглядів | Успішно додано в історію на перше місце
+          },
+          (error: Error) => {
+            console.log(error);
+          }
+        );
       } else {
         const historyLS: string | null = localStorage.getItem("history-view");
         if (historyLS) {
           let historyArray = historyLS.split(",");
 
-          if (historyArray.indexOf(responce["product"].product._id) === -1) {
-            historyArray.unshift(responce["product"].product._id);
+          if (historyArray.indexOf(data["product"].product._id) === -1) {
+            historyArray.unshift(data["product"].product._id);
 
             localStorage.setItem("history-view", historyArray.join(","));
           } else {
-            const index = historyArray.indexOf(responce["product"].product._id);
+            const index = historyArray.indexOf(data["product"].product._id);
 
             historyArray.splice(index, 1);
-            historyArray.unshift(responce["product"].product._id);
+            historyArray.unshift(data["product"].product._id);
 
             localStorage.setItem("history-view", historyArray.join(","));
           }
         } else {
-          localStorage.setItem("history-view", responce["product"].product._id);
+          localStorage.setItem("history-view", data["product"].product._id);
         }
       }
     });

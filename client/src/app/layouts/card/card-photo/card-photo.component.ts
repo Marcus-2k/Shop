@@ -14,17 +14,12 @@ export class CardPhotoComponent implements OnInit {
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Photo");
 
-    this.route.data.subscribe(
-      (responce: Data) => {
-        // console.log(responce["productPhoto"]);
-        this.productPhoto = responce["productPhoto"];
+    this.route.data.subscribe((data: Data) => {
+      // console.log(data["productPhoto"]);
+      this.productPhoto = data["productPhoto"];
 
-        this.loader = false;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      this.loader = false;
+    });
   }
 
   private HOST: string = environment.HOST;

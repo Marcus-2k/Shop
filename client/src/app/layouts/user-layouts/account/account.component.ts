@@ -42,8 +42,8 @@ export class AccountComponent implements OnInit, DoCheck {
       (response) => {
         console.log(response);
       },
-      (e) => {
-        console.log(e);
+      (error) => {
+        console.log(error);
       }
     );
   }

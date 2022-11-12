@@ -25,8 +25,8 @@ export class WishlistComponent implements OnInit {
     console.log("Start ngOnInit WishList");
 
     this.requestUser.getWishList().subscribe(
-      (responce) => {
-        this.wishList = responce;
+      (response) => {
+        this.wishList = response;
 
         this.loader = false;
 
@@ -89,12 +89,12 @@ export class WishlistComponent implements OnInit {
       });
 
       this.requestUser.deleteWishList(listId).subscribe(
-        (responce) => {
-          this.wishList = responce;
+        (response) => {
+          this.wishList = response;
           this.wishChecked = [];
 
           let favoriteList: Favorite = { favorite: [] };
-          responce.forEach((element) => {
+          response.forEach((element) => {
             favoriteList.favorite.push(element._id);
           });
 

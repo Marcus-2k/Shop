@@ -32,15 +32,15 @@ export class CartComponent implements OnInit {
     console.log("Start ngOnInit Cart");
 
     this.requestUser.getShoppingCartList().subscribe(
-      (responce: ShoppingCartList[]) => {
-        console.log(responce);
-        this.shoppingCart = responce;
+      (response) => {
+        console.log(response);
+        this.shoppingCart = response;
 
         this.loader = false;
-        if (responce.length !== 0) {
+        if (response.length !== 0) {
           const userID = localStorage.getItem("_id");
 
-          responce.forEach((element) => {
+          response.forEach((element) => {
             if (userID) {
               const itemOrder: Order = {
                 _id: element._id,

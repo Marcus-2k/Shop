@@ -30,9 +30,9 @@ export class HomeComponent implements OnInit {
     console.log("Start ngOnInit Home");
 
     this.requestNews.getAllNews().subscribe(
-      (responce) => {
-        console.log(responce);
-        this.news = responce;
+      (response) => {
+        console.log(response);
+        this.news = response;
       },
       (error) => {
         console.log(error);
@@ -71,9 +71,9 @@ export class HomeComponent implements OnInit {
     }
 
     this.requestCatalog.getCategoryHome().subscribe(
-      (responce) => {
-        console.log(responce);
-        this.categoryProductList = responce;
+      (response) => {
+        console.log(response);
+        this.categoryProductList = response;
       },
       (error) => {
         console.log(error);

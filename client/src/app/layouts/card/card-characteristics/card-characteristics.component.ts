@@ -13,21 +13,15 @@ export class CardCharacteristicsComponent implements OnInit {
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Characteristics");
 
-    this.route.data.subscribe(
-      (response: Data) => {
-        console.log(response["productCharacteristics"]);
+    this.route.data.subscribe((data: Data) => {
+      console.log(data["productCharacteristics"]);
 
-        this.characteristics =
-        response["productCharacteristics"].characteristics;
-        this.characteristicsName =
-        response["productCharacteristics"].characteristicsName;
+      this.characteristics = data["productCharacteristics"].characteristics;
+      this.characteristicsName =
+        data["productCharacteristics"].characteristicsName;
 
-        this.loader = false;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      this.loader = false;
+    });
   }
 
   loader: boolean = true;

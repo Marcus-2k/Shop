@@ -17,17 +17,12 @@ export class CardInfoComponent implements OnInit {
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Info");
 
-    this.route.data.subscribe(
-      (responce: Data) => {
-        // console.log(responce["productInfo"]);
-        this.productInfo = responce["productInfo"];
+    this.route.data.subscribe((data: Data) => {
+      console.log(data["productInfo"]);
+      this.productInfo = data["productInfo"];
 
-        this.loader = false;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      this.loader = false;
+    });
 
     // Slider Swiper
     Swiper.use([Navigation, Pagination]);

@@ -172,8 +172,8 @@ export class SearchComponent implements OnInit {
           this.loader = false;
           // ==============================================================================================
         },
-        (e) => {
-          console.log(e);
+        (error) => {
+          console.log(error);
         }
       );
     } else if (this.search_text === "") {

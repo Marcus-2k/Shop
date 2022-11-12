@@ -6,7 +6,7 @@ import {
   OnDestroy,
   ViewChild,
 } from "@angular/core";
-import { ActivatedRoute, Data, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import {
   CategoryProduct_Characteristics,
   Options,
@@ -36,7 +36,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log("Start ngOnInit Product-New");
 
-    this.route.params.subscribe((params: Data) => {
+    this.route.params.subscribe((params: Params) => {
       const id: string = params["id"];
 
       if (params["id"]) {
@@ -45,20 +45,20 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         this.update = true;
 
         this.requestProduct.getByIdProduct(id).subscribe(
-          (response) => {
+          (response_product) => {
             this.requestCatalog.getCategoryAndCharacteristics().subscribe(
-              (res) => {
-                console.log(res);
-                this.categoryList = res;
-                this.updateOnInit(response);
+              (response) => {
+                console.log(response);
+                this.categoryList = response;
+                this.updateOnInit(response_product);
               },
-              (e) => {
-                console.log(e);
+              (error) => {
+                console.log(error);
               }
             );
           },
-          (error) => {
-            console.log(error);
+          (error_product) => {
+            console.log(error_product);
           }
         );
       } else {
@@ -689,17 +689,17 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       console.log("Send FormData");
 
       this.requestProduct.updateById(formData, this.up_Product._id).subscribe(
-        (responce) => {
+        (response) => {
           this.showNotice.message("Товар успішно змінено.");
           this.afterCreateUpdateProduct();
         },
-        (e) => {
-          console.log(e);
+        (error) => {
+          console.log(error);
           this.showNotice.message(
             "Товар не було змінено, дані заповнено не коректно"
           );
         }
-      ); // Send to server
+      );
     } else {
       this.showNotice.message(
         "Товар не було збережено, дані заповнено не коректно"

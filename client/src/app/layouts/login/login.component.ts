@@ -70,16 +70,18 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.form.disable();
+
     this.auth.login(this.form.value).subscribe(
-      (res) => {
-        console.log(res);
+      (response) => {
+        console.log(response);
+
         this.router.navigate(["/account/user"]);
         this.initAfterLogin();
       },
-      (e) => {
-        console.log(e);
-        if (e.error.message) {
-          this.showNotice.message(e.error.message);
+      (error) => {
+        console.log(error);
+        if (error.error.message) {
+          this.showNotice.message(error.error.message);
         }
         this.form.enable();
       }
