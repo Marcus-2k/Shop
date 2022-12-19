@@ -5,7 +5,7 @@ import {
   Favorite,
   Product,
   ShoppingCart,
-  ShoppingCartList,
+  ProductCard_ShoppingCart,
   User_Account,
   Wish,
 } from "src/app/shared/interface/interfaces";
@@ -109,8 +109,8 @@ export class RequestUserService {
       { withCredentials: true }
     );
   }
-  getShoppingCartList(): Observable<ShoppingCartList[]> {
-    return this.http.get<ShoppingCartList[]>(
+  getShoppingCartList(): Observable<ProductCard_ShoppingCart[]> {
+    return this.http.get<ProductCard_ShoppingCart[]>(
       `${this.url_server}/user/shopping_cart/`,
       { withCredentials: true }
     );

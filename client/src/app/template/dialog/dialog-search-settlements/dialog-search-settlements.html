@@ -1,0 +1,78 @@
+<h1 mat-dialog-title>Виберіть своє місто</h1>
+<div mat-dialog-content>
+  <form action="post" class="form_select_city">
+    <div class="form_select_city-template">
+      <button
+        mat-button
+        color="primary"
+        (click)="changeSettlements('м. Вінниця, Вінницька обл.','Вінниця')"
+      >
+        Вінниця
+      </button>
+      <button
+        mat-button
+        color="primary"
+        (click)="changeSettlements('м. Київ, Київська обл.','Київ')"
+      >
+        Київ
+      </button>
+      <button
+        mat-button
+        color="primary"
+        (click)="changeSettlements('м. Одеса, Одеська обл.','Одеса')"
+      >
+        Одеса
+      </button>
+      <button
+        mat-button
+        color="primary"
+        (click)="changeSettlements('м. Львів, Львівська обл.','Львів')"
+      >
+        Львів
+      </button>
+      <button
+        mat-button
+        color="primary"
+        (click)="changeSettlements('м. Харків, Харківська обл.','Харків')"
+      >
+        Харків
+      </button>
+      <button
+        mat-button
+        color="primary"
+        (click)="changeSettlements('м. Дніпро, Дніпропетровська обл.','Дніпро')"
+      >
+        Дніпро
+      </button>
+    </div>
+    <mat-form-field appearance="fill" class="form_select_city-input">
+      <mat-label>Ваше місто</mat-label>
+      <input
+        matInput
+        #inputSearchSettlements
+        cdkFocusInitial
+        (keyup)="getNewSettlementsNP($event,inputSearchSettlements.value)"
+        [matAutocomplete]="auto"
+        placeholder="київ"
+      />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <ng-container *ngIf="listSearchSettlements">
+          <mat-option
+            *ngFor="let addresses of listSearchSettlements.data[0].Addresses"
+            [value]="addresses.Present"
+            (onSelectionChange)="changeSettlements(addresses.Present, addresses.MainDescription)"
+            (click)="changeSettlements(addresses.Present, addresses.MainDescription)"
+          >
+            {{addresses.Present}}
+          </mat-option>
+        </ng-container>
+        <!--  -->
+        <ng-container *ngIf="!listSearchSettlements   ">
+          <mat-option [disabled]="true"
+            >Населений пункт не знайдено.</mat-option
+          >
+        </ng-container>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</div>

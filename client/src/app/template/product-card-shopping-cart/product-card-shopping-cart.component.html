@@ -1,65 +1,74 @@
 <!--  -->
-<div class="shopping__card">
-  <div class="display-none">{{ productItem?._id }}</div>
-  <div class="shopping__card-content">
-    <!--  -->
+
+<div
+  class="shopping__cart"
+  *ngIf="
+    productItem && counter_order !== undefined && sequence_number !== undefined
+  "
+>
+  <div class="display-none">{{ productItem._id }}</div>
+
+  <div class="shopping__cart-content">
     <div
       class="content-image content-item"
-      [routerLink]="'/card/' + productItem?._id + '/info'"
+      [routerLink]="'/card/' + productItem._id + '/info'"
     >
-      <img [src]="url_server_folder + productItem?.imageSrc" alt="" />
+      <img
+        class="content-image-img"
+        [src]="url_server_folder + productItem.imageSrc"
+        alt=""
+      />
     </div>
-    <!--  -->
+
     <div class="content-about content-item">
       <div class="about-title">
-        <h2 class="shopping__card-title">{{ productItem?.name }}</h2>
+        <h2 class="shopping__cart-title">{{ productItem.name }}</h2>
       </div>
       <!--  -->
       <div class="about-counter">
         <button
-          class="counter-minus add__remove"
-          (click)="plusMinusCounter(-1)"
+          mat-button
+          color="accent"
+          [disabled]="counter_order <= 1"
+          (click)="downdateCounter()"
         >
-          <span class="material-symbols-outlined"> remove </span>
+          <mat-icon>exposure_neg_1</mat-icon>
         </button>
-        <div class="counter-number">
-          <div
-            class="counter-number-text"
-            [ngClass]="{ counter__error: !validityCounter }"
-            [matTooltip]="'Товарів залишилося ' + maxCounter"
-          >
-            {{ counter }}
-          </div>
-        </div>
-        <button class="counter-plus add__remove" (click)="plusMinusCounter(1)">
-          <span class="material-symbols-outlined"> add </span>
+        <button
+          mat-raised-button
+          [color]="counter_order > productItem.counter ? 'warn' : ''"
+          [matTooltip]="'Товарів залишилося ' + productItem.counter"
+        >
+          {{ counter_order }}
+        </button>
+        <button mat-button color="primary" (click)="updateCounter()">
+          <mat-icon>exposure_plus_1</mat-icon>
         </button>
       </div>
     </div>
-    <!--  -->
+
     <div class="content-price content-item">
-      <p class="price__action" *ngIf="productItem?.action">
-        {{ price * counter | price }}
+      <p class="price__action" *ngIf="productItem.action">
+        {{ productItem.price * counter_order | price }}
         <span class="currency">₴</span>
       </p>
       <p
         class="price"
-        [ngStyle]="{ color: productItem?.action ? 'red' : 'black' }"
+        [ngStyle]="{ color: productItem.action ? 'red' : 'black' }"
       >
         {{
-          productItem?.action
-            ? (actionPrice * counter | price)
-            : (price * counter | price)
+          productItem.action
+            ? (productItem.actionPrice * counter_order | price)
+            : (productItem.price * counter_order | price)
         }}
         <span class="currency">₴</span>
       </p>
     </div>
-    <!--  -->
+
     <div class="content-delete content-item">
-      <button class="content-delete-btn" (click)="deleteProductCart()">
+      <button class="content-delete-btn" (click)="removeProductCart()">
         <span class="material-symbols-outlined"> delete </span>
       </button>
     </div>
-    <!--  -->
   </div>
 </div>

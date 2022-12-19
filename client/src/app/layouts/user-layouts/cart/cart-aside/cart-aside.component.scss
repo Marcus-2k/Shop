@@ -1,0 +1,54 @@
+.sidebar {
+  position: sticky;
+  top: 25px;
+  background-color: whitesmoke;
+  border-radius: 4px;
+  padding: calc(5px + (20 - 5) * ((100vw - 320px) / (1920 - 320)));
+  height: 200px;
+  &-header {
+    &-title {
+      font-size: 32px;
+      color: #535353;
+    }
+  }
+  &-about {
+    .about-counter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      p {
+        margin: 0;
+      }
+      .counter-content {
+        &-number {
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+      .price-content {
+        &-text {
+          font-size: 16px;
+          font-weight: 500;
+        }
+        .price {
+          color: gray;
+          text-decoration: line-through;
+        }
+        .price__action {
+          color: red;
+        }
+      }
+    }
+  }
+  &-button {
+    margin-top: 15px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    height: auto;
+    padding: 10px;
+  }
+}

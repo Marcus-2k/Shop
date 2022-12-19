@@ -1,0 +1,10 @@
+.form {
+  margin-top: 10px;
+  &__type_shipping {
+    display: flex;
+    flex-direction: column;
+    &-radio {
+      margin-bottom: 7.5px;
+    }
+  }
+}

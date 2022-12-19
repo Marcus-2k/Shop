@@ -24,11 +24,13 @@ export class TokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (this.auth.isAuthenticated()) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: String(this.auth.getToken()),
-        },
-      });
+      if (req.url.split("/")[2] !== "api.novaposhta.ua") {
+        req = req.clone({
+          setHeaders: {
+            Authorization: String(this.auth.getToken()),
+          },
+        });
+      }
     }
 
     return next.handle(req).pipe(

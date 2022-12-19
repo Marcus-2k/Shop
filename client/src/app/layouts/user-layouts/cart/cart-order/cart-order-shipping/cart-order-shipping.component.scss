@@ -1,0 +1,28 @@
+.form {
+  margin-top: 10px;
+  &__change_city {
+    &-btn {
+      width: 100%;
+      height: 70px;
+    }
+  }
+  &__type_shipping {
+    margin-top: 10px;
+    &-group {
+      display: flex;
+      flex-direction: column;
+      &-radio {
+        margin-top: 5px;
+      }
+    }
+  }
+  &__change_warehouses {
+    &-content {
+      margin-top: 10px;
+      &-btn {
+        width: 100%;
+        height: 70px;
+      }
+    }
+  }
+}

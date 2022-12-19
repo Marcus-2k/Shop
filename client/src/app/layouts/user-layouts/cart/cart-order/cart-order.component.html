@@ -1,0 +1,110 @@
+<!--  -->
+
+<div class="order">
+  <mat-vertical-stepper
+    *ngIf="stepper && valid"
+    [animationDuration]="'1000'"
+    [selectedIndex]="selectedIndex"
+    (selectionChange)="setIndex($event)"
+  >
+    <mat-step
+      [completed]="stepper.completedProduct"
+      [hasError]="!valid.validProduct && stepper.completedProduct"
+    >
+      <ng-template matStepLabel>Товари</ng-template>
+
+      <app-cart-order-product
+        [sequence_number_order]="sequence_number_order"
+      ></app-cart-order-product>
+
+      <div class="order-step-button">
+        <button
+          mat-raised-button
+          color="primary"
+          matStepperNext
+          [disabled]="!valid.validProduct"
+        >
+          Продовжити оформлення
+        </button>
+      </div>
+    </mat-step>
+
+    <mat-step
+      [completed]="stepper.completedContacts"
+      [hasError]="!valid.validContacts && stepper.completedContacts"
+    >
+      <ng-template matStepLabel>Контактна інформація</ng-template>
+
+      <app-cart-order-contacts
+        [sequence_number_order]="sequence_number_order"
+      ></app-cart-order-contacts>
+
+      <div class="order-step-button">
+        <button mat-raised-button color="accent" matStepperPrevious>
+          Повернутися назад
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          matStepperNext
+          [disabled]="!valid.validContacts"
+        >
+          Продовжити оформлення
+        </button>
+      </div>
+    </mat-step>
+    <mat-step
+      [completed]="stepper.completedShipping"
+      [hasError]="!valid.validShipping && stepper.completedShipping"
+    >
+      <ng-template matStepLabel>Доставка</ng-template>
+
+      <app-cart-order-shipping
+        [sequence_number_order]="sequence_number_order"
+      ></app-cart-order-shipping>
+
+      <div class="order-step-button">
+        <button mat-raised-button color="accent" matStepperPrevious>
+          Повернутися назад
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          matStepperNext
+          [disabled]="!valid.validShipping"
+        >
+          Продовжити оформлення
+        </button>
+      </div>
+    </mat-step>
+    <mat-step
+      [completed]="stepper.completedPayment"
+      [hasError]="!valid.validPayment && stepper.completedPayment"
+    >
+      <ng-template matStepLabel>Оплата</ng-template>
+
+      <app-cart-order-payment
+        [sequence_number_order]="sequence_number_order"
+      ></app-cart-order-payment>
+
+      <div class="order-step-button">
+        <button mat-raised-button color="accent" matStepperPrevious>
+          Повернутися назад
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="toOrder()"
+          [disabled]="
+            !valid.validProduct ||
+            !valid.validContacts ||
+            !valid.validShipping ||
+            !valid.validPayment
+          "
+        >
+          Замовлення підтверджую
+        </button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+</div>

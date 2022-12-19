@@ -1,0 +1,13 @@
+.form_select_city {
+  &-template {
+    display: flex;
+    margin: 5px 0;
+    flex-wrap: wrap;
+    button {
+      width: 25%;
+    }
+  }
+  &-input {
+    width: 100%;
+  }
+}

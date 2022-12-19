@@ -1,27 +1,24 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
-import {
-  DeleteCart,
   Order,
-  OrderEvent,
-  ShoppingCartList,
+  ProductCard_ShoppingCart,
 } from "src/app/shared/interface/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
+
+import { Subscription } from "rxjs";
+
 import { Store } from "@ngrx/store";
-import { ShoppingCartActions } from "src/app/store/cart/cart.action";
+import { OrderSelector } from "src/app/store/orders/order.selector";
+import { OrderActions } from "src/app/store/orders/order.action";
 
 @Component({
   selector: "app-cart",
   templateUrl: "./cart.component.html",
   styleUrls: ["./cart.component.scss"],
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   constructor(
     private renameTitle: RenameTitleService,
     private requestUser: RequestUserService,
@@ -31,190 +28,175 @@ export class CartComponent implements OnInit {
   ngOnInit() {
     console.log("Start ngOnInit Cart");
 
-    this.requestUser.getShoppingCartList().subscribe(
-      (response) => {
-        console.log(response);
-        this.shoppingCart = response;
+    const storeOrdersChecking$: Subscription = this.store$
+      .select(OrderSelector.ordersChecking)
+      .subscribe((checkingStatus) => {
+        if (checkingStatus) {
+          // Store ordersUser not empty
+          console.log("Store ordersUser not empty");
 
-        this.loader = false;
-        if (response.length !== 0) {
-          const userID = localStorage.getItem("_id");
+          this.storeOrder$ = this.store$
+            .select(OrderSelector.getOrdersUser)
+            .subscribe((stateOrders) => {
+              this.renewalCounterOrders(stateOrders);
+            });
 
-          response.forEach((element) => {
-            if (userID) {
-              const itemOrder: Order = {
-                _id: element._id,
-                counter: 1,
-                merchant: userID,
-              };
-              this.order.push(itemOrder);
-            }
-          });
-
-          this.calcTotalCounterProduct();
-          this.calcTotalPrice();
+          this.loader = false;
         } else {
-          this.emptyCart = true;
-        }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+          // Store ordersUser is empty
+          console.log("Store ordersUser is empty");
 
-    this.formContacts = new UntypedFormGroup({
-      name: new UntypedFormControl(null, [Validators.required]),
-      email: new UntypedFormControl(null, [
-        Validators.required,
-        Validators.email,
-      ]),
-      tel: new UntypedFormControl(null, [
-        Validators.required,
-        Validators.minLength(13),
-        Validators.maxLength(13),
-        Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"),
-      ]),
-    });
+          this.requestUser.getShoppingCartList().subscribe(
+            (response) => {
+              if (response.length > 0) {
+                const user_id = localStorage.getItem("_id");
+
+                const orders: Order[] = [];
+                const shoppingCart: ProductCard_ShoppingCart[][] = [];
+
+                response.forEach((element, idx) => {
+                  if (user_id) {
+                    const itemOrder: Order = {
+                      stepper: {
+                        selectedIndex: 0,
+                        completedProduct: true,
+                        completedContacts: false,
+                        completedShipping: false,
+                        completedPayment: false,
+                      },
+                      info: {
+                        seller: element.user,
+                        merchant: user_id,
+                      },
+                      product: {
+                        info: {
+                          product_id: [element._id],
+                          counter: [1],
+                          totalPrice: element.price,
+                          totalActionPrice: element.action
+                            ? element.actionPrice
+                            : element.price,
+                          totalCounterProduct: 1,
+                        },
+                      },
+                      contacts: {
+                        info: {
+                          name: null,
+                          email: null,
+                          tel: null,
+                        },
+                      },
+                      shipping: {
+                        info: {
+                          addressesPresent: null,
+                          addressesMainDescription: null,
+                          addressesWarehousesDescription: null,
+                        },
+                        selectTypeShipping: null,
+                      },
+                      payment: {
+                        info: {},
+                        selectTypePayment: null,
+                      },
+                      valid: {
+                        validProduct: true,
+                        validContacts: false,
+                        validShipping: false,
+                        validPayment: false,
+                      },
+                    };
+                    if (idx === 0) {
+                      orders.push(itemOrder);
+
+                      shoppingCart.push([response[idx]]);
+                    } else {
+                      for (let index = 0; index < orders.length; index++) {
+                        if (
+                          orders[index].info.seller === itemOrder.info.seller
+                        ) {
+                          orders[index].product.info.product_id.push(
+                            itemOrder.product.info.product_id[0]
+                          );
+                          orders[index].product.info.counter.push(
+                            itemOrder.product.info.counter[0]
+                          );
+                          orders[index].product.info.totalPrice +=
+                            itemOrder.product.info.totalPrice;
+                          orders[index].product.info.totalCounterProduct +=
+                            itemOrder.product.info.totalCounterProduct;
+                          orders[index].product.info.totalActionPrice +=
+                            element.action
+                              ? itemOrder.product.info.totalActionPrice
+                              : itemOrder.product.info.totalPrice;
+
+                          shoppingCart[index].push(response[idx]);
+                          break;
+                        } else if (index === orders.length - 1) {
+                          orders.push(itemOrder);
+
+                          shoppingCart.push([response[idx]]);
+                          break;
+                        }
+                      }
+                    }
+                  } else {
+                    // User not authorization
+                  }
+                });
+
+                this.store$.dispatch(
+                  OrderActions.recordOrder({ orders_user: orders })
+                );
+                this.store$.dispatch(
+                  OrderActions.recordProductCard({
+                    productCard_shoppingCart: shoppingCart,
+                  })
+                );
+
+                this.storeOrder$ = this.store$
+                  .select(OrderSelector.getOrdersUser)
+                  .subscribe((stateOrders) => {
+                    this.renewalCounterOrders(stateOrders);
+                  });
+
+                this.loader = false;
+              } else {
+                this.loader = false;
+                this.emptyCart = true;
+              }
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        }
+      });
+
+    storeOrdersChecking$.unsubscribe();
 
     this.renameTitle.renameTitleSite("Кошик");
   }
+  ngOnDestroy(): void {
+    this.storeOrder$?.unsubscribe();
+  }
+
+  storeOrder$: Subscription | undefined;
 
   loader: boolean = true;
-
   emptyCart: boolean = false;
 
-  // Step Cart ========================================
-  shoppingCart: ShoppingCartList[] = [];
-  order: Order[] = [];
+  counterOrder: number[] | undefined;
 
-  totalCounterProduct: number = 0;
-  totalPrice: number = 0;
-  totalActionPrice: number = 0;
+  renewalCounterOrders(stateOrders: Order[] | null): void {
+    if (stateOrders) {
+      this.counterOrder = [];
 
-  calcTotalPrice() {
-    this.totalPrice = 0;
-    this.totalActionPrice = 0;
-
-    this.shoppingCart.forEach((element, idx) => {
-      this.totalPrice += element.price * this.order[idx].counter;
-
-      if (element.action) {
-        this.totalActionPrice += element.actionPrice * this.order[idx].counter;
-      } else {
-        this.totalActionPrice += element.price * this.order[idx].counter;
+      for (let idx = 0; idx < stateOrders.length; idx++) {
+        this.counterOrder.push(idx);
       }
-    });
-  } // Total price
-  calcTotalCounterProduct() {
-    this.totalCounterProduct = 0;
-    this.order.forEach((element) => {
-      this.totalCounterProduct += element.counter;
-    });
-  } // The total amount of purchased goods
-  gettingCounter(event: OrderEvent) {
-    let positionInList = -1;
-    this.order.forEach((element, idx) => {
-      if (element._id === event._id) {
-        positionInList = idx;
-        // return;
-      }
-    });
-    console.log(positionInList);
-
-    if (positionInList >= 0) {
-      this.order[positionInList].counter = event.counter;
-      if (
-        this.order[positionInList].counter >
-        this.shoppingCart[positionInList].counter
-      ) {
-        this.stepper.validityCart = false;
-      }
-
-      for (let idx = 0; idx < this.order.length; idx++) {
-        if (this.order[idx].counter > this.shoppingCart[idx].counter) {
-          this.stepper.validityCart = false;
-          break;
-        } else {
-          this.stepper.validityCart = true;
-        }
-      }
-    }
-
-    this.calcTotalCounterProduct();
-    this.calcTotalPrice();
-  }
-  gettingIdDelete(event: DeleteCart) {
-    this.store$.dispatch(
-      ShoppingCartActions.removeShoppingCart({ id: event._id })
-    );
-
-    let index: number = 0;
-    for (let idx = 0; idx < this.shoppingCart.length; idx++) {
-      if (this.shoppingCart[idx]._id === event._id) {
-        index = idx;
-        break;
-      }
-    }
-
-    this.shoppingCart.splice(index, 1);
-    this.order.splice(index, 1);
-
-    if (this.order.length === 0) {
+    } else {
+      this.counterOrder = undefined;
       this.emptyCart = true;
-    }
-
-    this.calcTotalCounterProduct();
-    this.calcTotalPrice();
-  }
-  // Step Cart ========================================
-
-  // Step Contacts ====================================
-  formContacts: UntypedFormGroup = new UntypedFormGroup({});
-  // Step Contacts ====================================
-
-  // Step Shipping ====================================
-  // Step Shipping ====================================
-
-  // Step Payment =====================================
-  // Step Payment =====================================
-
-  // Stepper
-  stepper = {
-    activeBlock: 0, // cart = 0, contacts = 1, shipping = 2,  payment = 3;
-    // Validity
-    validityCart: true,
-    validityContacts: this.formContacts.valid,
-    validityShipping: false,
-    validityPayment: false,
-    // Touch
-    touchCart: true, // 0
-    touchContacts: false, // 1
-    touchShipping: false, // 2
-    touchPayment: false, // 3
-  };
-
-  prevStep() {
-    this.stepper.activeBlock -= 1;
-  }
-  nextStep() {
-    this.stepper.activeBlock += 1;
-    if (
-      this.stepper.activeBlock === 1 &&
-      this.stepper.touchContacts === false
-    ) {
-      this.stepper.touchContacts = true;
-      console.log("sds");
-    }
-    if (
-      this.stepper.activeBlock === 2 &&
-      this.stepper.touchShipping === false
-    ) {
-      this.stepper.touchShipping = true;
-      console.log("sds");
-    }
-    if (this.stepper.activeBlock === 3 && this.stepper.touchPayment === false) {
-      this.stepper.touchPayment = true;
-      console.log("sds");
     }
   }
 }

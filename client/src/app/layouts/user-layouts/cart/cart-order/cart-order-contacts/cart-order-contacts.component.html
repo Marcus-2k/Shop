@@ -1,0 +1,40 @@
+<!--  -->
+
+<form class="form" *ngIf="formContacts" [formGroup]="formContacts">
+  <mat-form-field class="form-item" appearance="fill">
+    <mat-label>ПІБ</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="name"
+      placeholder="Kaitlyn Macdonald"
+      autocomplete="off"
+      (focusout)="updateContactsInStore()"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-item" appearance="fill">
+    <mat-label>E-mail</mat-label>
+    <input
+      matInput
+      type="email"
+      formControlName="email"
+      placeholder="kaitlyn_macdonald@gmail.com"
+      autocomplete="off"
+      (focusout)="updateContactsInStore()"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-item" appearance="fill">
+    <mat-label>Номер телефона</mat-label>
+    <span matPrefix>+38&nbsp;</span>
+    <input
+      matInput
+      type="tel"
+      formControlName="tel"
+      placeholder="067-000-11-22"
+      autocomplete="off"
+      (focusout)="updateContactsInStore()"
+    />
+  </mat-form-field>
+</form>

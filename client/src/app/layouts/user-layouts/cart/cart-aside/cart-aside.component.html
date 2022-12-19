@@ -1,0 +1,61 @@
+<!--  -->
+
+<aside class="sidebar" *ngIf="dataAside && valid">
+  <div class="sidebar-header">
+    <h2 class="sidebar-header-title">Разом</h2>
+  </div>
+
+  <div class="sidebar-about">
+    <div class="about-counter">
+      <div class="counter-content">
+        <p class="counter-content-number">
+          {{ dataAside.totalCounterProduct }}
+          <span *ngIf="lastNumberCounter(dataAside.totalCounterProduct) === 1"
+            >товар на суму</span
+          >
+          <span *ngIf="lastNumberCounter(dataAside.totalCounterProduct) === 2"
+            >товари на суму</span
+          >
+          <span *ngIf="lastNumberCounter(dataAside.totalCounterProduct) === 5"
+            >товарів на суму</span
+          >
+        </p>
+      </div>
+
+      <div class="price-content">
+        <p
+          class="price-content-text price"
+          *ngIf="dataAside.totalActionPrice < dataAside.totalPrice"
+        >
+          {{ dataAside.totalPrice | price }}
+          <span class="currency">₴</span>
+        </p>
+        <p
+          class="price-content-text"
+          [ngClass]="{
+            price__action: dataAside.totalActionPrice < dataAside.totalPrice
+          }"
+        >
+          {{ dataAside.totalActionPrice | price }}
+          <span class="currency">₴</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-button">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="
+        !valid.validProduct ||
+        !valid.validContacts ||
+        !valid.validShipping ||
+        !valid.validPayment
+      "
+      (click)="toOrder()"
+    >
+      Замовлення підтверджую
+    </button>
+  </div>
+</aside>

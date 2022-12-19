@@ -1,0 +1,70 @@
+<!--  -->
+
+<div class="form">
+  <div class="form__change_city">
+    <button
+      mat-raised-button
+      class="form__change_city-btn"
+      (click)="openDialogSettlements()"
+    >
+      <mat-icon>location_on</mat-icon>
+      {{
+        dataAddresses.addressesMainDescription
+          ? "Ваше місто " + dataAddresses.addressesMainDescription
+          : "Виберіть своє місто"
+      }}
+    </button>
+  </div>
+  <div
+    class="form__type_shipping"
+    *ngIf="dataAddresses.addressesMainDescription"
+  >
+    <mat-radio-group
+      class="form__type_shipping-group"
+      [(ngModel)]="selectTypeShipping"
+    >
+      <mat-radio-button
+        class="form__type_shipping-group-radio"
+        *ngFor="let shipping of typeShipping; let idx = index"
+        [value]="idx"
+        color="primary"
+        [disabled]="idx !== 0"
+      >
+        {{ shipping }}
+
+        {{ idx !== 0 ? "(Develop)" : "" }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="form__change_warehouses">
+    <!-- Nova Poshta -->
+    <div
+      class="form__change_warehouses-content form__change_warehouses-np"
+      *ngIf="selectTypeShipping === 0"
+    >
+      <button
+        mat-raised-button
+        class="form__change_warehouses-content-btn"
+        (click)="openDialogWarehouses()"
+      >
+        <mat-icon>location_on</mat-icon>
+        {{
+          dataAddresses.addressesWarehousesDescription
+            ? "Поштове відділення " +
+              dataAddresses.addressesWarehousesDescription
+            : "Веберіть поштове відділення"
+        }}
+      </button>
+    </div>
+    <!-- UrkPoshta -->
+    <div
+      class="form__change_warehouses-content form__change_warehouses-up"
+      *ngIf="selectTypeShipping === 1"
+    ></div>
+    <!-- Meest -->
+    <div
+      class="form__change_warehouses-content form__change_warehouses-meest"
+      *ngIf="selectTypeShipping === 2"
+    ></div>
+  </div>
+</div>

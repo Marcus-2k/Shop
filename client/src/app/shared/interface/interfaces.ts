@@ -127,7 +127,88 @@ export interface WishChecked {
   _id: string;
 }
 
-export interface ShoppingCartList {
+export interface CreateOrder {
+  info: {
+    seller: string;
+    merchant: string;
+  };
+  product: {
+    info: OrderProduct;
+  };
+  contacts: {
+    info: OrderContacts;
+  };
+  shipping: {
+    info: OrderShippingAddresses;
+    selectTypeShipping: 0 | 1 | 2 | null;
+  };
+  payment: {
+    info: OrderPayment;
+    selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5 | null;
+  };
+}
+export interface Order {
+  stepper: OrderStepper;
+  info: {
+    seller: string;
+    merchant: string;
+  };
+  product: {
+    info: OrderProduct;
+  };
+  contacts: {
+    info: OrderContacts;
+  };
+  shipping: {
+    info: OrderShippingAddresses;
+    selectTypeShipping: 0 | 1 | 2 | null;
+  };
+  payment: {
+    info: OrderPayment;
+    selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5 | null;
+  };
+  valid: OrderValid;
+}
+export interface OrderStepper {
+  selectedIndex: number;
+  completedProduct: boolean;
+  completedContacts: boolean;
+  completedShipping: boolean;
+  completedPayment: boolean;
+}
+export interface OrderProduct {
+  product_id: string[];
+  counter: number[];
+  totalPrice: number;
+  totalActionPrice: number;
+  totalCounterProduct: number;
+}
+export interface OrderContacts {
+  name: string | null;
+  email: string | null;
+  tel: string | null;
+}
+export interface OrderShippingAddresses {
+  addressesPresent: string | null;
+  addressesMainDescription: string | null;
+  addressesWarehousesDescription: string | null;
+}
+export interface OrderPayment {}
+export interface OrderValid {
+  validProduct: boolean;
+  validContacts: boolean;
+  validShipping: boolean;
+  validPayment: boolean;
+}
+export interface DataAside {
+  totalCounterProduct: number;
+  totalPrice: number;
+  totalActionPrice: number;
+}
+
+// User END ============================================================================================
+// ProductCart START ===================================================================================
+export interface ProductCard_ShoppingCart {
   imageSrc: [string];
   name: string;
   price: number;
@@ -135,21 +216,10 @@ export interface ShoppingCartList {
   actionPrice: number;
   counter: number;
   status: 0 | 1 | 2 | 3;
+  user: string;
   _id: string;
 }
-export interface Order {
-  _id: string;
-  counter: number;
-  merchant: string;
-}
-export interface OrderEvent {
-  _id: string;
-  counter: number;
-}
-export interface DeleteCart {
-  _id: string;
-}
-// User END ============================================================================================
+// ProductCart END =====================================================================================
 // News START ==========================================================================================
 export interface News {
   imageSrc: string[];
@@ -201,6 +271,157 @@ export interface ActiveFilter {
   active: boolean;
 }
 // Page Search END =====================================================================================
+// EventEmitter START ==================================================================================
+export interface EventEmitterCounter {
+  id: string;
+  counter: number;
+}
+export interface EventEmitterRemove {
+  id: string;
+}
+// EventEmitter END ====================================================================================
+// Dialog window START =================================================================================
+export interface DialogSearchSettlementsOpen {
+  addressesPresent: string;
+  addressesMainDescription: string;
+}
+export interface DialogSearchSettlementsClose {
+  addressesPresent: string;
+  addressesMainDescription: string;
+}
+export interface DialogGetWarehousesOpen {
+  addressesMainDescription: string;
+}
+export interface DialogGetWarehousesClose {
+  addressesWarehousesDescription: string;
+}
+// Dialog window END ===================================================================================
+// Nova Poshta START ===================================================================================
+export interface SearchSettlementsNP {
+  data: {
+    Addresses: {
+      AddressDeliveryAllowed: boolean;
+      Area: string;
+      DeliveryCity: string;
+      MainDescription: string;
+      ParentRegionCode: string;
+      ParentRegionTypes: string;
+      Present: string;
+      Ref: string;
+      Region: string;
+      RegionTypes: string;
+      RegionTypesCode: string;
+      SettlementTypeCode: string;
+      StreetsAvailability: boolean;
+      Warehouses: number;
+    }[];
+    TotalCount: number;
+  }[];
+  errorCodes: any[];
+  errors: any[];
+  info: any[];
+  infoCodes: any[];
+  messageCodes: any[];
+  success: boolean;
+  warningCodes: any[];
+  warnings: any[];
+}
+export interface GetWarehousesNP {
+  data: {
+    BicycleParking: string;
+    CanGetMoneyTransfer: string;
+    CategoryOfWarehouse: string;
+    CityDescription: string;
+    CityDescriptionRu: string;
+    CityRef: string;
+    Delivery: {
+      Monday: string;
+      Tuesday: string;
+      Wednesday: string;
+      Thursday: string;
+      Friday: string;
+      Saturday: string;
+      Sunday: string;
+    };
+    DenyToSelect: string;
+    Description: string;
+    DescriptionRu: string;
+    Direct: string;
+    DistrictCode: string;
+    GeneratorEnabled: string;
+    InternationalShipping: string;
+    Latitude: string;
+    Longitude: string;
+    MaxDeclaredCost: string;
+    Number: string;
+    OnlyReceivingParcel: string;
+    POSTerminal: string;
+    PaymentAccess: string;
+    Phone: string;
+    PlaceMaxWeightAllowed: string;
+    PostFinance: string;
+    PostMachineType: string;
+    PostalCodeUA: string;
+    ReceivingLimitationsOnDimensions: {
+      Height: number;
+      Length: number;
+      Width: number;
+    };
+    Reception: {
+      Monday: string;
+      Tuesday: string;
+      Wednesday: string;
+      Thursday: string;
+      Friday: string;
+      Saturday: string;
+      Sunday: string;
+    };
+    Ref: string;
+    RegionCity: string;
+    Schedule: {
+      Monday: string;
+      Tuesday: string;
+      Wednesday: string;
+      Thursday: string;
+      Friday: string;
+      Saturday: string;
+      Sunday: string;
+    };
+    SelfServiceWorkplacesCount: string;
+    SendingLimitationsOnDimensions: {
+      Height: number;
+      Length: number;
+      Width: number;
+    };
+    SettlementAreaDescription: string;
+    SettlementDescription: string;
+    SettlementRef: string;
+    SettlementRegionsDescription: string;
+    SettlementTypeDescription: string;
+    SettlementTypeDescriptionRu: string;
+    ShortAddress: string;
+    ShortAddressRu: string;
+    SiteKey: string;
+    TotalMaxWeightAllowed: string;
+    TypeOfWarehouse: string;
+    WarehouseForAgent: string;
+    WarehouseIndex: string;
+    WarehouseStatus: string;
+    WarehouseStatusDate: string;
+    WorkInMobileAwis: string;
+  }[];
+  errorCodes: any[];
+  errors: any[];
+  info: {
+    totalCount: number;
+  };
+  infoCodes: any[];
+  messageCodes: any[];
+  success: boolean;
+  warningCodes: any[];
+  warnings: any[];
+}
+// Nova Poshta END =====================================================================================
 export interface LinkNavigate {
   name: string;
   link: string;

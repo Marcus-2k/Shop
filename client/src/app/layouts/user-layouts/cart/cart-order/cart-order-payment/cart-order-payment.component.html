@@ -1,0 +1,20 @@
+<!--  -->
+
+<div class="form">
+  <mat-radio-group
+    class="form__type_shipping"
+    [(ngModel)]="selectTypePayment"
+    (ngModelChange)="changePayment()"
+  >
+    <mat-radio-button
+      class="form__type_shipping-radio"
+      *ngFor="let payment of typePayment; let idx = index"
+      [value]="idx"
+      [disabled]="idx !== 0"
+      color="primary"
+    >
+      {{ payment }}
+      {{ idx !== 0 ? "(Develop)" : "" }}
+    </mat-radio-button>
+  </mat-radio-group>
+</div>

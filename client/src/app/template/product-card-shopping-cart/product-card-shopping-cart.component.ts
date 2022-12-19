@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import {
-  DeleteCart,
-  OrderEvent,
-  ShoppingCartList,
-} from "src/app/shared/interface/interfaces";
+import { Component, Input } from "@angular/core";
+
+import { ProductCard_ShoppingCart } from "src/app/shared/interface/interfaces";
+
+import { Store } from "@ngrx/store";
+import { OrderActions } from "src/app/store/orders/order.action";
+
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -11,78 +12,44 @@ import { environment } from "src/environments/environment";
   templateUrl: "./product-card-shopping-cart.component.html",
   styleUrls: ["./product-card-shopping-cart.component.scss"],
 })
-export class ProductCardShoppingCartComponent implements OnInit {
-  constructor() {}
+export class ProductCardShoppingCartComponent {
+  constructor(private store$: Store) {}
 
-  ngOnInit(): void {
-    console.log(this.productItem);
-    if (this.productItem) {
-      this.maxCounter = this.productItem.counter;
-
-      this.price = this.productItem.price;
-      if (this.productItem.action) {
-        this.actionPrice = this.productItem.actionPrice;
-      }
-    }
-  }
-
-  @Input() productItem?: ShoppingCartList;
-
-  @Output() transferCounter = new EventEmitter();
-  @Output() transferDelete = new EventEmitter();
+  @Input() productItem?: ProductCard_ShoppingCart;
+  @Input() counter_order?: number;
+  @Input() sequence_number?: {
+    sequence_number_order: number;
+    sequence_number_card: number;
+  };
 
   private HOST: string = environment.HOST;
   private PORT: string = environment.PORT;
   url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
-  price: number = 0;
-  actionPrice: number = 0;
-
-  counter: number = 1;
-  maxCounter: number = 1;
-  validityCounter: boolean = true;
-
-  plusMinusCounter(number: 1 | -1) {
-    if (number === 1) {
-      if (this.productItem) {
-        this.counter += 1;
-
-        const productOrder: OrderEvent = {
-          counter: this.counter,
-          _id: this.productItem?._id,
-        };
-
-        this.transferCounter.emit(productOrder);
-
-        if (this.counter > this.maxCounter) {
-          this.validityCounter = false;
-        }
-      }
-    } else if (number === -1) {
-      if (this.counter >= 2) {
-        if (this.productItem) {
-          this.counter -= 1;
-          const productOrder: OrderEvent = {
-            counter: this.counter,
-            _id: this.productItem?._id,
-          };
-
-          this.transferCounter.emit(productOrder);
-
-          if (this.counter <= this.maxCounter) {
-            this.validityCounter = true;
-          }
-        }
-      }
+  updateCounter() {
+    if (this.sequence_number !== undefined) {
+      this.store$.dispatch(
+        OrderActions.updateCounterProduct(this.sequence_number)
+      );
+    }
+  }
+  downdateCounter() {
+    if (this.sequence_number !== undefined) {
+      this.store$.dispatch(
+        OrderActions.downdateCounterProduct(this.sequence_number)
+      );
     }
   }
 
-  deleteProductCart() {
-    if (this.productItem) {
-      const product: DeleteCart = {
-        _id: this.productItem._id,
-      };
-      this.transferDelete.emit(product);
+  removeProductCart() {
+    if (this.sequence_number !== undefined && this.productItem) {
+      this.store$.dispatch(
+        OrderActions.removeProduct({
+          sequence_number_order: this.sequence_number.sequence_number_order,
+          sequence_number_card: this.sequence_number.sequence_number_card,
+          product_id: this.productItem._id,
+        })
+      );
     }
   }
 }

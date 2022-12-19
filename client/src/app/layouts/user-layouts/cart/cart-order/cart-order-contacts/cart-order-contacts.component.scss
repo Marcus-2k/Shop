@@ -1,0 +1,19 @@
+.form {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  &-item {
+    width: 40%;
+  }
+}
+
+@media (max-width: 600px) {
+  .form {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    &-item {
+      width: 100%;
+    }
+  }
+}

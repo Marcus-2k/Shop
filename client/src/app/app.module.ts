@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 // Service, Pipe, Guard, Token, Class, Resolver, Routing
 import { PricePipe } from "./shared/pipe/price.pipe";
+import { FindByTextPipe } from "./shared/pipe/findByText.pipe";
 import { TokenInterceptor } from "./shared/classes/token.interseptor";
 import { RoutingModule } from "./shared/routing/routing.module";
 
@@ -44,6 +45,14 @@ import { SettingsComponent } from "./layouts/user-layouts/settings/settings.comp
 import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newsletters.component";
 import { WishlistComponent } from "./layouts/user-layouts/wishlist/wishlist.component";
 import { CartComponent } from "./layouts/user-layouts/cart/cart.component";
+// The internal components of the maps component
+import { CartEmptyComponent } from "./layouts/user-layouts/cart/cart-empty/cart-empty.component";
+import { CartOrderComponent } from "./layouts/user-layouts/cart/cart-order/cart-order.component";
+import { CartAsideComponent } from "./layouts/user-layouts/cart/cart-aside/cart-aside.component";
+import { CartOrderProductComponent } from "./layouts/user-layouts/cart/cart-order/cart-order-product/cart-order-product.component";
+import { CartOrderContactsComponent } from "./layouts/user-layouts/cart/cart-order/cart-order-contacts/cart-order-contacts.component";
+import { CartOrderShippingComponent } from "./layouts/user-layouts/cart/cart-order/cart-order-shipping/cart-order-shipping.component";
+import { CartOrderPaymentComponent } from "./layouts/user-layouts/cart/cart-order/cart-order-payment/cart-order-payment.component";
 
 // Angular Material UI
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -85,7 +94,11 @@ import { ProductCardComponent } from "./template/product-card/product-card.compo
 import { ProductCardUserComponent } from "./template/product-card-user/product-card-user.component";
 import { HistoryViewComponent } from "./template/history-view/history-view.component";
 import { environment } from "../environments/environment";
-// NgRx
+// Pop-up windows (Dialog) START ============================================================================================================
+import { DialogSearchSettlements } from "./template/dialog/dialog-search-settlements/dialog-search-settlements";
+import { DialogGetWarehouses } from "./template/dialog/dialog-get-warehouses/dialog-get-warehouses";
+// Pop-up windows (Dialog) END ==============================================================================================================
+// NgRx START ===============================================================================================================================
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { StoreRouterConnectingModule } from "@ngrx/router-store";
@@ -93,6 +106,8 @@ import { EffectsModule } from "@ngrx/effects";
 import { reducers, metaReducers } from "./store";
 import { FavoriteEffects } from "./store/favorite/favorite.effects";
 import { ShoppingCartEffects } from "./store/cart/cart.effects";
+import { OrderEffects } from "./store/orders/order.effects";
+// NgRx END =================================================================================================================================
 
 @NgModule({
   declarations: [
@@ -108,9 +123,17 @@ import { ShoppingCartEffects } from "./store/cart/cart.effects";
     WishlistComponent,
     UserComponent,
     CartComponent,
+    CartEmptyComponent,
+    CartOrderComponent,
+    CartAsideComponent,
+    CartOrderProductComponent,
+    CartOrderContactsComponent,
+    CartOrderShippingComponent,
+    CartOrderPaymentComponent,
     ProductComponent,
     ProductNewComponent,
     PricePipe,
+    FindByTextPipe,
     NewslettersComponent,
     SettingsComponent,
     CardComponent,
@@ -137,6 +160,8 @@ import { ShoppingCartEffects } from "./store/cart/cart.effects";
     ProductCardUserComponent,
     CatalogComponent,
     HistoryViewComponent,
+    DialogSearchSettlements,
+    DialogGetWarehouses,
   ],
   imports: [
     BrowserModule,
@@ -151,7 +176,7 @@ import { ShoppingCartEffects } from "./store/cart/cart.effects";
       metaReducers,
     }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([FavoriteEffects, ShoppingCartEffects]),
+    EffectsModule.forRoot([FavoriteEffects, ShoppingCartEffects, OrderEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

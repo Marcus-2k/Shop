@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Виберіть відповідне відділення</h1>
+<div mat-dialog-content>
+  <form action="post" class="form_select_city">
+    <!-- <div class="form_select_city-template" *ngIf="listGetWarehouses">
+      <button
+        mat-button
+        color="primary"
+        *ngFor="let addresses of listGetWarehouses.data | slice : 0 : 10; let idx = index"
+        (click)="changeWarehouses(addresses.Description)"
+      >
+        {{addresses.Description.slice(0,20)}}{{addresses.Description.length > 20
+        ? '...':''}}
+      </button>
+    </div> -->
+    <mat-form-field appearance="fill" class="form_select_city-input">
+      <mat-label>Поштове відділення</mat-label>
+      <input
+        matInput
+        #inputGetWarehouses
+        cdkFocusInitial
+        [matAutocomplete]="auto"
+        (keyup)="getNewWarehousesNP($event, inputGetWarehouses.value)"
+        placeholder="Хмельницьке шосе"
+      />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <ng-container *ngIf="listGetWarehouses">
+          <mat-option
+            *ngFor="let addresses of listGetWarehouses.data | findByText: inputGetWarehouses.value"
+            [value]="addresses.Description"
+            (onSelectionChange)="changeWarehouses(addresses.Description)"
+            (click)="changeWarehouses(addresses.Description)"
+          >
+            {{addresses.Description}}
+          </mat-option>
+        </ng-container>
+        <!--  -->
+        <ng-container
+          *ngIf="!listGetWarehouses || listGetWarehouses.data.length === 0"
+        >
+          <mat-option [disabled]="true">Відділення не знайдено.</mat-option>
+        </ng-container>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</div>

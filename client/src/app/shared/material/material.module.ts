@@ -18,6 +18,10 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatIconModule } from "@angular/material/icon";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatStepperModule } from "@angular/material/stepper";
 
 const Material = [
   MatSelectModule,
@@ -38,6 +42,10 @@ const Material = [
   DragDropModule,
   MatPaginatorModule,
   MatIconModule,
+  MatDialogModule,
+  MatAutocompleteModule,
+  MatRadioModule,
+  MatStepperModule,
 ];
 
 @NgModule({

@@ -1,0 +1,20 @@
+<!--  -->
+
+<ul
+  class="product_cart_list"
+  *ngIf="sequence_number_order !== undefined && orderProduct && shoppingCart"
+>
+  <li
+    class="product_cart_list__item"
+    *ngFor="let product of shoppingCart; let idx = index"
+  >
+    <app-product-card-shopping-cart
+      [productItem]="product"
+      [counter_order]="orderProduct.counter[idx]"
+      [sequence_number]="{
+        sequence_number_order: sequence_number_order,
+        sequence_number_card: idx
+      }"
+    ></app-product-card-shopping-cart>
+  </li>
+</ul>
