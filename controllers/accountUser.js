@@ -456,6 +456,7 @@ module.exports.getShoppingCartList = async function (req, res) {
         actionPrice: 1,
         counter: 1,
         status: 1,
+        user: 1,
       }
     );
 
