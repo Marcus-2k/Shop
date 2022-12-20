@@ -44,9 +44,7 @@ const options = {
 const specs = swaggerJsDoc(options);
 
 mongoose
-  .connect(
-    "mongodb+srv://Marcus:ShopAdmin@cluster0.oxmti.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-  )
+  .connect(process.env.DB_MONGO)
   .then(() => {
     console.log("Connected MongoDB");
   })
