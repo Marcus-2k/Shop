@@ -31,7 +31,6 @@ export class HomeComponent implements OnInit {
 
     this.requestNews.getAllNews().subscribe(
       (response) => {
-        console.log(response);
         this.news = response;
       },
       (error) => {
@@ -47,7 +46,6 @@ export class HomeComponent implements OnInit {
     if (this.auth.isAuthenticated()) {
       this.requestUser.getAuthUserHistoryView().subscribe(
         (responce) => {
-          console.log(responce);
           this.history__view = responce.history__view;
         },
         (error) => {
@@ -60,7 +58,6 @@ export class HomeComponent implements OnInit {
       if (history) {
         this.requestGuest.getGuestHistoryView(history.split(",")).subscribe(
           (responce) => {
-            console.log(responce);
             this.history__view = responce.history__view;
           },
           (error) => {
@@ -72,7 +69,6 @@ export class HomeComponent implements OnInit {
 
     this.requestCatalog.getCategoryHome().subscribe(
       (response) => {
-        console.log(response);
         this.categoryProductList = response;
       },
       (error) => {

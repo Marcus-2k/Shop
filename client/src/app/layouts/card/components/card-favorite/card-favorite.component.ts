@@ -19,7 +19,6 @@ export class CardFavoriteComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store$.select(FavoriteSelector.favoriteList).subscribe((value) => {
-      console.log(value);
       this.listFavorite = value;
     });
   }
