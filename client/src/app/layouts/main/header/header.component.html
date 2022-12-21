@@ -84,47 +84,32 @@
         <div class="user__header-burger" *ngIf="burgerMenu">
           <div class="logo">
             <a routerLink="/" class="logo__link" (click)="clickBurgerMenu()">
-              <span class="material-symbols-outlined"> home_app_logo </span>
-              <h1 class="title__site">&nbsp;Online Store</h1>
+              <span class="material-symbols-outlined">home_app_logo</span>
+              <h2 class="title__site">&nbsp;Online Store</h2>
             </a>
           </div>
         </div>
         <ul class="user__list">
-          <!--  -->
-          <li class="user__list-link" *ngIf="!potentialToken">
-            <a
-              routerLink="/login"
-              link-item-active="link-item-active"
-              class="link-item"
-              (click)="clickBurgerMenu()"
-            >
-              <span class="material-symbols-outlined google-icon"> login </span>
-              <span *ngIf="burgerMenu">Вхід</span>
-            </a>
-          </li>
-          <!--  -->
-          <li class="user__list-link" *ngIf="potentialToken">
+          <li class="user__list-link" *ngIf="authenticatedUser">
             <a
               routerLink="/account"
               routerLinkActive="link-item-active"
               class="link-item"
               (click)="clickBurgerMenu()"
             >
-              <span class="material-symbols-outlined google-icon">
-                person
-              </span>
+              <span class="material-symbols-outlined google-icon">person</span>
               <span *ngIf="burgerMenu">Персональний кабінет</span>
             </a>
           </li>
-          <!--  -->
           <li class="user__list-link" *ngIf="windowWidth <= 767">
             <a class="link-item" (click)="openDialogCatalog()">
-              <span class="material-symbols-outlined">grid_view</span>
-              <span>Каталог товарів</span>
+              <span class="material-symbols-outlined google-icon"
+                >grid_view</span
+              >
+              <span *ngIf="burgerMenu">Каталог товарів</span>
             </a>
           </li>
-          <!--  -->
-          <li class="user__list-link" *ngIf="potentialToken">
+          <li class="user__list-link" *ngIf="authenticatedUser">
             <a
               routerLink="/wishlist"
               routerLinkActive="link-item-active"
@@ -132,7 +117,7 @@
               [matBadge]="
                 lengthFavorite === 0
                   ? ''
-                  : lengthFavorite && lengthFavorite >= 100
+                  : lengthFavorite > 99
                   ? '99+'
                   : lengthFavorite
               "
@@ -141,50 +126,52 @@
               matBadgePosition="above before"
               (click)="clickBurgerMenu()"
             >
-              <span class="material-symbols-outlined google-icon">
-                favorite
-              </span>
+              <span class="material-symbols-outlined google-icon"
+                >favorite</span
+              >
               <span *ngIf="burgerMenu">Вподобані товари</span>
             </a>
           </li>
-          <!--  -->
-          <li class="user__list-link" *ngIf="potentialToken">
+          <li class="user__list-link" *ngIf="authenticatedUser">
             <a
               routerLink="/cart"
               routerLinkActive="link-item-active"
               class="link-item"
               [matBadge]="
-                lengthCart === 0
-                  ? ''
-                  : lengthCart && lengthCart >= 100
-                  ? '99+'
-                  : lengthCart
+                lengthCart === 0 ? '' : lengthCart > 99 ? '99+' : lengthCart
               "
               matBadgeColor="primary"
               matBadgeSize="medium"
               matBadgePosition="above before"
               (click)="clickBurgerMenu()"
             >
-              <span class="material-symbols-outlined google-icon">
-                shopping_cart
-              </span>
+              <span class="material-symbols-outlined google-icon"
+                >shopping_cart</span
+              >
               <span *ngIf="burgerMenu">Корзина товарів</span>
             </a>
           </li>
-          <!--  -->
-          <li class="user__list-link" *ngIf="potentialToken">
+          <li class="user__list-link" *ngIf="authenticatedUser">
             <a
               routerLink="/"
               class="link-item"
               (click)="logout(); clickBurgerMenu()"
             >
-              <span class="material-symbols-outlined google-icon">
-                logout
-              </span>
+              <span class="material-symbols-outlined google-icon">logout</span>
               <span *ngIf="burgerMenu">Вихід</span>
             </a>
           </li>
-          <!--  -->
+          <li class="user__list-link" *ngIf="!authenticatedUser">
+            <a
+              routerLink="/login"
+              link-item-active="link-item-active"
+              class="link-item"
+              (click)="clickBurgerMenu()"
+            >
+              <span class="material-symbols-outlined google-icon">login</span>
+              <span *ngIf="burgerMenu">Вхід</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

@@ -26,6 +26,8 @@ export class HeaderComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     console.log("Start ngOnInit Header");
 
+    this.authenticatedUser = this.auth.isAuthenticated();
+
     this.store$
       .select(FavoriteSelector.favoriteNumber)
       .subscribe((counter: number) => {
@@ -52,7 +54,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    this.potentialToken = localStorage.getItem("auth-token");
+    this.authenticatedUser = this.auth.isAuthenticated();
   }
 
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];
@@ -76,6 +78,8 @@ export class HeaderComponent implements OnInit, DoCheck {
   // Menu END =============================================================
   // Search START =========================================================
   searchText: string = "";
+
+  historySearchArray: string[] = [];
 
   search(title: string) {
     this.searchText = title;
@@ -124,14 +128,12 @@ export class HeaderComponent implements OnInit, DoCheck {
 
     this.historySearchArray = [];
   }
-
-  historySearchArray: string[] = [];
   // Search END ===========================================================
   // User START ===========================================================
   lengthFavorite: number = 0;
   lengthCart: number = 0;
 
-  potentialToken: string | null = localStorage.getItem("auth-token");
+  authenticatedUser: boolean = false;
 
   logout() {
     this.auth.logout().subscribe(
@@ -143,7 +145,6 @@ export class HeaderComponent implements OnInit, DoCheck {
       }
     );
   }
-
   // User END =============================================================
   // Media Adaptability START =============================================
   burgerMenu: boolean = false;
