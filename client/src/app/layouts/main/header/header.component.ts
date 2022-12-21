@@ -1,6 +1,9 @@
-import { Component, DoCheck, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit, DoCheck } from "@angular/core";
+
 import { Router } from "@angular/router";
+
 import { AuthService } from "src/app/shared/service/server/auth.service";
+
 import { Store } from "@ngrx/store";
 import { FavoriteSelector } from "src/app/store/favorite/favorite.selector";
 import { ShoppingCartSelector } from "src/app/store/cart/cart.selector";
@@ -10,7 +13,7 @@ import { ShoppingCartSelector } from "src/app/store/cart/cart.selector";
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.scss"],
 })
-export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
+export class HeaderComponent implements OnInit, DoCheck {
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -49,8 +52,6 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
     this.potentialToken = localStorage.getItem("auth-token");
   }
 
-  ngOnDestroy(): void {}
-
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];
 
   // Menu START ===========================================================
@@ -73,8 +74,6 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
   // Menu END =============================================================
   // Search START =========================================================
   searchText: string = "";
-
-  searchSiteInputFocus: boolean = false;
 
   search(title: string) {
     this.searchText = title;
@@ -108,7 +107,7 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
       this.historySearchArray.push(title);
     }
 
-    this.router.navigate([`search`], {
+    this.router.navigate(["search"], {
       queryParams: {
         search_text: title,
         limit: 10,
@@ -116,21 +115,6 @@ export class HeaderComponent implements OnInit, DoCheck, OnDestroy {
         type_sort: 5,
       },
     });
-  }
-
-  focus() {
-    this.searchSiteInputFocus = true;
-
-    this.body.classList.add("placeholder__background");
-  }
-
-  focusout() {
-    let interval = setInterval(() => {
-      this.searchSiteInputFocus = false;
-      this.body.classList.remove("placeholder__background");
-
-      clearInterval(interval);
-    }, 100);
   }
 
   clearHistorySearch() {

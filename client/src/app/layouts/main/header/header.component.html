@@ -33,53 +33,54 @@
       </div>
     </div>
     <!--  -->
-    <div
-      class="header__content-search"
-      [ngClass]="{ search__focus: searchSiteInputFocus }"
-    >
-      <div class="search">
+    <div class="header__content-search">
+      <div class="search" #blockSearch>
         <form
-          class="form"
-          action=""
+          class="search__form"
           method="get"
-          (ngSubmit)="search(searchSiteInput.value)"
-          [ngClass]="{ form__focus: searchSiteInputFocus }"
+          (ngSubmit)="search(searchField.value)"
         >
           <input
+            class="search__form-field"
             type="text"
-            name="search"
-            id="searchSite"
-            autocomplete="off"
-            #searchSiteInput
-            class="form__input"
             placeholder="Пошук..."
-            [(ngModel)]="searchText"
-            (focus)="focus()"
-            (focusout)="focusout()"
+            #searchField
+            [matAutocomplete]="auto"
+            (focus)="
+              searchField.classList.add('search__form-field--focus');
+              buttonSubmit.classList.add('search__form-field__input--focus')
+            "
+            (focusout)="
+              searchField.classList.remove('search__form-field--focus');
+              buttonSubmit.classList.remove('search__form-field__input--focus')
+            "
           />
-          <button type="submit" class="form__button">Знайти</button>
-          <div
-            class="form__history"
-            *ngIf="historySearchArray.length >= 1 && searchSiteInputFocus"
+
+          <button type="submit" class="search__form-btn" #buttonSubmit>
+            Знайти
+          </button>
+
+          <mat-autocomplete
+            [panelWidth]="blockSearch.clientWidth"
+            #auto="matAutocomplete"
           >
-            <div class="form__history-content">
-              <div class="history__header">
-                <p class="history__header-title">Історія пошуку</p>
-                <p class="history__header-clear" (click)="clearHistorySearch()">
-                  Очистити пошук
-                </p>
-              </div>
-              <ul class="history__list">
-                <li
-                  class="history__list-item"
-                  *ngFor="let history of historySearchArray"
-                  (click)="search(history)"
-                >
-                  {{ history }}
-                </li>
-              </ul>
-            </div>
-          </div>
+            <li class="mat_autocomplete-clear">
+              <span
+                class="mat_autocomplete-clear-text"
+                (click)="clearHistorySearch()"
+              >
+                Очистити історію
+              </span>
+            </li>
+            <mat-option
+              *ngFor="let history of historySearchArray"
+              [value]="history"
+              (onSelectionChange)="search(history)"
+              (click)="search(history)"
+            >
+              {{ history }}
+            </mat-option>
+          </mat-autocomplete>
         </form>
       </div>
     </div>
