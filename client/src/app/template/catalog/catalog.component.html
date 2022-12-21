@@ -1,15 +1,21 @@
 <!--  -->
-<div class="catalog">
+
+<div class="content-element-center" *ngIf="loader">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="catalog" *ngIf="!loader">
   <div
     class="catalog__content category"
     [ngClass]="{ category__mobile: activeBlockMobile }"
   >
-    <!--  -->
-    <div class="content-element-center" *ngIf="loader">
-      <mat-spinner></mat-spinner>
-    </div>
-    <!--  -->
-    <div class="category-first" *ngIf="!loader">
+    <div class="category-first">
+      <div class="category-first-return">
+        <p class="return-to-home" (click)="closeDialog()">
+          <span>Повернутися назад</span>
+          <span class="material-symbols-outlined"> keyboard_return </span>
+        </p>
+      </div>
       <ul class="category-first-list">
         <li
           class="category-first-list-item list__item"
@@ -41,8 +47,8 @@
         </li>
       </ul>
     </div>
-    <!--  -->
-    <div class="category-subfirst" *ngIf="!loader">
+
+    <div class="category-subfirst">
       <div class="category-subfirst-return">
         <p class="return-to-selection" (click)="returnToCategorySelection()">
           <span>Повернутися на вибір</span>
@@ -83,6 +89,5 @@
         </li>
       </ul>
     </div>
-    <!--  -->
   </div>
 </div>

@@ -1,11 +1,8 @@
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  OnDestroy,
-} from "@angular/core";
+import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+
 import { CategoryProduct } from "src/app/shared/interface/interfaces";
+
 import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 
 @Component({
@@ -14,7 +11,11 @@ import { RequestCatalogService } from "src/app/shared/service/server/request-cat
   styleUrls: ["./catalog.component.scss"],
 })
 export class CatalogComponent implements OnInit, OnDestroy {
-  constructor(private requestCatalog: RequestCatalogService) {}
+  constructor(
+    private requestCatalog: RequestCatalogService,
+    public dialogRef: MatDialogRef<CatalogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {}
+  ) {}
 
   ngOnInit(): void {
     this.requestCatalog.getCategory().subscribe(
@@ -58,6 +59,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
   returnToCategorySelection() {
     this.activeCategory = -1;
     this.activeBlockMobile = false;
+  }
+  closeDialog() {
+    this.dialogRef.close();
   }
   // Media Adaptability END =============================================
 }

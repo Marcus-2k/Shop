@@ -4,30 +4,14 @@
     <!--  -->
     <div class="header__content-menu">
       <div class="menu-logo">
-        <div class="logo">
-          <a routerLink="/" class="logo__link">
-            <span class="material-symbols-outlined"> home_app_logo </span>
-            <h1 class="title__site">&nbsp;Online Store</h1>
-          </a>
-        </div>
+        <a class="logo" routerLink="/">
+          <span class="material-symbols-outlined"> home_app_logo </span>
+          <h1 class="title__site">&nbsp;Online Store</h1>
+        </a>
       </div>
       <div class="menu-catalog">
-        <button
-          class="menu-catalog--button catalog__button"
-          (click)="catalogOnOff()"
-        >
-          <span
-            class="material-symbols-outlined catalog__button"
-            *ngIf="!catalogShow"
-          >
-            category
-          </span>
-          <span
-            class="material-symbols-outlined catalog__button"
-            *ngIf="catalogShow"
-          >
-            close
-          </span>
+        <button mat-raised-button (click)="openDialogCatalog()">
+          <span class="material-symbols-outlined">grid_view</span>
           Каталог
         </button>
       </div>
@@ -107,24 +91,6 @@
         </div>
         <ul class="user__list">
           <!--  -->
-          <li class="user__list-link" *ngIf="windowWidth <= 767">
-            <a class="link-item" (click)="catalogOnOff()">
-              <span
-                class="material-symbols-outlined catalog__button"
-                *ngIf="!catalogShow"
-              >
-                category
-              </span>
-              <span
-                class="material-symbols-outlined catalog__button"
-                *ngIf="catalogShow"
-              >
-                close
-              </span>
-              <span *ngIf="burgerMenu"> Каталог товарів </span>
-            </a>
-          </li>
-          <!--  -->
           <li class="user__list-link" *ngIf="!potentialToken">
             <a
               routerLink="/login"
@@ -148,6 +114,13 @@
                 person
               </span>
               <span *ngIf="burgerMenu">Персональний кабінет</span>
+            </a>
+          </li>
+          <!--  -->
+          <li class="user__list-link" *ngIf="windowWidth <= 767">
+            <a class="link-item" (click)="openDialogCatalog()">
+              <span class="material-symbols-outlined">grid_view</span>
+              <span>Каталог товарів</span>
             </a>
           </li>
           <!--  -->
@@ -216,9 +189,5 @@
       </div>
     </div>
     <!--  -->
-  </div>
-
-  <div class="header__catalog" *ngIf="catalogShow">
-    <app-catalog class="header__catalog-content"></app-catalog>
   </div>
 </header>

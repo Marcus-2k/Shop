@@ -1,8 +1,10 @@
 import { Component, OnInit, DoCheck } from "@angular/core";
 
-import { Router } from "@angular/router";
+import { MatDialog } from "@angular/material/dialog";
 
+import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
+import { CatalogComponent } from "src/app/template/catalog/catalog.component";
 
 import { Store } from "@ngrx/store";
 import { FavoriteSelector } from "src/app/store/favorite/favorite.selector";
@@ -17,7 +19,8 @@ export class HeaderComponent implements OnInit, DoCheck {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private store$: Store
+    private store$: Store,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -55,22 +58,21 @@ export class HeaderComponent implements OnInit, DoCheck {
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];
 
   // Menu START ===========================================================
-  catalogShow: boolean = false;
-
-  catalogOnOff() {
-    this.catalogShow = !this.catalogShow;
-
-    if (this.catalogShow) {
-      this.body.classList.add("active__catalog");
-    } else {
-      this.body.classList.remove("active__catalog");
-    }
+  openDialogCatalog(): void {
+    const dialogRef = this.dialog.open(CatalogComponent, {
+      minWidth: 320,
+      maxWidth: 1600,
+      width:
+        window.window.innerWidth > 1275
+          ? "80%"
+          : window.window.innerWidth > 1024
+          ? "95%"
+          : window.window.innerWidth > 767
+          ? "85%"
+          : "100%",
+      height: window.window.innerWidth <= 767 ? "100%" : undefined,
+    });
   }
-  catalogOff() {
-    this.catalogShow = false;
-    this.body.classList.remove("active__catalog");
-  }
-
   // Menu END =============================================================
   // Search START =========================================================
   searchText: string = "";
@@ -155,10 +157,6 @@ export class HeaderComponent implements OnInit, DoCheck {
       } else {
         this.burgerMenu = true;
         this.body.classList.add("active__menu");
-      }
-
-      if (this.catalogShow === true) {
-        this.catalogOff();
       }
     }
   }
