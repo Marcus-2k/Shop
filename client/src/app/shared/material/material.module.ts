@@ -22,6 +22,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatStepperModule } from "@angular/material/stepper";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 const Material = [
   MatSelectModule,
@@ -46,6 +47,7 @@ const Material = [
   MatAutocompleteModule,
   MatRadioModule,
   MatStepperModule,
+  MatSnackBarModule,
 ];
 
 @NgModule({

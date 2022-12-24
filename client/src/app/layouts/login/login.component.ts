@@ -4,13 +4,15 @@ import {
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+
 import { AuthService } from "src/app/shared/service/server/auth.service";
-import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+
 import { Store } from "@ngrx/store";
 import { FavoriteActions } from "src/app/store/favorite/favorite.action";
 import { ShoppingCartActions } from "src/app/store/cart/cart.action";
+import { Redirect } from "src/app/shared/interface/interfaces";
 
 @Component({
   selector: "app-login",
@@ -20,23 +22,22 @@ import { ShoppingCartActions } from "src/app/store/cart/cart.action";
 export class LoginComponent implements OnInit {
   constructor(
     private auth: AuthService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private showNotice: ShowNoticeService,
     private renameTitle: RenameTitleService,
-    private store$: Store
+    private store$: Store,
+    public dialogRef: MatDialogRef<LoginComponent>,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     if (this.auth.isAuthenticated()) {
-      this.router.navigate(["/account"], {
-        queryParams: {
-          login: true,
-        },
+      this.closeLoginWindow({
+        redirectTo: undefined,
+        error: "user_authorized",
+        success: undefined,
       });
     }
 
-    this.form = new UntypedFormGroup({
+    this.formLogin = new UntypedFormGroup({
       email: new UntypedFormControl(null, [
         Validators.required,
         Validators.email,
@@ -47,45 +48,53 @@ export class LoginComponent implements OnInit {
       ]),
     });
 
-    this.route.queryParams.subscribe((params: Params) => {
-      if (params["registered"]) {
-        /* User registered */
-        this.showNotice.message(
-          "Ви зареєструвалися в системі, тепер можете увійти."
-        );
-      } else if (params["sessionFail"]) {
-        this.showNotice.message("Потрібно авторизуватися.");
-      }
-    });
-
     this.renameTitle.renameTitleSite("Вхід");
   }
 
-  form: UntypedFormGroup = new UntypedFormGroup({});
+  formLogin: UntypedFormGroup | undefined;
 
-  closePopuap() {
+  openRegisterWindow() {
+    this.closeLoginWindow({
+      redirectTo: "register",
+      error: undefined,
+      success: undefined,
+    });
+  }
+
+  closeLoginWindow(config: Redirect | null) {
     this.renameTitle.renameTitleSite("Інтернет-магазин");
-    this.router.navigate(["/"]);
+
+    if (config) {
+      this.dialogRef.close(config);
+    } else {
+      this.dialogRef.close();
+    }
   }
 
   onSubmit() {
-    this.form.disable();
+    if (this.formLogin) {
+      this.formLogin.disable();
 
-    this.auth.login(this.form.value).subscribe(
-      (response) => {
-        console.log(response);
+      this.auth.login(this.formLogin.value).subscribe(
+        (response) => {
+          console.log(response);
 
-        this.router.navigate(["/account/user"]);
-        this.initAfterLogin();
-      },
-      (error) => {
-        console.log(error);
-        if (error.error.message) {
-          this.showNotice.message(error.error.message);
+          this.initAfterLogin();
+          this.closeLoginWindow({
+            redirectTo: undefined,
+            error: undefined,
+            success: "authorized",
+          });
+        },
+        (error) => {
+          console.log(error);
+
+          if (this.formLogin) {
+            this.formLogin.enable();
+          }
         }
-        this.form.enable();
-      }
-    );
+      );
+    }
   }
 
   initAfterLogin() {
