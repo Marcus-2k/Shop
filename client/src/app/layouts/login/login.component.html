@@ -1,118 +1,65 @@
 <!--  -->
-<div class="popuap">
-  <div class="container-login">
-    <a class="close-btn" (click)="closePopuap()">&Cross;</a>
-    <div class="navidation">
-      <a
-        class="navidation__link"
-        routerLink="/login"
-        routerLinkActive="active__nav"
-        >Вхід</a
-      >
-      <a
-        class="navidation__link"
-        routerLink="/register"
-        routerLinkActive="active__nav"
-        >Реєстрація</a
-      >
-    </div>
-    <h1 class="login__title">Увійти в Особистий кабінет</h1>
-    <form
-      class="container-login__form"
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()"
-    >
-      <div class="content__form form__email">
-        <label
-          for=""
-          class="content__form-label"
-          [ngClass]="{
-            'label-disabled':
-              form.controls['email'].invalid && form.controls['email'].touched
-          }"
-          >Ел. пошта</label
-        >
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          class="content__form-input"
-          [ngClass]="{
-            'input-disabled':
-              form.controls['email'].invalid && form.controls['email'].touched
-          }"
-        />
-        <span
-          class="help__text-input"
-          *ngIf="
-            form.controls['email'].invalid && form.controls['email'].touched
-          "
-        >
-          <span
-            class="error-intut-data"
-            *ngIf="form.controls['email'].errors?.['required']"
-            >Емейл не має бути порожнім</span
-          >
-          <span
-            class="error-intut-data"
-            *ngIf="form.controls['email'].errors?.['email']"
-            >Введіть корректний емейл</span
-          >
-        </span>
-      </div>
 
-      <div class="content__form form__password">
-        <label
-          for=""
-          class="content__form-label"
-          [ngClass]="{
-            'label-disabled':
-              form.controls['password'].invalid &&
-              form.controls['password'].touched
-          }"
-          >Пароль</label
-        >
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          class="content__form-input"
-          [ngClass]="{
-            'input-disabled':
-              form.controls['password'].invalid &&
-              form.controls['password'].touched
-          }"
-        />
-        <span
-          class="help__text-input"
-          *ngIf="
-            form.controls['password'].invalid &&
-            form.controls['password'].touched
-          "
-        >
-          <span
-            class="error-intut-data"
-            *ngIf="form.controls['password'].errors?.['required']"
-            >Пароль не має бути порожнім</span
-          >
-          <span
-            class="error-intut-data"
-            *ngIf="form.controls['password'].errors?.['minlength']"
-          >
-            Пароль занадто короткий</span
-          >
-        </span>
-      </div>
+<div class="container-login" *ngIf="formLogin">
+  <button
+    mat-icon-button
+    class="container-login-close"
+    (click)="closeLoginWindow(null)"
+  >
+    <span class="material-symbols-outlined"> close </span>
+  </button>
 
-      <div class="content__form form__button">
-        <button
-          type="submit"
-          class="content__form-button"
-          [disabled]="form.invalid || form.disabled"
-        >
-          Увійти
-        </button>
-      </div>
-    </form>
+  <div class="navigation">
+    <a class="navigation__link navigation__link--active">Вхід</a>
+    <a class="navigation__link" (click)="openRegisterWindow()">Реєстрація</a>
   </div>
+
+  <form
+    class="container-login__form"
+    [formGroup]="formLogin"
+    (ngSubmit)="onSubmit()"
+  >
+    <mat-form-field class="container-login__form-field">
+      <mat-label>Електронна адреса</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="email"
+        placeholder="kaitlyn_macdonald@gmail.com"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="formLogin.controls['email'].errors?.['email']">
+        Будь ласка, введіть дійсну адресу електронної пошти
+      </mat-error>
+      <mat-error *ngIf="formLogin.controls['email'].errors?.['required']">
+        Адреса електронної пошти <strong>обов'язкова!</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="container-login__form-field">
+      <mat-label>Пароль</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="formLogin.controls['password'].errors?.['required']">
+        Поле пароль є <strong>обов'язковим!</strong>
+      </mat-error>
+      <mat-error *ngIf="formLogin.controls['password'].errors?.['minlength']">
+        Мінімальна кількість символів є 6
+      </mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="container-login__form-btn"
+      [disabled]="formLogin.invalid || formLogin.disabled"
+    >
+      Увійти
+    </button>
+  </form>
 </div>

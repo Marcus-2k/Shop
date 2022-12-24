@@ -162,12 +162,7 @@
             </a>
           </li>
           <li class="user__list-link" *ngIf="!authenticatedUser">
-            <a
-              routerLink="/login"
-              link-item-active="link-item-active"
-              class="link-item"
-              (click)="clickBurgerMenu()"
-            >
+            <a class="link-item" (click)="clickBurgerMenu(); openLoginWindow()">
               <span class="material-symbols-outlined google-icon">login</span>
               <span *ngIf="burgerMenu">Вхід</span>
             </a>

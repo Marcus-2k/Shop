@@ -4,10 +4,12 @@ import {
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
-import { Router } from "@angular/router";
-import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+
 import { AuthService } from "src/app/shared/service/server/auth.service";
-import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+
+import { Redirect } from "src/app/shared/interface/interfaces";
 
 @Component({
   selector: "app-register",
@@ -17,25 +19,23 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
-    private router: Router,
     private renameTitle: RenameTitleService,
-    private showNotice: ShowNoticeService
+    public dialogRef: MatDialogRef<RegisterComponent>,
+    public dialog: MatDialog
   ) {}
-
-  form: UntypedFormGroup = new UntypedFormGroup({});
 
   ngOnInit(): void {
     console.log("Start ngOnInit Register");
 
     if (this.auth.isAuthenticated()) {
-      this.router.navigate(["/account"], {
-        queryParams: {
-          registered: true,
-        },
+      this.closeRegisterWindow({
+        redirectTo: undefined,
+        error: "user_registered",
+        success: undefined,
       });
     }
 
-    this.form = new UntypedFormGroup({
+    this.formRegister = new UntypedFormGroup({
       name: new UntypedFormControl(null, [
         Validators.required,
         Validators.pattern("[a-zA-Z ]*"),
@@ -54,26 +54,47 @@ export class RegisterComponent implements OnInit {
     this.renameTitle.renameTitleSite("Реєстрація");
   }
 
-  closePopuap() {
+  formRegister: UntypedFormGroup | undefined;
+
+  openLoginWindow() {
+    this.closeRegisterWindow({
+      redirectTo: "login",
+      error: undefined,
+      success: undefined,
+    });
+  }
+
+  closeRegisterWindow(config: Redirect | null) {
     this.renameTitle.renameTitleSite("Інтернет-магазин");
-    this.router.navigate(["/"]);
+
+    if (config) {
+      this.dialogRef.close(config);
+    } else {
+      this.dialogRef.close();
+    }
   }
 
   onSubmit() {
-    this.form.disable();
+    if (this.formRegister) {
+      this.formRegister.disable();
 
-    this.auth.register(this.form.value).subscribe(
-      (response) => {
-        console.log(response);
-        this.router.navigate(["/account/user"]);
-      },
-      (error) => {
-        console.log(error);
-        if (error.error.message) {
-          this.showNotice.message(error.error.message);
+      this.auth.register(this.formRegister.value).subscribe(
+        (response) => {
+          console.log(response);
+          this.closeRegisterWindow({
+            redirectTo: undefined,
+            error: undefined,
+            success: "registered",
+          });
+        },
+        (error) => {
+          console.log(error);
+
+          if (this.formRegister) {
+            this.formRegister.enable();
+          }
         }
-        this.form.enable();
-      }
-    );
+      );
+    }
   }
 }

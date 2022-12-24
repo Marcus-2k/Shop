@@ -4,6 +4,8 @@ import { MatDialog } from "@angular/material/dialog";
 
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
+import { OpenDialogService } from "src/app/shared/service/open-dialog.service";
+
 import { CatalogComponent } from "src/app/template/catalog/catalog.component";
 
 import { Store } from "@ngrx/store";
@@ -20,6 +22,7 @@ export class HeaderComponent implements OnInit, DoCheck {
     private router: Router,
     private auth: AuthService,
     private store$: Store,
+    private openDialog: OpenDialogService,
     public dialog: MatDialog
   ) {}
 
@@ -134,6 +137,10 @@ export class HeaderComponent implements OnInit, DoCheck {
   lengthCart: number = 0;
 
   authenticatedUser: boolean = false;
+
+  openLoginWindow() {
+    this.openDialog.openLoginWindow();
+  }
 
   logout() {
     this.auth.logout().subscribe(
