@@ -4,9 +4,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { NotFoundComponent } from "src/app/not-found/not-found.component";
 // Home page
 import { HomeComponent } from "src/app/layouts/main/home/home.component";
-// Login, Register
-import { LoginComponent } from "src/app/layouts/login/login.component";
-import { RegisterComponent } from "src/app/layouts/register/register.component";
 // Guard, Resolver
 import { AuthGuard } from "../guard/auth.guard";
 import { CardResolver } from "src/app/shared/resolver/card.resolver";
@@ -40,10 +37,6 @@ const routes: Routes = [
   {
     path: "",
     component: HomeComponent,
-    children: [
-      { path: "login", component: LoginComponent },
-      { path: "register", component: RegisterComponent },
-    ],
   },
   {
     path: "account",
