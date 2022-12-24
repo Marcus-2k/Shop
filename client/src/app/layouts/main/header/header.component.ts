@@ -54,6 +54,9 @@ export class HeaderComponent implements OnInit, DoCheck {
         }
       });
     }
+
+    this.widthBlockForm =
+      document.getElementsByClassName("search__form")[0].clientWidth;
   }
 
   ngDoCheck(): void {
@@ -84,6 +87,7 @@ export class HeaderComponent implements OnInit, DoCheck {
 
   historySearchArray: string[] = [];
 
+  widthBlockForm: number = 320;
   search(title: string) {
     this.searchText = title;
 
