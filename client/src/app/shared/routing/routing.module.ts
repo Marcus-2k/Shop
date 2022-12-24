@@ -1,5 +1,7 @@
 import { NgModule } from "@angular/core";
+
 import { RouterModule, Routes } from "@angular/router";
+
 // Not Found 404
 import { NotFoundComponent } from "src/app/not-found/not-found.component";
 // Home page
@@ -12,9 +14,11 @@ import { CardCharacteristicsResolver } from "../resolver/card-characteristics.re
 import { CardCommentsResolver } from "../resolver/card-comments.resolver";
 import { CardQuestionsResolver } from "../resolver/card-questions.resolver";
 import { CardPhotoResolver } from "../resolver/card-photo.resolver";
-// User account pages
+
+// User Pages
 import { AccountComponent } from "src/app/layouts/user-layouts/account/account.component";
 import { UserComponent } from "src/app/layouts/user-layouts/user/user.component";
+import { MyOrderComponent } from "src/app/layouts/user-layouts/my-order/my-order.component";
 import { ProductComponent } from "src/app/layouts/user-layouts/product/product.component";
 import { ProductNewComponent } from "src/app/layouts/user-layouts/product-new/product-new.component";
 import { SettingsComponent } from "src/app/layouts/user-layouts/settings/settings.component";
@@ -22,6 +26,7 @@ import { NewslettersComponent } from "src/app/layouts/user-layouts/newsletters/n
 import { WishlistComponent } from "src/app/layouts/user-layouts/wishlist/wishlist.component";
 import { CartComponent } from "src/app/layouts/user-layouts/cart/cart.component";
 import { SearchComponent } from "src/app/layouts/search/search.component";
+
 // Card Component
 import { CardComponent } from "src/app/layouts/card/card.component";
 // Card Component Child === START
@@ -47,6 +52,11 @@ const routes: Routes = [
         path: "user",
         canActivate: [AuthGuard],
         component: UserComponent,
+      },
+      {
+        path: "my-order",
+        canActivate: [AuthGuard],
+        component: MyOrderComponent,
       },
       {
         path: "product",

@@ -39,6 +39,7 @@ import { SearchComponent } from "./layouts/search/search.component";
 // User Layouts
 import { AccountComponent } from "./layouts/user-layouts/account/account.component";
 import { UserComponent } from "./layouts/user-layouts/user/user.component";
+import { MyOrderComponent } from "./layouts/user-layouts/my-order/my-order.component";
 import { ProductComponent } from "./layouts/user-layouts/product/product.component";
 import { ProductNewComponent } from "./layouts/user-layouts/product-new/product-new.component";
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
@@ -162,6 +163,7 @@ import { OrderEffects } from "./store/orders/order.effects";
     HistoryViewComponent,
     DialogSearchSettlements,
     DialogGetWarehouses,
+    MyOrderComponent,
   ],
   imports: [
     BrowserModule,

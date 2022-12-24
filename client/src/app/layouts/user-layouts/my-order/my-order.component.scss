@@ -1,0 +1,11 @@
+.my_order {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  &__content {
+    padding: 0;
+    @media (max-width: 1600px) {
+      padding: 0 15px;
+    }
+  }
+}
