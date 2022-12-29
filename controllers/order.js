@@ -18,8 +18,6 @@ module.exports.createOrder = async function (req, res) {
   console.log("Server createOrder");
 
   try {
-    // console.log(req.body);
-
     const productByListId = await ProductModel.find({
       _id: { $in: req.body.product.info.product_id },
     });
@@ -30,9 +28,16 @@ module.exports.createOrder = async function (req, res) {
       console.log("Not all products found");
     }
 
+    const dateNow = new Date();
+    const status = 0; // 0 - new, 1 - payment, 2 - sent , 3 - return, 4 - delivered, 5 - done
+
     const info = {
       seller: req.body.info.seller,
       merchant: req.body.info.merchant,
+      dateOfCreation: dateNow,
+      // dateOfDispatch: null, // default = null
+      orderID: `${generateRandomWord()}${dateNow.getMonth()}${dateNow.getFullYear()}${dateNow.getMinutes()}${dateNow.getHours()}${dateNow.getSeconds()}${dateNow.getDate()}`,
+      status,
     };
 
     const product = {
@@ -62,11 +67,13 @@ module.exports.createOrder = async function (req, res) {
           req.body.shipping.info.addressesWarehousesDescription,
       },
       selectTypeShipping: req.body.shipping.selectTypeShipping,
+      selectTypeShippingText: req.body.shipping.selectTypeShippingText,
     };
 
     const payment = {
       info: {},
       selectTypePayment: req.body.payment.selectTypePayment,
+      selectTypePaymentText: req.body.payment.selectTypePaymentText,
     };
 
     const order = new OrderModel({
@@ -85,3 +92,22 @@ module.exports.createOrder = async function (req, res) {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+function generateRandomWord() {
+  const words = [
+    "AKN",
+    "SRT",
+    "TML",
+    "KKA",
+    "NNP",
+    "TTS",
+    "KLB",
+    "ABL",
+    "HJS",
+    "HPO",
+  ];
+
+  const randomNumber = Math.random().toString().split(".")[1].charAt(0);
+
+  return words[randomNumber];
+}

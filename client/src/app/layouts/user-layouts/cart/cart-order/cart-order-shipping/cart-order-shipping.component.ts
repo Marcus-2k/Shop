@@ -2,10 +2,11 @@ import { Component, Input, OnInit } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 import {
-  OrderShippingAddresses,
+  OrderShipping,
   DialogSearchSettlementsClose,
   DialogGetWarehousesClose,
 } from "src/app/shared/interface/interfaces";
+import { OrderAction_updateShipping } from "src/app/shared/interface/interface-action/order.interfaces";
 
 import { DialogSearchSettlements } from "src/app/template/dialog/dialog-search-settlements/dialog-search-settlements";
 import { DialogGetWarehouses } from "src/app/template/dialog/dialog-get-warehouses/dialog-get-warehouses";
@@ -39,7 +40,7 @@ export class CartOrderShippingComponent implements OnInit {
     }
   }
 
-  dataAddresses: OrderShippingAddresses = {
+  dataAddresses: OrderShipping = {
     addressesPresent: null,
     addressesMainDescription: null,
     addressesWarehousesDescription: null,
@@ -68,6 +69,7 @@ export class CartOrderShippingComponent implements OnInit {
           addressesWarehousesDescription: null,
         };
       }
+
       this.updateShippingInStore();
     });
   }
@@ -95,32 +97,27 @@ export class CartOrderShippingComponent implements OnInit {
             addressesWarehousesDescription: null,
           });
         }
-        console.log(this.dataAddresses);
+
         this.updateShippingInStore();
       });
     }
   }
 
   updateShippingInStore() {
-    console.log("Start updateShippingInStore");
-
     if (this.sequence_number_order !== undefined) {
-      console.log("Start updateShippingInStore");
-      const dataAddresses: {
-        info: OrderShippingAddresses;
-        valid: boolean;
-        selectTypeShipping: null | 0 | 1 | 2;
-      } & {
-        sequence_number_order: number;
-      } = {
+      const dataAddresses: OrderAction_updateShipping = {
         info: this.dataAddresses,
+        selectTypeShipping: this.selectTypeShipping,
+        selectTypeShippingText:
+          this.selectTypeShipping !== null
+            ? this.typeShipping[this.selectTypeShipping]
+            : null,
+        sequence_number_order: this.sequence_number_order,
         valid:
           this.dataAddresses.addressesMainDescription &&
           this.dataAddresses.addressesWarehousesDescription
             ? true
             : false,
-        selectTypeShipping: this.selectTypeShipping,
-        sequence_number_order: this.sequence_number_order,
       };
 
       this.store$.dispatch(OrderActions.updateShipping(dataAddresses));

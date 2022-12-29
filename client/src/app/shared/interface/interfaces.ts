@@ -132,26 +132,6 @@ export interface WishChecked {
   _id: string;
 }
 
-export interface CreateOrder {
-  info: {
-    seller: string;
-    merchant: string;
-  };
-  product: {
-    info: OrderProduct;
-  };
-  contacts: {
-    info: OrderContacts;
-  };
-  shipping: {
-    info: OrderShippingAddresses;
-    selectTypeShipping: 0 | 1 | 2 | null;
-  };
-  payment: {
-    info: OrderPayment;
-    selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5 | null;
-  };
-}
 export interface Order {
   stepper: OrderStepper;
   info: {
@@ -165,12 +145,14 @@ export interface Order {
     info: OrderContacts;
   };
   shipping: {
-    info: OrderShippingAddresses;
+    info: OrderShipping;
     selectTypeShipping: 0 | 1 | 2 | null;
+    selectTypeShippingText: string | null;
   };
   payment: {
     info: OrderPayment;
     selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5 | null;
+    selectTypePaymentText: string | null;
   };
   valid: OrderValid;
 }
@@ -193,7 +175,7 @@ export interface OrderContacts {
   email: string | null;
   tel: string | null;
 }
-export interface OrderShippingAddresses {
+export interface OrderShipping {
   addressesPresent: string | null;
   addressesMainDescription: string | null;
   addressesWarehousesDescription: string | null;

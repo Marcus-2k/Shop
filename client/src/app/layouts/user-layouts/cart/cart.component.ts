@@ -93,10 +93,12 @@ export class CartComponent implements OnInit, OnDestroy {
                           addressesWarehousesDescription: null,
                         },
                         selectTypeShipping: null,
+                        selectTypeShippingText: null,
                       },
                       payment: {
                         info: {},
                         selectTypePayment: null,
+                        selectTypePaymentText: null,
                       },
                       valid: {
                         validProduct: true,

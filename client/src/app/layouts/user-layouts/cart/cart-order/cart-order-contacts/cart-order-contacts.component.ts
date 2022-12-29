@@ -5,7 +5,7 @@ import {
   Validators,
 } from "@angular/forms";
 
-import { OrderContacts } from "src/app/shared/interface/interfaces";
+import { OrderAction_updateContacts } from "src/app/shared/interface/interface-action/order.interfaces";
 
 import { Subscription } from "rxjs";
 
@@ -55,18 +55,14 @@ export class CartOrderContactsComponent implements OnInit {
 
   updateContactsInStore() {
     if (this.formContacts && this.sequence_number_order !== undefined) {
-      const dataContacts: {
-        info: OrderContacts;
-        valid: boolean;
-        sequence_number_order: number;
-      } = {
+      const dataContacts: OrderAction_updateContacts = {
         info: {
           name: this.formContacts.value["name"],
           email: this.formContacts.value["email"],
           tel: this.formContacts.value["tel"],
         },
-        valid: this.formContacts.valid,
         sequence_number_order: this.sequence_number_order,
+        valid: this.formContacts.valid,
       };
 
       this.store$.dispatch(OrderActions.updateContacts(dataContacts));

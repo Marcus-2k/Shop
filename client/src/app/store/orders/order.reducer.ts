@@ -254,7 +254,7 @@ export const OrderReducer = createReducer(
     return stateClone;
   }),
 
-  // Step Contacts >>> dataForm
+  // Step Contacts >>> dataContacts
   on(OrderActions.updateContacts, (state, props) => {
     const stateClone: OrderState = JSON.parse(JSON.stringify(state));
 
@@ -266,7 +266,7 @@ export const OrderReducer = createReducer(
 
     return stateClone;
   }),
-  // Step Shipping >>> dataAddresses
+  // Step Shipping >>> dataShipping
   on(OrderActions.updateShipping, (state, props) => {
     const stateClone: OrderState = JSON.parse(JSON.stringify(state));
 
@@ -275,6 +275,10 @@ export const OrderReducer = createReducer(
       stateClone.orders[
         props.sequence_number_order
       ].shipping.selectTypeShipping = props.selectTypeShipping;
+      stateClone.orders[
+        props.sequence_number_order
+      ].shipping.selectTypeShippingText = props.selectTypeShippingText;
+
       stateClone.orders[props.sequence_number_order].valid.validShipping =
         props.valid;
     }
@@ -288,6 +292,10 @@ export const OrderReducer = createReducer(
     if (stateClone.orders && stateClone.productCard_shoppingCart) {
       stateClone.orders[props.sequence_number_order].payment.selectTypePayment =
         props.selectTypePayment;
+      stateClone.orders[
+        props.sequence_number_order
+      ].payment.selectTypePaymentText = props.selectTypePaymentText;
+
       stateClone.orders[props.sequence_number_order].valid.validPayment =
         props.valid;
     }

@@ -13,6 +13,22 @@ const orderSchema = new Schema({
       type: Schema.Types.ObjectId,
       required: true,
     },
+    dateOfCreation: {
+      type: Date,
+      required: true,
+    },
+    dateOfDispatch: {
+      type: Date,
+      default: null,
+    },
+    orderID: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: Number,
+      required: true,
+    },
   },
   product: {
     info: {
@@ -41,10 +57,12 @@ const orderSchema = new Schema({
       addressesWarehousesDescription: String,
     },
     selectTypeShipping: Number,
+    selectTypeShippingText: String,
   },
   payment: {
     info: {},
     selectTypePayment: Number,
+    selectTypePaymentText: String,
   },
 });
 
