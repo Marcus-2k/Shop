@@ -23,6 +23,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { ClipboardModule } from "@angular/cdk/clipboard";
 
 const Material = [
   MatSelectModule,
@@ -48,6 +49,7 @@ const Material = [
   MatRadioModule,
   MatStepperModule,
   MatSnackBarModule,
+  ClipboardModule,
 ];
 
 @NgModule({

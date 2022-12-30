@@ -1,0 +1,148 @@
+<!--  -->
+<ng-container *ngIf="data">
+  <div class="window__detail">
+    <div class="window__detail-header">
+      <h2 class="header-title">Замовлення {{ data.myOrder.info.orderID }}</h2>
+      <button class="copy-text" mat-icon-button>
+        <span
+          class="material-symbols-outlined"
+          [cdkCopyToClipboard]="data.myOrder.info.orderID"
+        >
+          content_copy
+        </span>
+      </button>
+
+      <button class="window-close" mat-icon-button (click)="closeWindow()">
+        <span class="material-symbols-outlined"> close </span>
+      </button>
+    </div>
+
+    <div class="window__detail-content">
+      <div class="content-block-date">
+        <h2 class="date-text">
+          {{ data.myOrder.info.dateOfCreation | date }}
+        </h2>
+      </div>
+
+      <div class="content-block-tab">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+          <mat-tab label="Продукти">
+            <div class="tab-item tab-product">
+              <ul class="product-list">
+                <li
+                  class="product-list-item"
+                  *ngFor="let prodcut of data.productCard; let idx = index"
+                >
+                  <app-product-card-my-order
+                    [productItem]="prodcut"
+                    [quantityOrdered]="data.myOrder.product.info.counter[idx]"
+                  ></app-product-card-my-order>
+                </li>
+              </ul>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Контактна інформація">
+            <div class="tab-item tab-contacts">
+              <div class="contacts-item contacts-name">
+                <p class="contacts-item-field-title">Ім'я</p>
+                <p class="contacts-item-field-value">
+                  {{ data.myOrder.contacts.info.name }}
+                </p>
+              </div>
+
+              <div class="contacts-item contacts-email">
+                <p class="contacts-item-field-title">Електронна адреса</p>
+                <p class="contacts-item-field-value">
+                  {{ data.myOrder.contacts.info.email }}
+                </p>
+              </div>
+
+              <div class="contacts-item contacts-tel">
+                <p class="contacts-item-field-title">Мобільний телефон</p>
+                <p class="contacts-item-field-value">
+                  +38{{ data.myOrder.contacts.info.tel }}
+                </p>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Доставка">
+            <div class="tab-item tab-shipping">
+              <div class="shipping-item shipping-sds">
+                <p class="shipping-item-field-title">Назва населеного пункту</p>
+                <p class="shipping-item-field-value">
+                  {{ data.myOrder.shipping.info.addressesMainDescription }}
+                </p>
+              </div>
+
+              <div class="shipping-item shipping-sds">
+                <p class="shipping-item-field-title">Повна назва н.п.</p>
+                <p class="shipping-item-field-value">
+                  {{ data.myOrder.shipping.info.addressesPresent }}
+                </p>
+              </div>
+
+              <div class="shipping-item shipping-sds">
+                <p class="shipping-item-field-title">Поштове відділення</p>
+                <p class="shipping-item-field-value">
+                  {{
+                    data.myOrder.shipping.info.addressesWarehousesDescription
+                  }}
+                </p>
+              </div>
+
+              <div class="shipping-item shipping-sds">
+                <p class="shipping-item-field-title">Спосіб доставки</p>
+                <p class="shipping-item-field-value">
+                  {{ data.myOrder.shipping.selectTypeShippingText }}
+                </p>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Оплата">
+            <div class="tab-item tab-payment">
+              <div class="payment-item payment-sds">
+                <p class="payment-item-field-title">Тип оплати</p>
+                <p class="payment-item-field-value">
+                  {{ data.myOrder.payment.selectTypePaymentText }}
+                </p>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+
+    <div class="window__detail-footer">
+      <div class="footer-total">
+        <div class="footer-total-item">
+          <p class="footer-total-item-title">Загальна сума</p>
+          <button mat-stroked-button class="footer-total-item-value">
+            {{ data.myOrder.product.info.totalActionPrice | price }}
+            <span class="currency">₴</span>
+          </button>
+        </div>
+
+        <div class="footer-total-item">
+          <p class="footer-total-item-title">Загальна кількість товарів</p>
+          <button mat-stroked-button class="footer-total-item-value">
+            {{ data.myOrder.product.info.totalCounterProduct }}
+          </button>
+        </div>
+
+        <div class="footer-total-item">
+          <p class="footer-total-item-title">Число відправлення</p>
+          <button mat-stroked-button class="footer-total-item-value">
+            {{
+              data.myOrder.info.dateOfDispatch === null
+                ? "Не відправлено"
+                : (data.myOrder.info.dateOfDispatch | date : "medium")
+            }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

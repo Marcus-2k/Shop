@@ -89,12 +89,17 @@ import { CatalogComponent } from "./template/catalog/catalog.component";
 // Other
 import { ProductCardWishComponent } from "./template/product-card-wish/product-card-wish.component";
 import { ProductCardShoppingCartComponent } from "./template/product-card-shopping-cart/product-card-shopping-cart.component";
+import { ProductCardMyOrderComponent } from "./template/product-card-my-order/product-card-my-order.component";
 import { ProductCardElementStatusesComponent } from "./template/components/product-card-element-statuses/product-card-element-statuses.component";
 import { ProductCardElementPriceComponent } from "./template/components/product-card-element-price/product-card-element-price.component";
 import { ProductCardComponent } from "./template/product-card/product-card.component";
 import { ProductCardUserComponent } from "./template/product-card-user/product-card-user.component";
 import { HistoryViewComponent } from "./template/history-view/history-view.component";
-import { environment } from "../environments/environment";
+import { OrderStatusComponent } from "./template/components/order-status/order-status.component";
+import { MyOrderItemComponent } from "./layouts/user-layouts/my-order/my-order-item/my-order-item.component";
+import { MyOrderEmptyComponent } from "./layouts/user-layouts/my-order/my-order-empty/my-order-empty.component";
+import { MyOrderHeaderComponent } from "./layouts/user-layouts/my-order/my-order-header/my-order-header.component";
+import { MyOrderDetailComponent } from "./layouts/user-layouts/my-order/my-order-detail/my-order-detail.component";
 // Pop-up windows (Dialog) START ============================================================================================================
 import { DialogSearchSettlements } from "./template/dialog/dialog-search-settlements/dialog-search-settlements";
 import { DialogGetWarehouses } from "./template/dialog/dialog-get-warehouses/dialog-get-warehouses";
@@ -109,6 +114,7 @@ import { FavoriteEffects } from "./store/favorite/favorite.effects";
 import { ShoppingCartEffects } from "./store/cart/cart.effects";
 import { OrderEffects } from "./store/orders/order.effects";
 // NgRx END =================================================================================================================================
+import { environment } from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -164,6 +170,12 @@ import { OrderEffects } from "./store/orders/order.effects";
     DialogSearchSettlements,
     DialogGetWarehouses,
     MyOrderComponent,
+    ProductCardMyOrderComponent,
+    OrderStatusComponent,
+    MyOrderItemComponent,
+    MyOrderEmptyComponent,
+    MyOrderHeaderComponent,
+    MyOrderDetailComponent,
   ],
   imports: [
     BrowserModule,

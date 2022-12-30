@@ -1,0 +1,62 @@
+.my_order-item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  padding: 10px 0;
+
+  cursor: pointer;
+  transition: 0.4s;
+  &:hover {
+    background-color: #f0f0f0;
+    transition: 0.4s;
+  }
+  &-field {
+    padding: 0 10px 0 0;
+    font-family: "Mont";
+    font-size: 16px;
+    .field-text {
+      width: 100%;
+      margin: 0;
+      display: block;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      &--deteil {
+        transition: 0.4s;
+        &:hover {
+          transition: 0.4s;
+          color: #3f51b5;
+        }
+      }
+    }
+  }
+
+  .field--order_id {
+    width: 15%;
+  }
+  .field--seller {
+    width: 10%;
+  }
+  .field--date_of_creation {
+    width: 15%;
+  }
+  .field--date_of_dispatch {
+    width: 15%;
+  }
+  .field--order_pricing {
+    width: 10%;
+  }
+  .field--detail {
+    width: 10%;
+  }
+  .field--status {
+    width: 10%;
+  }
+  .field--type_payment {
+    width: 15%;
+  }
+}

@@ -1,0 +1,68 @@
+<!--  -->
+
+<div class="my_order-item" *ngIf="order">
+  <div class="my_order-item-field field--order_id">
+    <p class="field-text" [matTooltip]="order.info.orderID">
+      {{ order.info.orderID }}
+    </p>
+  </div>
+
+  <div class="my_order-item-field field--seller">
+    <p class="field-text" [matTooltip]="order.info.sellerName">
+      {{ order.info.sellerName }}
+    </p>
+  </div>
+
+  <div class="my_order-item-field field--date_of_creation">
+    <p
+      class="field-text"
+      [matTooltip]="(order.info.dateOfCreation | date : 'medium') + ''"
+    >
+      {{ order.info.dateOfCreation | date }}
+    </p>
+  </div>
+
+  <div class="my_order-item-field field--date_of_dispatch">
+    <p
+      class="field-text"
+      [matTooltip]="
+        order.info.dateOfDispatch !== null
+          ? (order.info.dateOfDispatch | date : 'medium') + ''
+          : 'Не відправлено'
+      "
+    >
+      {{
+        order.info.dateOfDispatch === null
+          ? "Не відправлено"
+          : (order.info.dateOfDispatch | date)
+      }}
+    </p>
+  </div>
+
+  <div class="my_order-item-field field--order_pricing">
+    <p
+      class="field-text"
+      [matTooltip]="(order.product.info.totalActionPrice | price) + ' ' + '₴'"
+    >
+      {{ order.product.info.totalActionPrice | price }}&nbsp;₴
+    </p>
+  </div>
+
+  <div class="my_order-item-field field--detail">
+    <p class="field-text field-text--deteil" (click)="openDetailDialog()">
+      Детальніше
+    </p>
+  </div>
+
+  <div class="my_order-item-field field--status">
+    <p class="field-text">
+      <app-order-status [status]="order.info.status"></app-order-status>
+    </p>
+  </div>
+
+  <div class="my_order-item-field field--type_payment">
+    <p class="field-text" [matTooltip]="order.payment.selectTypePaymentText">
+      {{ order.payment.selectTypePaymentText }}
+    </p>
+  </div>
+</div>
