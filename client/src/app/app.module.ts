@@ -108,11 +108,12 @@ import { DialogGetWarehouses } from "./template/dialog/dialog-get-warehouses/dia
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { StoreRouterConnectingModule } from "@ngrx/router-store";
-import { EffectsModule } from "@ngrx/effects";
 import { reducers, metaReducers } from "./store";
+import { EffectsModule } from "@ngrx/effects";
 import { FavoriteEffects } from "./store/favorite/favorite.effects";
 import { ShoppingCartEffects } from "./store/cart/cart.effects";
 import { OrderEffects } from "./store/orders/order.effects";
+import { MyOrderEffects } from "./store/my-orders/my-order.effects";
 // NgRx END =================================================================================================================================
 import { environment } from "../environments/environment";
 
@@ -190,7 +191,12 @@ import { environment } from "../environments/environment";
       metaReducers,
     }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([FavoriteEffects, ShoppingCartEffects, OrderEffects]),
+    EffectsModule.forRoot([
+      FavoriteEffects,
+      ShoppingCartEffects,
+      OrderEffects,
+      MyOrderEffects,
+    ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

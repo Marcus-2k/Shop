@@ -26,6 +26,9 @@ export class RequestOrderService {
     MyOrder: MyOrder[];
     ProductCard_MyOrder: ProductCard_MyOrder[][];
   }> {
-    return this.http.get<any>(`${this.url_server}order/`);
+    return this.http.get<{
+      MyOrder: MyOrder[];
+      ProductCard_MyOrder: ProductCard_MyOrder[][];
+    }>(`${this.url_server}order/`);
   }
 }
