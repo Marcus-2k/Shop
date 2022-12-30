@@ -211,6 +211,51 @@ export interface DataAside {
   totalActionPrice: number;
 }
 
+export interface MyOrder {
+  info: {
+    seller: string;
+    sellerName: string;
+    merchant: string;
+    dateOfCreation: Date;
+    dateOfDispatch: Date | null;
+    orderID: string;
+    status: number;
+  };
+  product: {
+    info: MyOrderProduct;
+  };
+  contacts: {
+    info: MyOrderContacts;
+  };
+  shipping: {
+    info: MyOrderShipping;
+    selectTypeShipping: 0 | 1 | 2;
+    selectTypeShippingText: string;
+  };
+  payment: {
+    info: MyOrderPayment;
+    selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5;
+    selectTypePaymentText: string;
+  };
+}
+export interface MyOrderProduct {
+  counter: number[];
+  totalPrice: number;
+  totalActionPrice: number;
+  totalCounterProduct: number;
+}
+export interface MyOrderContacts {
+  name: string;
+  email: string;
+  tel: string;
+}
+export interface MyOrderShipping {
+  addressesPresent: string;
+  addressesMainDescription: string;
+  addressesWarehousesDescription: string;
+}
+export interface MyOrderPayment {}
+
 // User END ============================================================================================
 // ProductCart START ===================================================================================
 export interface ProductCard_ShoppingCart {
