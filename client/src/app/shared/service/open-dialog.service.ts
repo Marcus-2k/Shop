@@ -3,10 +3,13 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
-import { Redirect } from "../interface/interfaces";
+import { MyOrder, Redirect } from "../interface/interfaces";
+import { ProductCard_MyOrder } from "../interface/product-card/product-card.interfaces";
 
 import { LoginComponent } from "src/app/layouts/login/login.component";
 import { RegisterComponent } from "src/app/layouts/register/register.component";
+import { MyOrderDetailComponent } from "src/app/layouts/user-layouts/my-order/my-order-detail/my-order-detail.component";
+
 import { OpenSnackBarService } from "./open-snack-bar.service";
 
 @Injectable({
@@ -43,7 +46,7 @@ export class OpenDialogService {
   }
 
   openRegisterWindow() {
-    const dialogRef: MatDialogRef<RegisterComponent | undefined> =
+    const dialogRef: MatDialogRef<RegisterComponent, Redirect | undefined> =
       this.dialog.open(RegisterComponent, {
         width: "600px",
       });
@@ -64,5 +67,13 @@ export class OpenDialogService {
         }
       }
     });
+  }
+
+  openDetailWindow(myOrder: MyOrder, productCard: ProductCard_MyOrder[]) {
+    const dialogRef: MatDialogRef<MyOrderDetailComponent, undefined> =
+      this.dialog.open(MyOrderDetailComponent, {
+        width: "70%",
+        data: { myOrder: myOrder, productCard: productCard },
+      });
   }
 }

@@ -1,13 +1,44 @@
 const OrderModel = require("../models/Order");
 const ProductModel = require("../models/Product");
+const UserModel = require("../models/User");
 
 module.exports.getOrdersUser = async function (req, res) {
   console.log("Server getOrdersUser");
 
   try {
-    const order = await OrderModel.find();
+    const order = await OrderModel.find({ "info.merchant": req.user._id });
+    const orderClone = JSON.parse(JSON.stringify(order));
 
-    return res.status(200).json(order);
+    const productCard_MyOrder = [];
+    for (let idx = 0; idx < orderClone.length; idx++) {
+      for (let i = 0; i < orderClone[idx].product.info.product_id.length; i++) {
+        const product = await ProductModel.findById(
+          orderClone[idx].product.info.product_id[i]
+        );
+        if (i === 0) {
+          productCard_MyOrder.push([product]);
+        } else {
+          productCard_MyOrder[i].push(product);
+        }
+      }
+
+      const seller = await UserModel.findById(orderClone[idx].info.seller, {
+        name: 1,
+        lastName: 1,
+        _id: 0,
+      });
+      orderClone[idx].info.sellerName =
+        seller.name +
+        (seller.lastName ? " " : "") +
+        (seller.lastName ? seller.lastName : "");
+    }
+
+    const data = {
+      MyOrder: orderClone,
+      ProductCard_MyOrder: productCard_MyOrder,
+    };
+
+    return res.status(200).json(data);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });

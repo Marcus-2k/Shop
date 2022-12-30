@@ -1,0 +1,92 @@
+<!--  -->
+
+<ng-container *ngIf="productItem && quantityOrdered !== undefined">
+  <div class="shopping__cart">
+    <div class="display-none">{{ productItem._id }}</div>
+
+    <div class="shopping__cart-content">
+      <div
+        class="content-image content-item"
+        [routerLink]="'/card/' + productItem._id + '/info'"
+      >
+        <img
+          class="content-image-img"
+          [src]="url_server_folder + productItem.imageSrc[0]"
+          alt=""
+        />
+      </div>
+
+      <div class="content-about content-item">
+        <div class="about-title">
+          <h2 class="shopping__cart-title">{{ productItem.name }}</h2>
+        </div>
+        <div class="about-description">
+          <h2 class="shopping__cart-description">
+            {{ productItem.description.slice(0, 150) }}
+            {{ productItem.description.length > 150 ? "..." : "" }}
+          </h2>
+        </div>
+      </div>
+
+      <div class="content-info content-item">
+        <div class="content-info-price content-item-info">
+          <div class="content-info-price-title content-item-info-title">
+            <p>Ціна товару</p>
+          </div>
+          <div class="content-info-price-value content-item-info-value">
+            <p class="price__action" *ngIf="productItem.action">
+              {{ productItem.price | price }}
+              <span class="currency">₴</span>
+            </p>
+            <p
+              class="price"
+              [ngStyle]="{ color: productItem.action ? 'red' : 'black' }"
+            >
+              {{
+                productItem.action
+                  ? (productItem.actionPrice | price)
+                  : (productItem.price | price)
+              }}
+              <span class="currency">₴</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="info-quantity_ordered content-item-info">
+          <div
+            class="content-info-quantity_ordered-title content-item-info-title"
+          >
+            <p>Замовлена кількість</p>
+          </div>
+          <div
+            class="content-info-quantity_ordered-value content-item-info-value"
+          >
+            <button mat-mini-fab color="primary" disabled>
+              {{ quantityOrdered }}
+            </button>
+          </div>
+        </div>
+
+        <div class="info-total_price content-item-info">
+          <div class="content-info-total_price-title content-item-info-title">
+            <p>Загальна сума</p>
+          </div>
+          <div class="content-info-total_price-value content-item-info-value">
+            <button
+              class="price"
+              [ngStyle]="{ color: productItem.action ? 'red' : 'black' }"
+              mat-raised-button
+            >
+              {{
+                productItem.action
+                  ? (productItem.actionPrice * quantityOrdered | price)
+                  : (productItem.price * quantityOrdered | price)
+              }}
+              <span class="currency">₴</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

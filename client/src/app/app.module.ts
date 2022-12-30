@@ -39,6 +39,7 @@ import { SearchComponent } from "./layouts/search/search.component";
 // User Layouts
 import { AccountComponent } from "./layouts/user-layouts/account/account.component";
 import { UserComponent } from "./layouts/user-layouts/user/user.component";
+import { MyOrderComponent } from "./layouts/user-layouts/my-order/my-order.component";
 import { ProductComponent } from "./layouts/user-layouts/product/product.component";
 import { ProductNewComponent } from "./layouts/user-layouts/product-new/product-new.component";
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
@@ -88,12 +89,17 @@ import { CatalogComponent } from "./template/catalog/catalog.component";
 // Other
 import { ProductCardWishComponent } from "./template/product-card-wish/product-card-wish.component";
 import { ProductCardShoppingCartComponent } from "./template/product-card-shopping-cart/product-card-shopping-cart.component";
+import { ProductCardMyOrderComponent } from "./template/product-card-my-order/product-card-my-order.component";
 import { ProductCardElementStatusesComponent } from "./template/components/product-card-element-statuses/product-card-element-statuses.component";
 import { ProductCardElementPriceComponent } from "./template/components/product-card-element-price/product-card-element-price.component";
 import { ProductCardComponent } from "./template/product-card/product-card.component";
 import { ProductCardUserComponent } from "./template/product-card-user/product-card-user.component";
 import { HistoryViewComponent } from "./template/history-view/history-view.component";
-import { environment } from "../environments/environment";
+import { OrderStatusComponent } from "./template/components/order-status/order-status.component";
+import { MyOrderItemComponent } from "./layouts/user-layouts/my-order/my-order-item/my-order-item.component";
+import { MyOrderEmptyComponent } from "./layouts/user-layouts/my-order/my-order-empty/my-order-empty.component";
+import { MyOrderHeaderComponent } from "./layouts/user-layouts/my-order/my-order-header/my-order-header.component";
+import { MyOrderDetailComponent } from "./layouts/user-layouts/my-order/my-order-detail/my-order-detail.component";
 // Pop-up windows (Dialog) START ============================================================================================================
 import { DialogSearchSettlements } from "./template/dialog/dialog-search-settlements/dialog-search-settlements";
 import { DialogGetWarehouses } from "./template/dialog/dialog-get-warehouses/dialog-get-warehouses";
@@ -102,12 +108,14 @@ import { DialogGetWarehouses } from "./template/dialog/dialog-get-warehouses/dia
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { StoreRouterConnectingModule } from "@ngrx/router-store";
-import { EffectsModule } from "@ngrx/effects";
 import { reducers, metaReducers } from "./store";
+import { EffectsModule } from "@ngrx/effects";
 import { FavoriteEffects } from "./store/favorite/favorite.effects";
 import { ShoppingCartEffects } from "./store/cart/cart.effects";
 import { OrderEffects } from "./store/orders/order.effects";
+import { MyOrderEffects } from "./store/my-orders/my-order.effects";
 // NgRx END =================================================================================================================================
+import { environment } from "../environments/environment";
 
 @NgModule({
   declarations: [
@@ -162,6 +170,13 @@ import { OrderEffects } from "./store/orders/order.effects";
     HistoryViewComponent,
     DialogSearchSettlements,
     DialogGetWarehouses,
+    MyOrderComponent,
+    ProductCardMyOrderComponent,
+    OrderStatusComponent,
+    MyOrderItemComponent,
+    MyOrderEmptyComponent,
+    MyOrderHeaderComponent,
+    MyOrderDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -176,7 +191,12 @@ import { OrderEffects } from "./store/orders/order.effects";
       metaReducers,
     }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([FavoriteEffects, ShoppingCartEffects, OrderEffects]),
+    EffectsModule.forRoot([
+      FavoriteEffects,
+      ShoppingCartEffects,
+      OrderEffects,
+      MyOrderEffects,
+    ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

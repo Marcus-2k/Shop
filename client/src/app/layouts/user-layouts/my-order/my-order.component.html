@@ -1,0 +1,27 @@
+<!--  -->
+
+<div class="content-element-center" *ngIf="loader">
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-container *ngIf="!loader">
+  <div class="my_order" *ngIf="!myOrdersEmpty && myOrders && productCard">
+    <div class="my_order__content">
+      <app-my-order-header></app-my-order-header>
+
+      <ul class="my_order__content-list">
+        <li
+          class="my_order__content-list-item"
+          *ngFor="let order of myOrders; let idx = index"
+        >
+          <app-my-order-item
+            [order]="order"
+            [productCard]="productCard[idx]"
+          ></app-my-order-item>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <app-my-order-empty *ngIf="myOrdersEmpty && myOrders"></app-my-order-empty>
+</ng-container>

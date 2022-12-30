@@ -1,0 +1,38 @@
+.header-list {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  &-item {
+    font-family: "Mont";
+    font-size: 16px;
+    padding: 0 15px 0 0;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  &--order_id {
+    width: 15%;
+  }
+  &--seller {
+    width: 10%;
+  }
+  &--date_of_creation {
+    width: 15%;
+  }
+  &--date_of_dispatch {
+    width: 15%;
+  }
+  &--order_pricing {
+    width: 10%;
+  }
+  &--detail {
+    width: 10%;
+  }
+  &--status {
+    width: 10%;
+  }
+  &--type_payment {
+    width: 15%;
+  }
+}

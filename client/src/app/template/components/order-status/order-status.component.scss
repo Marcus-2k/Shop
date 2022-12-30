@@ -1,0 +1,40 @@
+.status {
+  //   width: 100%;
+  //   height: 100%;
+  &__content {
+    font-family: "Mont";
+    font-weight: 600;
+    font-size: 14px;
+    // text-transform: uppercase;
+    // letter-spacing: 1px;
+    .status-text {
+      margin: 0;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .status-text--new {
+      color: #ffae00;
+      background-color: #fff7e6;
+    }
+    .status-text--payment {
+      color: #6cc9dd;
+      background-color: #aaf0ff;
+    }
+    .status-text--sent {
+      color: #de486c;
+      background-color: #fdf4f6;
+    }
+    .status-text--return {
+      color: #c4c4c4;
+      background-color: #ededed;
+    }
+    .status-text--delivered {
+      color: #8d79c8;
+      background-color: #cfbeff;
+    }
+    .status-text--done {
+      color: #2fb182;
+      background-color: #ebf9f4;
+    }
+  }
+}
