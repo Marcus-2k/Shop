@@ -23,6 +23,8 @@ import { SliderSwiperModule } from "./shared/slider/slider.module";
 import { AppComponent } from "./app.component";
 // 404 Component
 import { NotFoundComponent } from "./not-found/not-found.component";
+// 500 Component
+import { NotConnectionToServerComponent } from "./not-connection-to-server/not-connection-to-server.component";
 // Body Main
 import { HomeComponent } from "./layouts/main/home/home.component";
 // Body >>> Header Component
@@ -177,6 +179,7 @@ import { environment } from "../environments/environment";
     MyOrderEmptyComponent,
     MyOrderHeaderComponent,
     MyOrderDetailComponent,
+    NotConnectionToServerComponent,
   ],
   imports: [
     BrowserModule,
