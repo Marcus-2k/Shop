@@ -4,6 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
+import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { OpenDialogService } from "src/app/shared/service/open-dialog.service";
 
 import { CatalogComponent } from "src/app/template/catalog/catalog.component";
@@ -11,6 +12,8 @@ import { CatalogComponent } from "src/app/template/catalog/catalog.component";
 import { Store } from "@ngrx/store";
 import { FavoriteSelector } from "src/app/store/favorite/favorite.selector";
 import { ShoppingCartSelector } from "src/app/store/cart/cart.selector";
+import { FavoriteActions } from "src/app/store/favorite/favorite.action";
+import { ShoppingCartActions } from "src/app/store/cart/cart.action";
 
 @Component({
   selector: "app-header",
@@ -21,8 +24,9 @@ export class HeaderComponent implements OnInit, DoCheck {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private store$: Store,
+    private requestUser: RequestUserService,
     private openDialog: OpenDialogService,
+    private store$: Store,
     public dialog: MatDialog
   ) {}
 
@@ -30,6 +34,20 @@ export class HeaderComponent implements OnInit, DoCheck {
     console.log("Start ngOnInit Header");
 
     this.authenticatedUser = this.auth.isAuthenticated();
+
+    if (this.auth.isAuthenticated()) {
+      this.requestUser.getFavoriteAndShoppingCart().subscribe({
+        next: (data) => {
+          console.log(data);
+          this.store$.dispatch(FavoriteActions.upFavorite(data));
+          this.store$.dispatch(ShoppingCartActions.upShoppingCart(data));
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {},
+      });
+    }
 
     this.store$
       .select(FavoriteSelector.favoriteNumber)

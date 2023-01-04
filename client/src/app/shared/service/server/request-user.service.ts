@@ -58,6 +58,16 @@ export class RequestUserService {
     );
   }
   // History =============================================================
+  // Universal START =================================================================================================
+  getFavoriteAndShoppingCart(): Observable<Favorite & ShoppingCart> {
+    return this.http.get<Favorite & ShoppingCart>(
+      `${this.url_server}/user/favorite_and_shoppingCart/`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+  // Universal END ===================================================================================================
   // Favorite ============================================================
   getFavorite(): Observable<Favorite> {
     return this.http.get<Favorite>(`${this.url_server}/user/favorite/`, {
