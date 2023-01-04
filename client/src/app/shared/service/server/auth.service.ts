@@ -1,7 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+
 import { Observable, tap } from "rxjs";
+
 import { UserLogin, UserRegister } from "../../interface/interfaces";
+
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -50,8 +53,8 @@ export class AuthService {
       );
   }
 
-  checking(): Observable<{ authorization: boolean }> {
-    return this.http.get<{ authorization: boolean }>(
+  checking(): Observable<{ authorization: boolean; message: string }> {
+    return this.http.get<{ authorization: boolean; message: string }>(
       `${this.url_server}/auth/checking`,
       { withCredentials: true }
     );
@@ -89,7 +92,7 @@ export class AuthService {
     this.token = token;
   }
 
-  getToken(): string | null | undefined {
+  getToken(): string | null {
     return this.token;
   }
 
