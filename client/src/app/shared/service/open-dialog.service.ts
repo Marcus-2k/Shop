@@ -22,27 +22,34 @@ export class OpenDialogService {
     private openSnackBar: OpenSnackBarService
   ) {}
 
+  openLogin: boolean = false;
   openLoginWindow() {
-    const dialogRef: MatDialogRef<LoginComponent, Redirect | undefined> =
-      this.dialog.open(LoginComponent, {
-        width: "600px",
+    if (this.openLogin === false) {
+      this.openLogin = true;
+
+      const dialogRef: MatDialogRef<LoginComponent, Redirect | undefined> =
+        this.dialog.open(LoginComponent, {
+          width: "600px",
+        });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        this.openLogin = false;
+
+        if (result) {
+          if (result.redirectTo === "register") {
+            this.openRegisterWindow();
+          }
+          if (result.error === "user_authorized") {
+            this.openSnackBar.open("Ви вже авторизовані в системі.", undefined);
+          }
+
+          if (result.success === "authorized") {
+            this.openSnackBar.open("Авторизація успішна.", undefined);
+            this.routre.navigate(["/account/user"]);
+          }
+        }
       });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        if (result.redirectTo === "register") {
-          this.openRegisterWindow();
-        }
-        if (result.error === "user_authorized") {
-          this.openSnackBar.open("Ви вже авторизовані в системі.", undefined);
-        }
-
-        if (result.success === "authorized") {
-          this.openSnackBar.open("Авторизація успішна.", undefined);
-          this.routre.navigate(["/account/user"]);
-        }
-      }
-    });
+    }
   }
 
   openRegisterWindow() {
