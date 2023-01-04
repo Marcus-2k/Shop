@@ -30,7 +30,13 @@ router.patch(
   passport.authenticate("jwt", { session: false }),
   controller.newHistoryUser
 );
-
+// Universal START =================================================================================================
+router.get(
+  "/favorite_and_shoppingCart/",
+  passport.authenticate("jwt", { session: false }),
+  controller.getFavoriteAndShoppingCart
+);
+// Universal END ===================================================================================================
 // ==== Favorite ====================================================================================================
 router.get(
   "/favorite/",

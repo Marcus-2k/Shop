@@ -188,6 +188,29 @@ module.exports.newHistoryUser = async function (req, res) {
   }
 };
 // History =========================================================================================================
+// Universal START =================================================================================================
+module.exports.getFavoriteAndShoppingCart = async function (req, res) {
+  console.log("Server getFavoriteAndShoppingCart");
+
+  try {
+    const token_decode = jwt_decode(req.headers.authorization);
+
+    const userData = await User.findById(token_decode.id, {
+      favorite: 1,
+      shoppingCart: 1,
+      _id: 0,
+    });
+
+    return res.status(200).json({
+      favorite: userData.favorite,
+      shoppingCart: userData.shoppingCart,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+// Universal END ===================================================================================================
 // Favorite ========================================================================================================
 module.exports.getFavorite = async function (req, res) {
   console.log("Server getFavorite");
