@@ -96,14 +96,21 @@ module.exports.checking = async function (req, res) {
 
   try {
     const { refreshToken } = req.cookies;
+    const accessToken = req.headers.authorization.split(" ")[1];
 
-    const userData = TokenService.validateRefreshToken(refreshToken);
+    const userDataRefresh = TokenService.validateRefreshToken(refreshToken);
+    const userDataAccess = TokenService.validateAccessToken(accessToken);
     const tokenFromDB = await TokenService.findToken(refreshToken);
-    if (!userData || !tokenFromDB) {
-      return res.status(401).json({ message: "Користувач не авторизований" });
+
+    if (!userDataRefresh || !tokenFromDB || !userDataAccess) {
+      return res
+        .status(401)
+        .json({ authorization: false, message: "Користувач не авторизований" });
     }
 
-    return res.status(200).json({ authorization: true });
+    return res
+      .status(200)
+      .json({ authorization: true, message: "Користувач авторизований" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });

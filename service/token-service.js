@@ -14,14 +14,14 @@ class TokenService {
     return { accessToken: `Bearer ${accessToken}`, refreshToken };
   }
 
-  // validateAccessToken(token) {
-  //   try {
-  //     const userData = jwt.verify(token, process.env.ACCESS_SECRET_JWT);
-  //     return userData;
-  //   } catch (error) {
-  //     return null;
-  //   }
-  // } // Not used yet
+  validateAccessToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.ACCESS_SECRET_JWT);
+      return userData;
+    } catch (error) {
+      return null;
+    }
+  }
 
   validateRefreshToken(token) {
     try {
