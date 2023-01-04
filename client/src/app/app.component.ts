@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
         error: (error) => {
           console.log(error);
 
-          if (error.status === 500) {
+          if (error.status === 500 || error.status === 0) {
             this.connectingServer = false;
             this.loader = false;
           }
