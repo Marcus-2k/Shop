@@ -1,12 +1,21 @@
 <!-- Go to component -->
-<section class="loader" *ngIf="loader">
-  <div class="content-element-center">
-    <mat-spinner></mat-spinner>
-  </div>
-</section>
 
-<div class="body" *ngIf="loader === false">
-  <app-header></app-header>
-  <router-outlet></router-outlet>
-  <app-footer></app-footer>
+<div *ngIf="loader === true">
+  <section class="loader">
+    <div class="content-element-center">
+      <mat-spinner></mat-spinner>
+    </div>
+  </section>
+</div>
+
+<div *ngIf="loader === false">
+  <div class="body" *ngIf="connectingServer === true">
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+  </div>
+
+  <section class="error__server" *ngIf="connectingServer === false">
+    <app-not-connection-to-server></app-not-connection-to-server>
+  </section>
 </div>
