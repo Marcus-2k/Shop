@@ -20,45 +20,29 @@ export class MyOrderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log("Start ngOnInit My-Order");
 
-    this.store$.dispatch(MyOrderActions.getMyOrder());
-
     this.storeMyOrder$ = this.store$
       .select(MyOrderSelector.getmMyOrder)
       .subscribe((stateMyOrder) => {
         console.log(stateMyOrder);
 
         if (
-          stateMyOrder.myOrder.length === 0 &&
-          stateMyOrder.productCard_MyOrder.length === 0
+          stateMyOrder.myOrder === null &&
+          stateMyOrder.productCard_MyOrder === null
         ) {
-          this.myOrdersEmpty = true;
+          this.store$.dispatch(MyOrderActions.getMyOrder());
         } else {
-          this.myOrdersEmpty = false;
-
           this.myOrders = stateMyOrder.myOrder;
           this.productCard = stateMyOrder.productCard_MyOrder;
         }
 
+        if (this.myOrders?.length === 0 && this.productCard?.length === 0) {
+          this.myOrdersEmpty = true;
+        } else {
+          this.myOrdersEmpty = false;
+        }
+
         this.loader = false;
       });
-
-    // this.requestOrder.getListOrderUser().subscribe({
-    //   next: (response) => {
-    //     console.log(response);
-    //     this.myOrders = response.MyOrder;
-    //     this.productCard = response.ProductCard_MyOrder;
-
-    //     if (response.MyOrder.length === 0) {
-    //       this.myOrdersEmpty = true;
-    //     }
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //   },
-    //   complete: () => {
-    //     this.loader = false;
-    //   },
-    // });
   }
 
   ngOnDestroy(): void {
@@ -70,6 +54,6 @@ export class MyOrderComponent implements OnInit, OnDestroy {
   loader: boolean = true;
   myOrdersEmpty: boolean = false;
 
-  myOrders: MyOrder[] | undefined;
-  productCard: ProductCard_MyOrder[][] | undefined;
+  myOrders: MyOrder[] | null = null;
+  productCard: ProductCard_MyOrder[][] | null = null;
 }

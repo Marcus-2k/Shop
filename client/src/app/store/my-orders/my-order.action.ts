@@ -17,11 +17,11 @@ export namespace MyOrderActions {
 }
 
 export interface MyOrderUserState {
-  myOrder: MyOrder[];
-  productCard_MyOrder: ProductCard_MyOrder[][];
+  myOrder: MyOrder[] | null;
+  productCard_MyOrder: ProductCard_MyOrder[][] | null;
 }
 
 export const initialStateFavorite: MyOrderUserState = {
-  myOrder: [],
-  productCard_MyOrder: [],
+  myOrder: null,
+  productCard_MyOrder: null,
 };
