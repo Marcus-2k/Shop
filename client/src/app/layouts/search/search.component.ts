@@ -42,8 +42,8 @@ export class SearchComponent implements OnInit {
     Object.assign(this.queryParams, queryPage);
 
     if (this.search_text) {
-      this.searchService.search(this.search_text, queryPage).subscribe(
-        (response) => {
+      this.searchService.search(this.search_text, queryPage).subscribe({
+        next: (response) => {
           // ==============================================================================================
           console.log("=====================================================");
           console.log(response.product);
@@ -169,13 +169,15 @@ export class SearchComponent implements OnInit {
           // ==============================================================================================
           this.listFilter = uniqueFilterBlock;
           // ==============================================================================================
-          this.loader = false;
-          // ==============================================================================================
         },
-        (error) => {
+        error: (error) => {
           console.log(error);
-        }
-      );
+          // if (error.status === 500 || error.status === 0) {}
+        },
+        complete: () => {
+          this.loader = false;
+        },
+      });
     } else if (this.search_text === "") {
       this.router.navigate(["/"]);
       this.showNotice.message("Помилка запиту, не введено текст пошуку.");
@@ -185,15 +187,15 @@ export class SearchComponent implements OnInit {
 
     console.log(this.queryParams);
   }
-
+  // Сommon Variables START =======================================================================
   private HOST: string = "localhost";
   private PORT: string = ":5000";
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`; // Link to server folder
+  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 
   search_text?: string;
-  loader: boolean = true; // Loader block Select
+  loader: boolean = true;
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];
-
+  // Сommon Variables END =========================================================================
   // Header START =================================================================================
   type_sort: number = 0;
 
@@ -209,7 +211,6 @@ export class SearchComponent implements OnInit {
     });
   }
   // Header END ===================================================================================
-
   // Sidebar START ================================================================================
   uniqueCategory: number[][] = []; // Category List [ [1,0,0], [1,0,5] ... ]
 

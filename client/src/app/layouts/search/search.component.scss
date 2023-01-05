@@ -1,6 +1,6 @@
 .search {
   width: 100%;
-  padding: 0 calc(10px + (20 - 10) * ((100vw - 768px) / (1920 - 768)));
+  padding: 0 calc(5px + (15 - 5) * ((100vw - 320px) / (1920 - 320)));
   &__content {
     width: 100%;
     max-width: 1600px;
@@ -8,20 +8,27 @@
     height: auto;
     display: grid;
     grid-template-columns: 25% 75%;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 5.5% 94.5%;
     grid-column-gap: 0;
     grid-row-gap: 0px;
     &-header {
       grid-area: 1 / 1 / 2 / 3;
-      height: 100%;
+      height: auto;
+      max-height: 100%;
       display: flex;
       flex-direction: column;
       .reset {
-        height: 50%;
-        overflow-x: scroll;
+        display: flex;
+        align-items: center;
+
+        height: auto;
+        max-height: 50%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
         &::-webkit-scrollbar {
-          width: 10px;
-          height: 0px;
+          width: 0px;
+          height: 4px;
           background-color: #d8d8d8;
         }
         &::-webkit-scrollbar-thumb {
@@ -32,9 +39,16 @@
           border-radius: 10px;
           background-color: #d8d8d8;
         }
+        .reset-item {
+          margin-top: 5px;
+          margin-bottom: 5px;
+          margin-right: 5px;
+        }
       }
       .settings {
-        height: 50%;
+        height: auto;
+        margin-top: 0.5%;
+        max-height: 50%;
         display: flex;
         align-items: center;
         justify-content: end;
@@ -147,8 +161,6 @@
       flex-direction: column;
       &-header {
         .reset {
-          height: 170px;
-          margin-bottom: 15px;
         }
         .settings {
           margin-bottom: 15px;
