@@ -1,11 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { News, Product } from "src/app/shared/interface/interfaces";
+import {
+  News,
+  Product,
+  CategoryHome,
+} from "src/app/shared/interface/interfaces";
+
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 import { RequestGuestService } from "src/app/shared/service/server/request-guest.service";
 import { RequestNewsService } from "src/app/shared/service/server/request-news.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
+
 import { environment } from "src/environments/environment";
 
 import Swiper, { Autoplay } from "swiper";
@@ -67,20 +73,22 @@ export class HomeComponent implements OnInit {
       }
     }
 
-    this.requestCatalog.getCategoryHome().subscribe(
-      (response) => {
+    this.requestCatalog.getCategoryHome().subscribe({
+      next: (response) => {
+        console.log(response);
         this.categoryProductList = response;
       },
-      (error) => {
+      error: (error) => {
         console.log(error);
-      }
-    );
+      },
+      complete: () => {},
+    });
 
     this.renameTitle.renameTitleSite("Інтернет-магазин");
   }
 
   // Aside START ===========================================================================
-  categoryProductList: string[] = [];
+  categoryProductList: CategoryHome[] = [];
   // Aside END =============================================================================
   // Main START ============================================================================
   config: SwiperOptions = {

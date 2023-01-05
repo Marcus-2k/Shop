@@ -261,6 +261,7 @@ export interface News {
 // Category START ======================================================================================
 export interface CategoryProduct {
   nameCategory: string;
+  nameCategoryImg: string;
   nameListCategory: {
     subNameCategory: string;
     subNameListCategory: {
@@ -284,6 +285,11 @@ export interface Options {
   htmlElement: "select"; // html tag
   select: string[]; // field for option select
   multiple: boolean;
+}
+
+export interface CategoryHome {
+  nameCategory: string;
+  nameCategoryImg: string;
 }
 // Category END ========================================================================================
 // Page Search START ===================================================================================

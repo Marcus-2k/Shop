@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import {
+  CategoryHome,
   CategoryProduct,
   CategoryProduct_Characteristics,
 } from "../../interface/interfaces";
@@ -22,8 +23,10 @@ export class RequestCatalogService {
       `${this.url_server}catalog/category/`
     );
   }
-  getCategoryHome(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.url_server}catalog/category/home`);
+  getCategoryHome(): Observable<CategoryHome[]> {
+    return this.http.get<CategoryHome[]>(
+      `${this.url_server}catalog/category/home`
+    );
   }
   getCategoryAndCharacteristics(): Observable<
     CategoryProduct_Characteristics[]
