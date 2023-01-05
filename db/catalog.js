@@ -323,6 +323,7 @@ const optionsSmartphone = [
 const categoryList = [
   {
     nameCategory: "Ноутбуки та комп'ютери",
+    nameCategoryImg: "uploads/catalog/laptop.png",
     nameListCategory: [
       {
         subNameCategory: "Ноутбуки",
@@ -578,6 +579,7 @@ const categoryList = [
   },
   {
     nameCategory: "Смартфони, ТВ і електроніка",
+    nameCategoryImg: "uploads/catalog/smartphone.png",
     nameListCategory: [
       {
         subNameCategory: "Телефони",
@@ -843,6 +845,7 @@ const categoryList = [
   },
   {
     nameCategory: "Товари для геймерів",
+    nameCategoryImg: "uploads/catalog/gamepad.png",
     nameListCategory: [
       {
         subNameCategory: "Play Station",
@@ -1033,6 +1036,7 @@ const categoryList = [
   },
   {
     nameCategory: "Побутова техніка",
+    nameCategoryImg: "uploads/catalog/electric-appliance.png",
     nameListCategory: [
       {
         subNameCategory: "Велика побутова техніка",
@@ -1310,6 +1314,7 @@ const categoryList = [
   },
   {
     nameCategory: "Товари для дому",
+    nameCategoryImg: "uploads/catalog/shelf.png",
     nameListCategory: [
       {
         subNameCategory: "Меблі",
@@ -1578,6 +1583,7 @@ const categoryList = [
   },
   {
     nameCategory: "Інструменти та автотовари",
+    nameCategoryImg: "uploads/catalog/machine-drill.png",
     nameListCategory: [
       {
         subNameCategory: "Інструменти",
@@ -1857,6 +1863,7 @@ const categoryList = [
   },
   {
     nameCategory: "Сантехніка та ремонт",
+    nameCategoryImg: "uploads/catalog/bathtub.png",
     nameListCategory: [
       {
         subNameCategory: "Ванни, бокси, душові",
@@ -2086,6 +2093,7 @@ const categoryList = [
   },
   {
     nameCategory: "Дача, сад і город",
+    nameCategoryImg: "uploads/catalog/gardening-tools.png",
     nameListCategory: [
       {
         subNameCategory: "Садова техніка",
@@ -2332,6 +2340,7 @@ const categoryList = [
   },
   {
     nameCategory: "Спорт і захоплення",
+    nameCategoryImg: "uploads/catalog/sport.png",
     nameListCategory: [
       {
         subNameCategory: "Тренажери та фітнес",
@@ -2562,6 +2571,7 @@ const categoryList = [
   },
   {
     nameCategory: "Одяг, взуття та прикраси",
+    nameCategoryImg: "uploads/catalog/fashion.png",
     nameListCategory: [
       {
         subNameCategory: "Одяг для жінок",
@@ -2864,6 +2874,7 @@ const categoryList = [
   },
   {
     nameCategory: "Краса та здоров'я",
+    nameCategoryImg: "uploads/catalog/skin-care.png",
     nameListCategory: [
       {
         subNameCategory: "Техніка для краси та здоров'я",
@@ -3113,6 +3124,7 @@ const categoryList = [
   },
   {
     nameCategory: "Дитячі товари",
+    nameCategoryImg: "uploads/catalog/children.png",
     nameListCategory: [
       {
         subNameCategory: "Іграшки",

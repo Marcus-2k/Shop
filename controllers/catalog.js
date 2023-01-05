@@ -27,7 +27,12 @@ module.exports.getCategoryHome = async function (req, res) {
   try {
     let catalogPopuap = [];
     Catalog.categoryList.forEach((element) => {
-      catalogPopuap.push(element.nameCategory);
+      const homeElement = {
+        nameCategory: element.nameCategory,
+        nameCategoryImg: element.nameCategoryImg,
+      };
+
+      catalogPopuap.push(homeElement);
     });
 
     return res.status(200).json(catalogPopuap);
