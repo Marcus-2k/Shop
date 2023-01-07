@@ -15,6 +15,7 @@ const sellerRoutes = require("./routes/seller");
 const newsRoutes = require("./routes/news");
 const cardRoutes = require("./routes/card");
 const searchRoutes = require("./routes/search");
+const checkingRoutes = require("./routes/checking");
 // Router END
 
 // Swagger START
@@ -87,6 +88,7 @@ app.use("/api/seller", sellerRoutes);
 app.use("/api/news", newsRoutes);
 
 app.use("/api/search", searchRoutes);
+app.use("/api/checking", checkingRoutes);
 // Router END ============================================================================
 
 module.exports = app;
