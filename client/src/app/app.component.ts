@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 
 import { AuthService } from "./shared/service/server/auth.service";
 import { RequestCheckingService } from "./shared/service/server/request-checking.service";
+import { OpenSnackBarService } from "./shared/service/open-snack-bar.service";
 
 @Component({
   selector: "app-root",
@@ -11,7 +12,8 @@ import { RequestCheckingService } from "./shared/service/server/request-checking
 export class AppComponent implements OnInit {
   constructor(
     private auth: AuthService,
-    private checkingServer: RequestCheckingService
+    private checkingServer: RequestCheckingService,
+    private showNotice: OpenSnackBarService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,21 @@ export class AppComponent implements OnInit {
           this.loader = false;
         },
       });
+    }
+
+    const firstOpenSite = localStorage.getItem("first-open-site");
+
+    if (firstOpenSite === null) {
+      localStorage.setItem("first-open-site", "true");
+      this.showNotice.open("Перший вхід на сайт", undefined);
+
+      localStorage.setItem("history-search", "телефон");
+      localStorage.setItem(
+        "history-view",
+        "635c3d2e930a137ebbf08be7,6334435463188ab26e1cff3e,630365479c31697fb540c2a5,6302369b909c492f3409db5b"
+      );
+    } else if (firstOpenSite === "true") {
+      localStorage.setItem("first-open-site", "false");
     }
   }
 
