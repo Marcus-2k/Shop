@@ -10,7 +10,7 @@ import {
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
-import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 
 @Component({
   selector: "app-search",
@@ -22,7 +22,7 @@ export class SearchComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private searchService: RequestSearchService,
-    private showNotice: ShowNoticeService,
+    private showNotice: OpenSnackBarService,
     private renameTitle: RenameTitleService
   ) {}
 
@@ -44,6 +44,9 @@ export class SearchComponent implements OnInit {
     if (this.search_text) {
       this.searchService.search(this.search_text, queryPage).subscribe({
         next: (response) => {
+          if (response.product.length === 0) {
+            this.searchEmpty = true;
+          }
           // ==============================================================================================
           console.log("=====================================================");
           console.log(response.product);
@@ -178,9 +181,13 @@ export class SearchComponent implements OnInit {
           this.loader = false;
         },
       });
-    } else if (this.search_text === "") {
+    } else if (this.search_text === "" || this.search_text === undefined) {
       this.router.navigate(["/"]);
-      this.showNotice.message("Помилка запиту, не введено текст пошуку.");
+
+      this.showNotice.open(
+        "Помилка запиту, не введено текст пошуку.",
+        undefined
+      );
     }
 
     this.renameTitle.renameTitleSite("Інтернет-магазин");
@@ -188,12 +195,11 @@ export class SearchComponent implements OnInit {
     console.log(this.queryParams);
   }
   // Сommon Variables START =======================================================================
-  private HOST: string = "localhost";
-  private PORT: string = ":5000";
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  search_text: string | undefined;
 
-  search_text?: string;
   loader: boolean = true;
+  searchEmpty: boolean = false;
+
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];
   // Сommon Variables END =========================================================================
   // Header START =================================================================================
