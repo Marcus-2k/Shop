@@ -29,20 +29,18 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     console.log("Start ngOnInit Search");
 
-    let queryPage: Params = {};
-
     this.route.queryParams.subscribe((queryParams: Params) => {
       this.search_text = queryParams["search_text"];
+
       this.type_sort = queryParams["type_sort"]
         ? Number(queryParams["type_sort"])
         : 5;
-      queryPage = queryParams;
+
+      Object.assign(this.queryParams, queryParams);
     });
 
-    Object.assign(this.queryParams, queryPage);
-
     if (this.search_text) {
-      this.searchService.search(this.search_text, queryPage).subscribe({
+      this.searchService.search(this.search_text, this.queryParams).subscribe({
         next: (response) => {
           if (response.product.length === 0) {
             this.searchEmpty = true;
@@ -339,17 +337,13 @@ export class SearchComponent implements OnInit {
   widthWindow: number = window.innerWidth;
   showFilter: boolean = false;
 
-  inputShowFilterFocus() {
+  onFilterSidebar() {
     this.showFilter = true;
-    this.body.classList.add("active__filter");
+    this.body.classList.add("active--filter");
   }
-  inputShowFilterFocusout() {
-    let interval = setInterval(() => {
-      this.showFilter = false;
-      this.body.classList.remove("active__filter");
-
-      clearInterval(interval);
-    }, 100);
+  offFilterSidebar() {
+    this.showFilter = false;
+    this.body.classList.remove("active--filter");
   }
   // Media Adaptability END =======================================================================
 }

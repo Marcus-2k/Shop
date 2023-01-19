@@ -41,8 +41,7 @@
                 class="filter__button"
                 mat-raised-button
                 color="primary"
-                (focus)="inputShowFilterFocus()"
-                (focusout)="inputShowFilterFocusout()"
+                (click)="onFilterSidebar()"
               >
                 <span class="material-symbols-outlined"> filter_alt </span>
                 <span class="filter__button-text">Фільтри</span>
@@ -72,101 +71,114 @@
           </div>
         </div>
 
-        <div
-          class="search__content-sidebar"
-          [ngClass]="{ mobile__sidebar: showFilter }"
-        >
-          <!-- Filter START -->
-          <div class="select">
-            <div class="select__content">
-              <div class="select__conten-category category">
-                <div
-                  class="category__block"
-                  *ngFor="let filter of listFilter; let i = index"
-                >
-                  <div class="category__block-line"></div>
-
+        <div class="search__content-main">
+          <div
+            class="search__content-main-sidebar"
+            [ngClass]="{ 'sidebar--mobile': showFilter }"
+          >
+            <!-- Filter START -->
+            <div class="select">
+              <div class="select__content">
+                <div class="select__conten-category category">
                   <div
-                    class="category__block-btn"
-                    (click)="filter.blockActive = !filter.blockActive"
+                    class="category__header"
+                    *ngIf="widthWindow <= 1000"
+                    (click)="offFilterSidebar()"
                   >
-                    <button class="btn__filter">
-                      <p class="title">{{ filter.name }}</p>
-                      <p
-                        class="arrow"
-                        [ngClass]="{ active__arrow: filter.blockActive }"
-                      >
-                        <span class="material-symbols-outlined">
-                          expand_more
-                        </span>
-                      </p>
-                    </button>
+                    <span class="material-symbols-outlined">
+                      arrow_back_ios
+                    </span>
+                    <h2 class="category__header-title">Фільтри</h2>
                   </div>
-
-                  <ul
-                    class="category__block-list"
-                    [ngClass]="{ show: filter.blockActive }"
+                  <div
+                    class="category__block"
+                    *ngFor="let filter of listFilter; let i = index"
                   >
-                    <li
-                      class="category__block-list-item"
-                      *ngFor="
-                        let filterItem of filter.inputActive;
-                        let idx = index
-                      "
+                    <div class="category__block-line"></div>
+
+                    <div
+                      class="category__block-btn"
+                      (click)="filter.blockActive = !filter.blockActive"
                     >
-                      <mat-checkbox
-                        (click)="
-                          filterSearch(
-                            filterItem.name,
-                            filterItem.query_name,
-                            !checkboxInput.checked
-                          )
+                      <button class="btn__filter">
+                        <p class="title">{{ filter.name }}</p>
+                        <p
+                          class="arrow"
+                          [ngClass]="{ active__arrow: filter.blockActive }"
+                        >
+                          <span class="material-symbols-outlined">
+                            expand_more
+                          </span>
+                        </p>
+                      </button>
+                    </div>
+
+                    <ul
+                      class="category__block-list"
+                      [ngClass]="{ show: filter.blockActive }"
+                    >
+                      <li
+                        class="category__block-list-item"
+                        *ngFor="
+                          let filterItem of filter.inputActive;
+                          let idx = index
                         "
-                        [checked]="filterItem.active"
-                        [id]="i + '' + '0' + idx"
-                        color="primary"
-                        #checkboxInput
                       >
-                        <!-- ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp; -->
-                        {{ filterItem.name }}
-                        <span class="counter"
-                          >&nbsp;({{ filterItem.counter + 1 }})</span
-                        ></mat-checkbox
-                      >
-                    </li>
-                  </ul>
+                        <mat-checkbox
+                          (click)="
+                            filterSearch(
+                              filterItem.name,
+                              filterItem.query_name,
+                              !checkboxInput.checked
+                            )
+                          "
+                          [checked]="filterItem.active"
+                          [id]="i + '' + '0' + idx"
+                          color="primary"
+                          #checkboxInput
+                        >
+                          <!-- ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp; -->
+                          {{ filterItem.name }}
+                          <span class="counter"
+                            >&nbsp;({{ filterItem.counter + 1 }})</span
+                          ></mat-checkbox
+                        >
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
+            <!-- Filter END -->
+            <div class="select--space" (click)="offFilterSidebar()"></div>
           </div>
-          <!-- Filter END -->
-        </div>
 
-        <div class="search__content-body">
-          <!-- Card START -->
-          <div class="cards">
-            <ul class="cards-catalog">
-              <li
-                class="cards-catalog-item"
-                *ngFor="let product of productList"
+          <div class="search__content-main-body">
+            <!-- Card START -->
+            <div class="cards">
+              <ul class="cards-catalog">
+                <li
+                  class="cards-catalog-item"
+                  *ngFor="let product of productList"
+                >
+                  <app-product-card [productItem]="product"></app-product-card>
+                </li>
+              </ul>
+            </div>
+            <!-- Card END -->
+            <!-- Pagination START -->
+            <div class="pagination">
+              <mat-paginator
+                [length]="maxPage * limit"
+                [pageSize]="limit"
+                [pageIndex]="currentPage - 1"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event; onPaginateChange($event)"
               >
-                <app-product-card [productItem]="product"></app-product-card>
-              </li>
-            </ul>
+              </mat-paginator>
+            </div>
+            <!-- Pagination END -->
           </div>
-          <!-- Card END -->
-          <!-- Pagination START -->
-          <div class="pagination">
-            <mat-paginator
-              [length]="maxPage * limit"
-              [pageSize]="limit"
-              [pageIndex]="currentPage - 1"
-              [pageSizeOptions]="pageSizeOptions"
-              (page)="pageEvent = $event; onPaginateChange($event)"
-            >
-            </mat-paginator>
-          </div>
-          <!-- Pagination END -->
         </div>
       </div>
     </div>
