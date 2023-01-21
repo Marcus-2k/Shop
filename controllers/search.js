@@ -128,7 +128,6 @@ module.exports.search = async function (req, res) {
 
       return res.status(200).json({
         product,
-        uniqueProductCategory,
         productCharacteristicsBlock,
         productCharacteristicsName,
         currentPage,
@@ -286,6 +285,16 @@ module.exports.search = async function (req, res) {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+// module.exports.searchByQuery = async function (req, res) {
+//   console.log("Server searchByQuery");
+
+//   try {
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: "Server error" });
+//   }
+// };
 
 // All function this controller ==================================================================================
 

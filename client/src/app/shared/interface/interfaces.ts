@@ -293,6 +293,14 @@ export interface CategoryHome {
 }
 // Category END ========================================================================================
 // Page Search START ===================================================================================
+export interface FoundData {
+  product: Product[];
+  productCharacteristicsBlock: number[][][][];
+  productCharacteristicsName: Options[][];
+  currentPage: number;
+  maxPage: number;
+  limit: number;
+}
 export interface FilterNameParams {
   name: string;
   params: string[];

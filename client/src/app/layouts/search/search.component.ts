@@ -48,7 +48,6 @@ export class SearchComponent implements OnInit {
           // ==============================================================================================
           console.log("=====================================================");
           console.log(response.product);
-          console.log(response.uniqueProductCategory);
           console.log(response.productCharacteristicsBlock);
           console.log(response.productCharacteristicsName);
           console.log("Відкрита сторінка", response.currentPage);
@@ -57,7 +56,6 @@ export class SearchComponent implements OnInit {
           console.log("=====================================================");
           // ==============================================================================================
           this.productList = response.product; // List Product
-          this.uniqueCategory = response.uniqueProductCategory; // List Product Category Unique
           const productOptionsBlock: number[][][][] =
             response.productCharacteristicsBlock; // Parameters by block to categories
           this.currentPage = Number(response.currentPage); // Current Page
@@ -216,8 +214,6 @@ export class SearchComponent implements OnInit {
   }
   // Header END ===================================================================================
   // Sidebar START ================================================================================
-  uniqueCategory: number[][] = []; // Category List [ [1,0,0], [1,0,5] ... ]
-
   listFilter: ActiveFilterBlock[] = [];
 
   queryParams: Params = {};
