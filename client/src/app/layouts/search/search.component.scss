@@ -161,6 +161,16 @@
   }
 }
 
+.progress-bar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  z-index: 1001;
+  width: 100%;
+  height: 100%;
+}
+
 // Media START ==========================================================================================
 @media (max-width: 1000px) {
   .search {

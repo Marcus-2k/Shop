@@ -24,6 +24,7 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ClipboardModule } from "@angular/cdk/clipboard";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 const Material = [
   MatSelectModule,
@@ -50,6 +51,7 @@ const Material = [
   MatStepperModule,
   MatSnackBarModule,
   ClipboardModule,
+  MatProgressBarModule,
 ];
 
 @NgModule({

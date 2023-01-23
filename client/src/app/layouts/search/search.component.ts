@@ -40,7 +40,7 @@ export class SearchComponent implements OnInit {
     });
 
     if (this.search_text) {
-      this.searchService.search(this.search_text, this.queryParams).subscribe({
+      this.searchService.search(this.queryParams).subscribe({
         next: (response) => {
           if (response.product.length === 0) {
             this.searchEmpty = true;
@@ -190,14 +190,62 @@ export class SearchComponent implements OnInit {
 
     console.log(this.queryParams);
   }
-  // Сommon Variables START =======================================================================
+  // Сommon START =================================================================================
+  body: HTMLBodyElement = document.getElementsByTagName("body")[0];
+
   search_text: string | undefined;
 
   loader: boolean = true;
   searchEmpty: boolean = false;
+  loaderNewData: boolean = false;
 
-  body: HTMLBodyElement = document.getElementsByTagName("body")[0];
-  // Сommon Variables END =========================================================================
+  searchByQuery() {
+    this.router.navigate(["search"], {
+      queryParams: this.queryParams,
+    });
+
+    if (this.search_text) {
+      this.startLoadData();
+
+      this.searchService
+        .searchWithoutCharacteristics(this.queryParams)
+        .subscribe({
+          next: (response) => {
+            console.log("====================================================");
+            console.log(response.product);
+            console.log("Відкрита сторінка", response.currentPage);
+            console.log("Кількість сторінок", response.maxPage);
+            console.log("Товарів на сторінку", response.limit);
+            console.log("====================================================");
+            this.productList = response.product; // List Product
+            this.currentPage = Number(response.currentPage); // Current Page
+            this.maxPage = response.maxPage; // Max pages site
+            this.limit = response.limit; // Limits item site
+          },
+          error: (err) => {},
+          complete: () => {
+            this.endLoadData();
+          },
+        });
+    } else {
+      this.router.navigate(["/"]);
+
+      this.showNotice.open(
+        "Помилка запиту, не введено текст пошуку.",
+        undefined
+      );
+    }
+  }
+
+  startLoadData() {
+    this.loaderNewData = true;
+    this.body.classList.add("active--load_data");
+  }
+  endLoadData() {
+    this.loaderNewData = false;
+    this.body.classList.remove("active--load_data");
+  }
+  // Сommon END ===================================================================================
   // Header START =================================================================================
   type_sort: number = 0;
 
@@ -207,10 +255,7 @@ export class SearchComponent implements OnInit {
     }
     this.queryParams["type_sort"] = this.type_sort;
 
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.navigate([`search`], {
-      queryParams: this.queryParams,
-    });
+    this.searchByQuery();
   }
   // Header END ===================================================================================
   // Sidebar START ================================================================================
@@ -251,11 +296,7 @@ export class SearchComponent implements OnInit {
         this.queryParams["type_sort"] = this.type_sort;
       }
 
-      console.log(this.queryParams);
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
-      this.router.navigate([`search`], {
-        queryParams: this.queryParams,
-      });
+      this.searchByQuery();
     } else if (checked === false) {
       const nameQueryForServer: string = nameQuery;
 
@@ -294,10 +335,7 @@ export class SearchComponent implements OnInit {
         this.queryParams["type_sort"] = this.type_sort;
       }
 
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
-      this.router.navigate([`search`], {
-        queryParams: this.queryParams,
-      });
+      this.searchByQuery();
     }
   }
   // Sidebar END ==================================================================================
@@ -323,10 +361,7 @@ export class SearchComponent implements OnInit {
     }
     this.queryParams["limit"] = event.pageSize;
 
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false; // re-render
-    this.router.navigate([`search`], {
-      queryParams: this.queryParams,
-    });
+    this.searchByQuery();
   }
   // Main Product END =============================================================================
   // Media Adaptability START =====================================================================

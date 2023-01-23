@@ -2,7 +2,12 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Params } from "@angular/router";
 import { Observable } from "rxjs";
-import { FoundData } from "src/app/shared/interface/interfaces";
+
+import {
+  FoundData,
+  FoundDataWithoutCharacteristics,
+} from "src/app/shared/interface/interfaces";
+
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -15,16 +20,23 @@ export class RequestSearchService {
   private PORT: string = environment.PORT;
   private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
-  search(title: string, queryParams?: Params): Observable<FoundData> {
-    if (queryParams) {
-      let query = new URLSearchParams(queryParams);
-      return this.http.get<FoundData>(
-        `${this.url_server}/search?${query.toString()}`
-      );
-    } else {
-      return this.http.get<FoundData>(
-        `${this.url_server}/search?search_text=${title}`
-      );
-    }
+  search(queryParams: Params): Observable<FoundData> {
+    const query: URLSearchParams = new URLSearchParams(queryParams);
+
+    return this.http.post<FoundData>(
+      `${this.url_server}/search?${query.toString()}`,
+      { widthCharacteristics: true }
+    );
+  }
+
+  searchWithoutCharacteristics(
+    queryParams: Params
+  ): Observable<FoundDataWithoutCharacteristics> {
+    const query: URLSearchParams = new URLSearchParams(queryParams);
+
+    return this.http.post<FoundDataWithoutCharacteristics>(
+      `${this.url_server}/search?${query.toString()}`,
+      { widthCharacteristics: false }
+    );
   }
 }

@@ -301,6 +301,12 @@ export interface FoundData {
   maxPage: number;
   limit: number;
 }
+export interface FoundDataWithoutCharacteristics {
+  product: Product[];
+  currentPage: number;
+  maxPage: number;
+  limit: number;
+}
 export interface FilterNameParams {
   name: string;
   params: string[];
