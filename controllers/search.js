@@ -81,7 +81,16 @@ module.exports.search = async function (req, res) {
         .limit(limit)
         .skip(limit * --page);
 
-      // Delete item product if action = true
+      count = await Product.find({
+        name: { $regex: search_text, $options: "i" },
+        action: true,
+      })
+        .sort({ action: -1 })
+        .countDocuments({})
+        .exec(); // Counter element in collection
+      maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
+
+      // Delete item product if action = false
       for (let idx = 0; idx < product.length; idx++) {
         if (product[idx].action === false) {
           product.splice(idx, 1);
