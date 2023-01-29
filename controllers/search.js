@@ -60,14 +60,78 @@ module.exports.search = async function (req, res) {
         .sort({ price: 1 })
         .limit(limit)
         .skip(limit * --page);
+
+      let sortByAction = false;
+      while (!sortByAction) {
+        console.log("while");
+
+        product.forEach((element, idx) => {
+          if (
+            element.action === true &&
+            element.actionPrice < product[idx - 1].price
+          ) {
+            let prevItem = product[idx - 1];
+            product[idx - 1] = element;
+            product[idx] = prevItem;
+          }
+        });
+
+        product.forEach((element, idx) => {
+          if (idx !== 0) {
+            if (
+              element.action === true &&
+              element.actionPrice < product[idx - 1].price
+            ) {
+              sortByAction = false;
+            } else {
+              sortByAction = true;
+            }
+          } else {
+            sortByAction = false;
+          }
+        });
+      }
     } else if (type_sort === 1) {
       // Expensive
       product = await Product.find({
         name: { $regex: search_text, $options: "i" },
       })
-        .sort({ price: -1 })
+        .sort({ price: 1 })
         .limit(limit)
         .skip(limit * --page);
+
+      let sortByAction = false;
+      while (!sortByAction) {
+        console.log("while");
+
+        product.forEach((element, idx) => {
+          if (
+            element.action === true &&
+            element.actionPrice < product[idx - 1].price
+          ) {
+            let prevItem = product[idx - 1];
+            product[idx - 1] = element;
+            product[idx] = prevItem;
+          }
+        });
+
+        product.forEach((element, idx) => {
+          if (idx !== 0) {
+            if (
+              element.action === true &&
+              element.actionPrice < product[idx - 1].price
+            ) {
+              sortByAction = false;
+            } else {
+              sortByAction = true;
+            }
+          } else {
+            sortByAction = false;
+          }
+        });
+      }
+
+      product.reverse();
     } else if (type_sort === 2) {
       // Popularity <Disabled Client>
     } else if (type_sort === 3) {
