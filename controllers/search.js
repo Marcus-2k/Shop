@@ -51,28 +51,40 @@ module.exports.search = async function (req, res) {
       productCharacteristics.push(element.characteristics);
     }); // Category and Characteristics in collection
 
+    const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Category Product
+    // console.log(uniqueProductCategory);
+
+    console.log(getQueryParams(req.query, uniqueProductCategory));
     // Type sorting ==============================================================
     if (type_sort === 0) {
       // Сheap
       product = await Product.find({
         name: { $regex: search_text, $options: "i" },
+        $or: getQueryParams(req.query, uniqueProductCategory),
       })
         .sort({ price: 1 })
         .limit(limit)
         .skip(limit * --page);
 
       let sortByAction = false;
+
+      if (product.length <= 1) {
+        sortByAction = true;
+      }
+
       while (!sortByAction) {
         console.log("while");
 
         product.forEach((element, idx) => {
-          if (
-            element.action === true &&
-            element.actionPrice < product[idx - 1].price
-          ) {
-            let prevItem = product[idx - 1];
-            product[idx - 1] = element;
-            product[idx] = prevItem;
+          if (idx >= 1) {
+            if (
+              element.action === true &&
+              element.actionPrice < product[idx - 1].price
+            ) {
+              let prevItem = product[idx - 1];
+              product[idx - 1] = element;
+              product[idx] = prevItem;
+            }
           }
         });
 
@@ -95,23 +107,31 @@ module.exports.search = async function (req, res) {
       // Expensive
       product = await Product.find({
         name: { $regex: search_text, $options: "i" },
+        $or: getQueryParams(req.query, uniqueProductCategory),
       })
         .sort({ price: 1 })
         .limit(limit)
         .skip(limit * --page);
 
       let sortByAction = false;
+
+      if (product.length <= 1) {
+        sortByAction = true;
+      }
+
       while (!sortByAction) {
         console.log("while");
 
         product.forEach((element, idx) => {
-          if (
-            element.action === true &&
-            element.actionPrice < product[idx - 1].price
-          ) {
-            let prevItem = product[idx - 1];
-            product[idx - 1] = element;
-            product[idx] = prevItem;
+          if (idx >= 1) {
+            if (
+              element.action === true &&
+              element.actionPrice < product[idx - 1].price
+            ) {
+              let prevItem = product[idx - 1];
+              product[idx - 1] = element;
+              product[idx] = prevItem;
+            }
           }
         });
 
@@ -140,6 +160,7 @@ module.exports.search = async function (req, res) {
       // Action
       product = await Product.find({
         name: { $regex: search_text, $options: "i" },
+        $or: getQueryParams(req.query, uniqueProductCategory),
       })
         .sort({ action: -1 })
         .limit(limit)
@@ -165,6 +186,7 @@ module.exports.search = async function (req, res) {
       // Grade
       product = await Product.find({
         name: { $regex: search_text, $options: "i" },
+        $or: getQueryParams(req.query, uniqueProductCategory),
       })
         .limit(limit)
         .skip(limit * --page);
@@ -172,9 +194,6 @@ module.exports.search = async function (req, res) {
 
     // ===========================================================================
     if (req.body.widthCharacteristics) {
-      const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Category Product
-      // console.log(uniqueProductCategory);
-
       const counterProductInCategory = counterProduct(
         uniqueProductCategory,
         categoryNoUnique
@@ -277,4 +296,43 @@ function productBlock(counter, productCharacteristics) {
   });
 
   return characteristicsBlockCategory;
+}
+
+function getQueryParams(reqQuery, uniqueCategory) {
+  let queryParams = Object.assign({}, reqQuery);
+
+  delete queryParams.search_text;
+  delete queryParams.limit;
+  delete queryParams.page;
+  delete queryParams.type_sort;
+
+  let queryParamsCategory = [];
+
+  for (let idx = 0; idx < uniqueCategory.length; idx++) {
+    queryParamsCategory.push({});
+
+    for (let param in queryParams) {
+      for (
+        let j = 0;
+        j <
+        Catalog.categoryList[uniqueCategory[idx][0]].nameListCategory[
+          uniqueCategory[idx][1]
+        ].subNameListCategory[uniqueCategory[idx][2]].characteristics.length;
+        j++
+      ) {
+        if (
+          Catalog.categoryList[uniqueCategory[idx][0]].nameListCategory[
+            uniqueCategory[idx][1]
+          ].subNameListCategory[uniqueCategory[idx][2]].characteristics[j]
+            .query_name === param
+        ) {
+          queryParamsCategory[idx]["characteristicsName." + param] = {
+            $in: queryParams[param].split(","),
+          };
+        }
+      }
+    }
+  }
+
+  return queryParamsCategory;
 }
