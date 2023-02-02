@@ -7,29 +7,44 @@ module.exports.search = async function (req, res) {
   try {
     console.log(req.query);
 
-    const lengthQueryParams = Object.keys(req.query).length; // Counter Params
-
     const search_text = req.query.search_text;
 
     // Pagination === START
     let limit = req.query.limit ? Number(req.query.limit) : 10; // Скільки товарів на сторінку
-    if (limit < 10) {
+    if (
+      limit < 10 ||
+      limit > 100 ||
+      typeof limit !== "number" ||
+      isNaN(limit)
+    ) {
       limit = 10;
     }
+
     let page = req.query.page ? Number(req.query.page) : 1; // Сторінка яку нада відобразити
+    if (page < 1 || typeof page !== "number" || isNaN(page)) {
+      page = 1;
+    }
 
     let currentPage = page; // Open page
     let count; // Counter element in collection
     let maxPage; // Max page site
     // Pagination === END
 
-    const type_sort = req.query.type_sort ? Number(req.query.type_sort) : 5; // Type sorting
+    let type_sort = req.query.type_sort ? Number(req.query.type_sort) : 5; // Type sorting
     // 0 = Від дешевих до дорогих (cheap)
     // 1 = Від дорогих до дешевих (expensive)
     // 2 = Популярні (popularity)
     // 3 = Новинки (novelty)
     // 4 = Акція (action)
     // 5 = За рейтингом (grade)
+    if (
+      type_sort > 5 ||
+      type_sort < 0 ||
+      typeof type_sort !== "number" ||
+      isNaN(type_sort)
+    ) {
+      type_sort = 5;
+    }
 
     count = await Product.find({
       name: { $regex: search_text, $options: "i" },
