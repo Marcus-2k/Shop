@@ -334,5 +334,16 @@ function getQueryParams(reqQuery, uniqueCategory) {
     }
   }
 
+  for (let idx = 0; idx < queryParamsCategory.length; idx++) {
+    if (Object.keys(queryParamsCategory[idx]).length === 0) {
+      if (idx === 0) {
+        queryParamsCategory.shift();
+      } else {
+        queryParamsCategory.splice(1, idx);
+        idx - 1;
+      }
+    }
+  }
+
   return queryParamsCategory;
 }
