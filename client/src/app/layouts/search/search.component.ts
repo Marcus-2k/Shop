@@ -58,7 +58,7 @@ export class SearchComponent implements OnInit {
           this.productList = response.product; // List Product
           const productOptionsBlock: number[][][][] =
             response.productCharacteristicsBlock; // Parameters by block to categories
-          this.currentPage = Number(response.currentPage); // Current Page
+          this.currentPage = 1;
           this.maxPage = response.maxPage; // Max pages site
           this.limit = response.limit; // Limits item site
           // ==============================================================================================
@@ -218,7 +218,7 @@ export class SearchComponent implements OnInit {
             console.log("Товарів на сторінку", response.limit);
             console.log("====================================================");
             this.productList = response.product; // List Product
-            this.currentPage = Number(response.currentPage); // Current Page
+            this.currentPage = 1;
             this.maxPage = response.maxPage; // Max pages site
             this.limit = response.limit; // Limits item site
           },
