@@ -9,7 +9,7 @@ module.exports.search = async function (req, res) {
 
     const search_text = req.query.search_text;
 
-    // Pagination === START
+    // Pagination START ============================================================================
     let limit = req.query.limit ? Number(req.query.limit) : 10; // Скільки товарів на сторінку
     if (
       limit < 10 ||
@@ -20,15 +20,14 @@ module.exports.search = async function (req, res) {
       limit = 10;
     }
 
-    let page = req.query.page ? Number(req.query.page) : 1; // Сторінка яку нада відобразити
-    if (page < 1 || typeof page !== "number" || isNaN(page)) {
-      page = 1;
+    let currentPage = req.query.page ? Number(req.query.page) : 1; // Open page
+    if (currentPage < 1 || typeof page !== "number" || isNaN(currentPage)) {
+      currentPage = 1;
     }
 
-    let currentPage = page; // Open page
     let count; // Counter element in collection
-    let maxPage; // Max page site
-    // Pagination === END
+    let maxPage; // Max number of pages
+    // Pagination END ==============================================================================
 
     let type_sort = req.query.type_sort ? Number(req.query.type_sort) : 5; // Type sorting
     // 0 = Від дешевих до дорогих (cheap)
@@ -79,7 +78,7 @@ module.exports.search = async function (req, res) {
       })
         .sort({ price: 1 })
         .limit(limit)
-        .skip(limit * --page);
+        .skip(limit * --currentPage);
 
       let sortByAction = false;
 
@@ -126,7 +125,7 @@ module.exports.search = async function (req, res) {
       })
         .sort({ price: 1 })
         .limit(limit)
-        .skip(limit * --page);
+        .skip(limit * --currentPage);
 
       let sortByAction = false;
 
@@ -179,7 +178,7 @@ module.exports.search = async function (req, res) {
       })
         .sort({ action: -1 })
         .limit(limit)
-        .skip(limit * --page);
+        .skip(limit * --currentPage);
 
       count = await Product.find({
         name: { $regex: search_text, $options: "i" },
@@ -204,7 +203,7 @@ module.exports.search = async function (req, res) {
         $or: getQueryParams(req.query, uniqueProductCategory),
       })
         .limit(limit)
-        .skip(limit * --page);
+        .skip(limit * --currentPage);
     }
 
     // ===========================================================================
