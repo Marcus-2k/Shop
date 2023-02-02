@@ -32,11 +32,43 @@ export class SearchComponent implements OnInit {
     this.route.queryParams.subscribe((queryParams: Params) => {
       this.search_text = queryParams["search_text"];
 
-      this.type_sort = queryParams["type_sort"]
-        ? Number(queryParams["type_sort"])
-        : 5;
-
       Object.assign(this.queryParams, queryParams);
+    });
+
+    if (
+      this.limit < 10 ||
+      this.limit > 100 ||
+      typeof this.type_sort !== "number" ||
+      isNaN(this.type_sort) ||
+      this.queryParams["limit"] === undefined
+    ) {
+      this.limit = 10;
+      this.queryParams["limit"] = 10;
+    }
+
+    if (
+      this.currentPage < 1 ||
+      typeof this.currentPage !== "number" ||
+      isNaN(this.currentPage) ||
+      this.queryParams["page"] === undefined
+    ) {
+      this.currentPage = 1;
+      this.queryParams["page"] = 1;
+    }
+
+    if (
+      this.type_sort < 0 ||
+      this.type_sort > 5 ||
+      typeof this.type_sort !== "number" ||
+      isNaN(this.type_sort) ||
+      this.queryParams["type_sort"] === undefined
+    ) {
+      this.type_sort = 5;
+      this.queryParams["type_sort"] = 5;
+    }
+
+    this.router.navigate(["search"], {
+      queryParams: this.queryParams,
     });
 
     if (this.search_text) {
