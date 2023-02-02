@@ -21,7 +21,11 @@ module.exports.search = async function (req, res) {
     }
 
     let currentPage = req.query.page ? Number(req.query.page) : 1; // Open page
-    if (currentPage < 1 || typeof page !== "number" || isNaN(currentPage)) {
+    if (
+      currentPage < 1 ||
+      typeof currentPage !== "number" ||
+      isNaN(currentPage)
+    ) {
       currentPage = 1;
     }
 
