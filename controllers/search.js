@@ -45,13 +45,6 @@ module.exports.search = async function (req, res) {
       type_sort = 5;
     }
 
-    count = await Product.find({
-      name: { $regex: search_text, $options: "i" },
-    })
-      .countDocuments({})
-      .exec(); // Counter element in collection
-    maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
-
     let product = await Product.find({
       name: { $regex: search_text, $options: "i" },
       // $regex >> partial keywords, options "i" >> case insensitivity
@@ -66,10 +59,18 @@ module.exports.search = async function (req, res) {
     }); // Category and Characteristics in collection
 
     const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Category Product
-    // console.log(uniqueProductCategory);
+
+    count = await Product.find({
+      name: { $regex: search_text, $options: "i" },
+      $or: getQueryParams(req.query, uniqueProductCategory),
+    })
+      .countDocuments({})
+      .exec(); // Counter element in collection
+    maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
 
     console.log(getQueryParams(req.query, uniqueProductCategory));
-    // Type sorting ==============================================================
+
+    // Type sorting START ========================================================================================
     if (type_sort === 0) {
       // Сheap
       product = await Product.find({
@@ -78,7 +79,7 @@ module.exports.search = async function (req, res) {
       })
         .sort({ price: 1 })
         .limit(limit)
-        .skip(limit * --currentPage);
+        .skip(limit * (currentPage - 1));
 
       let sortByAction = false;
 
@@ -125,7 +126,7 @@ module.exports.search = async function (req, res) {
       })
         .sort({ price: 1 })
         .limit(limit)
-        .skip(limit * --currentPage);
+        .skip(limit * (currentPage - 1));
 
       let sortByAction = false;
 
@@ -178,7 +179,7 @@ module.exports.search = async function (req, res) {
       })
         .sort({ action: -1 })
         .limit(limit)
-        .skip(limit * --currentPage);
+        .skip(limit * (currentPage - 1));
 
       count = await Product.find({
         name: { $regex: search_text, $options: "i" },
@@ -203,10 +204,10 @@ module.exports.search = async function (req, res) {
         $or: getQueryParams(req.query, uniqueProductCategory),
       })
         .limit(limit)
-        .skip(limit * --currentPage);
+        .skip(limit * (currentPage - 1));
     }
+    // Type sorting END ==========================================================================================
 
-    // ===========================================================================
     if (req.body.widthCharacteristics) {
       const counterProductInCategory = counterProduct(
         uniqueProductCategory,
