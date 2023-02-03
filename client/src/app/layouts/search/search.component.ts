@@ -35,37 +35,75 @@ export class SearchComponent implements OnInit {
       Object.assign(this.queryParams, queryParams);
     });
 
-    if (
-      this.limit < 10 ||
-      this.limit > 100 ||
-      typeof this.type_sort !== "number" ||
-      isNaN(this.type_sort) ||
-      this.queryParams["limit"] === undefined
-    ) {
+    // Checking the correctness of data START ========================================================
+    // limit
+    if (this.queryParams["limit"]) {
+      if (isNaN(Number(this.queryParams["limit"]))) {
+        // console.log("Not A Number");
+        this.limit = 10;
+        this.queryParams["limit"] = 10;
+      } else if (
+        this.pageSizeOptions.indexOf(Number(this.queryParams["limit"])) === -1
+      ) {
+        // console.log("is equal to 10 or 25 or 50 or 100");
+        this.limit = 10;
+        this.queryParams["limit"] = 10;
+      } else {
+        // console.log("correct value");
+        this.limit = Number(this.queryParams["limit"]);
+      }
+    } else {
+      // console.log("undefined value");
       this.limit = 10;
       this.queryParams["limit"] = 10;
     }
 
-    if (
-      this.currentPage < 1 ||
-      typeof this.currentPage !== "number" ||
-      isNaN(this.currentPage) ||
-      this.queryParams["page"] === undefined
-    ) {
+    // page
+    if (this.queryParams["page"]) {
+      if (isNaN(Number(this.queryParams["page"]))) {
+        // console.log("Not A Number");
+        this.currentPage = 1;
+        this.queryParams["page"] = 1;
+      } else if (Number(this.queryParams["page"]) < 1) {
+        // console.log("less than 1");
+        this.currentPage = 1;
+        this.queryParams["page"] = 1;
+      } else {
+        // console.log("correct value");
+        this.currentPage = Number(this.queryParams["page"]);
+      }
+    } else {
+      // console.log("undefined value");
       this.currentPage = 1;
       this.queryParams["page"] = 1;
     }
 
-    if (
-      this.type_sort < 0 ||
-      this.type_sort > 5 ||
-      typeof this.type_sort !== "number" ||
-      isNaN(this.type_sort) ||
-      this.queryParams["type_sort"] === undefined
-    ) {
+    // type_sort
+    if (this.queryParams["type_sort"]) {
+      if (isNaN(Number(this.queryParams["type_sort"]))) {
+        // console.log("Not A Number");
+        this.type_sort = 5;
+        this.queryParams["type_sort"] = 5;
+      } else if (
+        Number(this.queryParams["type_sort"]) > 5 ||
+        Number(this.queryParams["type_sort"]) < 0 ||
+        Number(this.queryParams["type_sort"]) === 2 ||
+        Number(this.queryParams["type_sort"]) === 3
+      ) {
+        // only 0, 1, 4, 5 | 2, 3 disabled
+        // console.log("more than 5 or less than 5 | is equal to 2 or 3");
+        this.type_sort = 5;
+        this.queryParams["type_sort"] = 5;
+      } else {
+        // console.log("correct value");
+        this.type_sort = Number(this.queryParams["type_sort"]);
+      }
+    } else {
+      // console.log("undefined value");
       this.type_sort = 5;
       this.queryParams["type_sort"] = 5;
     }
+    // Checking the correctness of data END ==========================================================
 
     this.router.navigate(["search"], {
       queryParams: this.queryParams,
