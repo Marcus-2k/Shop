@@ -112,7 +112,11 @@ export class SearchComponent implements OnInit {
     if (this.search_text) {
       this.searchService.search(this.queryParams).subscribe({
         next: (response) => {
-          if (response.product.length === 0) {
+          if (
+            response.product.length === 0 &&
+            response.productCharacteristicsBlock.length === 0 &&
+            response.productCharacteristicsName.length === 0
+          ) {
             this.searchEmpty = true;
           }
           // ==============================================================================================

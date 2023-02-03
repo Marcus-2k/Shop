@@ -154,30 +154,38 @@
           </div>
 
           <div class="search__content-main-body">
-            <!-- Card START -->
-            <div class="cards">
-              <ul class="cards-catalog">
-                <li
-                  class="cards-catalog-item"
-                  *ngFor="let product of productList"
+            <ng-container *ngIf="productList.length > 0">
+              <!-- Card START -->
+              <div class="cards">
+                <ul class="cards-catalog">
+                  <li
+                    class="cards-catalog-item"
+                    *ngFor="let product of productList"
+                  >
+                    <app-product-card
+                      [productItem]="product"
+                    ></app-product-card>
+                  </li>
+                </ul>
+              </div>
+              <!-- Card END -->
+              <!-- Pagination START -->
+              <div class="pagination">
+                <mat-paginator
+                  [length]="maxPage * limit"
+                  [pageSize]="limit"
+                  [pageIndex]="currentPage - 1"
+                  [pageSizeOptions]="pageSizeOptions"
+                  (page)="pageEvent = $event; onPaginateChange($event)"
                 >
-                  <app-product-card [productItem]="product"></app-product-card>
-                </li>
-              </ul>
-            </div>
-            <!-- Card END -->
-            <!-- Pagination START -->
-            <div class="pagination">
-              <mat-paginator
-                [length]="maxPage * limit"
-                [pageSize]="limit"
-                [pageIndex]="currentPage - 1"
-                [pageSizeOptions]="pageSizeOptions"
-                (page)="pageEvent = $event; onPaginateChange($event)"
-              >
-              </mat-paginator>
-            </div>
-            <!-- Pagination END -->
+                </mat-paginator>
+              </div>
+              <!-- Pagination END -->
+            </ng-container>
+
+            <ng-container *ngIf="productList.length === 0"
+              ><app-search-empty></app-search-empty
+            ></ng-container>
           </div>
         </div>
       </div>
