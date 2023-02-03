@@ -94,33 +94,55 @@ module.exports.search = async function (req, res) {
       while (!sortByAction) {
         console.log("while");
 
-        product.forEach((element, idx) => {
+        for (let idx = 0; idx < product.length; idx++) {
           if (idx >= 1) {
             if (
-              element.action === true &&
-              element.actionPrice < product[idx - 1].price
+              product[idx].action === true &&
+              product[idx - 1].action === true
             ) {
-              let prevItem = product[idx - 1];
-              product[idx - 1] = element;
-              product[idx] = prevItem;
+              if (product[idx].actionPrice < product[idx - 1].actionPrice) {
+                let prevItem = product[idx - 1];
+                product[idx - 1] = product[idx];
+                product[idx] = prevItem;
+              }
+            } else if (
+              product[idx].action === true &&
+              product[idx - 1].action === false
+            ) {
+              if (product[idx].actionPrice < product[idx - 1].price) {
+                let prevItem = product[idx - 1];
+                product[idx - 1] = product[idx];
+                product[idx] = prevItem;
+              }
             }
           }
-        });
+        }
 
-        product.forEach((element, idx) => {
+        for (let idx = 0; idx < product.length; idx++) {
           if (idx !== 0) {
             if (
-              element.action === true &&
-              element.actionPrice < product[idx - 1].price
+              product[idx].action === true &&
+              product[idx - 1].action === true
             ) {
-              sortByAction = false;
-            } else {
+              if (product[idx].actionPrice < product[idx - 1].actionPrice) {
+                sortByAction = false;
+                break;
+              } else {
+                sortByAction = true;
+              }
+            } else if (
+              product[idx].action === true &&
+              product[idx - 1].action === false
+            ) {
+              if (product[idx].actionPrice < product[idx - 1].price) {
+                sortByAction = false;
+                break;
+              } else {
+              }
               sortByAction = true;
             }
-          } else {
-            sortByAction = false;
           }
-        });
+        }
       }
     } else if (type_sort === 1) {
       // Expensive
@@ -141,33 +163,55 @@ module.exports.search = async function (req, res) {
       while (!sortByAction) {
         console.log("while");
 
-        product.forEach((element, idx) => {
+        for (let idx = 0; idx < product.length; idx++) {
           if (idx >= 1) {
             if (
-              element.action === true &&
-              element.actionPrice < product[idx - 1].price
+              product[idx].action === true &&
+              product[idx - 1].action === true
             ) {
-              let prevItem = product[idx - 1];
-              product[idx - 1] = element;
-              product[idx] = prevItem;
+              if (product[idx].actionPrice < product[idx - 1].actionPrice) {
+                let prevItem = product[idx - 1];
+                product[idx - 1] = product[idx];
+                product[idx] = prevItem;
+              }
+            } else if (
+              product[idx].action === true &&
+              product[idx - 1].action === false
+            ) {
+              if (product[idx].actionPrice < product[idx - 1].price) {
+                let prevItem = product[idx - 1];
+                product[idx - 1] = product[idx];
+                product[idx] = prevItem;
+              }
             }
           }
-        });
+        }
 
-        product.forEach((element, idx) => {
+        for (let idx = 0; idx < product.length; idx++) {
           if (idx !== 0) {
             if (
-              element.action === true &&
-              element.actionPrice < product[idx - 1].price
+              product[idx].action === true &&
+              product[idx - 1].action === true
             ) {
-              sortByAction = false;
-            } else {
+              if (product[idx].actionPrice < product[idx - 1].actionPrice) {
+                sortByAction = false;
+                break;
+              } else {
+                sortByAction = true;
+              }
+            } else if (
+              product[idx].action === true &&
+              product[idx - 1].action === false
+            ) {
+              if (product[idx].actionPrice < product[idx - 1].price) {
+                sortByAction = false;
+                break;
+              } else {
+              }
               sortByAction = true;
             }
-          } else {
-            sortByAction = false;
           }
-        });
+        }
       }
 
       product.reverse();
