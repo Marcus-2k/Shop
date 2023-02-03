@@ -128,7 +128,7 @@ export class SearchComponent implements OnInit {
           this.productList = response.product; // List Product
           const productOptionsBlock: number[][][][] =
             response.productCharacteristicsBlock; // Parameters by block to categories
-          this.currentPage = 1;
+          this.currentPage = response.currentPage;
           this.maxPage = response.maxPage; // Max pages site
           this.limit = response.limit; // Limits item site
           // ==============================================================================================
