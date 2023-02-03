@@ -213,13 +213,18 @@ export class SearchComponent implements OnInit {
           });
           // console.log(uniqueFilterBlock);
           // ==============================================================================================
-          let parameters: string[] = Object.values(this.queryParams).splice(1);
-          parameters.pop(); //delete type_sort queryParams
-          parameters.pop(); //delete page queryParams
-          parameters.pop(); //delete limit queryParams
+          let onlyQueryParamsFilter: Params = {};
+          Object.assign(onlyQueryParamsFilter, this.queryParams);
+
+          delete onlyQueryParamsFilter["search_text"];
+          delete onlyQueryParamsFilter["type_sort"];
+          delete onlyQueryParamsFilter["page"];
+          delete onlyQueryParamsFilter["limit"];
+
+          let parametersValue: string[] = Object.values(onlyQueryParamsFilter);
           // ==============================================================================================
           let sortParameters: string[] = [];
-          parameters.forEach((element: string) => {
+          parametersValue.forEach((element: string) => {
             if (element.indexOf(",") !== -1) {
               sortParameters = sortParameters.concat(element.split(","));
             } else {
