@@ -203,15 +203,20 @@
               >&nbsp;/&nbsp;</span
             >
 
-            <p
-              class="category-selected-title"
-              *ngIf="categoryNumber.length === 3"
-            >
-              {{
+            <ng-container
+              *ngIf="
+                categoryNumber.length === 3 &&
                 categoryList[oneIndex].nameListCategory[twoIndex]
-                  .subNameListCategory[threeIndex].titleSubNameListCategory
-              }}
-            </p>
+                  .subNameListCategory !== undefined
+              "
+            >
+              <p class="category-selected-title">
+                {{
+                  categoryList[oneIndex].nameListCategory[twoIndex]
+                    .subNameListCategory[threeIndex].titleSubNameListCategory
+                }}
+              </p>
+            </ng-container>
           </div>
         </div>
 
@@ -534,10 +539,8 @@
         <ng-container
           *ngIf="
             threeCategory &&
-            categoryList[oneIndex].nameListCategory[
-              twoIndex === -1 ? 0 : twoIndex
-            ].subNameListCategory[threeIndex === -1 ? 0 : threeIndex]
-              .titleSubNameListCategory !== undefined
+            categoryList[oneIndex].nameListCategory[twoIndex]
+              .subNameListCategory !== undefined
           "
         >
           <div
@@ -548,9 +551,7 @@
               let idx = index
             "
             (click)="editThreeCategory(idx)"
-            [ngClass]="{
-              active__block: threeIndex === idx
-            }"
+            [ngClass]="{ active__block: threeIndex === idx }"
           >
             <h2 class="list-block-item-title">
               {{ category.titleSubNameListCategory }}
@@ -561,20 +562,23 @@
     </div>
     <!--  -->
     <div class="category-selected">
-      <button
-        mat-raised-button
-        color="primary"
-        *ngIf="oneCategory"
-        [disabled]="
-          categoryList[oneIndex].nameListCategory[
-            twoIndex === -1 ? 0 : twoIndex
-          ].subNameListCategory[threeIndex === -1 ? 0 : threeIndex]
-            .titleSubNameListCategory !== undefined && threeIndex === -1
-        "
-        (click)="selectThisCategory()"
-      >
-        Вибрати категорію
-      </button>
+      <ng-container *ngIf="twoCategory && threeCategory">
+        <button
+          mat-raised-button
+          color="primary"
+          *ngIf="
+            (categoryList[oneIndex].nameListCategory[twoIndex]
+              .characteristics !== undefined &&
+              threeIndex === -1) ||
+            (threeIndex !== -1 &&
+              categoryList[oneIndex].nameListCategory[twoIndex]
+                .subNameListCategory !== undefined)
+          "
+          (click)="selectThisCategory()"
+        >
+          Вибрати категорію
+        </button>
+      </ng-container>
     </div>
     <!--  -->
   </div>

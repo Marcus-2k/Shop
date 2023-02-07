@@ -452,10 +452,18 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     console.log(this.characteristicsNumber);
   }
   getCharacteristics() {
-    this.characteristics =
-      this.categoryList[this.categoryNumber[0]].nameListCategory[
-        this.categoryNumber[1]
-      ].subNameListCategory[this.categoryNumber[2]].characteristics;
+    if (this.categoryNumber.length === 3) {
+      this.characteristics =
+        this.categoryList[this.categoryNumber[0]].nameListCategory[
+          this.categoryNumber[1]
+        ].subNameListCategory[this.categoryNumber[2]].characteristics;
+    } else if (this.categoryNumber.length === 2) {
+      this.characteristics =
+        this.categoryList[this.categoryNumber[0]].nameListCategory[
+          this.categoryNumber[1]
+        ].characteristics;
+    }
+
     this.recordCharacteristicsInArray();
   }
   recordCharacteristicsInArray() {

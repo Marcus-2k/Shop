@@ -273,10 +273,8 @@ export interface CategoryProduct_Characteristics {
   nameCategory: string;
   nameListCategory: {
     subNameCategory: string;
-    subNameListCategory: {
-      titleSubNameListCategory: string | undefined;
-      characteristics: Options[];
-    }[];
+    characteristics: Options[] | any; // Options[] | undefined
+    subNameListCategory: any; // { titleSubNameListCategory: string; characteristics: Options[]; } | undefined
   }[];
 }
 export interface Options {
