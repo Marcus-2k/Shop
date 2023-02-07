@@ -1,4 +1,5 @@
 const Catalog = require("../db/catalog");
+const Catalog_Characteristics = require("../db/catalog_characteristics");
 
 module.exports.getCategory = async function (req, res) {
   console.log("Server getCategory");
@@ -8,9 +9,12 @@ module.exports.getCategory = async function (req, res) {
 
     newCatalog.forEach((element) => {
       element.nameListCategory.forEach((item) => {
-        item.subNameListCategory.forEach((subItem) => {
-          delete subItem.characteristics;
-        });
+        delete item.searchWords;
+        if (item.subNameListCategory !== undefined) {
+          item.subNameListCategory.forEach((subItem) => {
+            delete subItem.searchWords;
+          });
+        }
       });
     });
 
@@ -46,7 +50,9 @@ module.exports.getCategoryAndCharacteristics = async function (req, res) {
   console.log("Server getCategoryAndCharacteristics");
 
   try {
-    return res.status(200).json(Catalog.categoryList);
+    return res
+      .status(200)
+      .json(Catalog_Characteristics.categoryList_characteristics);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
