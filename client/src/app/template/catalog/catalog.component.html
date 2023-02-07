@@ -61,25 +61,35 @@
       >
         <li
           class="category-subfirst-list-item"
-          *ngFor="
-            let categoryTwo of category[activeCategory].nameListCategory;
-            let index = index
-          "
+          *ngFor="let categoryTwo of category[activeCategory].nameListCategory"
         >
-          <a href="" class="list__item-link">
+          <a
+            class="list__item-link"
+            [routerLink]="['/search', categoryTwo.navigate_link]"
+            [ngClass]="{ disabled: categoryTwo.permissionUse === false }"
+          >
             <span class="list__item-link-text">
               {{ categoryTwo.subNameCategory }}
             </span>
           </a>
-          <ul class="group-subfirst-list">
+          <ul
+            class="group-subfirst-list"
+            *ngIf="categoryTwo.subNameListCategory"
+          >
             <li
               class="group-subfirst-list-item"
-              *ngFor="
-                let categoryThree of categoryTwo.subNameListCategory;
-                let index = index
-              "
+              *ngFor="let categoryThree of categoryTwo.subNameListCategory"
             >
-              <a href="" class="sublist__item-link">
+              <a
+                class="sublist__item-link"
+                [routerLink]="['/search', categoryThree.navigate_link]"
+                [queryParams]="
+                  categoryThree.queryParams
+                    ? categoryThree.queryParams
+                    : undefined
+                "
+                [ngClass]="{ disabled: categoryTwo.permissionUse === false }"
+              >
                 <span class="sublist__item-link-text">
                   {{ categoryThree.titleSubNameListCategory }}
                 </span>

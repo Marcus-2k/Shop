@@ -1,3 +1,5 @@
+import { Params } from "@angular/router";
+
 // Auth START ==========================================================================================
 export interface UserRegister {
   name: string;
@@ -264,19 +266,24 @@ export interface CategoryProduct {
   nameCategoryImg: string;
   nameListCategory: {
     subNameCategory: string;
-    subNameListCategory: {
-      titleSubNameListCategory: string | undefined;
-    }[];
+    navigate_link: string;
+    permissionUse: boolean;
+    subNameListCategory:
+      | {
+          titleSubNameListCategory: string;
+          permissionUse: boolean;
+          navigate_link: string;
+          queryParams: Params | undefined;
+        }[]
+      | undefined;
   }[];
 }
 export interface CategoryProduct_Characteristics {
   nameCategory: string;
   nameListCategory: {
     subNameCategory: string;
-    subNameListCategory: {
-      titleSubNameListCategory: string | undefined;
-      characteristics: Options[];
-    }[];
+    characteristics: Options[] | any; // Options[] | undefined
+    subNameListCategory: any; // { titleSubNameListCategory: string; characteristics: Options[]; } | undefined
   }[];
 }
 export interface Options {

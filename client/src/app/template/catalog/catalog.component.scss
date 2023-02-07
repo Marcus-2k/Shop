@@ -58,6 +58,9 @@
         max-width: 33%;
         &-item {
           margin: 0 10px 10px 0px;
+          .disabled {
+            opacity: 0.4;
+          }
           .list__item-link {
             display: block;
             &:hover {
@@ -70,6 +73,9 @@
           }
           .group-subfirst-list {
             &-item {
+              .disabled {
+                opacity: 0.4;
+              }
               .sublist__item-link {
                 display: block;
                 &:hover {
