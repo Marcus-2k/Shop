@@ -853,7 +853,7 @@ module.exports = {
     name: "Призначення",
     query_name: "cpu_appointment",
     htmlElement: "select",
-    select: ["Без розблокованого множника", "З розблокованим множником"],
+    select: ["Для комп'ютерів", "Для серверів"],
     multiple: false,
   },
   Spindle_Rotation_Speed: {
