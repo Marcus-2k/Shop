@@ -302,30 +302,20 @@ export interface CategoryHome {
 // Page Search START ===================================================================================
 export interface FoundData {
   product: Product[];
-  productCharacteristicsBlock: number[][][][];
-  productCharacteristicsName: Options[][];
+  filters: Filter[];
   currentPage: number;
   maxPage: number;
   limit: number;
 }
-export interface FoundDataWithoutCharacteristics {
-  product: Product[];
-  currentPage: number;
-  maxPage: number;
-  limit: number;
-}
-export interface FilterNameParams {
-  name: string;
-  params: string[];
-}
-export interface ActiveFilterBlock {
-  name: string;
-  inputActive: ActiveFilter[];
-  blockActive: boolean;
-}
-export interface ActiveFilter {
-  name: string;
+
+export interface Filter {
+  title: string;
   query_name: string;
+  show: boolean;
+  checkboxList: Checkbox[];
+}
+export interface Checkbox {
+  name: string;
   counter: number;
   active: boolean;
 }

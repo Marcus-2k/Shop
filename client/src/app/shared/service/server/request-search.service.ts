@@ -1,12 +1,10 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+
 import { Params } from "@angular/router";
 import { Observable } from "rxjs";
 
-import {
-  FoundData,
-  FoundDataWithoutCharacteristics,
-} from "src/app/shared/interface/interfaces";
+import { FoundData } from "src/app/shared/interface/interfaces";
 
 import { environment } from "src/environments/environment";
 
@@ -20,23 +18,19 @@ export class RequestSearchService {
   private PORT: string = environment.PORT;
   private url_server: string = `http://${this.HOST}${this.PORT}/api`;
 
-  search(queryParams: Params): Observable<FoundData> {
+  search(queryParams: Params, params: Params): Observable<FoundData> {
     const query: URLSearchParams = new URLSearchParams(queryParams);
 
-    return this.http.post<FoundData>(
-      `${this.url_server}/search?${query.toString()}`,
-      { widthCharacteristics: true }
-    );
-  }
-
-  searchWithoutCharacteristics(
-    queryParams: Params
-  ): Observable<FoundDataWithoutCharacteristics> {
-    const query: URLSearchParams = new URLSearchParams(queryParams);
-
-    return this.http.post<FoundDataWithoutCharacteristics>(
-      `${this.url_server}/search?${query.toString()}`,
-      { widthCharacteristics: false }
-    );
+    if (params.hasOwnProperty("navigate_link")) {
+      return this.http.get<FoundData>(
+        `${this.url_server}/search${
+          "/" + params["navigate_link"]
+        }?${query.toString()}`
+      );
+    } else {
+      return this.http.get<FoundData>(
+        ` ${this.url_server}/search?${query.toString()}`
+      );
+    }
   }
 }

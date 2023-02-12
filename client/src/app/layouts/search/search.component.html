@@ -14,17 +14,13 @@
         <div class="search__content-header">
           <div class="reset">
             <ng-container *ngFor="let filter of listFilter">
-              <ng-container *ngFor="let filterItem of filter.inputActive">
+              <ng-container *ngFor="let filterItem of filter.checkboxList">
                 <ng-container *ngIf="filterItem.active">
                   <li class="reset-item">
                     <button
                       mat-stroked-button
                       (click)="
-                        filterSearch(
-                          filterItem.name,
-                          filterItem.query_name,
-                          false
-                        )
+                        filterSearch(filterItem.name, filter.query_name, false)
                       "
                     >
                       {{ filterItem.name }}&nbsp;&Cross;
@@ -98,13 +94,13 @@
 
                     <div
                       class="category__block-btn"
-                      (click)="filter.blockActive = !filter.blockActive"
+                      (click)="filter.show = !filter.show"
                     >
                       <button class="btn__filter">
-                        <p class="title">{{ filter.name }}</p>
+                        <p class="title">{{ filter.title }}</p>
                         <p
                           class="arrow"
-                          [ngClass]="{ active__arrow: filter.blockActive }"
+                          [ngClass]="{ active__arrow: filter.show }"
                         >
                           <span class="material-symbols-outlined">
                             expand_more
@@ -115,12 +111,12 @@
 
                     <ul
                       class="category__block-list"
-                      [ngClass]="{ show: filter.blockActive }"
+                      [ngClass]="{ show: filter.show }"
                     >
                       <li
                         class="category__block-list-item"
                         *ngFor="
-                          let filterItem of filter.inputActive;
+                          let filterItem of filter.checkboxList;
                           let idx = index
                         "
                       >
@@ -128,7 +124,7 @@
                           (click)="
                             filterSearch(
                               filterItem.name,
-                              filterItem.query_name,
+                              filter.query_name,
                               !checkboxInput.checked
                             )
                           "
