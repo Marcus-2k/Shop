@@ -456,64 +456,6 @@ function createFilters(productList) {
   // =============================================================================================
 }
 
-// Delete Duplicate Category ====================================================================
-function deleteDuplicateCategory(categoryNoUnique) {
-  categoryNoUnique.forEach((element, i) => {
-    categoryNoUnique[i] = element.join("");
-  }); // [ [1,0,5], [1,0,5], [1,0,0] ... ] >>> [ '105', '105', '100', ...]
-
-  const uniqueProductCategory = Array.from(new Set(categoryNoUnique));
-  uniqueProductCategory.forEach((element, i) => {
-    uniqueProductCategory[i] = ("" + element).split("").map(Number);
-  }); // [ '105', '100' ... ] >>> [ [1,0,5], [1,0,0] ... ]
-  return uniqueProductCategory;
-} // return [ [1,0,5], [1,0,5], [1,0,0] ] >>> [ [1, 0, 5], [1, 0, 0] ]
-
-// Counter Product In Category ==================================================================
-function counterProduct(uniqueProductCategory, categoryNoUnique) {
-  const counterProductInCategory = [];
-  let uniqueCategory = [];
-
-  uniqueProductCategory.forEach((element, i) => {
-    uniqueCategory[i] = element.join(""); // uniqueCategory = [ '100', '105' ]
-    counterProductInCategory.push([0]); // [ [ 0 ], [ 0 ], [ 0 ] ]
-  });
-
-  categoryNoUnique.forEach((element, i) => {
-    uniqueCategory.forEach((item, idx) => {
-      if (element === item) {
-        counterProductInCategory[idx][0]++;
-      }
-    });
-  }); // counterProductInCategory = [ [ 1 ], [ 6 ], [ 10 ] ]
-
-  return counterProductInCategory;
-} // return [ [ 1 ], [ 6 ], [ 10 ] ]
-
-// Product Characteristics Block ================================================================
-function productBlock(counter, productCharacteristics) {
-  const productCharacteristicsBlock = [];
-  counter.forEach((element) => {
-    let characteristicsBlock = productCharacteristics.splice(0, element[0]);
-    productCharacteristicsBlock.push(characteristicsBlock);
-  });
-
-  const characteristicsBlockCategory = [];
-  productCharacteristicsBlock.forEach((element, i) => {
-    characteristicsBlockCategory.push([]);
-
-    for (let index = 0; index < element[0].length; index++) {
-      let characteristicsBlock = [];
-      element.forEach((item, idx) => {
-        characteristicsBlock.push(item[index]);
-      });
-      characteristicsBlockCategory[i].push(characteristicsBlock);
-    }
-  });
-
-  return characteristicsBlockCategory;
-}
-
 function getQueryParams(reqQuery) {
   console.log("START getQueryParams");
 
