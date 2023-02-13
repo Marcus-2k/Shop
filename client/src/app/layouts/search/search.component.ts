@@ -1,7 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Params, Router } from "@angular/router";
-import { Product, Filter } from "src/app/shared/interface/interfaces";
+import {
+  Product,
+  Filter,
+  WidgetAutoPortal,
+} from "src/app/shared/interface/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
@@ -121,6 +125,7 @@ export class SearchComponent implements OnInit {
           console.log("=====================================================");
           console.log(response.product);
           console.log(response.filters);
+          console.log(response.widget_auto_portal);
           console.log("Відкрита сторінка", response.currentPage);
           console.log("Кількість сторінок", response.maxPage);
           console.log("Товарів на сторінку", response.limit);
@@ -128,6 +133,7 @@ export class SearchComponent implements OnInit {
           // ==============================================================================================
           this.productList = response.product;
           this.listFilter = response.filters;
+          this.widget_auto_portal = response.widget_auto_portal;
 
           this.currentPage = response.currentPage;
           this.maxPage = response.maxPage;
@@ -164,6 +170,10 @@ export class SearchComponent implements OnInit {
         },
         error: (error) => {
           console.log(error);
+          if (error.status === 404) {
+            this.router.navigate(["/404"]);
+            this.showNotice.open("Помилка запиту, заборонене посилання.", "Ok");
+          }
           // if (error.status === 500 || error.status === 0) {}
         },
         complete: () => {
@@ -268,6 +278,8 @@ export class SearchComponent implements OnInit {
 
   queryParams: Params = {};
   params: Params = {};
+
+  widget_auto_portal: WidgetAutoPortal[] | undefined;
 
   filterSearch(nameInput: string, nameQuery: string, checked: boolean) {
     if (checked === true) {

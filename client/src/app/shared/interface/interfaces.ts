@@ -303,9 +303,16 @@ export interface CategoryHome {
 export interface FoundData {
   product: Product[];
   filters: Filter[];
+  widget_auto_portal: WidgetAutoPortal[] | undefined;
   currentPage: number;
   maxPage: number;
   limit: number;
+}
+
+export interface WidgetAutoPortal {
+  titleSubNameListCategory: string;
+  navigate_link: string;
+  navigate_image: string;
 }
 
 export interface Filter {

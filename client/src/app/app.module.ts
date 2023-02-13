@@ -39,6 +39,8 @@ import { RegisterComponent } from "./layouts/register/register.component";
 // Page Search Product
 import { SearchComponent } from "./layouts/search/search.component";
 import { SearchEmptyComponent } from "./layouts/search/search-empty/search-empty.component";
+import { WidgetAutoPortalComponent } from "./layouts/search/widget-auto-portal/widget-auto-portal.component";
+
 // User Layouts
 import { AccountComponent } from "./layouts/user-layouts/account/account.component";
 import { UserComponent } from "./layouts/user-layouts/user/user.component";
@@ -182,6 +184,7 @@ import { environment } from "../environments/environment";
     MyOrderDetailComponent,
     NotConnectionToServerComponent,
     SearchEmptyComponent,
+    WidgetAutoPortalComponent,
   ],
   imports: [
     BrowserModule,

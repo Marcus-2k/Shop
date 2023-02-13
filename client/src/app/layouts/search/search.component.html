@@ -12,6 +12,15 @@
     <div class="search">
       <div class="search__content">
         <div class="search__content-header">
+          <div
+            class="widget_auto_portal"
+            *ngIf="widget_auto_portal !== undefined"
+          >
+            <app-widget-auto-portal
+              [widget_auto_portal]="widget_auto_portal"
+            ></app-widget-auto-portal>
+          </div>
+
           <div class="reset">
             <ng-container *ngFor="let filter of listFilter">
               <ng-container *ngFor="let filterItem of filter.checkboxList">

@@ -1,0 +1,24 @@
+<!--  -->
+
+<div class="portal-navigation__wrapper">
+  <ul class="portal-navigation">
+    <ng-container *ngIf="widget_auto_portal !== undefined">
+      <ng-container *ngFor="let item of widget_auto_portal">
+        <li class="portal-navigation__item">
+          <a
+            class="portal-navigation__link"
+            [routerLink]="['/search', item.navigate_link]"
+          >
+            <span class="portal-navigation__image">
+              <img [src]="url_server_folder + item.navigate_image" alt="" />
+            </span>
+
+            <span class="portal-navigation__text">
+              {{ item.titleSubNameListCategory }}
+            </span>
+          </a>
+        </li>
+      </ng-container>
+    </ng-container>
+  </ul>
+</div>
