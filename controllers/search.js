@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const SearchService = require("../service/search-service");
+const catalog = require("../db/catalog");
 const catalog_option = require("../db/catalog_characteristics");
 
 module.exports.search = async function (req, res) {
@@ -12,6 +13,10 @@ module.exports.search = async function (req, res) {
     const navigate_link = req.params["navigate_link"];
 
     if (!search_text && !navigate_link) {
+      return res.status(404).json({ message: "Не коректний запит" });
+    }
+
+    if (navigate_link === "link") {
       return res.status(404).json({ message: "Не коректний запит" });
     }
 
@@ -59,6 +64,7 @@ module.exports.search = async function (req, res) {
     let FilterQuery = {};
 
     let filters;
+    let widget_auto_portal;
     if (navigate_link) {
       let { categoryList, type } = await SearchService.searchCategoryByParams(
         req.params
@@ -71,6 +77,10 @@ module.exports.search = async function (req, res) {
         FilterQuery = { category: categoryList[0] };
       } else if (type === 2) {
         FilterQuery = { category: { $in: categoryList } };
+        widget_auto_portal =
+          catalog.categoryList[categoryList[0][0]].nameListCategory[
+            categoryList[0][1]
+          ].subNameListCategory;
       } else {
         return res.status(500).json({ message: "Server error" });
       }
@@ -288,6 +298,7 @@ module.exports.search = async function (req, res) {
     return res.status(200).json({
       product,
       filters,
+      widget_auto_portal,
       currentPage,
       maxPage,
       limit,
