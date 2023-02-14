@@ -28,6 +28,8 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     console.log("Start ngOnInit Search");
 
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+
     this.route.queryParams.subscribe((queryParams: Params) => {
       this.search_text = queryParams["search_text"];
 
@@ -107,16 +109,6 @@ export class SearchComponent implements OnInit {
       this.queryParams["type_sort"] = 5;
     }
     // Checking the correctness of data END ==========================================================
-
-    if (this.params.hasOwnProperty("navigate_link")) {
-      this.router.navigate(["search", this.params["navigate_link"]], {
-        queryParams: this.queryParams,
-      });
-    } else {
-      this.router.navigate(["search"], {
-        queryParams: this.queryParams,
-      });
-    }
 
     if (this.search_text || this.params["navigate_link"]) {
       this.searchService.search(this.queryParams, this.params).subscribe({
@@ -207,6 +199,8 @@ export class SearchComponent implements OnInit {
   loaderNewData: boolean = false;
 
   searchByQuery() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => true;
+
     if (this.params.hasOwnProperty("navigate_link")) {
       this.router.navigate(["search", this.params["navigate_link"]], {
         queryParams: this.queryParams,
@@ -216,6 +210,8 @@ export class SearchComponent implements OnInit {
         queryParams: this.queryParams,
       });
     }
+
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
 
     if (this.search_text || this.params["navigate_link"]) {
       this.startLoadData();
