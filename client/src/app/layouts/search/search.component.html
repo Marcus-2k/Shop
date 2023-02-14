@@ -95,6 +95,12 @@
                     </span>
                     <h2 class="category__header-title">Фільтри</h2>
                   </div>
+                  <div class="category__block" *ngIf="widget_section_id">
+                    <app-widget-section-id
+                      [widget_section_id]="widget_section_id"
+                      [number_of_product]="number_of_product"
+                    ></app-widget-section-id>
+                  </div>
                   <div
                     class="category__block"
                     *ngFor="let filter of listFilter; let i = index"

@@ -65,6 +65,8 @@ module.exports.search = async function (req, res) {
 
     let filters;
     let widget_auto_portal;
+    let widget_section_id;
+
     if (navigate_link) {
       let { categoryList, type } = await SearchService.searchCategoryByParams(
         req.params
@@ -110,6 +112,9 @@ module.exports.search = async function (req, res) {
 
       let filtersData = createFilters(product);
       filters = filtersData.filters;
+
+      let section_id = createWidget_section_id(filtersData.categoryUnique);
+      widget_section_id = [...section_id.unique_section_id];
     }
 
     // Type sorting START ========================================================================================
@@ -299,6 +304,8 @@ module.exports.search = async function (req, res) {
       product,
       filters,
       widget_auto_portal,
+      widget_section_id,
+      number_of_product: count,
       currentPage,
       maxPage,
       limit,
@@ -463,8 +470,66 @@ function createFilters(productList) {
     filtersUnique[i].checkboxList = checkboxListUnique;
   }
   // =============================================================================================
-  return { filters: filtersUnique };
+  return { filters: filtersUnique, categoryUnique: productCategory };
   // =============================================================================================
+}
+
+function createWidget_section_id(categoryListUnique) {
+  const categoryUnique = [...categoryListUnique];
+
+  let section_id = [];
+  for (let idx = 0; idx < categoryUnique.length; idx++) {
+    const element = categoryUnique[idx];
+
+    if (element.length === 3) {
+      let filter_section_id = JSON.parse(
+        JSON.stringify(
+          catalog.categoryList[element[0]].nameListCategory[element[1]]
+        )
+      );
+
+      filter_section_id.subNameListCategory = [
+        JSON.parse(
+          JSON.stringify(
+            catalog.categoryList[element[0]].nameListCategory[element[1]]
+              .subNameListCategory[element[2]]
+          )
+        ),
+      ];
+
+      section_id.push(filter_section_id);
+    } else if (element.length === 2) {
+      let filter_section_id = JSON.parse(
+        JSON.stringify(
+          catalog.categoryList[element[0]].nameListCategory[element[1]]
+        )
+      );
+      delete filter_section_id.subNameListCategory;
+
+      section_id.push(filter_section_id);
+    }
+  }
+
+  let unique_section_id = [];
+  while (section_id.length > 0) {
+    let section_id_item = section_id[0];
+
+    section_id.splice(0, 1);
+
+    for (let idx = 0; idx < section_id.length; idx++) {
+      if (section_id[idx].navigate_link === section_id_item.navigate_link) {
+        section_id_item.subNameListCategory.push(
+          section_id[idx].subNameListCategory[0]
+        );
+        section_id.splice(idx, 1);
+        idx--;
+      }
+    }
+
+    unique_section_id.push(section_id_item);
+  }
+
+  return { unique_section_id };
 }
 
 function getQueryParams(reqQuery) {

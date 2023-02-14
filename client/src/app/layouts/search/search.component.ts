@@ -1,10 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Params, Router } from "@angular/router";
+
 import {
   Product,
   Filter,
   WidgetAutoPortal,
+  WidgetSectionId,
 } from "src/app/shared/interface/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
@@ -118,14 +120,18 @@ export class SearchComponent implements OnInit {
           console.log(response.product);
           console.log(response.filters);
           console.log(response.widget_auto_portal);
+          console.log(response.widget_section_id);
           console.log("Відкрита сторінка", response.currentPage);
           console.log("Кількість сторінок", response.maxPage);
           console.log("Товарів на сторінку", response.limit);
+          console.log("Загальна кількість товарів", response.number_of_product);
           console.log("=====================================================");
           // ==============================================================================================
           this.productList = response.product;
           this.listFilter = response.filters;
           this.widget_auto_portal = response.widget_auto_portal;
+          this.widget_section_id = response.widget_section_id;
+          this.number_of_product = response.number_of_product;
 
           this.currentPage = response.currentPage;
           this.maxPage = response.maxPage;
@@ -197,6 +203,8 @@ export class SearchComponent implements OnInit {
   loader: boolean = true;
   searchEmpty: boolean = false;
   loaderNewData: boolean = false;
+
+  number_of_product: number | undefined;
 
   searchByQuery() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => true;
@@ -276,6 +284,7 @@ export class SearchComponent implements OnInit {
   params: Params = {};
 
   widget_auto_portal: WidgetAutoPortal[] | undefined;
+  widget_section_id: WidgetSectionId[] | undefined;
 
   filterSearch(nameInput: string, nameQuery: string, checked: boolean) {
     if (checked === true) {

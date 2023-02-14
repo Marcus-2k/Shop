@@ -40,6 +40,7 @@ import { RegisterComponent } from "./layouts/register/register.component";
 import { SearchComponent } from "./layouts/search/search.component";
 import { SearchEmptyComponent } from "./layouts/search/search-empty/search-empty.component";
 import { WidgetAutoPortalComponent } from "./layouts/search/widget-auto-portal/widget-auto-portal.component";
+import { WidgetSectionIdComponent } from "./layouts/search/widget-section-id/widget-section-id.component";
 
 // User Layouts
 import { AccountComponent } from "./layouts/user-layouts/account/account.component";
@@ -185,6 +186,7 @@ import { environment } from "../environments/environment";
     NotConnectionToServerComponent,
     SearchEmptyComponent,
     WidgetAutoPortalComponent,
+    WidgetSectionIdComponent,
   ],
   imports: [
     BrowserModule,

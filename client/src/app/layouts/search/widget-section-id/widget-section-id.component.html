@@ -1,0 +1,44 @@
+<!--  -->
+
+<div class="widget_section_id">
+  <div
+    class="widget_section_id-content content"
+    *ngIf="widget_section_id && number_of_product"
+  >
+    <!--  -->
+    <div class="content-list">
+      <div class="content-list-line"></div>
+      <ul class="widget_section_id-list">
+        <a href="" class="widget_section_id-list-title">Всі результати&nbsp;</a>
+        <a href="">
+          <span class="number_of_product">({{ number_of_product }})</span>
+        </a>
+      </ul>
+
+      <ng-container *ngFor="let list of widget_section_id">
+        <ul class="widget_section_id-list">
+          <a
+            href=""
+            [routerLink]="['/search', list.navigate_link]"
+            class="widget_section_id-list-title"
+          >
+            {{ list.subNameCategory }}
+          </a>
+
+          <ng-container *ngFor="let list_item of list.subNameListCategory">
+            <li class="widget_section_id-list-item">
+              <a
+                href=""
+                [routerLink]="['/search', list_item.navigate_link]"
+                class="widget_section_id-list-item-text"
+              >
+                {{ list_item.titleSubNameListCategory }}
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </ng-container>
+    </div>
+    <!--  -->
+  </div>
+</div>

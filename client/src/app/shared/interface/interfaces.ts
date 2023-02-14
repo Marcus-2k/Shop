@@ -304,6 +304,8 @@ export interface FoundData {
   product: Product[];
   filters: Filter[];
   widget_auto_portal: WidgetAutoPortal[] | undefined;
+  widget_section_id: WidgetSectionId[] | undefined;
+  number_of_product: number;
   currentPage: number;
   maxPage: number;
   limit: number;
@@ -313,6 +315,16 @@ export interface WidgetAutoPortal {
   titleSubNameListCategory: string;
   navigate_link: string;
   navigate_image: string;
+}
+export interface WidgetSectionId {
+  subNameCategory: string;
+  navigate_link: string;
+  subNameListCategory:
+    | {
+        titleSubNameListCategory: string;
+        navigate_link: string;
+      }[]
+    | undefined;
 }
 
 export interface Filter {
