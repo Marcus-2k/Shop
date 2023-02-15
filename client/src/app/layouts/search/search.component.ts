@@ -219,8 +219,6 @@ export class SearchComponent implements OnInit {
       });
     }
 
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-
     if (this.search_text || this.params["navigate_link"]) {
       this.startLoadData();
 
@@ -240,6 +238,7 @@ export class SearchComponent implements OnInit {
         },
         error: (err) => {},
         complete: () => {
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.endLoadData();
         },
       });
