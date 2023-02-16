@@ -10,7 +10,10 @@
             [routerLink]="['/search', item.navigate_link]"
           >
             <span class="portal-navigation__image">
-              <img [src]="url_server_folder + item.navigate_image" alt="" />
+              <img
+                [src]="url_server_folder + item.navigate_image"
+                [alt]="item.navigate_image"
+              />
             </span>
 
             <span class="portal-navigation__text">

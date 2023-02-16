@@ -27,3 +27,33 @@
     }
   }
 }
+
+@media (max-width: 767px) {
+  .portal-navigation__wrapper {
+    .portal-navigation {
+      flex-wrap: nowrap;
+
+      overflow-x: scroll;
+      overflow-y: hidden;
+      &__item {
+        min-width: 175px;
+        height: 140px;
+        .portal-navigation__link {
+          padding: 0 5px;
+          .portal-navigation__image {
+            margin-bottom: 5px;
+            img {
+              width: 100%;
+              max-width: 100px;
+              height: 100%;
+              max-height: 100px;
+            }
+          }
+          .portal-navigation__text {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
