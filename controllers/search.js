@@ -114,8 +114,10 @@ module.exports.search = async function (req, res) {
       let filtersData = createFilters(product);
       filters = filtersData.filters;
 
-      let section_id = createWidget_section_id(filtersData.categoryUnique);
-      widget_section_id = [...section_id.unique_section_id];
+      if (filtersData.categoryUnique.length > 1) {
+        let section_id = createWidget_section_id(filtersData.categoryUnique);
+        widget_section_id = [...section_id.unique_section_id];
+      }
     }
 
     // Type sorting START ========================================================================================
