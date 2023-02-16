@@ -94,7 +94,12 @@ module.exports.search = async function (req, res) {
         characteristicsName: 1,
       });
 
-      count = await Product.find(FilterQuery).countDocuments({}).exec();
+      count = await Product.find({
+        ...FilterQuery,
+        ...getQueryParams(req.query),
+      })
+        .countDocuments({})
+        .exec();
       maxPage = Math.ceil(count / limit);
 
       let filtersData = createFilters(product);
@@ -108,11 +113,16 @@ module.exports.search = async function (req, res) {
         characteristicsName: 1,
       });
 
-      count = await Product.find(FilterQuery).countDocuments({}).exec();
-      maxPage = Math.ceil(count / limit);
-
       let filtersData = createFilters(product);
       filters = filtersData.filters;
+
+      count = await Product.find({
+        ...FilterQuery,
+        ...getQueryParams(req.query),
+      })
+        .countDocuments({})
+        .exec();
+      maxPage = Math.ceil(count / limit);
 
       if (filtersData.categoryUnique.length > 1) {
         let section_id = createWidget_section_id(filtersData.categoryUnique);
