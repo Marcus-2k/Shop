@@ -237,7 +237,7 @@ export class SearchComponent implements OnInit {
           this.productList = response.product;
           this.number_of_product = response.number_of_product;
 
-          this.currentPage = 1;
+          this.currentPage = response.currentPage;
           this.maxPage = response.maxPage;
           this.limit = response.limit;
         },

@@ -130,6 +130,10 @@ module.exports.search = async function (req, res) {
       }
     }
 
+    if (limit === maxPage * limit) {
+      currentPage = 1;
+    }
+
     // Type sorting START ========================================================================================
     if (type_sort === 0) {
       // Сheap
