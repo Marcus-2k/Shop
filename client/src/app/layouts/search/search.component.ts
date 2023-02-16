@@ -224,14 +224,19 @@ export class SearchComponent implements OnInit {
 
       this.searchService.search(this.queryParams, this.params).subscribe({
         next: (response) => {
-          console.log("====================================================");
+          console.log("=====================================================");
           console.log(response.product);
           console.log(response.filters);
+          console.log(response.widget_auto_portal);
+          console.log(response.widget_section_id);
           console.log("Відкрита сторінка", response.currentPage);
           console.log("Кількість сторінок", response.maxPage);
           console.log("Товарів на сторінку", response.limit);
-          console.log("====================================================");
+          console.log("Загальна кількість товарів", response.number_of_product);
+          console.log("=====================================================");
           this.productList = response.product;
+          this.number_of_product = response.number_of_product;
+
           this.currentPage = 1;
           this.maxPage = response.maxPage;
           this.limit = response.limit;
