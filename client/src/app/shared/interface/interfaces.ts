@@ -1,3 +1,5 @@
+import { Params } from "@angular/router";
+
 // Auth START ==========================================================================================
 export interface UserRegister {
   name: string;
@@ -264,19 +266,24 @@ export interface CategoryProduct {
   nameCategoryImg: string;
   nameListCategory: {
     subNameCategory: string;
-    subNameListCategory: {
-      titleSubNameListCategory: string | undefined;
-    }[];
+    navigate_link: string;
+    permissionUse: boolean;
+    subNameListCategory:
+      | {
+          titleSubNameListCategory: string;
+          permissionUse: boolean;
+          navigate_link: string;
+          queryParams: Params | undefined;
+        }[]
+      | undefined;
   }[];
 }
 export interface CategoryProduct_Characteristics {
   nameCategory: string;
   nameListCategory: {
     subNameCategory: string;
-    subNameListCategory: {
-      titleSubNameListCategory: string | undefined;
-      characteristics: Options[];
-    }[];
+    characteristics: Options[] | any; // Options[] | undefined
+    subNameListCategory: any; // { titleSubNameListCategory: string; characteristics: Options[]; } | undefined
   }[];
 }
 export interface Options {
@@ -293,18 +300,41 @@ export interface CategoryHome {
 }
 // Category END ========================================================================================
 // Page Search START ===================================================================================
-export interface FilterNameParams {
-  name: string;
-  params: string[];
+export interface FoundData {
+  product: Product[];
+  filters: Filter[];
+  widget_auto_portal: WidgetAutoPortal[] | undefined;
+  widget_section_id: WidgetSectionId[] | undefined;
+  number_of_product: number;
+  currentPage: number;
+  maxPage: number;
+  limit: number;
 }
-export interface ActiveFilterBlock {
-  name: string;
-  inputActive: ActiveFilter[];
-  blockActive: boolean;
+
+export interface WidgetAutoPortal {
+  titleSubNameListCategory: string;
+  navigate_link: string;
+  navigate_image: string;
 }
-export interface ActiveFilter {
-  name: string;
+export interface WidgetSectionId {
+  subNameCategory: string;
+  navigate_link: string;
+  subNameListCategory:
+    | {
+        titleSubNameListCategory: string;
+        navigate_link: string;
+      }[]
+    | undefined;
+}
+
+export interface Filter {
+  title: string;
   query_name: string;
+  show: boolean;
+  checkboxList: Checkbox[];
+}
+export interface Checkbox {
+  name: string;
   counter: number;
   active: boolean;
 }

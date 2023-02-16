@@ -34,6 +34,10 @@ const productSchema = new Schema({
     type: Array, // [ [0], [8], [21, 3, 4] ]
     required: true,
   },
+  characteristicsName: {
+    type: Object, // { body_material: ["Метал", "Пластик", "Скло"], cpu_mp: ["Qualcomm Snapdragon"] ...}
+    required: true,
+  },
   status: {
     type: Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується',
     required: true,

@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const fs = require("fs");
+const Catalog_characteristics = require("../db/catalog_characteristics");
 
 module.exports.getAllProduct = async function (req, res) {
   console.log("Server getAllUser");
@@ -61,6 +62,71 @@ module.exports.createProduct = async function (req, res) {
     const characteristics = transformCharacteristicsStringToArray(
       req.body.characteristics
     );
+    const characteristicsName = {};
+
+    for (let idx = 0; idx < characteristics.length; idx++) {
+      for (let j = 0; j < characteristics[idx].length; j++) {
+        if (category.length === 3) {
+          if (
+            characteristicsName[
+              Catalog_characteristics.categoryList_characteristics[category[0]]
+                .nameListCategory[category[1]].subNameListCategory[category[2]]
+                .characteristics[idx].query_name
+            ]
+          ) {
+            characteristicsName[
+              Catalog_characteristics.categoryList_characteristics[category[0]]
+                .nameListCategory[category[1]].subNameListCategory[category[2]]
+                .characteristics[idx].query_name
+            ].push(
+              Catalog_characteristics.categoryList_characteristics[category[0]]
+                .nameListCategory[category[1]].subNameListCategory[category[2]]
+                .characteristics[idx].select[characteristics[idx][j]]
+            );
+          } else {
+            characteristicsName[
+              Catalog_characteristics.categoryList_characteristics[
+                category[0]
+              ].nameListCategory[category[1]].subNameListCategory[
+                category[2]
+              ].characteristics[idx].query_name
+            ] = [
+              Catalog_characteristics.categoryList_characteristics[category[0]]
+                .nameListCategory[category[1]].subNameListCategory[category[2]]
+                .characteristics[idx].select[characteristics[idx][j]],
+            ];
+          }
+        } else if (category.length === 2) {
+          if (
+            characteristicsName[
+              Catalog_characteristics.categoryList_characteristics[category[0]]
+                .nameListCategory[category[1]].characteristics[idx].query_name
+            ]
+          ) {
+            characteristicsName[
+              Catalog_characteristics.categoryList_characteristics[category[0]]
+                .nameListCategory[category[1]].characteristics[idx].query_name
+            ].push(
+              Catalog_characteristics.categoryList_characteristics[category[0]]
+                .nameListCategory[category[1]].characteristics[idx].select[
+                characteristics[idx][j]
+              ]
+            );
+          } else {
+            characteristicsName[
+              Catalog_characteristics.categoryList_characteristics[
+                category[0]
+              ].nameListCategory[category[1]].characteristics[idx].query_name
+            ] = [
+              Catalog_characteristics.categoryList_characteristics[category[0]]
+                .nameListCategory[category[1]].characteristics[idx].select[
+                characteristics[idx][j]
+              ],
+            ];
+          }
+        }
+      }
+    }
 
     const status = Number(req.body.status); // 0 = В наявнності, 1 = Очікується постачання , 2 = Немає в наявності, 3 = Закінчується
 
@@ -76,6 +142,7 @@ module.exports.createProduct = async function (req, res) {
       counter: Number(req.body.counter),
       category,
       characteristics,
+      characteristicsName,
       status,
       keywords,
       description: req.body.description,
