@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const Catalog = require("../db/catalog");
+const catalog_option = require("../db/catalog_characteristics");
 
 module.exports.getByIdCard = async function (req, res) {
   console.log("Server getByIdCard");
@@ -82,14 +83,14 @@ module.exports.getByIdCardCharacteristics = async function (req, res) {
 
       if (product.category.length === 3) {
         characteristicsName =
-          Catalog.categoryList[product.category[0]].nameListCategory[
-            product.category[1]
-          ].subNameListCategory[product.category[2]].characteristics;
+          catalog_option.categoryList_characteristics[product.category[0]]
+            .nameListCategory[product.category[1]].subNameListCategory[
+            product.category[2]
+          ].characteristics;
       } else if (product.category.length === 2) {
         characteristicsName =
-          Catalog.categoryList[product.category[0]].nameListCategory[
-            product.category[1]
-          ].characteristics;
+          catalog_option.categoryList_characteristics[product.category[0]]
+            .nameListCategory[product.category[1]].characteristics;
       }
 
       const productCharacteristics = Object.assign(
