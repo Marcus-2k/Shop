@@ -8,6 +8,7 @@ module.exports.search = async function (req, res) {
 
   try {
     console.log(req.query);
+    console.log(req.params);
 
     const search_text = req.query.search_text;
     const navigate_link = req.params["navigate_link"];
@@ -134,8 +135,9 @@ module.exports.search = async function (req, res) {
         sortByAction = true;
       }
 
-      while (!sortByAction) {
-        console.log("while");
+      let limitWhile = 0;
+      while (!sortByAction && limitWhile <= 200) {
+        console.log("while = ", limitWhile);
 
         for (let idx = 0; idx < product.length; idx++) {
           if (idx >= 1) {
@@ -181,11 +183,13 @@ module.exports.search = async function (req, res) {
                 sortByAction = false;
                 break;
               } else {
+                sortByAction = true;
               }
-              sortByAction = true;
             }
           }
         }
+
+        limitWhile++;
       }
     } else if (type_sort === 1) {
       // Expensive
@@ -193,9 +197,11 @@ module.exports.search = async function (req, res) {
         ...FilterQuery,
         ...getQueryParams(req.query),
       })
-        .sort({ price: 1 })
+        .sort({ price: -1 })
         .limit(limit)
         .skip(limit * (currentPage - 1));
+
+      product.reverse();
 
       let sortByAction = false;
 
@@ -203,8 +209,9 @@ module.exports.search = async function (req, res) {
         sortByAction = true;
       }
 
-      while (!sortByAction) {
-        console.log("while");
+      let limitWhile = 0;
+      while (!sortByAction && limitWhile <= 200) {
+        console.log("while = ", limitWhile);
 
         for (let idx = 0; idx < product.length; idx++) {
           if (idx >= 1) {
@@ -250,11 +257,13 @@ module.exports.search = async function (req, res) {
                 sortByAction = false;
                 break;
               } else {
+                sortByAction = true;
               }
-              sortByAction = true;
             }
           }
         }
+
+        limitWhile++;
       }
 
       product.reverse();
