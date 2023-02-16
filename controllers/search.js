@@ -276,8 +276,8 @@ module.exports.search = async function (req, res) {
       product = await Product.find({
         ...FilterQuery,
         ...getQueryParams(req.query),
+        action: true,
       })
-        .sort({ action: -1 })
         .limit(limit)
         .skip(limit * (currentPage - 1));
 
@@ -290,14 +290,6 @@ module.exports.search = async function (req, res) {
         .countDocuments({})
         .exec();
       maxPage = Math.ceil(count / limit);
-
-      // Delete item product if action = false
-      for (let idx = 0; idx < product.length; idx++) {
-        if (product[idx].action === false) {
-          product.splice(idx, 1);
-          idx--;
-        }
-      }
     } else if (type_sort === 5) {
       // Grade
       product = await Product.find({
