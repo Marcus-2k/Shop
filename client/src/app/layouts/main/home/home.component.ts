@@ -103,9 +103,7 @@ export class HomeComponent implements OnInit {
     speed: 1800,
   }; // Slider swiper config
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 
   news: News[] = [];
 

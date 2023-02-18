@@ -89,9 +89,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   up_Product?: ProductUpdate;
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 
   updateOnInit(product: ProductUpdate) {
     if (this.update) {
@@ -240,7 +238,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       }
 
       this.imagesValidation = false;
-      this.url_server_folder = `http://${this.HOST}${this.PORT}/api`;
+      this.url_server_folder = environment.URL_SERVER_FOLDER;
     }
   }
   // File END ======================================================================================================================================

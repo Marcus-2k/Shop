@@ -66,9 +66,7 @@ export class UserComponent implements OnInit {
   // General variables START =======================================================================
   loader: boolean = true;
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 
   date: Date = new Date();
   time: number = this.date.getHours();

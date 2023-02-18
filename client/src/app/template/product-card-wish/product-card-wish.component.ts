@@ -18,9 +18,7 @@ export class ProductCardWishComponent implements OnInit {
   @Input() productItem?: Wish;
   @Output() transferChecked = new EventEmitter();
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 
   addInList(checked: boolean) {
     if (this.productItem?._id) {

@@ -15,7 +15,5 @@ export class ProductCardMyOrderComponent {
   @Input() productItem: ProductCard_MyOrder | undefined;
   @Input() quantityOrdered: number | undefined;
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 }

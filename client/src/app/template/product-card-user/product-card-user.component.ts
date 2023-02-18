@@ -18,9 +18,7 @@ export class ProductCardUserComponent implements OnInit {
   @Input() productItem?: Product;
   @Output() transferDeleteProduct = new EventEmitter();
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 
   deleteProduct() {
     if (this.productItem?._id) {

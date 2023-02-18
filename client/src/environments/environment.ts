@@ -2,10 +2,22 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const PROTOCOL: "http" | "https" = "http";
+
+const HOST: string = "localhost";
+const PORT: string = ":5000";
+
 export const environment = {
   production: false,
-  HOST: "localhost",
-  PORT: ":5000",
+
+  URL_SERVER_API: `${PROTOCOL}://${HOST}${PORT}/api`,
+  URL_SERVER_FOLDER: `${PROTOCOL}://${HOST}${PORT}/`,
+
+  PROTOCOL: PROTOCOL,
+
+  HOST: HOST,
+  PORT: PORT,
+
   API_KEY_NOVA_POSHTA: "daa6b3bebb0efaba456840c60cef8380",
 };
 

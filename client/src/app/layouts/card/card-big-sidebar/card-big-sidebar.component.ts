@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Product } from "src/app/shared/interface/interfaces";
-import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-card-big-sidebar",
@@ -15,8 +14,4 @@ export class CardBigSidebarComponent implements OnInit {
   ngOnInit(): void {
     console.log("Start ngOnInit Card-Big-Sidebar");
   }
-
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
 }
