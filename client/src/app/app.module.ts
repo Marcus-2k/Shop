@@ -24,7 +24,7 @@ import { AppComponent } from "./app.component";
 // 404 Component
 import { NotFoundComponent } from "./not-found/not-found.component";
 // 500 Component
-import { NotConnectionToServerComponent } from "./not-connection-to-server/not-connection-to-server.component";
+import { NotConnectionComponent } from "./not-connection/not-connection.component";
 // Body Main
 import { HomeComponent } from "./layouts/main/home/home.component";
 // Body >>> Header Component
@@ -183,7 +183,7 @@ import { environment } from "../environments/environment";
     MyOrderEmptyComponent,
     MyOrderHeaderComponent,
     MyOrderDetailComponent,
-    NotConnectionToServerComponent,
+    NotConnectionComponent,
     SearchEmptyComponent,
     WidgetAutoPortalComponent,
     WidgetSectionIdComponent,
