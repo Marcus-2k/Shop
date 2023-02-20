@@ -7,6 +7,9 @@ const PROTOCOL: "http" | "https" = "http";
 const HOST: string = "localhost";
 const PORT: string = ":5000";
 
+const HISTORY_SEARCH_START: string | undefined = undefined;
+const HISTORY_VIEW_START: string | undefined = undefined;
+
 export const environment = {
   production: false,
 
@@ -19,6 +22,9 @@ export const environment = {
   PORT: PORT,
 
   API_KEY_NOVA_POSHTA: "daa6b3bebb0efaba456840c60cef8380",
+
+  HISTORY_SEARCH_START: HISTORY_SEARCH_START,
+  HISTORY_VIEW_START: HISTORY_VIEW_START,
 };
 
 /*
