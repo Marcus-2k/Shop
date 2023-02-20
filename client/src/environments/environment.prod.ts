@@ -9,7 +9,7 @@ const HISTORY_VIEW_START: string | undefined = undefined;
 export const environment = {
   production: true,
 
-  URL_SERVER_API: `${PROTOCOL}://${HOST}${PORT}/api`,
+  URL_SERVER_API: `${PROTOCOL}://${HOST}${PORT}/api/`,
   URL_SERVER_FOLDER: `${PROTOCOL}://${HOST}${PORT}/`,
 
   PROTOCOL: PROTOCOL,

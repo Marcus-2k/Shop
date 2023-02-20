@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
 import { News } from "../../interface/interfaces";
+
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -10,11 +11,9 @@ import { News } from "../../interface/interfaces";
 export class RequestNewsService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  private url_server: string = `http://${this.HOST}${this.PORT}/api/`;
+  url_server: string = environment.URL_SERVER_API + "news/";
 
   getAllNews(): Observable<News[]> {
-    return this.http.get<News[]>(`${this.url_server}news/`);
+    return this.http.get<News[]>(`${this.url_server}`);
   }
 }
