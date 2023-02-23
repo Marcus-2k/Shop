@@ -4,6 +4,8 @@ import { AuthService } from "./shared/service/server/auth.service";
 import { RequestCheckingService } from "./shared/service/server/request-checking.service";
 import { OpenSnackBarService } from "./shared/service/open-snack-bar.service";
 
+import { environment } from "src/environments/environment";
+
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -67,11 +69,15 @@ export class AppComponent implements OnInit {
       localStorage.setItem("first-open-site", "true");
       this.showNotice.open("Перший вхід на сайт", undefined);
 
-      localStorage.setItem("history-search", "телефон");
-      localStorage.setItem(
-        "history-view",
-        "635c3d2e930a137ebbf08be7,6334435463188ab26e1cff3e,630365479c31697fb540c2a5,6302369b909c492f3409db5b"
-      );
+      if (environment.HISTORY_SEARCH_START) {
+        localStorage.setItem(
+          "history-search",
+          environment.HISTORY_SEARCH_START
+        );
+      }
+      if (environment.HISTORY_VIEW_START) {
+        localStorage.setItem("history-view", environment.HISTORY_VIEW_START);
+      }
     } else if (firstOpenSite === "true") {
       localStorage.setItem("first-open-site", "false");
     }

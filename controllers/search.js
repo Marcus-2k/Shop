@@ -1,13 +1,25 @@
 const Product = require("../models/Product");
-const Catalog = require("../db/catalog");
+const SearchService = require("../service/search-service");
+const catalog = require("../db/catalog");
+const catalog_option = require("../db/catalog_characteristics");
 
 module.exports.search = async function (req, res) {
   console.log("Server search");
 
   try {
     console.log(req.query);
+    console.log(req.params);
 
     const search_text = req.query.search_text;
+    const navigate_link = req.params["navigate_link"];
+
+    if (!search_text && !navigate_link) {
+      return res.status(404).json({ message: "Не коректний запит" });
+    }
+
+    if (navigate_link === "link") {
+      return res.status(404).json({ message: "Не коректний запит" });
+    }
 
     // Pagination START ============================================================================
     let limit = req.query.limit ? Number(req.query.limit) : 10; // Скільки товарів на сторінку
@@ -49,37 +61,85 @@ module.exports.search = async function (req, res) {
       type_sort = 5;
     }
 
-    let product = await Product.find({
-      name: { $regex: search_text, $options: "i" },
-      // $regex >> partial keywords, options "i" >> case insensitivity
-    });
+    let product;
+    let FilterQuery = {};
 
-    let categoryNoUnique = [];
-    let productCharacteristics = [];
+    let filters;
+    let widget_auto_portal;
+    let widget_section_id;
 
-    product.forEach((element) => {
-      categoryNoUnique.push(element.category);
-      productCharacteristics.push(element.characteristics);
-    }); // Category and Characteristics in collection
+    if (navigate_link) {
+      let { categoryList, type } = await SearchService.searchCategoryByParams(
+        req.params
+      );
+      if (categoryList === null || type === null) {
+        return res.status(500).json({ message: "Server error" });
+      }
 
-    const uniqueProductCategory = deleteDuplicateCategory(categoryNoUnique); // Unique Category Product
+      if (type === 1) {
+        FilterQuery = { category: categoryList[0] };
+      } else if (type === 2) {
+        FilterQuery = { category: { $in: categoryList } };
+        widget_auto_portal =
+          catalog.categoryList[categoryList[0][0]].nameListCategory[
+            categoryList[0][1]
+          ].subNameListCategory;
+      } else {
+        return res.status(500).json({ message: "Server error" });
+      }
 
-    count = await Product.find({
-      name: { $regex: search_text, $options: "i" },
-      $or: getQueryParams(req.query, uniqueProductCategory),
-    })
-      .countDocuments({})
-      .exec(); // Counter element in collection
-    maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
+      product = await Product.find(FilterQuery, {
+        category: 1,
+        characteristics: 1,
+        characteristicsName: 1,
+      });
 
-    console.log(getQueryParams(req.query, uniqueProductCategory));
+      count = await Product.find({
+        ...FilterQuery,
+        ...getQueryParams(req.query),
+      })
+        .countDocuments({})
+        .exec();
+      maxPage = Math.ceil(count / limit);
+
+      let filtersData = createFilters(product);
+      filters = filtersData.filters;
+    } else if (search_text) {
+      FilterQuery.name = { $regex: search_text, $options: "i" };
+
+      product = await Product.find(FilterQuery, {
+        category: 1,
+        characteristics: 1,
+        characteristicsName: 1,
+      });
+
+      let filtersData = createFilters(product);
+      filters = filtersData.filters;
+
+      count = await Product.find({
+        ...FilterQuery,
+        ...getQueryParams(req.query),
+      })
+        .countDocuments({})
+        .exec();
+      maxPage = Math.ceil(count / limit);
+
+      if (filtersData.categoryUnique.length > 1) {
+        let section_id = createWidget_section_id(filtersData.categoryUnique);
+        widget_section_id = [...section_id.unique_section_id];
+      }
+    }
+
+    if (limit === maxPage * limit) {
+      currentPage = 1;
+    }
 
     // Type sorting START ========================================================================================
     if (type_sort === 0) {
       // Сheap
       product = await Product.find({
-        name: { $regex: search_text, $options: "i" },
-        $or: getQueryParams(req.query, uniqueProductCategory),
+        ...FilterQuery,
+        ...getQueryParams(req.query),
       })
         .sort({ price: 1 })
         .limit(limit)
@@ -91,8 +151,9 @@ module.exports.search = async function (req, res) {
         sortByAction = true;
       }
 
-      while (!sortByAction) {
-        console.log("while");
+      let limitWhile = 0;
+      while (!sortByAction && limitWhile <= 200) {
+        console.log("while = ", limitWhile);
 
         for (let idx = 0; idx < product.length; idx++) {
           if (idx >= 1) {
@@ -138,21 +199,25 @@ module.exports.search = async function (req, res) {
                 sortByAction = false;
                 break;
               } else {
+                sortByAction = true;
               }
-              sortByAction = true;
             }
           }
         }
+
+        limitWhile++;
       }
     } else if (type_sort === 1) {
       // Expensive
       product = await Product.find({
-        name: { $regex: search_text, $options: "i" },
-        $or: getQueryParams(req.query, uniqueProductCategory),
+        ...FilterQuery,
+        ...getQueryParams(req.query),
       })
-        .sort({ price: 1 })
+        .sort({ price: -1 })
         .limit(limit)
         .skip(limit * (currentPage - 1));
+
+      product.reverse();
 
       let sortByAction = false;
 
@@ -160,8 +225,9 @@ module.exports.search = async function (req, res) {
         sortByAction = true;
       }
 
-      while (!sortByAction) {
-        console.log("while");
+      let limitWhile = 0;
+      while (!sortByAction && limitWhile <= 200) {
+        console.log("while = ", limitWhile);
 
         for (let idx = 0; idx < product.length; idx++) {
           if (idx >= 1) {
@@ -207,11 +273,13 @@ module.exports.search = async function (req, res) {
                 sortByAction = false;
                 break;
               } else {
+                sortByAction = true;
               }
-              sortByAction = true;
             }
           }
         }
+
+        limitWhile++;
       }
 
       product.reverse();
@@ -222,146 +290,268 @@ module.exports.search = async function (req, res) {
     } else if (type_sort === 4) {
       // Action
       product = await Product.find({
-        name: { $regex: search_text, $options: "i" },
-        $or: getQueryParams(req.query, uniqueProductCategory),
+        ...FilterQuery,
+        ...getQueryParams(req.query),
+        action: true,
       })
-        .sort({ action: -1 })
         .limit(limit)
         .skip(limit * (currentPage - 1));
 
       count = await Product.find({
-        name: { $regex: search_text, $options: "i" },
+        ...FilterQuery,
+        ...getQueryParams(req.query),
         action: true,
       })
         .sort({ action: -1 })
         .countDocuments({})
-        .exec(); // Counter element in collection
-      maxPage = Math.ceil(count / limit); // Number rounding 3.02 >>> 4
-
-      // Delete item product if action = false
-      for (let idx = 0; idx < product.length; idx++) {
-        if (product[idx].action === false) {
-          product.splice(idx, 1);
-          idx--;
-        }
-      }
+        .exec();
+      maxPage = Math.ceil(count / limit);
     } else if (type_sort === 5) {
       // Grade
       product = await Product.find({
-        name: { $regex: search_text, $options: "i" },
-        $or: getQueryParams(req.query, uniqueProductCategory),
+        ...FilterQuery,
+        ...getQueryParams(req.query),
       })
         .limit(limit)
         .skip(limit * (currentPage - 1));
     }
     // Type sorting END ==========================================================================================
 
-    if (req.body.widthCharacteristics) {
-      const counterProductInCategory = counterProduct(
-        uniqueProductCategory,
-        categoryNoUnique
-      ); // Counter category, and product in it
-      // console.log(counterProductInCategory);
-
-      const productCharacteristicsBlock = productBlock(
-        counterProductInCategory,
-        productCharacteristics
-      ); // Product parameters block by category
-      // console.log(productCharacteristicsBlock);
-      // ===========================================================================
-      let productCharacteristicsName = [];
-      uniqueProductCategory.forEach((element) => {
-        if (element.length === 3) {
-          productCharacteristicsName.push(
-            Catalog.categoryList[element[0]].nameListCategory[element[1]]
-              .subNameListCategory[element[2]].characteristics
-          );
-        }
-      });
-
-      return res.status(200).json({
-        product,
-        productCharacteristicsBlock,
-        productCharacteristicsName,
-        currentPage,
-        maxPage,
-        limit,
-      });
-    } else {
-      return res.status(200).json({
-        product,
-        currentPage,
-        maxPage,
-        limit,
-      });
-    }
+    return res.status(200).json({
+      product,
+      filters,
+      widget_auto_portal,
+      widget_section_id,
+      number_of_product: count,
+      currentPage,
+      maxPage,
+      limit,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
 };
 
-// All function this controller ==================================================================================
+function createFilters(productList) {
+  console.log("START createFilters");
 
-// Delete Duplicate Category ====================================================================
-function deleteDuplicateCategory(categoryNoUnique) {
-  categoryNoUnique.forEach((element, i) => {
-    categoryNoUnique[i] = element.join("");
-  }); // [ [1,0,5], [1,0,5], [1,0,0] ... ] >>> [ '105', '105', '100', ...]
+  let product = [...productList];
+  let filters = [];
 
-  const uniqueProductCategory = Array.from(new Set(categoryNoUnique));
-  uniqueProductCategory.forEach((element, i) => {
-    uniqueProductCategory[i] = ("" + element).split("").map(Number);
-  }); // [ '105', '100' ... ] >>> [ [1,0,5], [1,0,0] ... ]
-  return uniqueProductCategory;
-} // return [ [1,0,5], [1,0,5], [1,0,0] ] >>> [ [1, 0, 5], [1, 0, 0] ]
+  let productCategory = [];
+  let productCharacteristics = [];
+  // =============================================================================================
+  for (let i = 0; i < product.length; i++) {
+    if (i === 0) {
+      productCategory.push(product[i].category.join(""));
+      productCharacteristics.push([product[i].characteristics]);
+    } else {
+      if (productCategory.indexOf(product[i].category.join("")) !== -1) {
+        let positionCategory = productCategory.indexOf(
+          product[i].category.join("")
+        );
 
-// Counter Product In Category ==================================================================
-function counterProduct(uniqueProductCategory, categoryNoUnique) {
-  const counterProductInCategory = [];
-  let uniqueCategory = [];
-
-  uniqueProductCategory.forEach((element, i) => {
-    uniqueCategory[i] = element.join(""); // uniqueCategory = [ '100', '105' ]
-    counterProductInCategory.push([0]); // [ [ 0 ], [ 0 ], [ 0 ] ]
-  });
-
-  categoryNoUnique.forEach((element, i) => {
-    uniqueCategory.forEach((item, idx) => {
-      if (element === item) {
-        counterProductInCategory[idx][0]++;
+        productCharacteristics[positionCategory].push(
+          product[i].characteristics
+        );
+      } else {
+        productCategory.push(product[i].category.join(""));
+        productCharacteristics.push([product[i].characteristics]);
       }
-    });
-  }); // counterProductInCategory = [ [ 1 ], [ 6 ], [ 10 ] ]
-
-  return counterProductInCategory;
-} // return [ [ 1 ], [ 6 ], [ 10 ] ]
-
-// Product Characteristics Block ================================================================
-function productBlock(counter, productCharacteristics) {
-  const productCharacteristicsBlock = [];
-  counter.forEach((element) => {
-    let characteristicsBlock = productCharacteristics.splice(0, element[0]);
-    productCharacteristicsBlock.push(characteristicsBlock);
-  });
-
-  const characteristicsBlockCategory = [];
-  productCharacteristicsBlock.forEach((element, i) => {
-    characteristicsBlockCategory.push([]);
-
-    for (let index = 0; index < element[0].length; index++) {
-      let characteristicsBlock = [];
-      element.forEach((item, idx) => {
-        characteristicsBlock.push(item[index]);
-      });
-      characteristicsBlockCategory[i].push(characteristicsBlock);
     }
-  });
+  }
+  // =============================================================================================
+  for (let idx = 0; idx < productCategory.length; idx++) {
+    productCategory[idx] = ("" + productCategory[idx]).split("").map(Number);
+  }
+  // =============================================================================================
+  for (let i = 0; i < productCategory.length; i++) {
+    let characteristics = [];
 
-  return characteristicsBlockCategory;
+    if (productCategory[i].length === 3) {
+      // console.log("if 3 ==========");
+
+      characteristics =
+        catalog_option.categoryList_characteristics[productCategory[i][0]]
+          .nameListCategory[productCategory[i][1]].subNameListCategory[
+          productCategory[i][2]
+        ].characteristics;
+    } else if (productCategory[i].length === 2) {
+      // console.log("else if 2 ==========");
+
+      characteristics =
+        catalog_option.categoryList_characteristics[productCategory[i][0]]
+          .nameListCategory[productCategory[i][1]].characteristics;
+    } else {
+      break;
+    }
+
+    for (let idx = 0; idx < characteristics.length; idx++) {
+      const filter = {
+        title: characteristics[idx].name,
+        query_name: characteristics[idx].query_name,
+        show: true,
+        checkboxList: [],
+      };
+
+      for (let index = 0; index < productCharacteristics[i].length; index++) {
+        for (let j = 0; j < productCharacteristics[i][index][idx].length; j++) {
+          let checkboxListItem = {
+            name: characteristics[idx].select[
+              productCharacteristics[i][index][idx][j]
+            ],
+            counter: 0,
+            active: false,
+          };
+
+          filter.checkboxList.push(checkboxListItem);
+        }
+      }
+
+      filters.push(filter);
+    }
+  }
+  // =============================================================================================
+  let filtersUnique = [];
+  let characteristicsName = {};
+  if (productCategory.length > 1) {
+    //
+    for (let idx = 0; idx < product.length; idx++) {
+      for (const key in product[idx].characteristicsName) {
+        if (characteristicsName.hasOwnProperty(key)) {
+          characteristicsName[key]++;
+        } else {
+          characteristicsName[key] = 1;
+        }
+      }
+    }
+
+    let characteristicsNameString = [];
+    for (const key in characteristicsName) {
+      if (characteristicsName[key] < product.length) {
+        delete characteristicsName[key];
+      } else {
+        characteristicsNameString.push(key);
+      }
+    }
+
+    for (let idx = 0; idx < filters.length; idx++) {
+      if (characteristicsNameString.indexOf(filters[idx].query_name) === -1) {
+        filters.splice(idx, 1);
+        idx--;
+      }
+    }
+
+    let seen = {};
+    filtersUnique = filters.filter((entry) => {
+      let previous;
+
+      if (seen.hasOwnProperty(entry.query_name)) {
+        previous = seen[entry.query_name];
+        previous.checkboxList.push(...entry.checkboxList);
+
+        return false;
+      }
+
+      if (!Array.isArray(entry.checkboxList)) {
+        entry.checkboxList = [...entry.checkboxList];
+      }
+
+      seen[entry.query_name] = entry;
+
+      return true;
+    });
+  } else {
+    filtersUnique = filters;
+  }
+  for (let i = 0; i < filtersUnique.length; i++) {
+    let checkboxListUnique = [];
+
+    while (filtersUnique[i].checkboxList.length > 0) {
+      // console.log("while ", i + 1, "/", filtersUnique.length);
+
+      let checkboxUnique = filtersUnique[i].checkboxList[0];
+      filtersUnique[i].checkboxList.splice(0, 1);
+
+      for (let idx = 0; idx < filtersUnique[i].checkboxList.length; idx++) {
+        if (checkboxUnique.name === filtersUnique[i].checkboxList[idx].name) {
+          checkboxUnique.counter++;
+          filtersUnique[i].checkboxList.splice(idx, 1);
+          idx--;
+        }
+      }
+      checkboxListUnique.push(checkboxUnique);
+    }
+
+    filtersUnique[i].checkboxList = checkboxListUnique;
+  }
+  // =============================================================================================
+  return { filters: filtersUnique, categoryUnique: productCategory };
+  // =============================================================================================
 }
 
-function getQueryParams(reqQuery, uniqueCategory) {
+function createWidget_section_id(categoryListUnique) {
+  const categoryUnique = [...categoryListUnique];
+
+  let section_id = [];
+  for (let idx = 0; idx < categoryUnique.length; idx++) {
+    const element = categoryUnique[idx];
+
+    if (element.length === 3) {
+      let filter_section_id = JSON.parse(
+        JSON.stringify(
+          catalog.categoryList[element[0]].nameListCategory[element[1]]
+        )
+      );
+
+      filter_section_id.subNameListCategory = [
+        JSON.parse(
+          JSON.stringify(
+            catalog.categoryList[element[0]].nameListCategory[element[1]]
+              .subNameListCategory[element[2]]
+          )
+        ),
+      ];
+
+      section_id.push(filter_section_id);
+    } else if (element.length === 2) {
+      let filter_section_id = JSON.parse(
+        JSON.stringify(
+          catalog.categoryList[element[0]].nameListCategory[element[1]]
+        )
+      );
+      delete filter_section_id.subNameListCategory;
+
+      section_id.push(filter_section_id);
+    }
+  }
+
+  let unique_section_id = [];
+  while (section_id.length > 0) {
+    let section_id_item = section_id[0];
+
+    section_id.splice(0, 1);
+
+    for (let idx = 0; idx < section_id.length; idx++) {
+      if (section_id[idx].navigate_link === section_id_item.navigate_link) {
+        section_id_item.subNameListCategory.push(
+          section_id[idx].subNameListCategory[0]
+        );
+        section_id.splice(idx, 1);
+        idx--;
+      }
+    }
+
+    unique_section_id.push(section_id_item);
+  }
+
+  return { unique_section_id };
+}
+
+function getQueryParams(reqQuery) {
+  console.log("START getQueryParams");
+
   let queryParams = Object.assign({}, reqQuery);
 
   delete queryParams.search_text;
@@ -369,44 +559,13 @@ function getQueryParams(reqQuery, uniqueCategory) {
   delete queryParams.page;
   delete queryParams.type_sort;
 
-  let queryParamsCategory = [];
+  let queryParamsMongo = {};
 
-  for (let idx = 0; idx < uniqueCategory.length; idx++) {
-    queryParamsCategory.push({});
-
-    for (let param in queryParams) {
-      for (
-        let j = 0;
-        j <
-        Catalog.categoryList[uniqueCategory[idx][0]].nameListCategory[
-          uniqueCategory[idx][1]
-        ].subNameListCategory[uniqueCategory[idx][2]].characteristics.length;
-        j++
-      ) {
-        if (
-          Catalog.categoryList[uniqueCategory[idx][0]].nameListCategory[
-            uniqueCategory[idx][1]
-          ].subNameListCategory[uniqueCategory[idx][2]].characteristics[j]
-            .query_name === param
-        ) {
-          queryParamsCategory[idx]["characteristicsName." + param] = {
-            $in: queryParams[param].split(","),
-          };
-        }
-      }
-    }
+  for (let param in queryParams) {
+    queryParamsMongo["characteristicsName." + param] = {
+      $in: queryParams[param].split(","),
+    };
   }
 
-  for (let idx = 0; idx < queryParamsCategory.length; idx++) {
-    if (Object.keys(queryParamsCategory[idx]).length === 0) {
-      queryParamsCategory.splice(idx, 1);
-      --idx;
-    }
-  }
-
-  if (queryParamsCategory.length === 0) {
-    queryParamsCategory.push({});
-  }
-
-  return queryParamsCategory;
+  return queryParamsMongo;
 }

@@ -18,41 +18,37 @@ import {
 export class RequestCardService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  private url_server: string = `http://${this.HOST}${this.PORT}/api/card`;
+  url_server: string = environment.URL_SERVER_API + "card/";
 
   getByIdCard(id: string): Observable<ProductCard> {
-    return this.http.get<ProductCard>(`${this.url_server}/${id}`);
+    return this.http.get<ProductCard>(`${this.url_server}${id}`);
   }
 
   getByIdCardInfo(id: string): Observable<ProductInfo> {
-    return this.http.get<ProductInfo>(`${this.url_server}/${id}/info`);
+    return this.http.get<ProductInfo>(`${this.url_server}${id}/info`);
   }
 
   getByIdCardCharacteristics(id: string): Observable<ProductCharacteristics> {
     return this.http.get<ProductCharacteristics>(
-      `${this.url_server}/${id}/characteristics`
+      `${this.url_server}${id}/characteristics`
     );
   }
 
   getByIdCardComments(id: string): Observable<ProductComments> {
-    return this.http.get<ProductComments>(`${this.url_server}/${id}/comments`);
+    return this.http.get<ProductComments>(`${this.url_server}${id}/comments`);
   }
 
   getByIdCardQuestions(id: string): Observable<ProductQuestions> {
-    return this.http.get<ProductQuestions>(
-      `${this.url_server}/${id}/questions`
-    );
+    return this.http.get<ProductQuestions>(`${this.url_server}${id}/questions`);
   }
 
   getByIdCardPhoto(id: string): Observable<ProductPhoto> {
-    return this.http.get<ProductPhoto>(`${this.url_server}/${id}/photo`);
+    return this.http.get<ProductPhoto>(`${this.url_server}${id}/photo`);
   }
 
   getByIdCardAccessories(id: string): Observable<ProductAccessories> {
     return this.http.get<ProductAccessories>(
-      `${this.url_server}/${id}/accessories`
+      `${this.url_server}card/${id}/accessories`
     );
   }
 }

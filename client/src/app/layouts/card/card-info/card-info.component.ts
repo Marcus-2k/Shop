@@ -32,9 +32,7 @@ export class CardInfoComponent implements OnInit {
     }
   }
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 
   loader: boolean = true;
 

@@ -1,12 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
 import {
   CategoryHome,
   CategoryProduct,
   CategoryProduct_Characteristics,
 } from "../../interface/interfaces";
+
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -14,25 +15,19 @@ import {
 export class RequestCatalogService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  private url_server: string = `http://${this.HOST}${this.PORT}/api/`;
+  url_server: string = environment.URL_SERVER_API + "catalog/";
 
   getCategory(): Observable<CategoryProduct[]> {
-    return this.http.get<CategoryProduct[]>(
-      `${this.url_server}catalog/category/`
-    );
+    return this.http.get<CategoryProduct[]>(`${this.url_server}category/`);
   }
   getCategoryHome(): Observable<CategoryHome[]> {
-    return this.http.get<CategoryHome[]>(
-      `${this.url_server}catalog/category/home`
-    );
+    return this.http.get<CategoryHome[]>(`${this.url_server}category/home`);
   }
   getCategoryAndCharacteristics(): Observable<
     CategoryProduct_Characteristics[]
   > {
     return this.http.get<CategoryProduct_Characteristics[]>(
-      `${this.url_server}catalog/category/characteristics`
+      `${this.url_server}category/characteristics`
     );
   }
 }

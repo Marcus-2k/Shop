@@ -1,6 +1,11 @@
 # Server
 node_modules
 
+# Server > uploads folder
+uploads/*.webp
+uploads/*.png
+uploads/*.jpg
+
 # Client
 .angular
 dist

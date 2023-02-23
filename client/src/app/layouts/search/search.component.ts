@@ -1,11 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Params, Router } from "@angular/router";
+
 import {
   Product,
-  Options,
-  ActiveFilter,
-  ActiveFilterBlock,
+  Filter,
+  WidgetAutoPortal,
+  WidgetSectionId,
 } from "src/app/shared/interface/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
@@ -29,10 +30,16 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     console.log("Start ngOnInit Search");
 
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+
     this.route.queryParams.subscribe((queryParams: Params) => {
       this.search_text = queryParams["search_text"];
 
       Object.assign(this.queryParams, queryParams);
+    });
+
+    this.route.params.subscribe((params: Params) => {
+      Object.assign(this.params, params);
     });
 
     // Checking the correctness of data START ========================================================
@@ -105,117 +112,30 @@ export class SearchComponent implements OnInit {
     }
     // Checking the correctness of data END ==========================================================
 
-    this.router.navigate(["search"], {
-      queryParams: this.queryParams,
-    });
-
-    if (this.search_text) {
-      this.searchService.search(this.queryParams).subscribe({
+    if (this.search_text || this.params["navigate_link"]) {
+      this.searchService.search(this.queryParams, this.params).subscribe({
         next: (response) => {
-          if (
-            response.product.length === 0 &&
-            response.productCharacteristicsBlock.length === 0 &&
-            response.productCharacteristicsName.length === 0
-          ) {
-            this.searchEmpty = true;
-          }
           // ==============================================================================================
           console.log("=====================================================");
           console.log(response.product);
-          console.log(response.productCharacteristicsBlock);
-          console.log(response.productCharacteristicsName);
+          console.log(response.filters);
+          console.log(response.widget_auto_portal);
+          console.log(response.widget_section_id);
           console.log("Відкрита сторінка", response.currentPage);
           console.log("Кількість сторінок", response.maxPage);
           console.log("Товарів на сторінку", response.limit);
+          console.log("Загальна кількість товарів", response.number_of_product);
           console.log("=====================================================");
           // ==============================================================================================
-          this.productList = response.product; // List Product
-          const productOptionsBlock: number[][][][] =
-            response.productCharacteristicsBlock; // Parameters by block to categories
+          this.productList = response.product;
+          this.listFilter = response.filters;
+          this.widget_auto_portal = response.widget_auto_portal;
+          this.widget_section_id = response.widget_section_id;
+          this.number_of_product = response.number_of_product;
+
           this.currentPage = response.currentPage;
-          this.maxPage = response.maxPage; // Max pages site
-          this.limit = response.limit; // Limits item site
-          // ==============================================================================================
-          let filterName: ActiveFilterBlock[] = [];
-          response.productCharacteristicsName.forEach(
-            (element: Options[], index) => {
-              productOptionsBlock[index].forEach((item, idx) => {
-                let block: ActiveFilterBlock = {
-                  name: element[idx].name,
-                  inputActive: [],
-                  blockActive: true,
-                };
-                item.forEach((items) => {
-                  for (
-                    let indexItems = 0;
-                    indexItems < items.length;
-                    indexItems++
-                  ) {
-                    let item: ActiveFilter = {
-                      name: element[idx].select[items[indexItems]],
-                      query_name: element[idx].query_name,
-                      counter: 0,
-                      active: false,
-                    };
-                    block.inputActive.push(item);
-                  }
-                });
-                filterName.push(block);
-              });
-            }
-          );
-          // console.log(filterName);
-          // ==============================================================================================
-          let uniqueFilter: ActiveFilterBlock[] = [];
-          filterName.forEach((element, idx) => {
-            if (idx === 0) {
-              uniqueFilter.push(element);
-            } else if (idx > 0) {
-              let flag = true;
-              for (let key of uniqueFilter) {
-                if (key.name === element.name) {
-                  key.inputActive = key.inputActive.concat(element.inputActive);
-                  flag = false;
-                }
-              }
-              if (flag) {
-                uniqueFilter.push(element);
-              }
-            }
-          });
-          // console.log(uniqueFilter);
-          // ==============================================================================================
-          let uniqueFilterBlock: ActiveFilterBlock[] = [];
-          uniqueFilter.forEach((element) => {
-            let uniqueFilterBlockItem: ActiveFilterBlock = {
-              name: element.name,
-              inputActive: [],
-              blockActive: true,
-            };
-            let inputActiveItem: ActiveFilter[] = [];
-            //
-            element.inputActive.forEach((item, index) => {
-              //
-              if (index === 0) {
-                inputActiveItem.push(item);
-              } else if (index > 0) {
-                //
-                let flag = true;
-                for (let key of inputActiveItem) {
-                  if (key.name === item.name) {
-                    flag = false;
-                    key.counter++;
-                  }
-                }
-                if (flag) {
-                  inputActiveItem.push(item);
-                }
-              }
-              uniqueFilterBlockItem.inputActive = inputActiveItem;
-            });
-            uniqueFilterBlock.push(uniqueFilterBlockItem);
-          });
-          // console.log(uniqueFilterBlock);
+          this.maxPage = response.maxPage;
+          this.limit = response.limit;
           // ==============================================================================================
           let onlyQueryParamsFilter: Params = {};
           Object.assign(onlyQueryParamsFilter, this.queryParams);
@@ -225,38 +145,43 @@ export class SearchComponent implements OnInit {
           delete onlyQueryParamsFilter["page"];
           delete onlyQueryParamsFilter["limit"];
 
-          let parametersValue: string[] = Object.values(onlyQueryParamsFilter);
-          // ==============================================================================================
-          let sortParameters: string[] = [];
-          parametersValue.forEach((element: string) => {
-            if (element.indexOf(",") !== -1) {
-              sortParameters = sortParameters.concat(element.split(","));
-            } else {
-              sortParameters.push(element);
-            }
-          });
-          uniqueFilterBlock.forEach((element: ActiveFilterBlock, i) => {
-            sortParameters.forEach((block) => {
-              element.inputActive.forEach((item, idx) => {
-                if (block === item.name) {
-                  uniqueFilterBlock[i].inputActive[idx].active = true;
+          for (let key in onlyQueryParamsFilter) {
+            onlyQueryParamsFilter[key] = onlyQueryParamsFilter[key].split(",");
+
+            for (let i = 0; i < this.listFilter.length; i++) {
+              for (
+                let idx = 0;
+                idx < this.listFilter[i].checkboxList.length;
+                idx++
+              ) {
+                if (
+                  onlyQueryParamsFilter[key].indexOf(
+                    this.listFilter[i].checkboxList[idx].name
+                  ) !== -1
+                ) {
+                  this.listFilter[i].checkboxList[idx].active = true;
                 }
-              });
-            });
-          });
-          // ==============================================================================================
-          this.listFilter = uniqueFilterBlock;
+              }
+            }
+          }
           // ==============================================================================================
         },
         error: (error) => {
           console.log(error);
+          if (error.status === 404) {
+            this.router.navigate(["/404"]);
+            this.showNotice.open("Помилка запиту, заборонене посилання.", "Ok");
+          }
           // if (error.status === 500 || error.status === 0) {}
         },
         complete: () => {
           this.loader = false;
         },
       });
-    } else if (this.search_text === "" || this.search_text === undefined) {
+    } else if (
+      (this.search_text === "" || this.search_text === undefined) &&
+      this.params.hasOwnProperty("navigate_link") === false
+    ) {
       this.router.navigate(["/"]);
 
       this.showNotice.open(
@@ -268,6 +193,7 @@ export class SearchComponent implements OnInit {
     this.renameTitle.renameTitleSite("Інтернет-магазин");
 
     console.log(this.queryParams);
+    console.log(this.params);
   }
   // Сommon START =================================================================================
   body: HTMLBodyElement = document.getElementsByTagName("body")[0];
@@ -278,35 +204,53 @@ export class SearchComponent implements OnInit {
   searchEmpty: boolean = false;
   loaderNewData: boolean = false;
 
-  searchByQuery() {
-    this.router.navigate(["search"], {
-      queryParams: this.queryParams,
-    });
+  number_of_product: number | undefined;
 
-    if (this.search_text) {
+  searchByQuery() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => true;
+
+    if (this.params.hasOwnProperty("navigate_link")) {
+      this.router.navigate(["search", this.params["navigate_link"]], {
+        queryParams: this.queryParams,
+      });
+    } else {
+      this.router.navigate(["search"], {
+        queryParams: this.queryParams,
+      });
+    }
+
+    if (this.search_text || this.params["navigate_link"]) {
       this.startLoadData();
 
-      this.searchService
-        .searchWithoutCharacteristics(this.queryParams)
-        .subscribe({
-          next: (response) => {
-            console.log("====================================================");
-            console.log(response.product);
-            console.log("Відкрита сторінка", response.currentPage);
-            console.log("Кількість сторінок", response.maxPage);
-            console.log("Товарів на сторінку", response.limit);
-            console.log("====================================================");
-            this.productList = response.product; // List Product
-            this.currentPage = 1;
-            this.maxPage = response.maxPage; // Max pages site
-            this.limit = response.limit; // Limits item site
-          },
-          error: (err) => {},
-          complete: () => {
-            this.endLoadData();
-          },
-        });
-    } else {
+      this.searchService.search(this.queryParams, this.params).subscribe({
+        next: (response) => {
+          console.log("=====================================================");
+          console.log(response.product);
+          console.log(response.filters);
+          console.log(response.widget_auto_portal);
+          console.log(response.widget_section_id);
+          console.log("Відкрита сторінка", response.currentPage);
+          console.log("Кількість сторінок", response.maxPage);
+          console.log("Товарів на сторінку", response.limit);
+          console.log("Загальна кількість товарів", response.number_of_product);
+          console.log("=====================================================");
+          this.productList = response.product;
+          this.number_of_product = response.number_of_product;
+
+          this.currentPage = response.currentPage;
+          this.maxPage = response.maxPage;
+          this.limit = response.limit;
+        },
+        error: (err) => {},
+        complete: () => {
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.endLoadData();
+        },
+      });
+    } else if (
+      (this.search_text === "" || this.search_text === undefined) &&
+      this.params.hasOwnProperty("navigate_link") === false
+    ) {
       this.router.navigate(["/"]);
 
       this.showNotice.open(
@@ -338,9 +282,13 @@ export class SearchComponent implements OnInit {
   }
   // Header END ===================================================================================
   // Sidebar START ================================================================================
-  listFilter: ActiveFilterBlock[] = [];
+  listFilter: Filter[] = [];
 
   queryParams: Params = {};
+  params: Params = {};
+
+  widget_auto_portal: WidgetAutoPortal[] | undefined;
+  widget_section_id: WidgetSectionId[] | undefined;
 
   filterSearch(nameInput: string, nameQuery: string, checked: boolean) {
     if (checked === true) {

@@ -302,30 +302,39 @@ export interface CategoryHome {
 // Page Search START ===================================================================================
 export interface FoundData {
   product: Product[];
-  productCharacteristicsBlock: number[][][][];
-  productCharacteristicsName: Options[][];
+  filters: Filter[];
+  widget_auto_portal: WidgetAutoPortal[] | undefined;
+  widget_section_id: WidgetSectionId[] | undefined;
+  number_of_product: number;
   currentPage: number;
   maxPage: number;
   limit: number;
 }
-export interface FoundDataWithoutCharacteristics {
-  product: Product[];
-  currentPage: number;
-  maxPage: number;
-  limit: number;
+
+export interface WidgetAutoPortal {
+  titleSubNameListCategory: string;
+  navigate_link: string;
+  navigate_image: string;
 }
-export interface FilterNameParams {
-  name: string;
-  params: string[];
+export interface WidgetSectionId {
+  subNameCategory: string;
+  navigate_link: string;
+  subNameListCategory:
+    | {
+        titleSubNameListCategory: string;
+        navigate_link: string;
+      }[]
+    | undefined;
 }
-export interface ActiveFilterBlock {
-  name: string;
-  inputActive: ActiveFilter[];
-  blockActive: boolean;
-}
-export interface ActiveFilter {
-  name: string;
+
+export interface Filter {
+  title: string;
   query_name: string;
+  show: boolean;
+  checkboxList: Checkbox[];
+}
+export interface Checkbox {
+  name: string;
   counter: number;
   active: boolean;
 }

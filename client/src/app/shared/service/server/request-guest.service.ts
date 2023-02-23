@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
 import { Product } from "../../interface/interfaces";
+
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -10,9 +11,7 @@ import { Product } from "../../interface/interfaces";
 export class RequestGuestService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  private url_server: string = `http://${this.HOST}${this.PORT}/api/guest`;
+  url_server: string = environment.URL_SERVER_API + "guest/";
 
   getGuestHistoryView(
     idArray: string[]
@@ -22,7 +21,7 @@ export class RequestGuestService {
     };
     const query = new URLSearchParams(queryParams);
     return this.http.get<{ history__view: Product[] }>(
-      `${this.url_server}/history?${query.toString()}`
+      `${this.url_server}history/?${query.toString()}`
     );
   }
 }

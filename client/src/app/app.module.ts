@@ -24,7 +24,7 @@ import { AppComponent } from "./app.component";
 // 404 Component
 import { NotFoundComponent } from "./not-found/not-found.component";
 // 500 Component
-import { NotConnectionToServerComponent } from "./not-connection-to-server/not-connection-to-server.component";
+import { NotConnectionComponent } from "./not-connection/not-connection.component";
 // Body Main
 import { HomeComponent } from "./layouts/main/home/home.component";
 // Body >>> Header Component
@@ -39,6 +39,9 @@ import { RegisterComponent } from "./layouts/register/register.component";
 // Page Search Product
 import { SearchComponent } from "./layouts/search/search.component";
 import { SearchEmptyComponent } from "./layouts/search/search-empty/search-empty.component";
+import { WidgetAutoPortalComponent } from "./layouts/search/widget-auto-portal/widget-auto-portal.component";
+import { WidgetSectionIdComponent } from "./layouts/search/widget-section-id/widget-section-id.component";
+
 // User Layouts
 import { AccountComponent } from "./layouts/user-layouts/account/account.component";
 import { UserComponent } from "./layouts/user-layouts/user/user.component";
@@ -180,8 +183,10 @@ import { environment } from "../environments/environment";
     MyOrderEmptyComponent,
     MyOrderHeaderComponent,
     MyOrderDetailComponent,
-    NotConnectionToServerComponent,
+    NotConnectionComponent,
     SearchEmptyComponent,
+    WidgetAutoPortalComponent,
+    WidgetSectionIdComponent,
   ],
   imports: [
     BrowserModule,

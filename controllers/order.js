@@ -18,7 +18,7 @@ module.exports.getOrdersUser = async function (req, res) {
         if (i === 0) {
           productCard_MyOrder.push([product]);
         } else {
-          productCard_MyOrder[i].push(product);
+          productCard_MyOrder[idx].push(product);
         }
       }
 
