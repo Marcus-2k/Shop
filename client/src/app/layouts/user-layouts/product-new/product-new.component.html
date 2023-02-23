@@ -379,40 +379,14 @@
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-description">
-        <div class="form-item-title">
-          <p class="title">Опис товару*</p>
-        </div>
-
-        <mat-form-field class="form-description-field" appearance="fill">
-          <mat-label>Опис товару</mat-label>
-          <textarea
-            matInput
-            type="text"
-            class="input-description"
-            required
-            #inputDescription
-            [(ngModel)]="description"
-            [minlength]="minLengthDescription"
-            [maxlength]="maxLengthDescription"
-          ></textarea>
-        </mat-form-field>
-
-        <div class="form-description-length">
-          <span
-            [ngClass]="{
-              ok:
-                description.length >= minLengthDescription &&
-                description.length <= maxLengthDescription,
-              error: description.length > maxLengthDescription
-            }"
-          >
-            Символів {{ description.length }}/{{ maxLengthDescription }}
-          </span>
-        </div>
+        <app-product-new-description
+          [InputData_Description]="InputData.descriptionData"
+          [appearance]="InputData.appearance"
+        ></app-product-new-description>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-create">
-        <button
+        <!-- <button
           mat-raised-button
           color="primary"
           type="submit"
@@ -432,9 +406,9 @@
           "
         >
           Створити
-        </button>
+        </button> -->
         <!--  -->
-        <button
+        <!-- <button
           mat-raised-button
           color="primary"
           type="submit"
@@ -458,7 +432,7 @@
           "
         >
           Зберегти
-        </button>
+        </button> -->
       </div>
       <!-- ============================================================== -->
     </div>

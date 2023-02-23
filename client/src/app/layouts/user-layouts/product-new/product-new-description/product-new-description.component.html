@@ -1,1 +1,37 @@
 <!--  -->
+<ng-container *ngIf="InputData_Description">
+  <div class="form-item-title">
+    <p class="title">Опис товару*</p>
+  </div>
+
+  <mat-form-field class="form-description-field" [appearance]="appearance">
+    <mat-label>Опис товару</mat-label>
+    <textarea
+      matInput
+      type="text"
+      class="input-description"
+      required
+      #inputDescription
+      [(ngModel)]="InputData_Description.description"
+    ></textarea>
+  </mat-form-field>
+
+  <div class="form-description-length">
+    <span
+      [ngClass]="{
+        ok:
+          InputData_Description.description.length >=
+            InputData_Description.minLengthDescription &&
+          InputData_Description.description.length <=
+            InputData_Description.maxLengthDescription,
+        error:
+          InputData_Description.description.length >
+          InputData_Description.maxLengthDescription
+      }"
+    >
+      Символів {{ InputData_Description.description.length }}/{{
+        InputData_Description.maxLengthDescription
+      }}
+    </span>
+  </div>
+</ng-container>

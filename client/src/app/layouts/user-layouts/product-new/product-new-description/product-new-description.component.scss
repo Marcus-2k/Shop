@@ -1,0 +1,26 @@
+.form-item-title {
+  .title {
+    font-size: 18px;
+  }
+}
+.form-description-field {
+  width: 100%;
+  max-width: 800px;
+
+  .input-description {
+    width: 100%;
+
+    min-height: 200px;
+    max-height: 600px;
+  }
+}
+.form-description-length {
+  font-size: 16px;
+}
+
+.ok {
+  color: #349948;
+}
+.error {
+  color: #f44336;
+}

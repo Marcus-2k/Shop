@@ -145,21 +145,6 @@
           }
         }
       }
-      &-description {
-        &-field {
-          width: 800px;
-          font-size: 18px;
-          .input-description {
-            min-height: 200px;
-            max-height: 600px;
-          }
-        }
-        &-length {
-          margin-left: 10px;
-          color: #535353;
-          font-size: 16px;
-        }
-      }
       &-create {
       }
     }
