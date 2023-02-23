@@ -48,6 +48,16 @@ import { UserComponent } from "./layouts/user-layouts/user/user.component";
 import { MyOrderComponent } from "./layouts/user-layouts/my-order/my-order.component";
 import { ProductComponent } from "./layouts/user-layouts/product/product.component";
 import { ProductNewComponent } from "./layouts/user-layouts/product-new/product-new.component";
+// ProductNew >>> components START
+import { ProductNewPhotoComponent } from "./layouts/user-layouts/product-new/product-new-photo/product-new-photo.component";
+import { ProductNewTitleComponent } from "./layouts/user-layouts/product-new/product-new-title/product-new-title.component";
+import { ProductNewPriceComponent } from "./layouts/user-layouts/product-new/product-new-price/product-new-price.component";
+import { ProductNewStatusComponent } from "./layouts/user-layouts/product-new/product-new-status/product-new-status.component";
+import { ProductNewCategoryComponent } from "./layouts/user-layouts/product-new/product-new-category/product-new-category.component";
+import { ProductNewCharacteristicsComponent } from "./layouts/user-layouts/product-new/product-new-characteristics/product-new-characteristics.component";
+import { ProductNewKeyWordsComponent } from "./layouts/user-layouts/product-new/product-new-key-words/product-new-key-words.component";
+import { ProductNewDescriptionComponent } from "./layouts/user-layouts/product-new/product-new-description/product-new-description.component";
+// ProductNew >>> components END
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
 import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newsletters.component";
 import { WishlistComponent } from "./layouts/user-layouts/wishlist/wishlist.component";
@@ -146,6 +156,14 @@ import { environment } from "../environments/environment";
     CartOrderPaymentComponent,
     ProductComponent,
     ProductNewComponent,
+    ProductNewPhotoComponent,
+    ProductNewTitleComponent,
+    ProductNewPriceComponent,
+    ProductNewStatusComponent,
+    ProductNewCategoryComponent,
+    ProductNewCharacteristicsComponent,
+    ProductNewKeyWordsComponent,
+    ProductNewDescriptionComponent,
     PricePipe,
     FindByTextPipe,
     NewslettersComponent,
