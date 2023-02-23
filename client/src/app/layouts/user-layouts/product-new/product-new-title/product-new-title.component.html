@@ -1,1 +1,17 @@
 <!--  -->
+<ng-container *ngIf="InputData_Title">
+  <div class="form-item-title">
+    <p class="title">Назва товару*</p>
+  </div>
+
+  <mat-form-field class="form-title-field" [appearance]="appearance">
+    <mat-label>Назва товару</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="InputData_Title.nameProduct"
+      required
+      class="input-title"
+    />
+  </mat-form-field>
+</ng-container>

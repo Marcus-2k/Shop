@@ -77,21 +77,10 @@
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-name">
-        <div class="form-item-title">
-          <p class="title">Назва товару*</p>
-        </div>
-
-        <mat-form-field class="width-input" appearance="fill">
-          <mat-label>Назва товару</mat-label>
-          <input
-            matInput
-            type="text"
-            #inputTitle
-            required
-            id="name"
-            [(ngModel)]="nameProduct"
-          />
-        </mat-form-field>
+        <app-product-new-title
+          [InputData_Title]="InputData.titleData"
+          [appearance]="InputData.appearance"
+        ></app-product-new-title>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-price">

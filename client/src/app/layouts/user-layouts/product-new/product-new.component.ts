@@ -89,6 +89,11 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
   // Common variables START ========================================================================================================================
   InputData: InputData = {
+    titleData: {
+      nameProduct: "",
+      minLengthName: 12,
+      maxLengthName: 50,
+    },
     descriptionData: {
       description: "",
       minLengthDescription: 60,
@@ -118,7 +123,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       }
 
       // Name
-      this.nameProduct = product.name;
+      // this.nameProduct = product.name;
 
       // Price
       this.priceProduct = product.price;
@@ -257,10 +262,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
   }
   // File END ======================================================================================================================================
-  // Name START ====================================================================================================================================
-  nameProduct: string = "";
-  minLengthNameProduct = 5;
-  // Name END ======================================================================================================================================
   // Price START ===================================================================================================================================
   priceProduct: number = 3300;
   // Price END =====================================================================================================================================
