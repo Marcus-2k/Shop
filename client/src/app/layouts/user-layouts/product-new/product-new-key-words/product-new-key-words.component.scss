@@ -1,0 +1,41 @@
+.form-item-title {
+  .title {
+    font-size: 18px;
+  }
+}
+
+.form-words {
+  &-field {
+    width: 800px;
+    font-size: 18px;
+    .input-key-words {
+      min-height: 100px;
+      max-height: 200px;
+    }
+  }
+  &-length {
+    font-size: 16px;
+  }
+  &-item {
+    display: flex;
+    flex-wrap: wrap;
+    &-word {
+      display: flex;
+      .word__text {
+        background-color: #b1b1b1;
+        margin-top: 5px;
+        margin-right: 10px;
+        border-radius: 10px;
+        padding: 5px;
+      }
+    }
+  }
+  &-delete {
+  }
+}
+.ok {
+  color: #349948;
+}
+.error {
+  color: #f44336;
+}

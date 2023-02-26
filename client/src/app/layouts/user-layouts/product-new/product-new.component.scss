@@ -109,40 +109,6 @@
       }
       &-status {
       }
-      &-words {
-        &-field {
-          width: 800px;
-          font-size: 18px;
-          .input-keywords {
-            min-height: 100px;
-            max-height: 200px;
-          }
-        }
-        &-length {
-          margin-left: 10px;
-          color: #535353;
-          font-size: 16px;
-        }
-        &-item {
-          display: flex;
-          flex-wrap: wrap;
-          margin-left: 10px;
-          &-word {
-            display: flex;
-            .word__text {
-              background-color: #b1b1b1;
-              margin-top: 5px;
-              margin-right: 10px;
-              border-radius: 10px;
-              padding: 5px;
-            }
-          }
-        }
-        &-delete {
-          .delete-button {
-          }
-        }
-      }
       &-create {
       }
     }

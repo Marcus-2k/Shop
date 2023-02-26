@@ -94,11 +94,20 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       minLengthName: 12,
       maxLengthName: 50,
     },
+    keywordsData: {
+      keywords: "",
+      minLengthKeywords: undefined, // temporarily not used
+      maxLengthKeywords: 200,
+
+      minLengthWord: 2,
+      maxLengthWord: 10,
+    },
     descriptionData: {
       description: "",
       minLengthDescription: 60,
       maxLengthDescription: 5000,
     },
+
     appearance: "fill",
   };
 
@@ -156,8 +165,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       this.statusNumber = product.status;
 
       // Keywords
-      this.keywords = product.keywords.join(" ");
-      this.keyupInputKeywords(product.keywords.join(" "));
+      // this.keywords = product.keywords.join(" ");
+      // this.keyupInputKeywords(product.keywords.join(" "));
 
       // Description
       // this.description = product.description;
@@ -496,75 +505,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   // Status START ==================================================================================================================================
   statusNumber: number = -1;
   // Status END ====================================================================================================================================
-  // Keywords START ================================================================================================================================
-  keywordsArray: string[] = [];
-  keywords: string = "";
-
-  lengthKeywords: number = 0;
-  validityKeywords: boolean = true;
-  up_validityKeywords: boolean = true;
-
-  minwordLength: number = 2;
-  maxwordLength: number = 10;
-
-  maxLengthKeywords: number = 200;
-
-  keyupInputKeywords(value: string) {
-    this.keywordsArray = value.replace(/ +/g, " ").trim().split(" ");
-    this.lengthKeywords = value.replace(/\s+/g, "").length;
-
-    if (this.keywordsArray[0].length === 0) {
-      this.keywordsArray = [];
-      this.validityKeywords = true;
-    } else {
-      this.checkingValidityKeywords();
-    }
-  }
-  checkingValidityKeywords() {
-    for (let index = 0; index < this.keywordsArray.length; index++) {
-      if (
-        this.keywordsArray[index].length < this.minwordLength ||
-        this.keywordsArray[index].length > this.maxwordLength
-      ) {
-        this.validityKeywords = false;
-        break;
-      }
-      this.validityKeywords = true;
-    }
-    if (this.update) {
-      this.up_checheckingKeywords();
-    }
-  } // Checking of the all keywords inputted correct
-  deleteErrorKeywords() {
-    for (let index = 0; index < this.keywordsArray.length; index++) {
-      if (
-        this.keywordsArray[index].length < this.minwordLength ||
-        this.keywordsArray[index].length > this.maxwordLength
-      ) {
-        this.keywordsArray.splice(index, 1);
-        index--;
-      }
-    } // ['hi', 'hello', 'n', 'cool', 'description'] >> ['hi', 'hello', 'cool']
-
-    this.validityKeywords = true;
-    this.keywords = this.keywordsArray.join(" ");
-  } // Delete all error keywords
-  up_checheckingKeywords() {
-    let counterRepeat: number = 0;
-
-    this.up_Product?.keywords.forEach((word) => {
-      if (this.keywordsArray.indexOf(word) >= 0) {
-        counterRepeat++;
-      }
-    });
-
-    if (counterRepeat === this.keywordsArray.length) {
-      this.up_validityKeywords = true;
-    } else {
-      this.up_validityKeywords = false;
-    }
-  }
-  // Keywords END ==================================================================================================================================
   // Create/Up Start ===============================================================================================================================
   // createProduct() {
   //   console.log("Button Create");

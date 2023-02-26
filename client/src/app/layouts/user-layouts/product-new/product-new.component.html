@@ -308,63 +308,11 @@
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-words">
-        <div class="form-item-title">
-          <p class="title">Ключові слова</p>
-        </div>
-
-        <mat-form-field class="form-words-field" appearance="fill">
-          <mat-label>Ключові слова</mat-label>
-          <textarea
-            matInput
-            type="text"
-            class="input-keywords"
-            [(ngModel)]="keywords"
-            #inputKeywords
-            (keyup)="keyupInputKeywords(inputKeywords.value)"
-          ></textarea>
-        </mat-form-field>
-
-        <div class="form-words-length">
-          <span [ngClass]="{ error: lengthKeywords > maxLengthKeywords }"
-            >Символів
-            <span>{{ lengthKeywords }}</span>
-            <span>/</span>
-            <span>{{ maxLengthKeywords }}</span>
-          </span>
-        </div>
-
-        <div class="form-words-item">
-          <ng-container *ngFor="let word of keywordsArray">
-            <div
-              class="form-words-item-word"
-              *ngIf="word.length >= 1"
-              [ngClass]="{
-                error:
-                  word.length < minwordLength || word.length > maxwordLength
-              }"
-              [title]="
-                word.length < minwordLength
-                  ? 'Мінімальна кількість символів ' + minwordLength
-                  : word.length > maxwordLength
-                  ? 'Максимальна кількість символів ' + maxwordLength
-                  : ''
-              "
-            >
-              <p class="word__text">#{{ word }}</p>
-            </div>
-          </ng-container>
-        </div>
-
-        <div class="form-words-delete" *ngIf="!validityKeywords">
-          <button
-            class="delete-button"
-            mat-raised-button
-            color="warn"
-            (click)="deleteErrorKeywords()"
-          >
-            Видалити всі не правильні кілючові слова
-          </button>
-        </div>
+        <app-product-new-key-words
+          [InputData_Keywords]="InputData.keywordsData"
+          [appearance]="InputData.appearance"
+          [update]="update"
+        ></app-product-new-key-words>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-description">
