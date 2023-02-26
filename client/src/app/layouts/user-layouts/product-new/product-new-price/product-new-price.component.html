@@ -1,1 +1,63 @@
 <!--  -->
+<ng-container *ngIf="InputData_Price">
+  <div class="item-price">
+    <div class="form-item-title">
+      <p class="title">Ціна товару*</p>
+    </div>
+
+    <mat-form-field class="form-item-price" [appearance]="appearance">
+      <mat-label>Ціна товару</mat-label>
+      <input
+        matInput
+        type="number"
+        #inputPrice
+        required
+        placeholder="9 950"
+        [(ngModel)]="InputData_Price.price"
+        (ngModelChange)="procentActionNumber()"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="item-action">
+    <p class="form-item-action-checkbox">
+      <mat-checkbox
+        color="primary"
+        (click)="procentActionNumber()"
+        [(ngModel)]="InputData_Price.action"
+      >
+        Акція на товар
+      </mat-checkbox>
+    </p>
+
+    <ng-container *ngIf="InputData_Price.action">
+      <p
+        *ngIf="
+          InputData_Price.actionProcent <= InputData_Price.minActionProcent
+        "
+      >
+        Знижка {{ InputData_Price.actionProcent }}%
+      </p>
+      <p
+        class="error"
+        *ngIf="InputData_Price.actionProcent > InputData_Price.minActionProcent"
+      >
+        Мінімальна знижка на товар {{ InputData_Price.minActionProcent }}%
+      </p>
+    </ng-container>
+
+    <ng-container *ngIf="InputData_Price.action">
+      <mat-form-field class="form-item-action-price" [appearance]="appearance">
+        <mat-label>Акційна ціна</mat-label>
+        <input
+          matInput
+          type="number"
+          required
+          [(ngModel)]="InputData_Price.actionPrice"
+          #actionPriceInput
+          (ngModelChange)="procentActionNumber()"
+        />
+      </mat-form-field>
+    </ng-container>
+  </div>
+</ng-container>

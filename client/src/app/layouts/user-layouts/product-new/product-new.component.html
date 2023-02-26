@@ -84,63 +84,11 @@
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-price">
-        <div class="form-item-title">
-          <p class="title">Ціна товару*</p>
-        </div>
-
-        <mat-form-field class="width-input" appearance="fill">
-          <mat-label>Ціна товару</mat-label>
-          <input
-            matInput
-            type="number"
-            class="number__input"
-            #inputPrice
-            required
-            placeholder="9 950"
-            [(ngModel)]="priceProduct"
-            (ngModelChange)="procentActionNumber()"
-          />
-        </mat-form-field>
-      </div>
-      <!-- ============================================================== -->
-      <div class="form-item form-action">
-        <div class="form-item-title">
-          <p class="title">Акція на товар*</p>
-        </div>
-
-        <mat-checkbox
-          class="form-action-checkbox"
-          (click)="procentActionNumber()"
-          [(ngModel)]="action"
-          >Акція на товар</mat-checkbox
-        >
-
-        <div class="form-action-price__procent" *ngIf="action">
-          <p class="procent__text" *ngIf="actionProcent <= minActionProcent">
-            Знижка {{ actionProcent }}%
-          </p>
-          <p
-            class="procent__text error"
-            *ngIf="actionProcent > minActionProcent"
-          >
-            Мінімальна знижка на товар {{ minActionProcent }}%
-          </p>
-        </div>
-
-        <div class="new__action-price" *ngIf="action">
-          <mat-form-field class="width-input" appearance="fill">
-            <mat-label>Акційна ціна</mat-label>
-            <input
-              matInput
-              type="number"
-              class="number__input"
-              required
-              [(ngModel)]="actionPrice"
-              #actionPriceInput
-              (ngModelChange)="procentActionNumber()"
-            />
-          </mat-form-field>
-        </div>
+        <app-product-new-price
+          [InputData_Price]="InputData.priceData"
+          [appearance]="InputData.appearance"
+          [update]="update"
+        ></app-product-new-price>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-counter">

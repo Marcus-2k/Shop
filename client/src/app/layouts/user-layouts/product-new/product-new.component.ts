@@ -94,6 +94,13 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       minLengthName: 12,
       maxLengthName: 50,
     },
+    priceData: {
+      price: 3300,
+      action: false,
+      actionPrice: 2970,
+      actionProcent: -10,
+      minActionProcent: -5,
+    },
     keywordsData: {
       keywords: "",
       minLengthKeywords: undefined, // temporarily not used
@@ -108,7 +115,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       maxLengthDescription: 5000,
     },
 
-    appearance: "fill",
+    appearance: "outline",
   };
 
   body = document.getElementById("body");
@@ -135,13 +142,13 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       // this.nameProduct = product.name;
 
       // Price
-      this.priceProduct = product.price;
+      // this.priceProduct = product.price;
 
       // Action / Price
-      this.action = product.action;
+      // this.action = product.action;
 
-      this.actionPrice = product.actionPrice;
-      this.procentActionNumber();
+      // this.actionPrice = product.actionPrice;
+      // this.procentActionNumber();
 
       // Counter
       this.counterProduct = product.counter;
@@ -271,23 +278,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
   }
   // File END ======================================================================================================================================
-  // Price START ===================================================================================================================================
-  priceProduct: number = 3300;
-  // Price END =====================================================================================================================================
-  // Action / Action-Price Start ===================================================================================================================
-  action: boolean = false;
-  actionPrice: number = 2970;
-
-  actionProcent: number = -10;
-  minActionProcent: number = -5;
-
-  procentActionNumber() {
-    let newAction: number =
-      (100 * (this.actionPrice - this.priceProduct)) / this.priceProduct;
-    let newActionFixed = newAction.toFixed(2);
-    this.actionProcent = Number(newActionFixed);
-  }
-  // Action / Action-Price END =====================================================================================================================
   // Counter START =================================================================================================================================
   counterProduct: number = 10;
   // Counter END ===================================================================================================================================
