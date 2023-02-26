@@ -91,23 +91,12 @@
         ></app-product-new-price>
       </div>
       <!-- ============================================================== -->
-      <div class="form-item form-counter">
-        <div class="form-item-title">
-          <p class="title">Кількість товару*</p>
-        </div>
-
-        <mat-form-field class="width-input" appearance="fill">
-          <mat-label>Кількість товару в наявності</mat-label>
-          <input
-            matInput
-            [(ngModel)]="counterProduct"
-            (ngModelChange)="statusNumber = -1"
-            type="number"
-            class="number__input"
-            [min]="0"
-            required
-          />
-        </mat-form-field>
+      <div class="form-item form-status">
+        <app-product-new-status
+          [InputData_Status]="InputData.statusData"
+          [appearance]="InputData.appearance"
+          [update]="update"
+        ></app-product-new-status>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-category">
@@ -220,39 +209,6 @@
             </div>
           </ng-container>
         </div>
-      </div>
-      <!-- ============================================================== -->
-      <div class="form-item form-status">
-        <div class="form-item-title">
-          <p class="title">Статус товару*</p>
-        </div>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Статус товару</mat-label>
-          <mat-select
-            disableRipple
-            class="select__params"
-            required
-            [(ngModel)]="statusNumber"
-          >
-            <mat-option
-              [value]="0"
-              [disabled]="counterProduct === 0 || counterProduct <= 10"
-              >В наявності</mat-option
-            >
-            <mat-option [value]="1" [disabled]="counterProduct !== 0"
-              >Очікується постачання</mat-option
-            >
-            <mat-option [value]="2" [disabled]="counterProduct !== 0"
-              >Немає в наявності</mat-option
-            >
-            <mat-option
-              [value]="3"
-              [disabled]="counterProduct > 10 || counterProduct === 0"
-              >Закінчується</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-words">

@@ -3,6 +3,7 @@ import { MatFormFieldAppearance } from "@angular/material/form-field";
 export interface InputData {
   titleData: InputData_Title;
   priceData: InputData_Price;
+  statusData: InputData_Status;
   descriptionData: InputData_Description;
   keywordsData: InputData_Keywords;
 
@@ -20,6 +21,10 @@ export interface InputData_Price {
   actionPrice: number;
   actionProcent: number;
   minActionProcent: number;
+}
+export interface InputData_Status {
+  counter: number;
+  status: number;
 }
 export interface InputData_Keywords {
   keywords: string;

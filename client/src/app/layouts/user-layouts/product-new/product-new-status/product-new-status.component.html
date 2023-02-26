@@ -1,1 +1,52 @@
 <!--  -->
+<ng-container *ngIf="InputData_Status">
+  <div class="item-counter">
+    <div class="form-item-title">
+      <p class="title">Кількість товару*</p>
+    </div>
+
+    <mat-form-field class="form-item-counter" [appearance]="appearance">
+      <mat-label>Кількість товару в наявності</mat-label>
+      <input
+        type="number"
+        matInput
+        [(ngModel)]="InputData_Status.counter"
+        (ngModelChange)="InputData_Status.status = -1"
+        [min]="0"
+        required
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="item-status">
+    <div class="form-item-title">
+      <p class="title">Статус товару*</p>
+    </div>
+
+    <mat-form-field class="form-item-status" [appearance]="appearance">
+      <mat-label>Статус товару</mat-label>
+      <mat-select required [(ngModel)]="InputData_Status.status">
+        <mat-option
+          [value]="0"
+          [disabled]="
+            InputData_Status.counter === 0 || InputData_Status.counter <= 10
+          "
+          >В наявності</mat-option
+        >
+        <mat-option [value]="1" [disabled]="InputData_Status.counter !== 0"
+          >Очікується постачання</mat-option
+        >
+        <mat-option [value]="2" [disabled]="InputData_Status.counter !== 0"
+          >Немає в наявності</mat-option
+        >
+        <mat-option
+          [value]="3"
+          [disabled]="
+            InputData_Status.counter > 10 || InputData_Status.counter === 0
+          "
+          >Закінчується</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-container>

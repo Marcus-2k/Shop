@@ -101,6 +101,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       actionProcent: -10,
       minActionProcent: -5,
     },
+    statusData: {
+      counter: 10,
+      status: -1,
+    },
     keywordsData: {
       keywords: "",
       minLengthKeywords: undefined, // temporarily not used
@@ -151,7 +155,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       // this.procentActionNumber();
 
       // Counter
-      this.counterProduct = product.counter;
+      // this.counterProduct = product.counter;
 
       // Category
       this.oneIndex = product.category[0];
@@ -169,7 +173,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       this.checkingValidityCharacteristics();
 
       // Status
-      this.statusNumber = product.status;
+      // this.statusNumber = product.status;
 
       // Keywords
       // this.keywords = product.keywords.join(" ");
@@ -278,9 +282,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
   }
   // File END ======================================================================================================================================
-  // Counter START =================================================================================================================================
-  counterProduct: number = 10;
-  // Counter END ===================================================================================================================================
   // Popuap Select Category START ==================================================================================================================
   categoryList: CategoryProduct_Characteristics[] = []; // Category List
 
@@ -492,9 +493,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     this.characteristicsNumber = [];
   }
   // Characteristics END ===========================================================================================================================
-  // Status START ==================================================================================================================================
-  statusNumber: number = -1;
-  // Status END ====================================================================================================================================
   // Create/Up Start ===============================================================================================================================
   // createProduct() {
   //   console.log("Button Create");
