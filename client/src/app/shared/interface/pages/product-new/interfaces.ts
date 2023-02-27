@@ -5,6 +5,7 @@ export interface InputData {
   titleData: InputData_Title;
   priceData: InputData_Price;
   statusData: InputData_Status;
+  categoryData: InputData_Category;
   descriptionData: InputData_Description;
   keywordsData: InputData_Keywords;
 
@@ -29,6 +30,9 @@ export interface InputData_Price {
 export interface InputData_Status {
   counter: number;
   status: number;
+}
+export interface InputData_Category {
+  categoryListNumber: number[];
 }
 export interface InputData_Keywords {
   keywords: string;

@@ -1,15 +1,10 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 
-import {
-  CategoryProduct_Characteristics,
-  Options,
-  ProductUpdate,
-} from "src/app/shared/interface/interfaces";
+import { Options, ProductUpdate } from "src/app/shared/interface/interfaces";
 import { InputData } from "src/app/shared/interface/pages/product-new/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
-import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
@@ -24,8 +19,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     private requestProduct: RequestProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private renameTitle: RenameTitleService,
-    private requestCatalog: RequestCatalogService
+    private renameTitle: RenameTitleService
   ) {}
 
   ngOnInit(): void {
@@ -40,39 +34,19 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         this.update = true;
 
         this.requestProduct.getByIdProduct(id).subscribe(
-          (response_product) => {
-            this.requestCatalog.getCategoryAndCharacteristics().subscribe(
-              (response) => {
-                console.log(response);
-                this.categoryList = response;
-                this.updateOnInit(response_product);
-              },
-              (error) => {
-                console.log(error);
-              }
-            );
-          },
-          (error_product) => {
-            console.log(error_product);
-          }
-        );
-      } else {
-        this.renameTitle.renameTitleSite("Створення товару");
-        this.requestCatalog.getCategoryAndCharacteristics().subscribe(
           (response) => {
-            console.log(response);
-            this.categoryList = response;
+            this.updateOnInit(response);
           },
           (error) => {
             console.log(error);
           }
         );
+      } else {
+        this.renameTitle.renameTitleSite("Створення товару");
       }
     });
   }
-  ngOnDestroy(): void {
-    this.categoryList = [];
-  }
+  ngOnDestroy(): void {}
   test() {
     console.log("======================================");
     console.log("======================================");
@@ -99,6 +73,9 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       counter: 10,
       status: -1,
     },
+    categoryData: {
+      categoryListNumber: [],
+    },
     keywordsData: {
       keywords: "",
       minLengthKeywords: undefined, // temporarily not used
@@ -116,7 +93,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     appearance: "outline",
   };
 
-  body = document.getElementById("body");
   // Common variables END ==========================================================================================================================
   // Update product START ==========================================================================================================================
   update: boolean = false; // Mode update true/false
@@ -150,10 +126,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       // this.counterProduct = product.counter;
 
       // Category
-      this.oneIndex = product.category[0];
-      this.twoIndex = product.category[1];
-      this.threeIndex = product.category[2];
-      this.createCategoryNumber();
+      // this.oneIndex = product.category[0];
+      // this.twoIndex = product.category[1];
+      // this.threeIndex = product.category[2];
+      // this.createCategoryNumber();
 
       // Characteristics
       this.characteristicsNumber = JSON.parse(
@@ -178,122 +154,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
   }
   // Update product END ============================================================================================================================
-  // Popuap Select Category START ==================================================================================================================
-  categoryList: CategoryProduct_Characteristics[] = []; // Category List
-
-  popuapShow: boolean = false; // Popuap On/Off
-  categorySelected: boolean = false; // Show select option
-  categoryErrorShow: boolean = false; // True в тому випадку якщо категорія не вибрана, і при умові що було відкрите вікно вибору.
-
-  oneIndex: number = -1;
-  twoIndex: number = -1;
-  threeIndex: number = -1;
-
-  oneCategory: boolean = false; // Show block for select category "1" lvl
-  twoCategory: boolean = false; // Show block for select category "2" lvl
-  threeCategory: boolean = false; // Show block for select category "3" lvl
-
-  categoryNumber: number[] = [];
-
-  selectCategoryFirst(index: number) {
-    this.oneIndex = index;
-    this.oneCategory = true;
-    this.twoCategory = true;
-  }
-
-  // Edit the selected lvl 1 category
-  editOneCategory(index: number) {
-    this.oneIndex = index;
-    this.twoIndex = -1;
-    this.threeIndex = -1;
-    this.threeCategory = false;
-  }
-  // Edit the selected lvl 2 category
-  editTwoCategory(index: number) {
-    this.twoIndex = index;
-    this.threeIndex = -1;
-    this.threeCategory = true;
-  }
-  // Edit the selected lvl 3 category
-  editThreeCategory(index: number) {
-    this.threeIndex = index;
-  }
-
-  selectThisCategory() {
-    this.createCategoryNumber();
-
-    this.popuapClose(false);
-  }
-
-  resetCategory() {
-    // Reset index
-    this.oneIndex = -1;
-    this.twoIndex = -1;
-    this.threeIndex = -1;
-
-    // Reset block
-    this.oneCategory = false;
-    this.twoCategory = false;
-    this.threeCategory = false;
-
-    this.categoryErrorShow = false;
-  }
-  createCategoryNumber() {
-    this.categoryNumber = [];
-
-    this.categoryNumber.push(this.oneIndex);
-    this.categoryNumber.push(this.twoIndex);
-    if (this.threeIndex !== -1) {
-      this.categoryNumber.push(this.threeIndex);
-    }
-
-    this.categorySelected = true;
-    this.categoryErrorShow = false;
-
-    if (this.update) {
-      this.up_validityCharacteristics = false;
-      this.up_newCharacteristics = false;
-    }
-
-    this.resetCharacteristics();
-    this.getCharacteristics();
-  } // Create "categoryNumber" >>> [ 1, 0, 3 ] || [ 1, 2 ]
-
-  popuapOpen() {
-    console.log("Popuap Open");
-
-    this.popuapShow = true; // Open Popuap
-
-    this.body?.classList.add("active"); // For body style overflow: hidden;
-
-    // Index
-    this.oneIndex = -1;
-    this.twoIndex = -1;
-    this.threeIndex = -1;
-    // Block
-    this.oneCategory = false;
-    this.twoCategory = false;
-    this.threeCategory = false;
-
-    this.categorySelected = false;
-  }
-  popuapClose(errorSelected: boolean) {
-    console.log("Popuap Close");
-
-    if (errorSelected === true) {
-      this.popuapShow = false; // Close Popuap
-
-      this.body?.classList.remove("active"); // Delete class "active"
-
-      this.categoryErrorShow = true;
-    } else if (errorSelected === false) {
-      this.popuapShow = false; // Close Popuap
-
-      this.body?.classList.remove("active"); // Delete class "active"
-      this.categoryErrorShow = false;
-    }
-  }
-  // Popuap Select Category END ====================================================================================================================
   // Characteristics START =========================================================================================================================
   characteristics: Options[] = [];
 
@@ -362,17 +222,17 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     console.log(this.characteristicsNumber);
   }
   getCharacteristics() {
-    if (this.categoryNumber.length === 3) {
-      this.characteristics =
-        this.categoryList[this.categoryNumber[0]].nameListCategory[
-          this.categoryNumber[1]
-        ].subNameListCategory[this.categoryNumber[2]].characteristics;
-    } else if (this.categoryNumber.length === 2) {
-      this.characteristics =
-        this.categoryList[this.categoryNumber[0]].nameListCategory[
-          this.categoryNumber[1]
-        ].characteristics;
-    }
+    // if (this.categoryNumber.length === 3) {
+    //   this.characteristics =
+    //     this.categoryList[this.categoryNumber[0]].nameListCategory[
+    //       this.categoryNumber[1]
+    //     ].subNameListCategory[this.categoryNumber[2]].characteristics;
+    // } else if (this.categoryNumber.length === 2) {
+    //   this.characteristics =
+    //     this.categoryList[this.categoryNumber[0]].nameListCategory[
+    //       this.categoryNumber[1]
+    //     ].characteristics;
+    // }
 
     this.recordCharacteristicsInArray();
   }

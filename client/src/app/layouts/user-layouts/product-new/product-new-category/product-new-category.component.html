@@ -1,1 +1,44 @@
 <!--  -->
+<ng-container>
+  <div class="form-item-title">
+    <p class="title">Категорія товару*</p>
+  </div>
+
+  <div class="form-item-category">
+    <ng-container *ngIf="!categorySelected">
+      <button
+        mat-raised-button
+        color="primary"
+        class="btn not_selected"
+        (click)="openCatalog()"
+      >
+        Вибрати категорію
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="categorySelected">
+      <button
+        mat-raised-button
+        color="primary"
+        class="btn selected"
+        (click)="openCatalog()"
+      >
+        {{ categoryListName[0] }}
+
+        <span class="slash">&nbsp;/&nbsp;</span>
+
+        {{ categoryListName[1] }}
+
+        <ng-container *ngIf="categoryListName.length > 2">
+          <span class="slash">&nbsp;/&nbsp;</span>
+
+          {{ categoryListName[2] }}
+        </ng-container>
+      </button>
+    </ng-container>
+  </div>
+
+  <div class="form-item-error" *ngIf="categoryErrorShow">
+    <p class="error" style="margin: 0px">Виберіть категорію товара</p>
+  </div>
+</ng-container>

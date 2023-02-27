@@ -119,6 +119,7 @@ import { MyOrderDetailComponent } from "./layouts/user-layouts/my-order/my-order
 // Pop-up windows (Dialog) START ============================================================================================================
 import { DialogSearchSettlements } from "./template/dialog/dialog-search-settlements/dialog-search-settlements";
 import { DialogGetWarehouses } from "./template/dialog/dialog-get-warehouses/dialog-get-warehouses";
+import { ProductNewCatalogComponent } from "./template/dialog/product-new-catalog/product-new-catalog.component";
 // Pop-up windows (Dialog) END ==============================================================================================================
 // NgRx START ===============================================================================================================================
 import { StoreModule } from "@ngrx/store";
@@ -194,6 +195,7 @@ import { environment } from "../environments/environment";
     HistoryViewComponent,
     DialogSearchSettlements,
     DialogGetWarehouses,
+    ProductNewCatalogComponent,
     MyOrderComponent,
     ProductCardMyOrderComponent,
     OrderStatusComponent,

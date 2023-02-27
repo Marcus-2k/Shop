@@ -1,0 +1,22 @@
+.form-item-title {
+  .title {
+    font-size: 18px;
+  }
+}
+
+.form-item-category {
+  .btn {
+    margin-bottom: 12px;
+  }
+  .btn.not_selected {
+  }
+  .btn.selected {
+  }
+}
+
+.ok {
+  color: #349948;
+}
+.error {
+  color: #f44336;
+}
