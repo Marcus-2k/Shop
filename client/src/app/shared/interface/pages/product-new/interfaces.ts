@@ -1,6 +1,7 @@
 import { MatFormFieldAppearance } from "@angular/material/form-field";
 
 export interface InputData {
+  photoData: InputData_Photo;
   titleData: InputData_Title;
   priceData: InputData_Price;
   statusData: InputData_Status;
@@ -10,6 +11,9 @@ export interface InputData {
   appearance: MatFormFieldAppearance;
 }
 
+export interface InputData_Photo {
+  maxCounterFile: number;
+}
 export interface InputData_Title {
   nameProduct: string;
   minLengthName: number;

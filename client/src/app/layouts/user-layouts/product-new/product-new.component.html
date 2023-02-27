@@ -6,74 +6,13 @@
       TEST FUNCTION
     </button>
     <!--  -->
-    <div class="new-content-block__placeholder placeholder">
-      <div
-        class="placeholder-content example-list"
-        cdkDropList
-        (cdkDropListDropped)="drop($event)"
-        cdkDropListOrientation="horizontal"
-      >
-        <div class="example-box" *ngFor="let image of imagePreview" cdkDrag>
-          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-          <img [src]="image" *ngIf="image !== undefined && update === false" />
-          <img
-            src="../../../../assets//img/300x300.png"
-            *ngIf="image === undefined && update === false"
-          />
-          <img
-            [src]="
-              image
-                ? url_server_folder + image
-                : '../../../../assets//img/300x300.png'
-            "
-            *ngIf="update === true"
-          />
-        </div>
-      </div>
-    </div>
-    <!--  -->
     <div class="new-content-block__form form">
       <!-- ============================================================== -->
       <div class="form-item form-photo">
-        <div class="form-item-title">
-          <p class="title">Фото вашого товару*</p>
-        </div>
-
-        <div class="form-photo-btn">
-          <button
-            class="btn-photo btn-download"
-            mat-raised-button
-            color="primary"
-            (click)="triggerClick()"
-          >
-            Завантажити фото
-            <span class="material-symbols-outlined"> file_download </span>
-          </button>
-          <button
-            class="btn-photo btn-delete"
-            mat-raised-button
-            color="warn"
-            *ngIf="update && imagesValidation"
-            (click)="deletePhoto()"
-          >
-            <span class="material-symbols-outlined"> delete </span>
-            Видалити фото
-          </button>
-        </div>
-
-        <input
-          class="display-none"
-          type="file"
-          accept="image/jpeg, image/png, image/webp"
-          multiple
-          [max]="maxCounterFile"
-          (change)="onFileUpload($event)"
-          #inputFile
-        />
-
-        <span class="error error__text" *ngIf="errorImagesDownload"
-          >Фото товара є обов'язковим.</span
-        >
+        <app-product-new-photo
+          [InputData_Photo]="InputData.photoData"
+          [update]="update"
+        ></app-product-new-photo>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-name">

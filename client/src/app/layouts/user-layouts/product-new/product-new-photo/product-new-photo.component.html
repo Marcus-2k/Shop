@@ -1,1 +1,74 @@
 <!--  -->
+<ng-container *ngIf="InputData_Photo">
+  <!--  -->
+  <ng-container>
+    <div class="placeholder">
+      <div
+        class="placeholder-content example-list"
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        cdkDropListOrientation="horizontal"
+      >
+        <div class="example-box" *ngFor="let image of imagePreview" cdkDrag>
+          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+          <img [src]="image" *ngIf="image !== undefined && update === false" />
+          <img
+            src="../../../../assets//img/300x300.png"
+            *ngIf="image === undefined && update === false"
+          />
+          <img
+            [src]="
+              image
+                ? url_server_folder + image
+                : '../../../../assets//img/300x300.png'
+            "
+            *ngIf="update === true"
+          />
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <!--  -->
+  <ng-container>
+    <div class="form-item-title">
+      <p class="title">Фото вашого товару*</p>
+    </div>
+
+    <div class="form-item-btn">
+      <button
+        class="btn-photo btn-download"
+        mat-raised-button
+        color="primary"
+        (click)="triggerClick()"
+      >
+        <span>Завантажити фото</span>
+        <span class="material-symbols-outlined"> file_download </span>
+      </button>
+      <button
+        class="btn-photo btn-delete"
+        mat-raised-button
+        color="warn"
+        (click)="deletePhoto()"
+        *ngIf="update && imagesValidation"
+      >
+        <span>Видалити фото</span>
+        <span class="material-symbols-outlined"> delete </span>
+      </button>
+    </div>
+
+    <input
+      class="display-none"
+      type="file"
+      accept="image/jpeg, image/png, image/webp"
+      multiple
+      [max]="InputData_Photo.maxCounterFile"
+      (change)="onFileUpload($event)"
+      #inputFile
+    />
+
+    <p class="error error__text" *ngIf="errorImagesDownload">
+      Фото товара є обов'язковим.
+    </p>
+  </ng-container>
+  <!--  -->
+</ng-container>
