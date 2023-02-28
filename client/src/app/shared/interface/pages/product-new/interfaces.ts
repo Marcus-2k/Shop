@@ -6,6 +6,7 @@ export interface InputData {
   priceData: InputData_Price;
   statusData: InputData_Status;
   categoryData: InputData_Category;
+  characteristicsData: InputData_Characteristics;
   descriptionData: InputData_Description;
   keywordsData: InputData_Keywords;
 
@@ -33,6 +34,10 @@ export interface InputData_Status {
 }
 export interface InputData_Category {
   categoryListNumber: number[];
+}
+export interface InputData_Characteristics {
+  categoryNumber: number[] | undefined;
+  characteristicsNumber: number[][] | undefined;
 }
 export interface InputData_Keywords {
   keywords: string;

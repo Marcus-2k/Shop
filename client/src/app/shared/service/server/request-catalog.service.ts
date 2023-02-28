@@ -5,6 +5,7 @@ import {
   CategoryHome,
   CategoryProduct,
   CategoryProduct_Characteristics,
+  Options,
 } from "../../interface/interfaces";
 
 import { environment } from "src/environments/environment";
@@ -29,5 +30,10 @@ export class RequestCatalogService {
     return this.http.get<CategoryProduct_Characteristics[]>(
       `${this.url_server}category/characteristics`
     );
+  }
+  getCharacteristics(categoryNumber: number[]): Observable<Options[]> {
+    return this.http.post<Options[]>(`${this.url_server}only-characteristics`, {
+      categoryNumber: categoryNumber,
+    });
   }
 }

@@ -76,6 +76,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     categoryData: {
       categoryListNumber: [],
     },
+    characteristicsData: {
+      categoryNumber: undefined,
+      characteristicsNumber: undefined,
+    },
     keywordsData: {
       keywords: "",
       minLengthKeywords: undefined, // temporarily not used
@@ -132,13 +136,13 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       // this.createCategoryNumber();
 
       // Characteristics
-      this.characteristicsNumber = JSON.parse(
-        JSON.stringify(product.characteristics)
-      );
+      // this.characteristicsNumber = JSON.parse(
+      //   JSON.stringify(product.characteristics)
+      // );
 
-      this.up_newCharacteristics = true;
-      this.up_validityCharacteristics = true;
-      this.checkingValidityCharacteristics();
+      // this.up_newCharacteristics = true;
+      // this.up_validityCharacteristics = true;
+      // this.checkingValidityCharacteristics();
 
       // Status
       // this.statusNumber = product.status;
@@ -154,101 +158,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
   }
   // Update product END ============================================================================================================================
-  // Characteristics START =========================================================================================================================
-  characteristics: Options[] = [];
-
-  characteristicsNumber: number[][] = [];
-
-  selectCollection: HTMLCollection = document.getElementsByClassName(
-    "characteristics-select"
-  );
-
-  validityCharacteristics: boolean = false; // if there is -1 >>> false
-  up_validityCharacteristics: boolean = false; // this.characteristicsNumber === this.up_Product.characteristics | update mode
-  up_newCharacteristics: boolean = false;
-
-  checkingValidityCharacteristics() {
-    for (let idx = 0; idx < this.characteristicsNumber.length; idx++) {
-      let array: number[] = this.characteristicsNumber[idx];
-
-      if (this.characteristicsNumber[idx].length === 0) {
-        this.characteristicsNumber[idx] = [-1];
-        array = [-1];
-        this.validityCharacteristics = false;
-      }
-
-      // if the array contains -1
-      if (array.indexOf(-1) >= 0) {
-        this.validityCharacteristics = false;
-        break;
-      } else if (array.indexOf(-1) === -1) {
-        this.validityCharacteristics = true;
-      }
-    }
-
-    if (this.up_newCharacteristics === true) {
-      for (let index = 0; index < this.characteristicsNumber.length; index++) {
-        for (
-          let idx = 0;
-          idx < this.characteristicsNumber[index].length;
-          idx++
-        ) {
-          if (
-            this.characteristicsNumber[index].length !==
-            this.up_Product?.characteristics[index].length
-          ) {
-            if (this.characteristicsNumber[index].indexOf(-1) >= 0) {
-            }
-            this.up_validityCharacteristics = false;
-            break;
-          }
-
-          if (
-            this.characteristicsNumber[index][idx] ===
-            this.up_Product?.characteristics[index][idx]
-          ) {
-            this.up_validityCharacteristics = true;
-          } else {
-            this.up_validityCharacteristics = false;
-            break;
-          }
-        }
-        if (this.up_validityCharacteristics === false) {
-          break;
-        }
-      }
-    }
-
-    console.log(this.characteristicsNumber);
-  }
-  getCharacteristics() {
-    // if (this.categoryNumber.length === 3) {
-    //   this.characteristics =
-    //     this.categoryList[this.categoryNumber[0]].nameListCategory[
-    //       this.categoryNumber[1]
-    //     ].subNameListCategory[this.categoryNumber[2]].characteristics;
-    // } else if (this.categoryNumber.length === 2) {
-    //   this.characteristics =
-    //     this.categoryList[this.categoryNumber[0]].nameListCategory[
-    //       this.categoryNumber[1]
-    //     ].characteristics;
-    // }
-
-    this.recordCharacteristicsInArray();
-  }
-  recordCharacteristicsInArray() {
-    this.characteristics.forEach((item) => {
-      this.characteristicsNumber.push([-1]);
-    });
-
-    this.checkingValidityCharacteristics();
-  }
-  resetCharacteristics() {
-    this.characteristics = [];
-
-    this.characteristicsNumber = [];
-  }
-  // Characteristics END ===========================================================================================================================
   // Create/Up Start ===============================================================================================================================
   // createProduct() {
   //   console.log("Button Create");

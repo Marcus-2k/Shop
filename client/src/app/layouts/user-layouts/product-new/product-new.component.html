@@ -45,64 +45,15 @@
         ></app-product-new-category>
       </div>
       <!-- ============================================================== -->
-      <!-- <div class="form-item form-characteristics" *ngIf="categorySelected">
-        <div class="form-item-title">
-          <p class="title">Характеристики товару*</p>
-        </div>
-
-        <div class="form-characteristics-select">
-          <ng-container
-            *ngFor="let options of characteristics; let idx = index"
-          >
-            <div class="item">
-              <mat-form-field appearance="fill">
-                <mat-label>№{{ idx }}&nbsp;{{ options.name }}</mat-label>
-                <ng-container *ngIf="options.multiple">
-                  <mat-select
-                    disableRipple
-                    class="characteristics-select"
-                    #selectedValue
-                    [(ngModel)]="characteristicsNumber[idx]"
-                    (ngModelChange)="checkingValidityCharacteristics()"
-                    multiple
-                    required
-                  >
-                    <mat-option [value]="-1">-1-Параметр не вибрано</mat-option>
-                    <ng-container
-                      *ngFor="let option of options.select; let i = index"
-                    >
-                      <mat-option [value]="i">
-                        {{ i + "-" }}
-                        {{ option }}
-                      </mat-option>
-                    </ng-container>
-                  </mat-select>
-                </ng-container>
-                <ng-container *ngIf="options.multiple === false">
-                  <mat-select
-                    disableRipple
-                    class="characteristics-select"
-                    #selectedValue
-                    [(ngModel)]="characteristicsNumber[idx][0]"
-                    (ngModelChange)="checkingValidityCharacteristics()"
-                    required
-                  >
-                    <mat-option [value]="-1">-1-Параметр не вибрано</mat-option>
-                    <ng-container
-                      *ngFor="let option of options.select; let i = index"
-                    >
-                      <mat-option [value]="i">
-                        {{ i + "-" }}
-                        {{ option }}
-                      </mat-option>
-                    </ng-container>
-                  </mat-select>
-                </ng-container>
-              </mat-form-field>
-            </div>
-          </ng-container>
-        </div>
-      </div> -->
+      <div class="form-item form-characteristics">
+        <ng-container *ngIf="InputData.characteristicsData.categoryNumber">
+          <app-product-new-characteristics
+            [InputData_Characteristics]="InputData.characteristicsData"
+            [appearance]="InputData.appearance"
+            [update]="update"
+          ></app-product-new-characteristics>
+        </ng-container>
+      </div>
       <!-- ============================================================== -->
       <div class="form-item form-words">
         <app-product-new-key-words
