@@ -4,38 +4,30 @@
   }
 }
 
-.form-words {
-  &-field {
-    width: 800px;
-    font-size: 18px;
-    .input-key-words {
-      min-height: 100px;
-      max-height: 200px;
-    }
-  }
-  &-length {
-    font-size: 16px;
-  }
-  &-item {
-    display: flex;
-    flex-wrap: wrap;
-    &-word {
-      display: flex;
-      .word__text {
-        background-color: #b1b1b1;
-        margin-top: 5px;
-        margin-right: 10px;
-        border-radius: 10px;
-        padding: 5px;
-      }
-    }
-  }
-  &-delete {
+.form-keywords-field {
+  width: 100%;
+  font-size: 18px;
+  .input-keywords {
+    min-height: 100px;
+    max-height: 250px;
   }
 }
-.ok {
-  color: #349948;
+
+.form-keywords-length {
+  font-size: 16px;
 }
-.error {
-  color: #f44336;
+
+.form-keywords-item {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-bottom: 12px;
+  &-word {
+    margin-top: 5px;
+    margin-right: 10px;
+  }
+}
+
+.form-keywords-delete {
+  margin-bottom: 12px;
 }

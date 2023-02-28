@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 
-import { Options, ProductUpdate } from "src/app/shared/interface/interfaces";
 import { InputData } from "src/app/shared/interface/pages/product-new/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
@@ -13,7 +12,7 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
   templateUrl: "./product-new.component.html",
   styleUrls: ["./product-new.component.scss"],
 })
-export class ProductNewComponent implements OnInit, OnDestroy {
+export class ProductNewComponent implements OnInit {
   constructor(
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
@@ -33,20 +32,21 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
         this.update = true;
 
-        this.requestProduct.getByIdProduct(id).subscribe(
-          (response) => {
-            this.updateOnInit(response);
+        this.requestProduct.getByIdProduct(id).subscribe({
+          next: (data) => {
+            console.log(data);
           },
-          (error) => {
+          error: (error) => {
             console.log(error);
-          }
-        );
+          },
+          complete: () => {},
+        });
       } else {
         this.renameTitle.renameTitleSite("Створення товару");
       }
     });
   }
-  ngOnDestroy(): void {}
+
   test() {
     console.log("======================================");
     console.log("======================================");
@@ -97,67 +97,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     appearance: "outline",
   };
 
-  // Common variables END ==========================================================================================================================
-  // Update product START ==========================================================================================================================
   update: boolean = false; // Mode update true/false
-
-  up_Product?: ProductUpdate;
-
-  updateOnInit(product: ProductUpdate) {
-    if (this.update) {
-      this.up_Product = product;
-
-      // Image
-      // this.imagePreview = product.imageSrc;
-      // const needItem = this.maxCounterFile - product.imageSrc.length;
-      // for (let idx = 0; idx < needItem; idx++) {
-      //   this.imagePreview.push(undefined);
-      // }
-
-      // Name
-      // this.nameProduct = product.name;
-
-      // Price
-      // this.priceProduct = product.price;
-
-      // Action / Price
-      // this.action = product.action;
-
-      // this.actionPrice = product.actionPrice;
-      // this.procentActionNumber();
-
-      // Counter
-      // this.counterProduct = product.counter;
-
-      // Category
-      // this.oneIndex = product.category[0];
-      // this.twoIndex = product.category[1];
-      // this.threeIndex = product.category[2];
-      // this.createCategoryNumber();
-
-      // Characteristics
-      // this.characteristicsNumber = JSON.parse(
-      //   JSON.stringify(product.characteristics)
-      // );
-
-      // this.up_newCharacteristics = true;
-      // this.up_validityCharacteristics = true;
-      // this.checkingValidityCharacteristics();
-
-      // Status
-      // this.statusNumber = product.status;
-
-      // Keywords
-      // this.keywords = product.keywords.join(" ");
-      // this.keyupInputKeywords(product.keywords.join(" "));
-
-      // Description
-      // this.description = product.description;
-
-      console.log(product);
-    }
-  }
-  // Update product END ============================================================================================================================
+  // Common variables END ==========================================================================================================================
   // Create/Up Start ===============================================================================================================================
   // createProduct() {
   //   console.log("Button Create");

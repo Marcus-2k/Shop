@@ -6,7 +6,7 @@
       TEST FUNCTION
     </button>
     <!--  -->
-    <div class="new-content-block__form form">
+    <div class="new-content-form">
       <!-- ============================================================== -->
       <div class="form-item form-photo">
         <app-product-new-photo
@@ -45,15 +45,15 @@
         ></app-product-new-category>
       </div>
       <!-- ============================================================== -->
-      <div class="form-item form-characteristics">
-        <ng-container *ngIf="InputData.characteristicsData.categoryNumber">
+      <ng-container *ngIf="InputData.characteristicsData.categoryNumber">
+        <div class="form-item form-characteristics">
           <app-product-new-characteristics
             [InputData_Characteristics]="InputData.characteristicsData"
             [appearance]="InputData.appearance"
             [update]="update"
           ></app-product-new-characteristics>
-        </ng-container>
-      </div>
+        </div>
+      </ng-container>
       <!-- ============================================================== -->
       <div class="form-item form-words">
         <app-product-new-key-words

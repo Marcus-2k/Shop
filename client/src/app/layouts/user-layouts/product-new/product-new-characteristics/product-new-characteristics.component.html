@@ -7,8 +7,13 @@
   <div class="form-characteristics">
     <ng-container *ngFor="let options of characteristics; let idx = index">
       <div class="item">
-        <mat-form-field class="item-select" [appearance]="appearance">
-          <mat-label>№{{ idx }}&nbsp;{{ options.name }}</mat-label>
+        <mat-form-field
+          class="item-select"
+          [appearance]="appearance"
+          [matTooltip]="'№' + idx + '&nbsp;' + options.name"
+          [matTooltipPosition]="'above'"
+        >
+          <mat-label>{{ options.name }}</mat-label>
           <ng-container *ngIf="options.multiple">
             <mat-select
               disableRipple
@@ -19,12 +24,11 @@
               multiple
               required
             >
-              <!-- <mat-option [value]="-1">-1-Параметр не вибрано</mat-option> -->
               <ng-container
                 *ngFor="let option of options.select; let i = index"
               >
                 <mat-option [value]="i">
-                  <!-- {{ i + "-" }} -->
+                  <!-- {{ "№" + i }} -->
                   {{ option }}
                 </mat-option>
               </ng-container>
@@ -39,12 +43,11 @@
               (ngModelChange)="checkingValidityCharacteristics()"
               required
             >
-              <!-- <mat-option [value]="-1">-1-Параметр не вибрано</mat-option> -->
               <ng-container
                 *ngFor="let option of options.select; let i = index"
               >
                 <mat-option [value]="i">
-                  <!-- {{ i + "-" }} -->
+                  <!-- {{ "№" + i }} -->
                   {{ option }}
                 </mat-option>
               </ng-container>

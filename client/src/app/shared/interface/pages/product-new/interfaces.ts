@@ -7,8 +7,8 @@ export interface InputData {
   statusData: InputData_Status;
   categoryData: InputData_Category;
   characteristicsData: InputData_Characteristics;
-  descriptionData: InputData_Description;
   keywordsData: InputData_Keywords;
+  descriptionData: InputData_Description;
 
   appearance: MatFormFieldAppearance;
 }
