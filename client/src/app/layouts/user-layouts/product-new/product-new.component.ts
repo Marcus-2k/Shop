@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 
 import { InputData } from "src/app/shared/interface/pages/product-new/interfaces";
@@ -7,17 +7,26 @@ import { RenameTitleService } from "src/app/shared/service/rename-title.service"
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 
+import { Subscription } from "rxjs";
+import { Store } from "@ngrx/store";
+import {
+  ProductNewActions,
+  ProductNewState,
+} from "src/app/store/product-new/product-new.action";
+import { ProductNewSelector } from "src/app/store/product-new/product-new.selector";
+
 @Component({
   selector: "app-product-new",
   templateUrl: "./product-new.component.html",
   styleUrls: ["./product-new.component.scss"],
 })
-export class ProductNewComponent implements OnInit {
+export class ProductNewComponent implements OnInit, OnDestroy {
   constructor(
     private showNotice: ShowNoticeService,
     private requestProduct: RequestProductService,
     private route: ActivatedRoute,
     private router: Router,
+    private store$: Store,
     private renameTitle: RenameTitleService
   ) {}
 
@@ -43,8 +52,20 @@ export class ProductNewComponent implements OnInit {
         });
       } else {
         this.renameTitle.renameTitleSite("Створення товару");
+        this.store$.dispatch(ProductNewActions.initialState());
+
+        this.productNewStore$ = this.store$
+          .select(ProductNewSelector.getProductNew)
+          .subscribe((data) => {
+            this.updateInputData(data);
+          });
       }
     });
+  }
+  ngOnDestroy(): void {
+    if (this.productNewStore$) {
+      this.productNewStore$.unsubscribe();
+    }
   }
 
   test() {
@@ -58,7 +79,7 @@ export class ProductNewComponent implements OnInit {
       maxCounterFile: 8,
     },
     titleData: {
-      nameProduct: "",
+      name: "",
       minLengthName: 12,
       maxLengthName: 50,
     },
@@ -98,6 +119,15 @@ export class ProductNewComponent implements OnInit {
   };
 
   update: boolean = false; // Mode update true/false
+
+  productNewStore$: Subscription | undefined;
+
+  updateInputData(data: ProductNewState) {
+    if (data.dataProduct) {
+      this.InputData.titleData.name = data.dataProduct.titleData.name_present;
+    }
+  }
+
   // Common variables END ==========================================================================================================================
   // Create/Up Start ===============================================================================================================================
   // createProduct() {

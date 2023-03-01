@@ -1,17 +1,21 @@
 import { createAction, props } from "@ngrx/store";
 
 export namespace ProductNewActions {
-  export const updateDescription = createAction(
-    "updateDescription",
+  export const initialState = createAction("[ProductNew] initialState");
+  export const updateName = createAction(
+    "updateName",
     props<{
-      descriptionValue: string;
+      nameValue: string;
     }>()
   );
 }
 
 export interface ProductNewState {
   dataProduct: {
-    description: string;
+    titleData: {
+      name_original: string;
+      name_present: string;
+    };
   } | null;
 }
 

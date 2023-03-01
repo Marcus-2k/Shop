@@ -9,9 +9,9 @@
     <input
       matInput
       type="text"
-      [(ngModel)]="InputData_Title.nameProduct"
+      [(ngModel)]="InputData_Title.name"
+      (focusout)="updateTitleStore()"
       required
-      class="input-title"
     />
   </mat-form-field>
 </ng-container>
