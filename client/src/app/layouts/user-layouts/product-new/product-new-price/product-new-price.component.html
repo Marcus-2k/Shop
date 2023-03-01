@@ -16,6 +16,7 @@
         placeholder="9 950"
         [(ngModel)]="InputData_Price.price"
         (ngModelChange)="procentActionNumber()"
+        (focusout)="updatePriceStore()"
       />
     </mat-form-field>
   </div>
@@ -26,25 +27,34 @@
         color="primary"
         (click)="procentActionNumber()"
         [(ngModel)]="InputData_Price.action"
+        (ngModelChange)="updateActionStore()"
       >
         Акція на товар
       </mat-checkbox>
     </p>
 
     <ng-container *ngIf="InputData_Price.action">
-      <p
-        *ngIf="
-          InputData_Price.actionProcent <= InputData_Price.minActionProcent
-        "
-      >
-        Знижка {{ InputData_Price.actionProcent }}%
-      </p>
-      <p
-        class="error"
-        *ngIf="InputData_Price.actionProcent > InputData_Price.minActionProcent"
-      >
-        Мінімальна знижка на товар {{ InputData_Price.minActionProcent }}%
-      </p>
+      <ng-container *ngIf="InputData_Price.actionProcent !== null">
+        <p
+          *ngIf="
+            InputData_Price.actionProcent <= InputData_Price.minActionProcent
+          "
+        >
+          Знижка {{ InputData_Price.actionProcent }}%
+        </p>
+        <p
+          class="error"
+          *ngIf="
+            InputData_Price.actionProcent > InputData_Price.minActionProcent
+          "
+        >
+          Мінімальна знижка на товар {{ InputData_Price.minActionProcent }}%
+        </p>
+      </ng-container>
+
+      <ng-container *ngIf="InputData_Price.actionProcent === null">
+        <p>Знижка не визначена</p>
+      </ng-container>
     </ng-container>
 
     <ng-container *ngIf="InputData_Price.action">
@@ -58,6 +68,7 @@
           [(ngModel)]="InputData_Price.actionPrice"
           #actionPriceInput
           (ngModelChange)="procentActionNumber()"
+          (focusout)="updateActionPriceStore()"
         />
       </mat-form-field>
     </ng-container>

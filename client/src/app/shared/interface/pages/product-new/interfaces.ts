@@ -22,10 +22,10 @@ export interface InputData_Title {
   maxLengthName: number;
 }
 export interface InputData_Price {
-  price: number;
+  price: number | null;
   action: boolean;
-  actionPrice: number;
-  actionProcent: number;
+  actionPrice: number | null;
+  actionProcent: number | null;
   minActionProcent: number;
 }
 export interface InputData_Status {

@@ -84,10 +84,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       maxLengthName: 50,
     },
     priceData: {
-      price: 3300,
+      price: null,
       action: false,
-      actionPrice: 2970,
-      actionProcent: -10,
+      actionPrice: null,
+      actionProcent: null,
       minActionProcent: -5,
     },
     statusData: {
@@ -123,9 +123,21 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   productNewStore$: Subscription | undefined;
 
   updateInputData(data: ProductNewState) {
+    console.log("START updateInputData");
+
     if (data.dataProduct) {
+      // Name
       this.InputData.titleData.name = data.dataProduct.titleData.name_present;
+
+      // Price
+      this.InputData.priceData.price = data.dataProduct.priceData.price_present;
+      this.InputData.priceData.action =
+        data.dataProduct.priceData.action_present;
+      this.InputData.priceData.actionPrice =
+        data.dataProduct.priceData.actionPrice_present;
     }
+
+    console.log("END updateInputData");
   }
 
   // Common variables END ==========================================================================================================================
