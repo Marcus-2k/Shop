@@ -13,6 +13,7 @@
       required
       #inputDescription
       [(ngModel)]="InputData_Description.description"
+      (focusout)="updateDescriptionStore()"
     ></textarea>
   </mat-form-field>
 

@@ -51,6 +51,13 @@ export namespace ProductNewActions {
       categoryError: boolean | null;
     }>()
   );
+
+  export const updateDescription = createAction(
+    "updateDescription",
+    props<{
+      descriptionValue: string;
+    }>()
+  );
 }
 
 export interface ProductNewState {
@@ -81,6 +88,10 @@ export interface ProductNewState {
 
       categorySelected: boolean;
       categoryError: boolean | null;
+    };
+    descriptionData: {
+      description_original: string;
+      description_present: string;
     };
   } | null;
 }

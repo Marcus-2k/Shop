@@ -38,6 +38,10 @@ export const ProductNewReducer = createReducer(
         categorySelected: false,
         categoryError: null,
       },
+      descriptionData: {
+        description_original: "",
+        description_present: "",
+      },
     };
 
     return stateClone;
@@ -112,6 +116,17 @@ export const ProductNewReducer = createReducer(
       stateClone.dataProduct.categoryData.categorySelected =
         props.categorySelected;
       stateClone.dataProduct.categoryData.categoryError = props.categoryError;
+    }
+
+    return stateClone;
+  }),
+
+  on(ProductNewActions.updateDescription, (state, props) => {
+    const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
+
+    if (stateClone.dataProduct !== null) {
+      stateClone.dataProduct.descriptionData.description_present =
+        props.descriptionValue;
     }
 
     return stateClone;
