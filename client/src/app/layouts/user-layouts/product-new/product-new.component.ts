@@ -95,7 +95,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       status: null,
     },
     categoryData: {
-      categoryListNumber: [],
+      categoryNumber: null,
+      categoryName: null,
+      categorySelected: false,
+      categoryError: null,
     },
     characteristicsData: {
       categoryNumber: undefined,
@@ -141,6 +144,16 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         data.dataProduct.statusData.counter_present;
       this.InputData.statusData.status =
         data.dataProduct.statusData.status_present;
+
+      // Category
+      this.InputData.categoryData.categoryNumber =
+        data.dataProduct.categoryData.categoryNumber_present;
+      this.InputData.categoryData.categoryName =
+        data.dataProduct.categoryData.categoryName_present;
+      this.InputData.categoryData.categorySelected =
+        data.dataProduct.categoryData.categorySelected;
+      this.InputData.categoryData.categoryError =
+        data.dataProduct.categoryData.categoryError;
     }
 
     console.log("END updateInputData");

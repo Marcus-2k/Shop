@@ -30,6 +30,14 @@ export const ProductNewReducer = createReducer(
         status_original: null,
         status_present: null,
       },
+      categoryData: {
+        categoryNumber_original: null,
+        categoryNumber_present: null,
+        categoryName_original: null,
+        categoryName_present: null,
+        categorySelected: false,
+        categoryError: null,
+      },
     };
 
     return stateClone;
@@ -88,6 +96,22 @@ export const ProductNewReducer = createReducer(
 
     if (stateClone.dataProduct !== null) {
       stateClone.dataProduct.statusData.counter_present = props.counterValue;
+    }
+
+    return stateClone;
+  }),
+
+  on(ProductNewActions.updateCategory, (state, props) => {
+    const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
+
+    if (stateClone.dataProduct !== null) {
+      stateClone.dataProduct.categoryData.categoryNumber_present =
+        props.categoryNumberValue;
+      stateClone.dataProduct.categoryData.categoryName_present =
+        props.categoryNameValue;
+      stateClone.dataProduct.categoryData.categorySelected =
+        props.categorySelected;
+      stateClone.dataProduct.categoryData.categoryError = props.categoryError;
     }
 
     return stateClone;

@@ -41,6 +41,16 @@ export namespace ProductNewActions {
       counterValue: number;
     }>()
   );
+
+  export const updateCategory = createAction(
+    "updateCategoryStore",
+    props<{
+      categoryNumberValue: number[] | null;
+      categoryNameValue: string[] | null;
+      categorySelected: boolean;
+      categoryError: boolean | null;
+    }>()
+  );
 }
 
 export interface ProductNewState {
@@ -62,6 +72,15 @@ export interface ProductNewState {
       counter_present: number | null;
       status_original: 0 | 1 | 2 | 3 | null;
       status_present: 0 | 1 | 2 | 3 | null;
+    };
+    categoryData: {
+      categoryNumber_original: number[] | null;
+      categoryNumber_present: number[] | null;
+      categoryName_original: string[] | null;
+      categoryName_present: string[] | null;
+
+      categorySelected: boolean;
+      categoryError: boolean | null;
     };
   } | null;
 }

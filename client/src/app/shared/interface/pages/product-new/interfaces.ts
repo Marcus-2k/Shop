@@ -33,7 +33,10 @@ export interface InputData_Status {
   status: 0 | 1 | 2 | 3 | null;
 }
 export interface InputData_Category {
-  categoryListNumber: number[];
+  categoryNumber: number[] | null;
+  categoryName: string[] | null;
+  categorySelected: boolean;
+  categoryError: boolean | null;
 }
 export interface InputData_Characteristics {
   categoryNumber: number[] | undefined;

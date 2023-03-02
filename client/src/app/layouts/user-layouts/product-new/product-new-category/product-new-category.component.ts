@@ -4,24 +4,21 @@ import { InputData_Category } from "src/app/shared/interface/pages/product-new/i
 
 import { OpenDialogService } from "src/app/shared/service/open-dialog.service";
 
+import { Store } from "@ngrx/store";
+import { ProductNewActions } from "src/app/store/product-new/product-new.action";
+
 @Component({
   selector: "app-product-new-category",
   templateUrl: "./product-new-category.component.html",
   styleUrls: ["./product-new-category.component.scss"],
 })
 export class ProductNewCategoryComponent implements OnInit {
-  constructor(private openDialog: OpenDialogService) {}
+  constructor(private openDialog: OpenDialogService, private store$: Store) {}
 
   @Input() InputData_Category: InputData_Category | undefined;
   @Input() update: boolean = false; // Default value = false
 
   ngOnInit(): void {}
-
-  categorySelected: boolean = false;
-  categoryErrorShow: boolean = false;
-
-  categoryListNumber: number[] = [];
-  categoryListName: string[] = [];
 
   openCatalog() {
     console.log("Catalog Open");
@@ -30,19 +27,38 @@ export class ProductNewCategoryComponent implements OnInit {
       console.log("Catalog Close");
       console.log("Вибрана категорія >>> ", data);
 
-      if (data) {
-        this.categoryListNumber = data.categoryListNumber;
-        this.categoryListName = data.categoryListName;
+      if (this.InputData_Category) {
+        if (data) {
+          this.InputData_Category.categoryNumber = data.categoryListNumber;
+          this.InputData_Category.categoryName = data.categoryListName;
 
-        this.categorySelected = true;
-        this.categoryErrorShow = false;
-      } else {
-        this.categoryListNumber = [];
-        this.categoryListName = [];
+          this.InputData_Category.categorySelected = true;
+          this.InputData_Category.categoryError = false;
 
-        this.categorySelected = false;
-        this.categoryErrorShow = true;
+          this.updateCategoryStore();
+        } else {
+          this.InputData_Category.categoryNumber = null;
+          this.InputData_Category.categoryName = null;
+
+          this.InputData_Category.categorySelected = false;
+          this.InputData_Category.categoryError = true;
+
+          this.updateCategoryStore();
+        }
       }
     });
+  }
+
+  updateCategoryStore() {
+    if (this.InputData_Category) {
+      this.store$.dispatch(
+        ProductNewActions.updateCategory({
+          categoryNumberValue: this.InputData_Category.categoryNumber,
+          categoryNameValue: this.InputData_Category.categoryName,
+          categorySelected: this.InputData_Category.categorySelected,
+          categoryError: this.InputData_Category.categoryError,
+        })
+      );
+    }
   }
 }
