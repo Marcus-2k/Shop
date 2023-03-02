@@ -155,6 +155,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       this.InputData.categoryData.categoryError =
         data.dataProduct.categoryData.categoryError;
 
+      // Keywords
+      this.InputData.keywordsData.keywords =
+        data.dataProduct.keywordsData.keywords_present;
+
       // Description
       this.InputData.descriptionData.description =
         data.dataProduct.descriptionData.description_present;

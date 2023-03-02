@@ -52,6 +52,13 @@ export namespace ProductNewActions {
     }>()
   );
 
+  export const updateKeywords = createAction(
+    "updateKeywords",
+    props<{
+      keywordsValue: string;
+    }>()
+  );
+
   export const updateDescription = createAction(
     "updateDescription",
     props<{
@@ -88,6 +95,10 @@ export interface ProductNewState {
 
       categorySelected: boolean;
       categoryError: boolean | null;
+    };
+    keywordsData: {
+      keywords_original: string;
+      keywords_present: string;
     };
     descriptionData: {
       description_original: string;

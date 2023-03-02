@@ -3,13 +3,16 @@ import { Component, Input, OnInit } from "@angular/core";
 import { MatFormFieldAppearance } from "@angular/material/form-field";
 import { InputData_Keywords } from "src/app/shared/interface/pages/product-new/interfaces";
 
+import { Store } from "@ngrx/store";
+import { ProductNewActions } from "src/app/store/product-new/product-new.action";
+
 @Component({
   selector: "app-product-new-key-words",
   templateUrl: "./product-new-key-words.component.html",
   styleUrls: ["./product-new-key-words.component.scss"],
 })
 export class ProductNewKeyWordsComponent implements OnInit {
-  constructor() {}
+  constructor(private store$: Store) {}
 
   @Input() InputData_Keywords: InputData_Keywords | undefined;
   @Input() appearance: MatFormFieldAppearance = "fill";
@@ -17,21 +20,12 @@ export class ProductNewKeyWordsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.InputData_Keywords) {
-      if (this.update) {
-        this.original_keywords = this.InputData_Keywords.keywords.split(" ");
-      }
-
       this.keyupInputKeywords(this.InputData_Keywords.keywords);
     }
   }
 
-  original_keywords: string[] = [];
-
   keywordsArray: string[] = [];
   lengthKeywords: number = 0;
-
-  validityKeywords: boolean = true;
-  up_validityKeywords: boolean = true;
 
   keyupInputKeywords(value: string) {
     this.keywordsArray = value.replace(/ +/g, " ").trim().split(" ");
@@ -39,15 +33,11 @@ export class ProductNewKeyWordsComponent implements OnInit {
 
     if (this.keywordsArray[0].length === 0) {
       this.keywordsArray = [];
-      this.validityKeywords = true;
-    } else {
-      this.checkingValidityKeywords();
     }
   }
 
-  checkingValidityKeywords() {
+  checkingValidityKeywords(): boolean {
     if (this.InputData_Keywords) {
-      console.log("START checkingValidityKeywords");
       for (let index = 0; index < this.keywordsArray.length; index++) {
         if (
           this.keywordsArray[index].length <
@@ -55,15 +45,12 @@ export class ProductNewKeyWordsComponent implements OnInit {
           this.keywordsArray[index].length >
             this.InputData_Keywords.maxLengthWord
         ) {
-          this.validityKeywords = false;
-          break;
+          return false;
         }
-        this.validityKeywords = true;
       }
-
-      if (this.update) {
-        this.up_checkingValidityKeywords();
-      }
+      return true;
+    } else {
+      return false;
     }
   } // Checking of the all key words inputted correct
 
@@ -81,28 +68,22 @@ export class ProductNewKeyWordsComponent implements OnInit {
         }
       } // ['hi', 'hello', 'n', 'cool', 'description'] >>> ['hi', 'hello', 'cool'] | if minLengthword: 2 and maxLengthword: 10
 
-      this.validityKeywords = true;
-
       this.InputData_Keywords.keywords = this.keywordsArray.join(" ");
       this.lengthKeywords = this.keywordsArray
         .join(" ")
         .replace(/\s+/g, "").length;
     }
+
+    this.updateKeywordsStore();
   } // Delete all error key words
 
-  up_checkingValidityKeywords() {
-    let counterRepeat: number = 0;
-
-    for (let idx = 0; idx < this.original_keywords.length; idx++) {
-      if (this.keywordsArray[idx] === this.original_keywords[idx]) {
-        counterRepeat++;
-      }
-    }
-
-    if (counterRepeat === this.keywordsArray.length) {
-      this.up_validityKeywords = true;
-    } else {
-      this.up_validityKeywords = false;
+  updateKeywordsStore() {
+    if (this.InputData_Keywords) {
+      this.store$.dispatch(
+        ProductNewActions.updateKeywords({
+          keywordsValue: this.InputData_Keywords.keywords,
+        })
+      );
     }
   }
 }
