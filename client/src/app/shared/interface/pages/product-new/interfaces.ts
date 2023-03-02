@@ -29,8 +29,8 @@ export interface InputData_Price {
   minActionProcent: number;
 }
 export interface InputData_Status {
-  counter: number;
-  status: number;
+  counter: number | null;
+  status: 0 | 1 | 2 | 3 | null;
 }
 export interface InputData_Category {
   categoryListNumber: number[];

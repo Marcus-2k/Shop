@@ -24,6 +24,12 @@ export const ProductNewReducer = createReducer(
         actionPrice_original: null,
         actionPrice_present: null,
       },
+      statusData: {
+        counter_original: null,
+        counter_present: null,
+        status_original: null,
+        status_present: null,
+      },
     };
 
     return stateClone;
@@ -57,13 +63,31 @@ export const ProductNewReducer = createReducer(
 
     return stateClone;
   }),
-
   on(ProductNewActions.updateActionPrice, (state, props) => {
     const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
 
     if (stateClone.dataProduct !== null) {
       stateClone.dataProduct.priceData.actionPrice_present =
         props.actionPriceValue;
+    }
+
+    return stateClone;
+  }),
+
+  on(ProductNewActions.updateStatusStore, (state, props) => {
+    const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
+
+    if (stateClone.dataProduct !== null) {
+      stateClone.dataProduct.statusData.status_present = props.statusValue;
+    }
+
+    return stateClone;
+  }),
+  on(ProductNewActions.updateCounterStore, (state, props) => {
+    const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
+
+    if (stateClone.dataProduct !== null) {
+      stateClone.dataProduct.statusData.counter_present = props.counterValue;
     }
 
     return stateClone;

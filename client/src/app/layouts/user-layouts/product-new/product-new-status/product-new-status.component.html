@@ -12,7 +12,11 @@
         matInput
         class="disabled-spin-button"
         [(ngModel)]="InputData_Status.counter"
-        (ngModelChange)="InputData_Status.status = -1"
+        (ngModelChange)="
+          InputData_Status.status = null;
+          updateCounterStore();
+          updateStatusStore()
+        "
         [min]="0"
         required
       />
@@ -26,27 +30,40 @@
 
     <mat-form-field class="form-item-status" [appearance]="appearance">
       <mat-label>Статус товару</mat-label>
-      <mat-select required [(ngModel)]="InputData_Status.status">
-        <mat-option
-          [value]="0"
-          [disabled]="
-            InputData_Status.counter === 0 || InputData_Status.counter <= 10
-          "
-          >В наявності</mat-option
-        >
-        <mat-option [value]="1" [disabled]="InputData_Status.counter !== 0"
-          >Очікується постачання</mat-option
-        >
-        <mat-option [value]="2" [disabled]="InputData_Status.counter !== 0"
-          >Немає в наявності</mat-option
-        >
-        <mat-option
-          [value]="3"
-          [disabled]="
-            InputData_Status.counter > 10 || InputData_Status.counter === 0
-          "
-          >Закінчується</mat-option
-        >
+      <mat-select
+        required
+        [(ngModel)]="InputData_Status.status"
+        (ngModelChange)="updateStatusStore()"
+      >
+        <ng-container *ngIf="InputData_Status.counter !== null">
+          <mat-option
+            [value]="0"
+            [disabled]="
+              InputData_Status.counter === 0 || InputData_Status.counter <= 10
+            "
+          >
+            В наявності
+          </mat-option>
+          <mat-option [value]="1" [disabled]="InputData_Status.counter !== 0">
+            Очікується постачання
+          </mat-option>
+          <mat-option [value]="2" [disabled]="InputData_Status.counter !== 0">
+            Немає в наявності
+          </mat-option>
+          <mat-option
+            [value]="3"
+            [disabled]="
+              InputData_Status.counter > 10 || InputData_Status.counter === 0
+            "
+          >
+            Закінчується
+          </mat-option>
+        </ng-container>
+        <ng-container *ngIf="InputData_Status.counter === null">
+          <mat-option [value]="-1" [disabled]="true">
+            Введіть кількість товару
+          </mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
   </div>

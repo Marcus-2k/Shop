@@ -16,7 +16,6 @@ export namespace ProductNewActions {
       priceValue: number;
     }>()
   );
-
   export const updateAction = createAction(
     "updateAction",
     props<{
@@ -27,6 +26,19 @@ export namespace ProductNewActions {
     "updateActionPrice",
     props<{
       actionPriceValue: number;
+    }>()
+  );
+
+  export const updateStatusStore = createAction(
+    "updateStatusStore",
+    props<{
+      statusValue: 0 | 1 | 2 | 3 | null;
+    }>()
+  );
+  export const updateCounterStore = createAction(
+    "updateCounterStore",
+    props<{
+      counterValue: number;
     }>()
   );
 }
@@ -44,6 +56,12 @@ export interface ProductNewState {
       action_present: boolean;
       actionPrice_original: number | null;
       actionPrice_present: number | null;
+    };
+    statusData: {
+      counter_original: number | null;
+      counter_present: number | null;
+      status_original: 0 | 1 | 2 | 3 | null;
+      status_present: 0 | 1 | 2 | 3 | null;
     };
   } | null;
 }

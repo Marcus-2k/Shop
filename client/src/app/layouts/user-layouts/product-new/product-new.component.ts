@@ -91,8 +91,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       minActionProcent: -5,
     },
     statusData: {
-      counter: 10,
-      status: -1,
+      counter: null,
+      status: null,
     },
     categoryData: {
       categoryListNumber: [],
@@ -135,6 +135,12 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         data.dataProduct.priceData.action_present;
       this.InputData.priceData.actionPrice =
         data.dataProduct.priceData.actionPrice_present;
+
+      // Status
+      this.InputData.statusData.counter =
+        data.dataProduct.statusData.counter_present;
+      this.InputData.statusData.status =
+        data.dataProduct.statusData.status_present;
     }
 
     console.log("END updateInputData");
