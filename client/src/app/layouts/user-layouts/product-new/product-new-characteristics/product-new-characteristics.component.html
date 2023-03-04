@@ -5,7 +5,12 @@
   </div>
 
   <div class="form-characteristics">
-    <ng-container *ngFor="let options of characteristics; let idx = index">
+    <ng-container
+      *ngFor="
+        let options of InputData_Characteristics.characteristicsName;
+        let idx = index
+      "
+    >
       <div class="item">
         <mat-form-field
           class="item-select"
@@ -20,7 +25,7 @@
               class="characteristics-select"
               #selectedValue
               [(ngModel)]="characteristicsNumber[idx]"
-              (ngModelChange)="checkingValidityCharacteristics()"
+              (ngModelChange)="updateCharacteristicsStore()"
               multiple
               required
             >
@@ -34,13 +39,14 @@
               </ng-container>
             </mat-select>
           </ng-container>
+
           <ng-container *ngIf="options.multiple === false">
             <mat-select
               disableRipple
               class="characteristics-select"
               #selectedValue
               [(ngModel)]="characteristicsNumber[idx][0]"
-              (ngModelChange)="checkingValidityCharacteristics()"
+              (ngModelChange)="updateCharacteristicsStore()"
               required
             >
               <ng-container

@@ -45,7 +45,13 @@
         ></app-product-new-category>
       </div>
       <!-- ============================================================== -->
-      <ng-container *ngIf="InputData.characteristicsData.categoryNumber">
+      <ng-container
+        *ngIf="
+          InputData.categoryData.categorySelected &&
+          InputData.categoryData.categoryNumber !== null &&
+          InputData.characteristicsData.characteristicsName
+        "
+      >
         <div class="form-item form-characteristics">
           <app-product-new-characteristics
             [InputData_Characteristics]="InputData.characteristicsData"

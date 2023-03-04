@@ -101,8 +101,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       categoryError: null,
     },
     characteristicsData: {
-      categoryNumber: undefined,
-      characteristicsNumber: undefined,
+      characteristicsNumber: null,
+      characteristicsName: null,
     },
     keywordsData: {
       keywords: "",
@@ -154,6 +154,12 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         data.dataProduct.categoryData.categorySelected;
       this.InputData.categoryData.categoryError =
         data.dataProduct.categoryData.categoryError;
+
+      // Characteristics
+      this.InputData.characteristicsData.characteristicsNumber =
+        data.dataProduct.characteristicsData.characteristics_present;
+      this.InputData.characteristicsData.characteristicsName =
+        data.dataProduct.characteristicsData.characteristicsName;
 
       // Keywords
       this.InputData.keywordsData.keywords =

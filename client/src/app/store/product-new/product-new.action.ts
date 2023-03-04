@@ -1,5 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 
+import { Options } from "src/app/shared/interface/interfaces";
+
 export namespace ProductNewActions {
   export const initialState = createAction("[ProductNew] initialState");
 
@@ -52,6 +54,26 @@ export namespace ProductNewActions {
     }>()
   );
 
+  export const getCharacteristics = createAction(
+    "getCharacteristics",
+    props<{
+      categoryNumber: number[];
+    }>()
+  );
+  export const getCharacteristicsData = createAction(
+    "getCharacteristicsData",
+    props<{ characteristics: Options[] }>()
+  );
+
+  export const resetCharacteristics = createAction("resetCharacteristics");
+
+  export const updateCharacteristics = createAction(
+    "updateCharacteristics",
+    props<{
+      characteristicsValue: number[][];
+    }>()
+  );
+
   export const updateKeywords = createAction(
     "updateKeywords",
     props<{
@@ -95,6 +117,12 @@ export interface ProductNewState {
 
       categorySelected: boolean;
       categoryError: boolean | null;
+    };
+    characteristicsData: {
+      characteristicsName: Options[] | null;
+
+      characteristics_original: number[][] | null;
+      characteristics_present: number[][] | null;
     };
     keywordsData: {
       keywords_original: string;

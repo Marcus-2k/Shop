@@ -38,6 +38,11 @@ export const ProductNewReducer = createReducer(
         categorySelected: false,
         categoryError: null,
       },
+      characteristicsData: {
+        characteristicsName: null,
+        characteristics_original: null,
+        characteristics_present: null,
+      },
       keywordsData: {
         keywords_original: "",
         keywords_present: "",
@@ -120,6 +125,41 @@ export const ProductNewReducer = createReducer(
       stateClone.dataProduct.categoryData.categorySelected =
         props.categorySelected;
       stateClone.dataProduct.categoryData.categoryError = props.categoryError;
+    }
+
+    return stateClone;
+  }),
+
+  on(ProductNewActions.getCharacteristicsData, (state, props) => {
+    const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
+
+    if (stateClone.dataProduct !== null) {
+      stateClone.dataProduct.characteristicsData.characteristicsName =
+        props.characteristics;
+    }
+
+    return stateClone;
+  }),
+
+  on(ProductNewActions.resetCharacteristics, (state, props) => {
+    const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
+    if (stateClone.dataProduct !== null) {
+      stateClone.dataProduct.characteristicsData.characteristics_present = null;
+      stateClone.dataProduct.characteristicsData.characteristicsName = null;
+    }
+
+    return stateClone;
+  }),
+
+  on(ProductNewActions.updateCharacteristics, (state, props) => {
+    const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
+
+    console.log("reducer", props.type);
+    console.log("prods - data = ", props);
+
+    if (stateClone.dataProduct !== null) {
+      stateClone.dataProduct.characteristicsData.characteristics_present =
+        props.characteristicsValue;
     }
 
     return stateClone;

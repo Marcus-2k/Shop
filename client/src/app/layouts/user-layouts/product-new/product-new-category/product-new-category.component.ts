@@ -59,6 +59,16 @@ export class ProductNewCategoryComponent implements OnInit {
           categoryError: this.InputData_Category.categoryError,
         })
       );
+
+      if (this.InputData_Category.categoryNumber) {
+        this.store$.dispatch(
+          ProductNewActions.getCharacteristics({
+            categoryNumber: this.InputData_Category.categoryNumber,
+          })
+        );
+
+        this.store$.dispatch(ProductNewActions.resetCharacteristics());
+      }
     }
   }
 }

@@ -131,6 +131,7 @@ import { FavoriteEffects } from "./store/favorite/favorite.effects";
 import { ShoppingCartEffects } from "./store/cart/cart.effects";
 import { OrderEffects } from "./store/orders/order.effects";
 import { MyOrderEffects } from "./store/my-orders/my-order.effects";
+import { ProductNewEffects } from "./store/product-new/product-new.effects";
 // NgRx END =================================================================================================================================
 import { environment } from "../environments/environment";
 
@@ -226,6 +227,7 @@ import { environment } from "../environments/environment";
       ShoppingCartEffects,
       OrderEffects,
       MyOrderEffects,
+      ProductNewEffects,
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
