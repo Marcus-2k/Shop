@@ -40,7 +40,7 @@ export namespace ProductNewActions {
   export const updateCounterStore = createAction(
     "updateCounterStore",
     props<{
-      counterValue: number;
+      counterValue: number | null;
     }>()
   );
 

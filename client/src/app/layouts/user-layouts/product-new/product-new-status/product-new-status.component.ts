@@ -21,13 +21,11 @@ export class ProductNewStatusComponent implements OnInit {
 
   updateCounterStore() {
     if (this.InputData_Status) {
-      if (this.InputData_Status.counter !== null) {
-        this.store$.dispatch(
-          ProductNewActions.updateCounterStore({
-            counterValue: this.InputData_Status.counter,
-          })
-        );
-      }
+      this.store$.dispatch(
+        ProductNewActions.updateCounterStore({
+          counterValue: this.InputData_Status.counter,
+        })
+      );
     }
   }
 

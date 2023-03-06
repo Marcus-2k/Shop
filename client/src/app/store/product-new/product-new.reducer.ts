@@ -109,6 +109,7 @@ export const ProductNewReducer = createReducer(
 
     if (stateClone.dataProduct !== null) {
       stateClone.dataProduct.statusData.counter_present = props.counterValue;
+      stateClone.dataProduct.statusData.status_present = null;
     }
 
     return stateClone;

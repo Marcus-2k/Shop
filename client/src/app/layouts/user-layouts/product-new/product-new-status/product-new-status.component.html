@@ -12,14 +12,21 @@
         matInput
         class="disabled-spin-button"
         [(ngModel)]="InputData_Status.counter"
-        (ngModelChange)="
-          InputData_Status.status = null;
-          updateCounterStore();
-          updateStatusStore()
-        "
+        (ngModelChange)="updateCounterStore()"
         [min]="0"
         required
       />
+
+      <mat-error *ngIf="InputData_Status.counter === null">
+        Кількість товару є <strong> обов'язковою! </strong>
+      </mat-error>
+      <mat-error
+        *ngIf="
+          InputData_Status.counter !== null && InputData_Status.counter <= -1
+        "
+      >
+        Кількість товару не може бути меншою за 0
+      </mat-error>
     </mat-form-field>
   </div>
 
@@ -53,7 +60,9 @@
           <mat-option
             [value]="3"
             [disabled]="
-              InputData_Status.counter > 10 || InputData_Status.counter === 0
+              InputData_Status.counter > 10 ||
+              InputData_Status.counter === 0 ||
+              InputData_Status.counter < 0
             "
           >
             Закінчується
@@ -65,6 +74,32 @@
           </mat-option>
         </ng-container>
       </mat-select>
+
+      <mat-error
+        *ngIf="
+          InputData_Status.status === null && InputData_Status.counter === null
+        "
+      >
+        Щоб вибрати <strong>статус</strong> товару, для початку введіть
+        <strong> кількість товару </strong>
+      </mat-error>
+      <mat-error
+        *ngIf="
+          InputData_Status.status === null && InputData_Status.counter !== null
+        "
+      >
+        Веберіть <strong> статус </strong> товару
+      </mat-error>
+      <mat-error
+        *ngIf="
+          InputData_Status.status !== null &&
+          InputData_Status.status < 0 &&
+          InputData_Status.status > 3 &&
+          InputData_Status.counter !== null
+        "
+      >
+        <strong>Cтатус </strong> товару вибрано не коректно
+      </mat-error>
     </mat-form-field>
   </div>
 </ng-container>
