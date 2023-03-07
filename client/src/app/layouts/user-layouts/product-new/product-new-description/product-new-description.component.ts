@@ -21,13 +21,11 @@ export class ProductNewDescriptionComponent implements OnInit {
 
   updateDescriptionStore() {
     if (this.InputData_Description) {
-      if (this.InputData_Description.description !== null) {
-        this.store$.dispatch(
-          ProductNewActions.updateDescription({
-            descriptionValue: this.InputData_Description.description,
-          })
-        );
-      }
+      this.store$.dispatch(
+        ProductNewActions.updateDescription({
+          descriptionValue: this.InputData_Description.description,
+        })
+      );
     }
   }
 }

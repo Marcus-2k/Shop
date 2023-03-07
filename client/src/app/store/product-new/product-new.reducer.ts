@@ -48,8 +48,8 @@ export const ProductNewReducer = createReducer(
         keywords_present: "",
       },
       descriptionData: {
-        description_original: "",
-        description_present: "",
+        description_original: null,
+        description_present: null,
       },
     };
 

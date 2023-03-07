@@ -84,7 +84,7 @@ export namespace ProductNewActions {
   export const updateDescription = createAction(
     "updateDescription",
     props<{
-      descriptionValue: string;
+      descriptionValue: string | null;
     }>()
   );
 }
@@ -129,8 +129,8 @@ export interface ProductNewState {
       keywords_present: string;
     };
     descriptionData: {
-      description_original: string;
-      description_present: string;
+      description_original: string | null;
+      description_present: string | null;
     };
   } | null;
 }

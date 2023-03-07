@@ -11,27 +11,59 @@
       type="text"
       class="input-description"
       required
-      #inputDescription
       [(ngModel)]="InputData_Description.description"
       (focusout)="updateDescriptionStore()"
+      minlength="{{ InputData_Description.minLengthDescription }}"
+      maxlength="{{ InputData_Description.maxLengthDescription }}"
     ></textarea>
+    <mat-error *ngIf="InputData_Description.description === ''">
+      Опис товару є <strong> обов'язковим! </strong>
+    </mat-error>
+    <mat-error
+      *ngIf="
+        InputData_Description.description &&
+        InputData_Description.description.length <
+          InputData_Description.minLengthDescription
+      "
+    >
+      Опис не може бути меншим за
+      <strong> {{ InputData_Description.minLengthDescription }} </strong>
+      cимволів
+    </mat-error>
+    <mat-error
+      *ngIf="
+        InputData_Description.description &&
+        InputData_Description.description.length >
+          InputData_Description.maxLengthDescription
+      "
+    >
+      Опис не може бути більшим за
+      <strong> {{ InputData_Description.maxLengthDescription }} </strong>
+      cимволів
+    </mat-error>
   </mat-form-field>
 
   <div class="form-description-length">
     <p
       [ngClass]="{
         ok:
+          InputData_Description.description &&
           InputData_Description.description.length >=
             InputData_Description.minLengthDescription &&
           InputData_Description.description.length <=
             InputData_Description.maxLengthDescription,
         error:
+          InputData_Description.description &&
           InputData_Description.description.length >
-          InputData_Description.maxLengthDescription
+            InputData_Description.maxLengthDescription
       }"
     >
       <span>Символів&nbsp;</span>
-      <span>{{ InputData_Description.description.length }}</span>
+      <span>{{
+        InputData_Description.description
+          ? InputData_Description.description.length
+          : 0
+      }}</span>
       <span>/</span>
       <span>{{ InputData_Description.maxLengthDescription }}</span>
     </p>

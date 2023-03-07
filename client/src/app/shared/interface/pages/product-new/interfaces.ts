@@ -53,7 +53,7 @@ export interface InputData_Keywords {
   maxLengthWord: number;
 }
 export interface InputData_Description {
-  description: string;
+  description: string | null;
   minLengthDescription: number;
   maxLengthDescription: number;
 }

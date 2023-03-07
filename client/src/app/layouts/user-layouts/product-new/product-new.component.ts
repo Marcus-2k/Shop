@@ -114,7 +114,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       maxLengthWord: 10,
     },
     descriptionData: {
-      description: "",
+      description: null,
       minLengthDescription: 60,
       maxLengthDescription: 5000,
     },
