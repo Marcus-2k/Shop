@@ -15,7 +15,7 @@ export namespace ProductNewActions {
   export const updatePrice = createAction(
     "updatePrice",
     props<{
-      priceValue: number;
+      priceValue: number | null;
     }>()
   );
   export const updateAction = createAction(
@@ -27,7 +27,7 @@ export namespace ProductNewActions {
   export const updateActionPrice = createAction(
     "updateActionPrice",
     props<{
-      actionPriceValue: number;
+      actionPriceValue: number | null;
     }>()
   );
 

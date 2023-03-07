@@ -21,25 +21,41 @@ export class ProductNewPriceComponent implements OnInit {
   ngOnInit(): void {}
 
   procentActionNumber() {
-    if (this.InputData_Price?.price && this.InputData_Price?.actionPrice) {
-      let newAction: number =
-        (100 *
-          (this.InputData_Price.actionPrice - this.InputData_Price.price)) /
-        this.InputData_Price.price;
-      let newActionFixed = newAction.toFixed(2);
-      this.InputData_Price.actionProcent = Number(newActionFixed);
+    console.log("Start procentActionNumber");
+
+    if (this.InputData_Price) {
+      if (
+        this.InputData_Price.price !== null &&
+        this.InputData_Price.actionPrice !== null
+      ) {
+        if (
+          this.InputData_Price.price > 0 &&
+          this.InputData_Price.actionPrice > 0
+        ) {
+          this.InputData_Price.actionProcent = Number(
+            (
+              (100 *
+                (this.InputData_Price.actionPrice -
+                  this.InputData_Price.price)) /
+              this.InputData_Price.price
+            ).toFixed(2)
+          );
+        } else {
+          this.InputData_Price.actionProcent = -100;
+        }
+
+        console.log("actionProcent = ", this.InputData_Price.actionProcent);
+      }
     }
   }
 
   updatePriceStore() {
     if (this.InputData_Price) {
-      if (this.InputData_Price.price !== null) {
-        this.store$.dispatch(
-          ProductNewActions.updatePrice({
-            priceValue: this.InputData_Price.price,
-          })
-        );
-      }
+      this.store$.dispatch(
+        ProductNewActions.updatePrice({
+          priceValue: this.InputData_Price.price,
+        })
+      );
     }
   }
 
@@ -55,13 +71,11 @@ export class ProductNewPriceComponent implements OnInit {
 
   updateActionPriceStore() {
     if (this.InputData_Price) {
-      if (this.InputData_Price.actionPrice !== null) {
-        this.store$.dispatch(
-          ProductNewActions.updateActionPrice({
-            actionPriceValue: this.InputData_Price.actionPrice,
-          })
-        );
-      }
+      this.store$.dispatch(
+        ProductNewActions.updateActionPrice({
+          actionPriceValue: this.InputData_Price.actionPrice,
+        })
+      );
     }
   }
 }

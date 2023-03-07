@@ -11,25 +11,42 @@
         matInput
         type="number"
         class="disabled-spin-button"
-        #inputPrice
         required
         placeholder="9 950"
         [(ngModel)]="InputData_Price.price"
-        (ngModelChange)="procentActionNumber()"
-        (focusout)="updatePriceStore()"
+        (ngModelChange)="procentActionNumber(); updatePriceStore()"
+        [min]="0"
+        [max]="InputData_Price.maxPrice"
       />
+
+      <mat-error *ngIf="InputData_Price.price === null">
+        Ціна товару є <strong> обов'язковою! </strong>
+      </mat-error>
+      <mat-error *ngIf="InputData_Price.price && InputData_Price.price <= -1">
+        Ціна товару не може бути меншою за 0
+      </mat-error>
+      <mat-error
+        *ngIf="
+          InputData_Price.price &&
+          InputData_Price.price > InputData_Price.maxPrice
+        "
+      >
+        Ціна товару не може бути
+        <strong> більшою </strong> за
+        {{ InputData_Price.maxPrice | price }} грн.
+      </mat-error>
     </mat-form-field>
   </div>
 
   <div class="item-action">
     <p class="form-item-action-checkbox">
       <mat-checkbox
-        color="primary"
+        color="warn"
         (click)="procentActionNumber()"
         [(ngModel)]="InputData_Price.action"
         (ngModelChange)="updateActionStore()"
       >
-        Акція на товар
+        Акція
       </mat-checkbox>
     </p>
 
@@ -66,10 +83,24 @@
           class="disabled-spin-button"
           required
           [(ngModel)]="InputData_Price.actionPrice"
-          #actionPriceInput
-          (ngModelChange)="procentActionNumber()"
-          (focusout)="updateActionPriceStore()"
+          (ngModelChange)="procentActionNumber(); updateActionPriceStore()"
+          [min]="0"
         />
+        <mat-error
+          *ngIf="InputData_Price.actionPrice === null && InputData_Price.action"
+        >
+          Ви відмітили "Акція" прапорцем тому знижка товару є
+          <strong> обов'язковою! </strong>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            InputData_Price.actionPrice && InputData_Price.actionPrice <= -1
+          "
+        >
+          Введіть значення
+          <strong> 0 </strong>
+          або більше
+        </mat-error>
       </mat-form-field>
     </ng-container>
   </div>

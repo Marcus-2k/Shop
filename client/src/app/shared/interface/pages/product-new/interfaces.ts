@@ -24,6 +24,7 @@ export interface InputData_Title {
 }
 export interface InputData_Price {
   price: number | null;
+  maxPrice: number;
   action: boolean;
   actionPrice: number | null;
   actionProcent: number | null;

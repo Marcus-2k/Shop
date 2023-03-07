@@ -85,6 +85,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     },
     priceData: {
       price: null,
+      maxPrice: 10000000,
       action: false,
       actionPrice: null,
       actionProcent: null,
