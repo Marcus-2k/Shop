@@ -8,7 +8,7 @@ export namespace ProductNewActions {
   export const updateName = createAction(
     "updateName",
     props<{
-      nameValue: string;
+      nameValue: string | null;
     }>()
   );
 
@@ -92,8 +92,8 @@ export namespace ProductNewActions {
 export interface ProductNewState {
   dataProduct: {
     titleData: {
-      name_original: string;
-      name_present: string;
+      name_original: string | null;
+      name_present: string | null;
     };
     priceData: {
       price_original: number | null;

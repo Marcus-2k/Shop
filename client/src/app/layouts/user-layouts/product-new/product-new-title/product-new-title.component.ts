@@ -23,15 +23,11 @@ export class ProductNewTitleComponent implements OnInit {
 
   updateTitleStore() {
     if (this.InputData_Title) {
-      if (this.InputData_Title.name.length > 0) {
-        console.log(this.InputData_Title.name);
-
-        this.store$.dispatch(
-          ProductNewActions.updateName({
-            nameValue: this.InputData_Title.name,
-          })
-        );
-      }
+      this.store$.dispatch(
+        ProductNewActions.updateName({
+          nameValue: this.InputData_Title.name,
+        })
+      );
     }
   }
 }

@@ -13,8 +13,8 @@ export const ProductNewReducer = createReducer(
 
     stateClone.dataProduct = {
       titleData: {
-        name_original: "",
-        name_present: "",
+        name_original: null,
+        name_present: null,
       },
       priceData: {
         price_original: null,

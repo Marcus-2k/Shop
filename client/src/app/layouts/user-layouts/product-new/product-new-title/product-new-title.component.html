@@ -12,6 +12,40 @@
       [(ngModel)]="InputData_Title.name"
       (focusout)="updateTitleStore()"
       required
+      minlength="{{ InputData_Title.minLengthName }}"
+      maxlength="{{ InputData_Title.maxLengthName }}"
     />
+
+    <mat-error
+      *ngIf="InputData_Title.name === null || InputData_Title.name === ''"
+    >
+      Назва товару є <strong> обов'язковою! </strong>
+    </mat-error>
+    <mat-error
+      *ngIf="
+        InputData_Title.name &&
+        InputData_Title.name.length < InputData_Title.minLengthName
+      "
+    >
+      Назва товару не може бути меншою за
+      <strong>{{ InputData_Title.minLengthName }}</strong>
+      символів |
+      <strong>
+        {{ InputData_Title.name.length + "/" + InputData_Title.minLengthName }}
+      </strong>
+    </mat-error>
+    <mat-error
+      *ngIf="
+        InputData_Title.name &&
+        InputData_Title.name.length > InputData_Title.maxLengthName
+      "
+    >
+      Назва товару не може бути більшою за
+      <strong>{{ InputData_Title.maxLengthName }}</strong>
+      символів |
+      <strong>
+        {{ InputData_Title.name.length + "/" + InputData_Title.maxLengthName }}
+      </strong>
+    </mat-error>
   </mat-form-field>
 </ng-container>

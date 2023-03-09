@@ -18,7 +18,7 @@ export interface InputData_Photo {
   maxCounterFile: number;
 }
 export interface InputData_Title {
-  name: string;
+  name: string | null;
   minLengthName: number;
   maxLengthName: number;
 }
