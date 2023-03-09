@@ -22,9 +22,9 @@ export class ProductNewCharacteristicsComponent implements OnInit {
     console.log("Start ngOnInit Product-New-Characteristics");
 
     if (this.InputData_Characteristics?.characteristicsNumber) {
-      this.characteristicsNumber = [
-        ...this.InputData_Characteristics.characteristicsNumber,
-      ];
+      this.characteristicsNumber = JSON.parse(
+        JSON.stringify(this.InputData_Characteristics.characteristicsNumber)
+      );
     }
 
     this.recordCharacteristicsInArray();
@@ -40,19 +40,18 @@ export class ProductNewCharacteristicsComponent implements OnInit {
         idx < this.InputData_Characteristics.characteristicsName.length;
         idx++
       ) {
-        this.characteristicsNumber.push([-1]);
+        this.characteristicsNumber.push([]);
       }
     }
   }
 
   updateCharacteristicsStore() {
-    if (this.InputData_Characteristics?.characteristicsNumber) {
-      this.store$.dispatch(
-        ProductNewActions.updateCharacteristics({
-          characteristicsValue:
-            this.InputData_Characteristics.characteristicsNumber,
-        })
-      );
-    }
+    this.store$.dispatch(
+      ProductNewActions.updateCharacteristics({
+        characteristicsValue: JSON.parse(
+          JSON.stringify(this.characteristicsNumber)
+        ),
+      })
+    );
   }
 }
