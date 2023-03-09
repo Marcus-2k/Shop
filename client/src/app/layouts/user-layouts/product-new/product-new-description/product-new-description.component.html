@@ -16,7 +16,12 @@
       minlength="{{ InputData_Description.minLengthDescription }}"
       maxlength="{{ InputData_Description.maxLengthDescription }}"
     ></textarea>
-    <mat-error *ngIf="InputData_Description.description === ''">
+    <mat-error
+      *ngIf="
+        InputData_Description.description === '' ||
+        InputData_Description.description === null
+      "
+    >
       Опис товару є <strong> обов'язковим! </strong>
     </mat-error>
     <mat-error
