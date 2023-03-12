@@ -121,4 +121,11 @@ export class ProductNewPhotoComponent implements OnInit {
       }
     }
   }
+
+  deletePhotoByIdx(id: number) {
+    this.images.splice(id, 1);
+    this.imagePreview.splice(id, 1);
+
+    this.imagePreview.push(undefined);
+  }
 }

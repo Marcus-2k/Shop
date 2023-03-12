@@ -9,7 +9,11 @@
         (cdkDropListDropped)="drop($event)"
         cdkDropListOrientation="horizontal"
       >
-        <div class="example-box" *ngFor="let image of imagePreview" cdkDrag>
+        <div
+          class="example-box"
+          *ngFor="let image of imagePreview; let idx = index"
+          cdkDrag
+        >
           <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
           <img [src]="image" *ngIf="image !== undefined && update === false" />
           <img
@@ -24,6 +28,17 @@
             "
             *ngIf="update === true"
           />
+
+          <button
+            class="btn-close"
+            mat-mini-fab
+            matTooltip="Видалити"
+            color="primary"
+            (click)="deletePhotoByIdx(idx)"
+            *ngIf="!(image === undefined && update === false)"
+          >
+            <span class="material-symbols-outlined"> delete </span>
+          </button>
         </div>
       </div>
     </div>

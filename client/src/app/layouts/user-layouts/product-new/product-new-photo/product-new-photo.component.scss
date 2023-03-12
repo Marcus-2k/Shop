@@ -53,12 +53,20 @@
   min-width: 300px;
   min-height: 300px;
   margin-right: 5px;
+
+  position: relative;
   &:last-child {
     margin-right: 0px;
   }
   img {
     max-width: 300px;
     max-height: 300px;
+  }
+
+  .btn-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
   }
 }
 
