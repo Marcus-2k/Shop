@@ -64,6 +64,7 @@
       <button
         class="btn-photo btn-download"
         mat-raised-button
+        [disabled]="images.indexOf(undefined) === -1"
         color="primary"
         (click)="triggerClick()"
       >

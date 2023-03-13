@@ -89,6 +89,7 @@ export class ProductNewPhotoComponent implements OnInit {
       const placeholderAmount: number =
         this.InputData_Photo.maxCounterFile - this.imagePreview.length;
       for (let idx = 0; idx < placeholderAmount; idx++) {
+        this.images.push(undefined);
         this.imagePreview.push(undefined);
       }
 
@@ -100,6 +101,7 @@ export class ProductNewPhotoComponent implements OnInit {
     this.images.splice(id, 1);
     this.imagePreview.splice(id, 1);
 
+    this.images.push(undefined);
     this.imagePreview.push(undefined);
   }
 }
