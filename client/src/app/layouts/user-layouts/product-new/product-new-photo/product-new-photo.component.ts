@@ -4,6 +4,8 @@ import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 
 import { InputData_Photo } from "src/app/shared/interface/pages/product-new/interfaces";
 
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
+
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -12,42 +14,31 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./product-new-photo.component.scss"],
 })
 export class ProductNewPhotoComponent implements OnInit {
-  constructor() {}
+  constructor(private showMessage: OpenSnackBarService) {}
 
   @Input() InputData_Photo: InputData_Photo | undefined;
   @Input() update: boolean = false; // Default value = false
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.InputData_Photo) {
+      for (let idx = 0; idx < this.InputData_Photo.maxCounterFile; idx++) {
+        this.images.push(undefined);
+        this.imagePreview.push(undefined);
+      }
+    }
+  }
 
-  original_imageSrc: string[] = [];
+  photo_original: string[] | undefined;
 
   @ViewChild("inputFile") inputFile?: ElementRef;
 
   url_server_folder: string = environment.URL_SERVER_FOLDER;
 
-  errorImagesDownload: boolean = false; // if click button "Завантажити фото" but no select photo
-  imagesValidation: boolean = false;
+  images: (File | undefined)[] = [];
+  imagePreview: (ArrayBuffer | string | undefined | null)[] = [];
 
-  images: File[] | undefined[] = [
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ]; // Download image product
-  imagePreview: any = [
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ]; // Picture of the product on the site
+  errorImagesDownload: boolean = false;
+  imagesValidation: boolean = false;
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.imagePreview, event.previousIndex, event.currentIndex);
@@ -56,69 +47,52 @@ export class ProductNewPhotoComponent implements OnInit {
 
   triggerClick() {
     this.inputFile?.nativeElement.click();
-
-    this.errorImagesDownload = true;
-    this.imagesValidation = false;
   } // Click button "Download photo"
 
   onFileUpload(event: any) {
     if (this.InputData_Photo) {
-      this.images = [];
-      this.url_server_folder = "";
-
       const fileList: File[] = Array.from(event.target.files);
-      const fileCounter = event.target.files.length;
-      const needCart = this.InputData_Photo.maxCounterFile - fileCounter;
 
-      this.images = fileList;
+      for (const file of fileList) {
+        if (this.images.indexOf(undefined) >= 0) {
+          const placeholderImages = this.images.indexOf(undefined);
+          this.images[placeholderImages] = file;
 
-      this.imagePreview = [];
+          const reader = new FileReader();
+          reader.onload = (e: ProgressEvent<FileReader>) => {
+            if (e.target) {
+              const fileContent = e.target.result;
 
-      for (let index = 0; index < needCart; index++) {
-        this.imagePreview.push(undefined);
-      } // No select photo
+              const placeholderIdx = this.imagePreview.indexOf(undefined);
+              this.imagePreview[placeholderIdx] = fileContent;
+            }
+          };
 
-      let idx: number = fileCounter - 1; // 5 >> 4 >> 3 | unshift()
-
-      for (const iterator of fileList) {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          this.imagePreview.unshift(reader.result);
-        };
-        reader.readAsDataURL(fileList[idx]);
-        idx = idx - 1;
+          reader.readAsDataURL(file);
+        } else {
+          this.showMessage.open("Ліміт фото перевищено", undefined);
+        }
       }
-      this.errorImagesDownload = false;
-      this.imagesValidation = true;
     }
   }
 
   deletePhoto() {
     if (this.InputData_Photo) {
-      if (this.update && this.imagesValidation && this.original_imageSrc) {
-        this.images = [
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-        ];
+      this.images = [];
 
-        this.imagePreview = this.original_imageSrc;
-
-        const needItem =
-          this.InputData_Photo.maxCounterFile - this.original_imageSrc.length;
-        for (let idx = 0; idx < needItem; idx++) {
-          this.imagePreview.push(undefined);
-        }
-
-        this.imagesValidation = false;
-        this.url_server_folder = environment.URL_SERVER_FOLDER;
+      if (this.photo_original) {
+        this.imagePreview = this.photo_original;
+      } else {
+        this.imagePreview = [];
       }
+
+      const placeholderAmount: number =
+        this.InputData_Photo.maxCounterFile - this.imagePreview.length;
+      for (let idx = 0; idx < placeholderAmount; idx++) {
+        this.imagePreview.push(undefined);
+      }
+
+      this.url_server_folder = environment.URL_SERVER_FOLDER;
     }
   }
 

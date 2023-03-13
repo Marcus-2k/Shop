@@ -1,6 +1,5 @@
 <!--  -->
 <ng-container *ngIf="InputData_Photo">
-  <!--  -->
   <ng-container>
     <div class="placeholder">
       <div
@@ -15,27 +14,39 @@
           cdkDrag
         >
           <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-          <img [src]="image" *ngIf="image !== undefined && update === false" />
-          <img
-            src="../../../../assets//img/300x300.png"
-            *ngIf="image === undefined && update === false"
-          />
-          <img
-            [src]="
-              image
-                ? url_server_folder + image
-                : '../../../../assets//img/300x300.png'
-            "
-            *ngIf="update === true"
-          />
+          <ng-container *ngIf="update === true">
+            <img
+              [src]="url_server_folder + image"
+              *ngIf="image !== undefined"
+            />
+            <img
+              src="../../../../assets//img/300x300.png"
+              *ngIf="image === undefined"
+            />
+          </ng-container>
+          <ng-container *ngIf="update === false">
+            <img [src]="image" *ngIf="image !== undefined" />
+            <img
+              src="../../../../assets//img/300x300.png"
+              *ngIf="image === undefined"
+            />
+          </ng-container>
 
+          <button
+            class="btn-number"
+            mat-mini-fab
+            matTooltip="Позиція"
+            color="primary"
+          >
+            {{ "№" + (idx + 1) }}
+          </button>
           <button
             class="btn-close"
             mat-mini-fab
             matTooltip="Видалити"
-            color="primary"
+            color="warn"
             (click)="deletePhotoByIdx(idx)"
-            *ngIf="!(image === undefined && update === false)"
+            *ngIf="image"
           >
             <span class="material-symbols-outlined"> delete </span>
           </button>
@@ -59,15 +70,20 @@
         <span>Завантажити фото</span>
         <span class="material-symbols-outlined"> file_download </span>
       </button>
+
       <button
         class="btn-photo btn-delete"
         mat-raised-button
         color="warn"
         (click)="deletePhoto()"
-        *ngIf="update && imagesValidation"
       >
         <span>Видалити фото</span>
         <span class="material-symbols-outlined"> delete </span>
+      </button>
+
+      <button class="btn-photo btn-info" mat-raised-button color="primary">
+        Кількість фото
+        {{ images.length + "/" + InputData_Photo.maxCounterFile }}
       </button>
     </div>
 
@@ -80,10 +96,5 @@
       (change)="onFileUpload($event)"
       #inputFile
     />
-
-    <p class="error error__text" *ngIf="errorImagesDownload">
-      Фото товара є обов'язковим.
-    </p>
   </ng-container>
-  <!--  -->
 </ng-container>

@@ -4,12 +4,18 @@
   }
 }
 
+.placeholder {
+  margin-bottom: 25px;
+}
+
 .form-item-btn {
   margin-bottom: 10px;
   .btn-download {
   }
   .btn-delete {
     margin: 0 10px;
+  }
+  .btn-info {
   }
 }
 
@@ -67,6 +73,11 @@
     position: absolute;
     top: 15px;
     right: 15px;
+  }
+  .btn-number {
+    position: absolute;
+    top: 15px;
+    left: 15px;
   }
 }
 
