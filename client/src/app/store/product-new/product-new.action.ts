@@ -1,9 +1,12 @@
 import { createAction, props } from "@ngrx/store";
 
-import { Options } from "src/app/shared/interface/interfaces";
+import { Options, ProductUpdate } from "src/app/shared/interface/interfaces";
 
 export namespace ProductNewActions {
-  export const initialState = createAction("[ProductNew] initialState");
+  export const initialState = createAction(
+    "[ProductNew] initialState",
+    props<{ data: ProductUpdate | null }>()
+  );
 
   export const updateName = createAction(
     "updateName",

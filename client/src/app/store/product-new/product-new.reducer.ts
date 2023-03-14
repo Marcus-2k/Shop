@@ -11,47 +11,91 @@ export const ProductNewReducer = createReducer(
   on(ProductNewActions.initialState, (state, props) => {
     const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
 
-    stateClone.dataProduct = {
-      titleData: {
-        name_original: null,
-        name_present: null,
-      },
-      priceData: {
-        price_original: null,
-        price_present: null,
-        action_original: false,
-        action_present: false,
-        actionPrice_original: null,
-        actionPrice_present: null,
-      },
-      statusData: {
-        counter_original: null,
-        counter_present: null,
-        status_original: null,
-        status_present: null,
-      },
-      categoryData: {
-        categoryNumber_original: null,
-        categoryNumber_present: null,
-        categoryName_original: null,
-        categoryName_present: null,
-        categorySelected: false,
-        categoryError: null,
-      },
-      characteristicsData: {
-        characteristicsName: null,
-        characteristics_original: null,
-        characteristics_present: null,
-      },
-      keywordsData: {
-        keywords_original: "",
-        keywords_present: "",
-      },
-      descriptionData: {
-        description_original: null,
-        description_present: null,
-      },
-    };
+    if (props.data) {
+      stateClone.dataProduct = {
+        titleData: {
+          name_original: props.data.name,
+          name_present: props.data.name,
+        },
+        priceData: {
+          price_original: props.data.price,
+          price_present: props.data.price,
+          action_original: props.data.action,
+          action_present: props.data.action,
+          actionPrice_original: props.data.actionPrice,
+          actionPrice_present: props.data.actionPrice,
+        },
+        statusData: {
+          counter_original: props.data.counter,
+          counter_present: props.data.counter,
+          status_original: props.data.status,
+          status_present: props.data.status,
+        },
+        categoryData: {
+          categoryNumber_original: props.data.category,
+          categoryNumber_present: props.data.category,
+          categoryName_original: props.data.categoryName,
+          categoryName_present: props.data.categoryName,
+          categorySelected: true,
+          categoryError: false,
+        },
+        characteristicsData: {
+          characteristicsName: props.data.characteristicsName,
+          characteristics_original: props.data.characteristics,
+          characteristics_present: props.data.characteristics,
+        },
+        keywordsData: {
+          keywords_original: props.data.keywords.join(" "),
+          keywords_present: props.data.keywords.join(" "),
+        },
+        descriptionData: {
+          description_original: props.data.description,
+          description_present: props.data.description,
+        },
+      };
+    } else {
+      stateClone.dataProduct = {
+        titleData: {
+          name_original: null,
+          name_present: null,
+        },
+        priceData: {
+          price_original: null,
+          price_present: null,
+          action_original: false,
+          action_present: false,
+          actionPrice_original: null,
+          actionPrice_present: null,
+        },
+        statusData: {
+          counter_original: null,
+          counter_present: null,
+          status_original: null,
+          status_present: null,
+        },
+        categoryData: {
+          categoryNumber_original: null,
+          categoryNumber_present: null,
+          categoryName_original: null,
+          categoryName_present: null,
+          categorySelected: false,
+          categoryError: null,
+        },
+        characteristicsData: {
+          characteristicsName: null,
+          characteristics_original: null,
+          characteristics_present: null,
+        },
+        keywordsData: {
+          keywords_original: "",
+          keywords_present: "",
+        },
+        descriptionData: {
+          description_original: null,
+          description_present: null,
+        },
+      };
+    }
 
     return stateClone;
   }),

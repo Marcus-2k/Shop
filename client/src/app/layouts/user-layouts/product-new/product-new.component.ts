@@ -44,6 +44,13 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         this.requestProduct.getByIdProduct(id).subscribe({
           next: (data) => {
             console.log(data);
+            this.store$.dispatch(ProductNewActions.initialState({ data }));
+
+            this.productNewStore$ = this.store$
+              .select(ProductNewSelector.getProductNew)
+              .subscribe((data) => {
+                this.updateInputData(data);
+              });
           },
           error: (error) => {
             console.log(error);
@@ -52,7 +59,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         });
       } else {
         this.renameTitle.renameTitleSite("Створення товару");
-        this.store$.dispatch(ProductNewActions.initialState());
+        this.store$.dispatch(ProductNewActions.initialState({ data: null }));
 
         this.productNewStore$ = this.store$
           .select(ProductNewSelector.getProductNew)

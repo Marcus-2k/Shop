@@ -27,8 +27,10 @@ export class ProductNewCharacteristicsComponent implements OnInit {
       );
     }
 
-    this.recordCharacteristicsInArray();
-    this.updateCharacteristicsStore();
+    if (this.update === false) {
+      this.recordCharacteristicsInArray();
+      this.updateCharacteristicsStore();
+    }
   }
 
   characteristicsNumber: number[][] = [];

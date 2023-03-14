@@ -95,7 +95,9 @@ export interface ProductUpdate {
   actionPrice: number;
   counter: number;
   category: number[];
+  categoryName: string[];
   characteristics: number[][];
+  characteristicsName: Options[];
   status: 0 | 1 | 2 | 3;
   keywords: string[];
   description: string;
