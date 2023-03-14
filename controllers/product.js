@@ -19,7 +19,7 @@ module.exports.getByIdProduct = async function (req, res) {
   console.log("Server getByIdProduct");
 
   try {
-    const product = await Product.findById(req.params.id, {
+    let product = await Product.findById(req.params.id, {
       imageSrc: 1,
       name: 1,
       price: 1,
@@ -27,11 +27,31 @@ module.exports.getByIdProduct = async function (req, res) {
       actionPrice: 1,
       counter: 1,
       category: 1,
+      categoryName: 1,
       characteristics: 1,
       status: 1,
       keywords: 1,
       description: 1,
     });
+
+    let characteristicsName;
+
+    if (product.category.length === 3) {
+      characteristicsName =
+        Catalog_characteristics.categoryList_characteristics[
+          product.category[0]
+        ].nameListCategory[product.category[1]].subNameListCategory[
+          product.category[2]
+        ].characteristics;
+    } else if (product.length === 2) {
+      characteristicsName =
+        Catalog_characteristics.categoryList_characteristics[
+          product.category[0]
+        ].nameListCategory[product.category[1]].characteristics;
+    }
+
+    product = JSON.parse(JSON.stringify(product));
+    product.characteristicsName = characteristicsName;
 
     return res.status(200).json(product);
   } catch (error) {
@@ -58,6 +78,23 @@ module.exports.createProduct = async function (req, res) {
     category.forEach((element, idx) => {
       category[idx] = Number(element);
     }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
+
+    let categoryName = [];
+    categoryName.push(
+      Catalog_characteristics.categoryList_characteristics[category[0]]
+        .nameCategory
+    );
+    categoryName.push(
+      Catalog_characteristics.categoryList_characteristics[category[0]]
+        .nameListCategory[category[1]].subNameCategory
+    );
+    if (category.length === 3) {
+      categoryName.push(
+        Catalog_characteristics.categoryList_characteristics[category[0]]
+          .nameListCategory[category[1]].subNameListCategory[category[2]]
+          .titleSubNameListCategory
+      );
+    }
 
     const characteristics = transformCharacteristicsStringToArray(
       req.body.characteristics
@@ -141,6 +178,7 @@ module.exports.createProduct = async function (req, res) {
       actionPrice,
       counter: Number(req.body.counter),
       category,
+      categoryName,
       characteristics,
       characteristicsName,
       status,

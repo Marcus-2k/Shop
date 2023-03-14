@@ -30,6 +30,10 @@ const productSchema = new Schema({
     type: Array, // [ 1, 2, 9 ]
     required: true,
   },
+  categoryName: {
+    type: Array, // [ "Ноутбуки та комп'ютери", 'Комплектуючі', 'SSD' ]
+    required: true,
+  },
   characteristics: {
     type: Array, // [ [0], [8], [21, 3, 4] ]
     required: true,
