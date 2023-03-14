@@ -39,6 +39,7 @@ export class ProductNewPhotoComponent implements OnInit {
 
   errorImagesDownload: boolean = false;
   imagesValidation: boolean = false;
+  numberPhoto: number = 0;
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.imagePreview, event.previousIndex, event.currentIndex);
@@ -65,6 +66,8 @@ export class ProductNewPhotoComponent implements OnInit {
 
               const placeholderIdx = this.imagePreview.indexOf(undefined);
               this.imagePreview[placeholderIdx] = fileContent;
+
+              this.numberPhoto++;
             }
           };
 
@@ -94,6 +97,8 @@ export class ProductNewPhotoComponent implements OnInit {
       }
 
       this.url_server_folder = environment.URL_SERVER_FOLDER;
+
+      this.numberPhoto = 0;
     }
   }
 
@@ -103,5 +108,7 @@ export class ProductNewPhotoComponent implements OnInit {
 
     this.images.push(undefined);
     this.imagePreview.push(undefined);
+
+    this.numberPhoto--;
   }
 }
