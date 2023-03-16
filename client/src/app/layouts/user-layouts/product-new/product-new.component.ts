@@ -130,6 +130,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   };
 
   update: boolean = false; // Mode update true/false
+  images: File[] = [];
 
   productNewStore$: Subscription | undefined;
 
@@ -179,6 +180,15 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
 
     console.log("END updateInputData");
+  }
+
+  getPhoto(event: (File | undefined)[]) {
+    this.images = [];
+    event.forEach((value) => {
+      if (value) {
+        this.images.push(value);
+      }
+    });
   }
 
   // Common variables END ==========================================================================================================================

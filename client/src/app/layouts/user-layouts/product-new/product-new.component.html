@@ -12,6 +12,7 @@
         <app-product-new-photo
           [InputData_Photo]="InputData.photoData"
           [update]="update"
+          (sendPhoto)="getPhoto($event)"
         ></app-product-new-photo>
       </div>
       <!-- ============================================================== -->

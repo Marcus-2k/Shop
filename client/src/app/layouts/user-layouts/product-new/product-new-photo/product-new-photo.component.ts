@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+} from "@angular/core";
 
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 
@@ -31,6 +39,7 @@ export class ProductNewPhotoComponent implements OnInit {
   photo_original: string[] | undefined;
 
   @ViewChild("inputFile") inputFile?: ElementRef;
+  @Output() sendPhoto = new EventEmitter<(File | undefined)[]>();
 
   url_server_folder: string = environment.URL_SERVER_FOLDER;
 
@@ -44,6 +53,7 @@ export class ProductNewPhotoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.imagePreview, event.previousIndex, event.currentIndex);
     moveItemInArray(this.images, event.previousIndex, event.currentIndex);
+    this.sendPhotosToParentComponent();
   }
 
   triggerClick() {
@@ -76,6 +86,8 @@ export class ProductNewPhotoComponent implements OnInit {
           this.showMessage.open("Ліміт фото перевищено", undefined);
         }
       }
+
+      this.sendPhotosToParentComponent();
     }
   }
 
@@ -99,6 +111,7 @@ export class ProductNewPhotoComponent implements OnInit {
       this.url_server_folder = environment.URL_SERVER_FOLDER;
 
       this.numberPhoto = 0;
+      this.sendPhotosToParentComponent();
     }
   }
 
@@ -110,5 +123,10 @@ export class ProductNewPhotoComponent implements OnInit {
     this.imagePreview.push(undefined);
 
     this.numberPhoto--;
+    this.sendPhotosToParentComponent();
+  }
+
+  sendPhotosToParentComponent() {
+    this.sendPhoto.emit(this.images);
   }
 }
