@@ -6,7 +6,7 @@
       TEST FUNCTION
     </button>
     <!--  -->
-    <div class="new-content-form">
+    <form class="new-content-form">
       <!-- ============================================================== -->
       <div class="form-item form-photo">
         <app-product-new-photo
@@ -78,27 +78,15 @@
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-create">
-        <!-- <button
+        <button
           mat-raised-button
           color="primary"
           type="submit"
           *ngIf="!update"
           (click)="createProduct()"
-          [disabled]="
-            !imagesValidation ||
-            nameProduct.length <= minLengthNameProduct ||
-            (action && actionProcent > minActionProcent) ||
-            counterProduct <= -1 ||
-            !validityCharacteristics ||
-            statusNumber === -1 ||
-            !validityKeywords ||
-            lengthKeywords > maxLengthKeywords ||
-            description.length < minLengthDescription ||
-            description.length > maxLengthDescription
-          "
         >
           Створити
-        </button> -->
+        </button>
         <!--  -->
         <!-- <button
           mat-raised-button
@@ -127,7 +115,7 @@
         </button> -->
       </div>
       <!-- ============================================================== -->
-    </div>
+    </form>
     <!--  -->
   </div>
 </div>

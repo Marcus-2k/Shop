@@ -5,7 +5,7 @@ import { InputData } from "src/app/shared/interface/pages/product-new/interfaces
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
-import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 
 import { Subscription } from "rxjs";
 import { Store } from "@ngrx/store";
@@ -22,7 +22,7 @@ import { ProductNewSelector } from "src/app/store/product-new/product-new.select
 })
 export class ProductNewComponent implements OnInit, OnDestroy {
   constructor(
-    private showNotice: ShowNoticeService,
+    private showMessage: OpenSnackBarService,
     private requestProduct: RequestProductService,
     private route: ActivatedRoute,
     private router: Router,
@@ -86,7 +86,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       maxCounterFile: 8,
     },
     titleData: {
-      name: "",
+      name: null,
       minLengthName: 12,
       maxLengthName: 50,
     },
@@ -192,74 +192,172 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   }
 
   // Common variables END ==========================================================================================================================
-  // Create/Up Start ===============================================================================================================================
-  // createProduct() {
-  //   console.log("Button Create");
 
-  //   if (
-  //     this.imagesValidation &&
-  //     this.nameProduct.length >= this.minLengthNameProduct &&
-  //     ((this.action && this.actionProcent < this.minActionProcent) ||
-  //       this.action === false) &&
-  //     this.counterProduct >= 0 &&
-  //     this.validityCharacteristics &&
-  //     (this.statusNumber === 0 ||
-  //       this.statusNumber === 1 ||
-  //       this.statusNumber === 2 ||
-  //       this.statusNumber === 3) &&
-  //     this.validityKeywords &&
-  //     this.lengthKeywords <= this.maxLengthKeywords &&
-  //     this.description.length > this.minLengthDescription &&
-  //     this.description.length < this.maxLengthDescription
-  //   ) {
-  //     console.log("Create FormData");
+  createProduct() {
+    let productState: ProductNewState | undefined;
 
-  //     const formData = new FormData();
+    this.store$
+      .select(ProductNewSelector.getProductNew)
+      .subscribe((data) => (productState = data))
+      .unsubscribe();
 
-  //     const imagesArray = Array.from(this.images);
-  //     imagesArray.forEach((img, idx) => {
-  //       if (img) {
-  //         formData.append(`image-${idx}`, img, img.name); // Add photo product
-  //       }
-  //       console.log(`image-${idx}`);
-  //       console.log(formData.get(`image-${idx}`));
-  //     });
+    if (productState && productState.dataProduct) {
+      let formData: FormData = new FormData();
+      let validData: boolean = true;
+      let messageError: string[] = [];
 
-  //     formData.append("name", this.nameProduct); // Телефон Samsung S21 Ulta
-  //     formData.append("price", String(this.priceProduct)); // Add 4500 >>> "4500"
+      // Photo
+      if (this.images.length > 0) {
+        for (let idx = 0; idx < this.images.length; idx++) {
+          if (this.images[idx]) {
+            formData.append(
+              "image-" + idx,
+              this.images[idx],
+              this.images[idx].name
+            );
 
-  //     if (this.action === true) {
-  //       formData.append("action", "1"); // "1" >>> true
-  //       formData.append("actionPrice", this.actionPrice.toString()); // 4050 >>> "4050"
-  //     } else if (this.action === false) {
-  //       formData.append("action", "0"); // "0" >>> false
-  //     }
+            console.log("image-" + idx, formData.get("image-" + idx));
+          }
+        }
+      } else {
+        validData = false;
+        messageError.push("Фото");
+      }
 
-  //     formData.append("counter", this.counterProduct.toString()); // 5 >>> "5"
-  //     formData.append("category", this.categoryNumber.join(" ")); //  [ 5, 0, 8 ] >>> "5 0 8"
-  //     formData.append("characteristics", this.characteristicsNumber.join("-")); // [ [4], [1], [2], [13, 10, 9] ] >>> "4-1-2-13,10,9"
-  //     formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
-  //     formData.append("keywords", this.keywordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
-  //     formData.append("description", this.description); // Екран 14" IPS (1920x1080) Full HD, матовий / Intel Core i3-1115G4
+      // Name
+      if (productState.dataProduct.titleData.name_present !== null) {
+        formData.append(
+          "name",
+          productState.dataProduct.titleData.name_present
+        );
+      } else {
+        validData = false;
+        messageError.push("Назва");
+      }
 
-  //     console.log("Send FormData");
+      // Price & Discount
+      if (productState.dataProduct.priceData.price_present) {
+        formData.append(
+          "price",
+          productState.dataProduct.priceData.price_present.toString()
+        );
+      } else {
+        validData = false;
+        messageError.push("Ціна");
+      }
+      if (productState.dataProduct.priceData.action_present) {
+        formData.append("action", "1");
 
-  //     this.requestProduct.createProduct(formData).subscribe(
-  //       (res) => {
-  //         this.showNotice.message("Товар створено успішно.");
-  //         this.afterCreateUpdateProduct();
-  //       },
-  //       (e) => {
-  //         console.log(e);
-  //         this.showNotice.message("Помилка на серверові.");
-  //       }
-  //     );
-  //   } else {
-  //     this.showNotice.message(
-  //       "Товар не було створено, дані заповнено невірно."
-  //     );
-  //   }
-  // }
+        if (productState.dataProduct.priceData.actionPrice_present) {
+          formData.append(
+            "actionPrice",
+            productState.dataProduct.priceData.actionPrice_present.toString()
+          );
+        } else {
+          validData = false;
+          messageError.push("Акція");
+        }
+      } else {
+        formData.append("action", "0");
+      }
+
+      // Status & Counter
+      if (productState.dataProduct.statusData.counter_present !== null) {
+        formData.append(
+          "counter",
+          String(productState.dataProduct.statusData.counter_present)
+        );
+
+        if (productState.dataProduct.statusData.status_present !== null) {
+          formData.append(
+            "status",
+            productState.dataProduct.statusData.status_present.toString()
+          );
+        } else {
+          validData = false;
+          messageError.push("Статус");
+        }
+      } else {
+        validData = false;
+        messageError.push("Кількість");
+      }
+
+      // Category & Characteristics
+      if (
+        productState.dataProduct.categoryData.categoryNumber_present !== null
+      ) {
+        formData.append(
+          "category",
+          productState.dataProduct.categoryData.categoryNumber_present.join(" ")
+        );
+
+        if (
+          productState.dataProduct.characteristicsData
+            .characteristics_present !== null
+        ) {
+          formData.append(
+            "characteristics",
+            productState.dataProduct.characteristicsData.characteristics_present.join(
+              "-"
+            )
+          );
+        } else {
+          validData = false;
+          messageError.push("Характеристики");
+        }
+      } else {
+        validData = false;
+        messageError.push("Категорія");
+        messageError.push("Характеристики");
+      }
+
+      // Keywords
+      if (productState.dataProduct.keywordsData.keywords_present !== null) {
+        formData.append(
+          "keywords",
+          productState.dataProduct.keywordsData.keywords_present
+        );
+      } else {
+        validData = false;
+        messageError.push("Ключові слова");
+      }
+
+      // Description
+      if (
+        productState.dataProduct.descriptionData.description_present !== null
+      ) {
+        formData.append(
+          "description",
+          productState.dataProduct.descriptionData.description_present
+        );
+      } else {
+        validData = false;
+        messageError.push("Опис");
+      }
+
+      if (validData) {
+        this.requestProduct.createProduct(formData).subscribe({
+          next: (data) => {
+            console.log(data);
+            this.showMessage.open("Товар створено успішно.", undefined);
+          },
+          error: (error) => {
+            console.log(error);
+            this.showMessage.open("Помилка на серверові.", undefined);
+          },
+          complete: () => {},
+        });
+      } else {
+        this.showMessage.open(
+          "Не правильно введені наступні дані > " +
+            `[ ${messageError.join(", ")} ]`,
+          undefined
+        );
+      }
+    } else {
+      // !
+    }
+  }
 
   // upProduct() {
   //   console.log("Button Save");
@@ -354,5 +452,4 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   afterCreateUpdateProduct() {
     this.router.navigate(["/account/product"]);
   }
-  // Create/Up END =================================================================================================================================
 }
