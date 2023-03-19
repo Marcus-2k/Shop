@@ -209,7 +209,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       // Photo
       if (this.images.length > 0) {
         for (let idx = 0; idx < this.images.length; idx++) {
-          if (this.images[idx]) {
+          if (idx <= this.InputData.photoData.maxCounterFile) {
             formData.append(
               "image-" + idx,
               this.images[idx],
@@ -226,10 +226,20 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
       // Name
       if (productState.dataProduct.titleData.name_present !== null) {
-        formData.append(
-          "name",
-          productState.dataProduct.titleData.name_present
-        );
+        if (
+          productState.dataProduct.titleData.name_present.length >=
+            this.InputData.titleData.minLengthName &&
+          productState.dataProduct.titleData.name_present.length <=
+            this.InputData.titleData.maxLengthName
+        ) {
+          formData.append(
+            "name",
+            productState.dataProduct.titleData.name_present
+          );
+        } else {
+          validData = false;
+          messageError.push("Назва");
+        }
       } else {
         validData = false;
         messageError.push("Назва");
@@ -237,10 +247,19 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
       // Price & Discount
       if (productState.dataProduct.priceData.price_present) {
-        formData.append(
-          "price",
-          productState.dataProduct.priceData.price_present.toString()
-        );
+        if (
+          productState.dataProduct.priceData.price_present > 0 &&
+          productState.dataProduct.priceData.price_present <=
+            this.InputData.priceData.maxPrice
+        ) {
+          formData.append(
+            "price",
+            productState.dataProduct.priceData.price_present.toString()
+          );
+        } else {
+          validData = false;
+          messageError.push("Ціна");
+        }
       } else {
         validData = false;
         messageError.push("Ціна");
@@ -255,7 +274,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
           );
         } else {
           validData = false;
-          messageError.push("Акція");
+          messageError.push("Акційна ціна");
         }
       } else {
         formData.append("action", "0");
@@ -263,23 +282,38 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
       // Status & Counter
       if (productState.dataProduct.statusData.counter_present !== null) {
-        formData.append(
-          "counter",
-          String(productState.dataProduct.statusData.counter_present)
-        );
-
-        if (productState.dataProduct.statusData.status_present !== null) {
+        if (productState.dataProduct.statusData.counter_present >= 0) {
           formData.append(
-            "status",
-            productState.dataProduct.statusData.status_present.toString()
+            "counter",
+            String(productState.dataProduct.statusData.counter_present)
           );
+
+          if (productState.dataProduct.statusData.status_present !== null) {
+            if (
+              productState.dataProduct.statusData.status_present >= 0 &&
+              productState.dataProduct.statusData.status_present <= 3
+            ) {
+              formData.append(
+                "status",
+                productState.dataProduct.statusData.status_present.toString()
+              );
+            } else {
+              validData = false;
+              messageError.push("Статус");
+            }
+          } else {
+            validData = false;
+            messageError.push("Статус");
+          }
         } else {
           validData = false;
+          messageError.push("Кількість");
           messageError.push("Статус");
         }
       } else {
         validData = false;
         messageError.push("Кількість");
+        messageError.push("Статус");
       }
 
       // Category & Characteristics
@@ -295,12 +329,29 @@ export class ProductNewComponent implements OnInit, OnDestroy {
           productState.dataProduct.characteristicsData
             .characteristics_present !== null
         ) {
-          formData.append(
-            "characteristics",
-            productState.dataProduct.characteristicsData.characteristics_present.join(
-              "-"
-            )
-          );
+          const characteristics =
+            productState.dataProduct.characteristicsData
+              .characteristics_present;
+
+          for (let idx = 0; idx < characteristics.length; idx++) {
+            if (
+              characteristics[idx].length === 0 ||
+              characteristics[idx].includes(-1)
+            ) {
+              validData = false;
+              messageError.push("Характеристики");
+              break;
+            }
+          }
+
+          if (!messageError.includes("Характеристики")) {
+            formData.append(
+              "characteristics",
+              productState.dataProduct.characteristicsData.characteristics_present.join(
+                "-"
+              )
+            );
+          }
         } else {
           validData = false;
           messageError.push("Характеристики");
@@ -313,10 +364,25 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
       // Keywords
       if (productState.dataProduct.keywordsData.keywords_present !== null) {
-        formData.append(
-          "keywords",
-          productState.dataProduct.keywordsData.keywords_present
-        );
+        if (productState.dataProduct.keywordsData.keywords_present.length > 0) {
+          const keywords =
+            productState.dataProduct.keywordsData.keywords_present.split(" ");
+
+          for (let idx = 0; idx < keywords.length; idx++) {
+            if (keywords[idx].length < 2 || keywords[idx].length > 10) {
+              validData = false;
+              messageError.push("Ключові слова");
+              break;
+            }
+          }
+
+          if (!messageError.includes("Ключові слова")) {
+            formData.append(
+              "keywords",
+              productState.dataProduct.keywordsData.keywords_present
+            );
+          }
+        }
       } else {
         validData = false;
         messageError.push("Ключові слова");
@@ -326,10 +392,20 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       if (
         productState.dataProduct.descriptionData.description_present !== null
       ) {
-        formData.append(
-          "description",
-          productState.dataProduct.descriptionData.description_present
-        );
+        if (
+          productState.dataProduct.descriptionData.description_present.length >=
+            this.InputData.descriptionData.minLengthDescription &&
+          productState.dataProduct.descriptionData.description_present.length <=
+            this.InputData.descriptionData.maxLengthDescription
+        ) {
+          formData.append(
+            "description",
+            productState.dataProduct.descriptionData.description_present
+          );
+        } else {
+          validData = false;
+          messageError.push("Опис");
+        }
       } else {
         validData = false;
         messageError.push("Опис");
