@@ -94,7 +94,7 @@
       [accept]="acceptImage.join(', ')"
       multiple
       [max]="InputData_Photo.maxCounterFile"
-      (change)="onFileUpload($event)"
+      (change)="onFileUpload($event); inputFile.value = ''"
       #inputFile
     />
   </ng-container>
