@@ -50,6 +50,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
               .select(ProductNewSelector.getProductNew)
               .subscribe((data) => {
                 this.updateInputData(data);
+                this.loader = false;
               });
           },
           error: (error) => {
@@ -65,6 +66,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
           .select(ProductNewSelector.getProductNew)
           .subscribe((data) => {
             this.updateInputData(data);
+            this.loader = false;
           });
       }
     });
@@ -73,11 +75,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     if (this.productNewStore$) {
       this.productNewStore$.unsubscribe();
     }
-  }
-
-  test() {
-    console.log("======================================");
-    console.log("======================================");
   }
 
   // Common variables START ========================================================================================================================
@@ -128,6 +125,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
     appearance: "outline",
   };
+
+  loader: boolean = true;
 
   update: boolean = false; // Mode update true/false
   images: File[] = [];

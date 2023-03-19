@@ -1,10 +1,6 @@
 <!-- -->
-<div class="new">
+<div class="new" *ngIf="!loader">
   <div class="new-content">
-    <!--  -->
-    <button mat-raised-button color="primary" (click)="test()">
-      TEST FUNCTION
-    </button>
     <!--  -->
     <form class="new-content-form">
       <!-- ============================================================== -->
@@ -118,4 +114,8 @@
     </form>
     <!--  -->
   </div>
+</div>
+
+<div class="content-element-center" *ngIf="loader">
+  <mat-spinner></mat-spinner>
 </div>
