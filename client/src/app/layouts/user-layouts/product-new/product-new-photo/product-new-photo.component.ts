@@ -57,7 +57,9 @@ export class ProductNewPhotoComponent implements OnInit {
   }
 
   triggerClick() {
-    this.inputFile?.nativeElement.click();
+    if (this.images.indexOf(undefined) >= 0) {
+      this.inputFile?.nativeElement.click();
+    }
   } // Click button "Download photo"
 
   onFileUpload(event: any) {

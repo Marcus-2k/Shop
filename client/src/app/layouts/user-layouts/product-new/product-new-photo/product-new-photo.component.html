@@ -32,15 +32,15 @@
             />
           </ng-container>
 
-          <button
+          <a
             class="btn-number"
             mat-mini-fab
             matTooltip="Позиція"
             color="primary"
           >
             {{ "№" + (idx + 1) }}
-          </button>
-          <button
+          </a>
+          <a
             class="btn-close"
             mat-mini-fab
             matTooltip="Видалити"
@@ -49,7 +49,7 @@
             *ngIf="image"
           >
             <span class="material-symbols-outlined"> delete </span>
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="form-item-btn">
-      <button
+      <a
         class="btn-photo btn-download"
         mat-raised-button
         [disabled]="images.indexOf(undefined) === -1"
@@ -70,9 +70,9 @@
       >
         <span>Завантажити фото</span>
         <span class="material-symbols-outlined"> file_download </span>
-      </button>
+      </a>
 
-      <button
+      <a
         class="btn-photo btn-delete"
         mat-raised-button
         color="warn"
@@ -80,12 +80,12 @@
       >
         <span>Видалити фото</span>
         <span class="material-symbols-outlined"> delete </span>
-      </button>
+      </a>
 
-      <button class="btn-photo btn-info" mat-raised-button color="primary">
+      <a class="btn-photo btn-info" mat-raised-button color="primary">
         Кількість фото
         {{ numberPhoto + "/" + InputData_Photo.maxCounterFile }}
-      </button>
+      </a>
     </div>
 
     <input
