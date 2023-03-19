@@ -91,7 +91,7 @@
     <input
       class="display-none"
       type="file"
-      accept="image/jpeg, image/png, image/webp"
+      [accept]="acceptImage.join(', ')"
       multiple
       [max]="InputData_Photo.maxCounterFile"
       (change)="onFileUpload($event)"

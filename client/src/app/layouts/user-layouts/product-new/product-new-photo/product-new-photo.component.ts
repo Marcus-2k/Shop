@@ -45,6 +45,7 @@ export class ProductNewPhotoComponent implements OnInit {
 
   images: (File | undefined)[] = [];
   imagePreview: (ArrayBuffer | string | undefined | null)[] = [];
+  acceptImage: string[] = ["image/jpeg", "image/png", "image/webp"];
 
   errorImagesDownload: boolean = false;
   imagesValidation: boolean = false;
@@ -67,25 +68,33 @@ export class ProductNewPhotoComponent implements OnInit {
       const fileList: File[] = Array.from(event.target.files);
 
       for (const file of fileList) {
-        if (this.images.indexOf(undefined) >= 0) {
-          const placeholderImages = this.images.indexOf(undefined);
-          this.images[placeholderImages] = file;
+        if (this.acceptImage.includes(file.type)) {
+          //
+          if (this.images.indexOf(undefined) >= 0) {
+            const placeholderImages = this.images.indexOf(undefined);
+            this.images[placeholderImages] = file;
 
-          const reader = new FileReader();
-          reader.onload = (e: ProgressEvent<FileReader>) => {
-            if (e.target) {
-              const fileContent = e.target.result;
+            const reader = new FileReader();
+            reader.onload = (e: ProgressEvent<FileReader>) => {
+              if (e.target) {
+                const fileContent = e.target.result;
 
-              const placeholderIdx = this.imagePreview.indexOf(undefined);
-              this.imagePreview[placeholderIdx] = fileContent;
+                const placeholderIdx = this.imagePreview.indexOf(undefined);
+                this.imagePreview[placeholderIdx] = fileContent;
 
-              this.numberPhoto++;
-            }
-          };
+                this.numberPhoto++;
+              }
+            };
 
-          reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
+          } else {
+            this.showMessage.open("Ліміт фото перевищено", undefined);
+          }
         } else {
-          this.showMessage.open("Ліміт фото перевищено", undefined);
+          this.showMessage.open(
+            "Дозволений тип фото " + `[ ${this.acceptImage.join(", ")} ]`,
+            undefined
+          );
         }
       }
 
