@@ -94,6 +94,9 @@ export namespace ProductNewActions {
 
 export interface ProductNewState {
   dataProduct: {
+    photoData: {
+      photo_preview: string[] | null;
+    };
     titleData: {
       name_original: string | null;
       name_present: string | null;
@@ -134,6 +137,10 @@ export interface ProductNewState {
     descriptionData: {
       description_original: string | null;
       description_present: string | null;
+    };
+    infoData: {
+      update: boolean;
+      _id: string | null;
     };
   } | null;
 }

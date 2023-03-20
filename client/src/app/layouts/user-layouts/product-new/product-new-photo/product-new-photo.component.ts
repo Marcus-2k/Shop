@@ -28,10 +28,32 @@ export class ProductNewPhotoComponent implements OnInit {
   @Input() update: boolean = false; // Default value = false
 
   ngOnInit(): void {
+    console.log("Start ngOnInit Product-New-Photo");
+
     if (this.InputData_Photo) {
+      if (this.InputData_Photo.photo_preview && this.update) {
+        this.photo_original = [...this.InputData_Photo.photo_preview];
+        this.imagePreview = [...this.InputData_Photo.photo_preview];
+
+        for (
+          let idx = 0;
+          idx < this.InputData_Photo.photo_preview.length;
+          idx++
+        ) {
+          this.images.push("link");
+        }
+      }
+
       for (let idx = 0; idx < this.InputData_Photo.maxCounterFile; idx++) {
-        this.images.push(undefined);
-        this.imagePreview.push(undefined);
+        if (this.update) {
+          if (this.imagePreview.length < this.InputData_Photo.maxCounterFile) {
+            this.images.push(undefined);
+            this.imagePreview.push(undefined);
+          }
+        } else {
+          this.images.push(undefined);
+          this.imagePreview.push(undefined);
+        }
       }
     }
   }
@@ -39,12 +61,12 @@ export class ProductNewPhotoComponent implements OnInit {
   photo_original: string[] | undefined;
 
   @ViewChild("inputFile") inputFile?: ElementRef;
-  @Output() sendPhoto = new EventEmitter<(File | undefined)[]>();
+  @Output() sendPhoto = new EventEmitter<(File | "link" | undefined)[]>();
 
   url_server_folder: string = environment.URL_SERVER_FOLDER;
 
-  images: (File | undefined)[] = [];
-  imagePreview: (ArrayBuffer | string | undefined | null)[] = [];
+  images: (File | "link" | undefined)[] = [];
+  imagePreview: (ArrayBuffer | string | null | undefined)[] = [];
   acceptImage: string[] = ["image/jpeg", "image/png", "image/webp"];
 
   errorImagesDownload: boolean = false;

@@ -15,6 +15,7 @@ export interface InputData {
 }
 
 export interface InputData_Photo {
+  photo_preview: string[] | null;
   maxCounterFile: number;
 }
 export interface InputData_Title {

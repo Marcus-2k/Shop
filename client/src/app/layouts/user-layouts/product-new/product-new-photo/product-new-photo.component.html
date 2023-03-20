@@ -17,11 +17,15 @@
           <ng-container *ngIf="update === true">
             <img
               [src]="url_server_folder + image"
-              *ngIf="image !== undefined"
+              *ngIf="image !== undefined && images[idx] === 'link'"
+            />
+            <img
+              [src]="image"
+              *ngIf="image !== undefined && images[idx] !== 'link'"
             />
             <img
               src="../../../../assets//img/300x300.png"
-              *ngIf="image === undefined"
+              *ngIf="image === undefined && images[idx] === undefined"
             />
           </ng-container>
           <ng-container *ngIf="update === false">

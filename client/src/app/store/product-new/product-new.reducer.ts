@@ -13,6 +13,9 @@ export const ProductNewReducer = createReducer(
 
     if (props.data) {
       stateClone.dataProduct = {
+        photoData: {
+          photo_preview: props.data.imageSrc,
+        },
         titleData: {
           name_original: props.data.name,
           name_present: props.data.name,
@@ -52,9 +55,16 @@ export const ProductNewReducer = createReducer(
           description_original: props.data.description,
           description_present: props.data.description,
         },
+        infoData: {
+          update: true,
+          _id: props.data._id,
+        },
       };
     } else {
       stateClone.dataProduct = {
+        photoData: {
+          photo_preview: null,
+        },
         titleData: {
           name_original: null,
           name_present: null,
@@ -93,6 +103,10 @@ export const ProductNewReducer = createReducer(
         descriptionData: {
           description_original: null,
           description_present: null,
+        },
+        infoData: {
+          update: false,
+          _id: null,
         },
       };
     }

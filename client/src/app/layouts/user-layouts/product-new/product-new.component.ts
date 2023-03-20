@@ -80,6 +80,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   // Common variables START ========================================================================================================================
   InputData: InputData = {
     photoData: {
+      photo_preview: null,
       maxCounterFile: 8,
     },
     titleData: {
@@ -137,6 +138,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     console.log("START updateInputData");
 
     if (data.dataProduct) {
+      // Photo
+      this.InputData.photoData.photo_preview =
+        data.dataProduct.photoData.photo_preview;
+
       // Name
       this.InputData.titleData.name = data.dataProduct.titleData.name_present;
 
@@ -181,10 +186,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     console.log("END updateInputData");
   }
 
-  getPhoto(event: (File | undefined)[]) {
+  getPhoto(event: (File | undefined | "link")[]) {
     this.images = [];
     event.forEach((value) => {
-      if (value) {
+      if (value && value !== "link") {
         this.images.push(value);
       }
     });
