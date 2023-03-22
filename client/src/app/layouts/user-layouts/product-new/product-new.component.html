@@ -58,7 +58,7 @@
         </div>
       </ng-container>
       <!-- ============================================================== -->
-      <div class="form-item form-words">
+      <div class="form-item form-keywords">
         <app-product-new-key-words
           [InputData_Keywords]="InputData.keywordsData"
           [appearance]="InputData.appearance"
@@ -73,7 +73,7 @@
         ></app-product-new-description>
       </div>
       <!-- ============================================================== -->
-      <div class="form-item form-create">
+      <div class="form-item form-submit">
         <button
           mat-raised-button
           color="primary"
@@ -84,31 +84,15 @@
           Створити
         </button>
         <!--  -->
-        <!-- <button
+        <button
           mat-raised-button
           color="primary"
           type="submit"
           *ngIf="update"
-          (click)="upProduct()"
-          [disabled]="
-            (!imagesValidation &&
-              up_Product?.name === nameProduct &&
-              up_Product?.price === priceProduct &&
-              (up_Product?.action === action ||
-                (action === true && actionProcent > minActionProcent)) &&
-              up_Product?.actionPrice === actionPrice &&
-              up_Product?.counter === counterProduct &&
-              (!validityCharacteristics || up_validityCharacteristics) &&
-              up_Product?.status === statusNumber &&
-              (!validityKeywords || up_validityKeywords) &&
-              (up_Product?.description === description ||
-                description.length < minLengthDescription ||
-                description.length > maxLengthDescription)) ||
-            statusNumber === -1
-          "
+          (click)="createProduct()"
         >
           Зберегти
-        </button> -->
+        </button>
       </div>
       <!-- ============================================================== -->
     </form>

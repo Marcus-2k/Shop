@@ -77,7 +77,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Common variables START ========================================================================================================================
   InputData: InputData = {
     photoData: {
       photo_preview: null,
@@ -130,7 +129,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   loader: boolean = true;
 
   update: boolean = false; // Mode update true/false
-  images: File[] = [];
+  images: (File | string)[] = [];
 
   productNewStore$: Subscription | undefined;
 
@@ -186,16 +185,15 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     console.log("END updateInputData");
   }
 
-  getPhoto(event: (File | undefined | "link")[]) {
+  getPhoto(event: (File | string | undefined)[]) {
     this.images = [];
+
     event.forEach((value) => {
-      if (value && value !== "link") {
+      if (value) {
         this.images.push(value);
       }
     });
   }
-
-  // Common variables END ==========================================================================================================================
 
   createProduct() {
     let productState: ProductNewState | undefined;
@@ -209,19 +207,24 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       let formData: FormData = new FormData();
       let validData: boolean = true;
       let messageError: string[] = [];
+      let imageSrc: string[] = [];
 
       // Photo
       if (this.images.length > 0) {
-        for (let idx = 0; idx < this.images.length; idx++) {
+        this.images.forEach((value: File | string, idx: number) => {
           if (idx <= this.InputData.photoData.maxCounterFile) {
-            formData.append(
-              "image-" + idx,
-              this.images[idx],
-              this.images[idx].name
-            );
+            if (typeof value === "string") {
+              imageSrc.push(value);
+            } else {
+              formData.append("image-" + idx, value, value.name);
+            }
 
             console.log("image-" + idx, formData.get("image-" + idx));
           }
+        });
+
+        if (imageSrc.length > 0) {
+          formData.append("imageSrc", imageSrc.join(", "));
         }
       } else {
         validData = false;
@@ -416,17 +419,33 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       }
 
       if (validData) {
-        this.requestProduct.createProduct(formData).subscribe({
-          next: (data) => {
-            console.log(data);
-            this.showMessage.open("Товар створено успішно.", undefined);
-          },
-          error: (error) => {
-            console.log(error);
-            this.showMessage.open("Помилка на серверові.", undefined);
-          },
-          complete: () => {},
-        });
+        if (this.update && productState.dataProduct.infoData._id) {
+          this.requestProduct
+            .updateById(formData, productState.dataProduct.infoData._id)
+            .subscribe({
+              next: (data) => {
+                console.log(data);
+                this.showMessage.open("Товар оновлено успішно.", undefined);
+              },
+              error: (error) => {
+                console.log(error);
+                this.showMessage.open("Помилка на серверові.", undefined);
+              },
+              complete: () => {},
+            });
+        } else {
+          this.requestProduct.createProduct(formData).subscribe({
+            next: (data) => {
+              console.log(data);
+              this.showMessage.open("Товар створено успішно.", undefined);
+            },
+            error: (error) => {
+              console.log(error);
+              this.showMessage.open("Помилка на серверові.", undefined);
+            },
+            complete: () => {},
+          });
+        }
       } else {
         this.showMessage.open(
           "Не правильно введені наступні дані > " +
@@ -438,96 +457,6 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       // !
     }
   }
-
-  // upProduct() {
-  //   console.log("Button Save");
-
-  //   if (this.up_Product) {
-  //     console.log("Create FormData");
-  //     const formData = new FormData();
-
-  //     if (this.imagesValidation) {
-  //       const imagesArray = Array.from(this.images);
-  //       imagesArray.forEach((img, idx) => {
-  //         if (img) {
-  //           formData.append(`image-${idx}`, img, img.name); // Add photo product
-  //         }
-  //         console.log(`image-${idx}`);
-  //         console.log(formData.get(`image-${idx}`));
-  //       });
-  //     }
-  //     if (this.up_Product.name !== this.nameProduct) {
-  //       formData.append("name", this.nameProduct); // Телефон Samsung S21 Ulta
-  //     }
-  //     if (this.up_Product.price !== this.priceProduct) {
-  //       formData.append("price", String(this.priceProduct)); // Add 4500 >>> "4500"
-  //     }
-  //     if (this.action !== this.up_Product.action) {
-  //       if (this.action === false) {
-  //         formData.append("action", "0"); // 0 == false
-  //       } else if (
-  //         this.action === true &&
-  //         this.actionProcent < this.minActionProcent
-  //       ) {
-  //         formData.append("action", "1"); // 1 == true
-  //         formData.append("actionPrice", this.actionPrice.toString()); // 4050 >>> "4050"
-  //       }
-  //     } else if (this.up_Product.actionPrice !== this.actionPrice) {
-  //       formData.append("actionPrice", this.actionPrice.toString()); // 4050 >>> "4050"
-  //     }
-  //     if (this.up_Product.counter !== this.counterProduct) {
-  //       formData.append("counter", this.counterProduct.toString()); // 5 >>> "5"
-  //     }
-  //     if (
-  //       this.validityCharacteristics === true &&
-  //       this.up_validityCharacteristics === false &&
-  //       this.up_newCharacteristics === true
-  //     ) {
-  //       formData.append(
-  //         "characteristics",
-  //         this.characteristicsNumber.join("-")
-  //       ); // [ [4], [1], [2], [13, 10, 9] ] >>> "4-1-2-13,10,9"
-  //     } else if (
-  //       this.validityCharacteristics === true &&
-  //       this.up_validityCharacteristics === false &&
-  //       this.up_newCharacteristics === false
-  //     ) {
-  //       formData.append("category", this.categoryNumber.join(" ")); //  [ 5, 0, 8 ] >>> "5 0 8"
-  //       formData.append(
-  //         "characteristics",
-  //         this.characteristicsNumber.join("-")
-  //       ); // [ [4], [1], [2], [13, 10, 9] ] >>> "4-1-2-13,10,9"
-  //     }
-  //     if (this.up_Product.status !== this.statusNumber) {
-  //       formData.append("status", this.statusNumber.toString()); // 0 >>> "0"
-  //     }
-  //     if (!this.up_validityKeywords) {
-  //       formData.append("keywords", this.keywordsArray.join(" ")); // ['hi', 'hello', 'no', 'cool', 'descript'] >>> 'hi hello no cool descript'
-  //     }
-  //     if (this.up_Product.description !== this.description) {
-  //       formData.append("description", this.description); // Екран 14" IPS (1920x1080) Full HD, матовий / Intel Core i3-1115G4
-  //     }
-
-  //     console.log("Send FormData");
-
-  //     this.requestProduct.updateById(formData, this.up_Product._id).subscribe(
-  //       (response) => {
-  //         this.showNotice.message("Товар успішно змінено.");
-  //         this.afterCreateUpdateProduct();
-  //       },
-  //       (error) => {
-  //         console.log(error);
-  //         this.showNotice.message(
-  //           "Товар не було змінено, дані заповнено не коректно"
-  //         );
-  //       }
-  //     );
-  //   } else {
-  //     this.showNotice.message(
-  //       "Товар не було збережено, дані заповнено не коректно"
-  //     );
-  //   }
-  // }
 
   afterCreateUpdateProduct() {
     this.router.navigate(["/account/product"]);

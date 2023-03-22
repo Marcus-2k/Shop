@@ -40,7 +40,7 @@ export class ProductNewPhotoComponent implements OnInit {
           idx < this.InputData_Photo.photo_preview.length;
           idx++
         ) {
-          this.images.push("link");
+          this.images.push(this.InputData_Photo.photo_preview[idx]);
         }
       }
 
@@ -55,17 +55,19 @@ export class ProductNewPhotoComponent implements OnInit {
           this.imagePreview.push(undefined);
         }
       }
+
+      this.sendPhotosToParentComponent();
     }
   }
 
   photo_original: string[] | undefined;
 
   @ViewChild("inputFile") inputFile?: ElementRef;
-  @Output() sendPhoto = new EventEmitter<(File | "link" | undefined)[]>();
+  @Output() sendPhoto = new EventEmitter<(File | string | undefined)[]>();
 
   url_server_folder: string = environment.URL_SERVER_FOLDER;
 
-  images: (File | "link" | undefined)[] = [];
+  images: (File | string | undefined)[] = [];
   imagePreview: (ArrayBuffer | string | null | undefined)[] = [];
   acceptImage: string[] = ["image/jpeg", "image/png", "image/webp"];
 
@@ -161,5 +163,13 @@ export class ProductNewPhotoComponent implements OnInit {
 
   sendPhotosToParentComponent() {
     this.sendPhoto.emit(this.images);
+  }
+
+  isString(idx: number): boolean {
+    if (typeof this.images[idx] === "string") {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

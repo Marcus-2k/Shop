@@ -16,14 +16,17 @@
           <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
           <ng-container *ngIf="update === true">
             <img
+              class="link-to-photo"
               [src]="url_server_folder + image"
-              *ngIf="image !== undefined && images[idx] === 'link'"
+              *ngIf="image !== undefined && isString(idx)"
             />
             <img
+              class="user-uploaded-photo"
               [src]="image"
-              *ngIf="image !== undefined && images[idx] !== 'link'"
+              *ngIf="image !== undefined && !isString(idx)"
             />
             <img
+              class="placeholder"
               src="../../../../assets//img/300x300.png"
               *ngIf="image === undefined && images[idx] === undefined"
             />
