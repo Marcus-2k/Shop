@@ -21,15 +21,20 @@ export class ProductNewCharacteristicsComponent implements OnInit {
   ngOnInit(): void {
     console.log("Start ngOnInit Product-New-Characteristics");
 
-    if (this.InputData_Characteristics?.characteristicsNumber) {
-      this.characteristicsNumber = JSON.parse(
-        JSON.stringify(this.InputData_Characteristics.characteristicsNumber)
-      );
-    }
+    if (this.InputData_Characteristics) {
+      if (this.InputData_Characteristics.characteristicsNumber) {
+        this.characteristicsNumber = JSON.parse(
+          JSON.stringify(this.InputData_Characteristics.characteristicsNumber)
+        );
+      }
 
-    if (this.update === false) {
-      this.recordCharacteristicsInArray();
-      this.updateCharacteristicsStore();
+      if (
+        this.update === false ||
+        this.InputData_Characteristics.characteristicsNumber === null
+      ) {
+        this.recordCharacteristicsInArray();
+        this.updateCharacteristicsStore();
+      }
     }
   }
 
