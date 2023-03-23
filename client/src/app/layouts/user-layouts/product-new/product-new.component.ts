@@ -211,6 +211,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
 
       // Photo
       if (this.images.length > 0) {
+        const separatorPhoto = "?";
+
         this.images.forEach((value: File | string, idx: number) => {
           if (idx <= this.InputData.photoData.maxCounterFile) {
             if (typeof value === "string") {
@@ -224,7 +226,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         });
 
         if (imageSrc.length > 0) {
-          formData.append("imageSrc", imageSrc.join(", "));
+          formData.append("imageSrc", imageSrc.join(separatorPhoto));
         }
       } else {
         validData = false;
