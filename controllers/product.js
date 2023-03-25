@@ -202,84 +202,392 @@ module.exports.updateProduct = async function (req, res) {
   console.log("Server updateProduct");
 
   try {
-    const updateProduct = {};
-
-    if (Object.keys(req.files).length >= 1) {
-      const files = Object.values(req.files);
-      const imageSrc = [];
-      files.forEach((image) => {
-        imageSrc.push(image[0].path);
-      });
-
-      updateProduct.imageSrc = imageSrc;
-
-      const product = await Product.findById({ _id: req.params.id });
-
-      product.imageSrc.forEach((item) => {
-        deleteImgFromFolder(item);
-      }); // Delete file from folder uploads
+    const product = await Product.findById({ _id: req.params.id });
+    if (!product) {
+      return res.status(404).json({ message: "Товар не існує" });
     }
 
+    let updateProduct = {};
+
+    // Photo
+    if (req.body.imageSrc || Object.keys(req.files).length >= 1) {
+      const separatorPhoto = "?";
+      let imageSrc = product.imageSrc;
+      let imageSrcLink = req.body.imageSrc.split(separatorPhoto);
+
+      if (Object.keys(req.files).length >= 1) {
+        for (const key in req.files) {
+          const positionFile = Number(key.split("-")[1]);
+
+          imageSrcLink.splice(positionFile, 0, req.files[key][0].path);
+        }
+
+        for (let idx = 0; idx < product.imageSrc.length; idx++) {
+          if (imageSrcLink.includes(product.imageSrc[idx]) === false) {
+            deleteImgFromFolder(product.imageSrc[idx]);
+          }
+        }
+        updateProduct.imageSrc = imageSrcLink;
+      } else {
+        if (
+          imageSrc.join(separatorPhoto) !== imageSrcLink.join(separatorPhoto)
+        ) {
+          if (imageSrc.length === imageSrcLink.length) {
+            console.log("Photo positions have been changed");
+
+            updateProduct.imageSrc = imageSrcLink;
+          } else {
+            console.log("Photo was deleted");
+
+            for (let idx = 0; idx < imageSrc.length; idx++) {
+              if (imageSrcLink.includes(imageSrc[idx]) === false) {
+                deleteImgFromFolder(imageSrc[idx]);
+              }
+            }
+            updateProduct.imageSrc = imageSrcLink;
+          }
+        } else {
+          console.log("Photo positions have NOT been changed");
+        }
+      }
+    }
+
+    // Name
     if (req.body.name) {
-      updateProduct.name = req.body.name;
+      const minLengthName = 12;
+      const maxLengthName = 50;
+      const name = req.body.name;
+
+      if (product.name !== name) {
+        if (name.length >= minLengthName && name.length <= maxLengthName) {
+          console.log("new name");
+          updateProduct.name = name;
+        } else {
+          return res.status(400).json({
+            message: `Мінімальна довжина назви товару ${minLengthName} символів. Максимальна довжина назви товару ${maxLengthName} символів.`,
+          });
+        }
+      } else {
+        console.log("Name has NOT been changed.");
+      }
     }
 
+    // Price
     if (req.body.price) {
-      updateProduct.price = Number(req.body.price);
+      const maxPrice = 10000000;
+      const price = Number(req.body.price);
+
+      if (product.price !== price) {
+        if (price >= 0 && isNaN(price) === false) {
+          if (price <= maxPrice) {
+            console.log("new price");
+            updateProduct.price = Number(req.body.price);
+          } else {
+            return res.status(400).json({
+              message: `Максимальна ціна на товар ${maxPrice.toLocaleString(
+                "ru-RU"
+              )} грн.`,
+            });
+          }
+        } else {
+          return res.status(400).json({
+            message: "Ви ввели не дійсну ціну.",
+          });
+        }
+      } else {
+        console.log("Price has NOT been changed.");
+      }
     }
 
-    if (req.body.action === "1") {
-      updateProduct.action = true;
-      updateProduct.actionPrice = Number(req.body.actionPrice);
-    } else if (req.body.action === "0") {
-      updateProduct.action = false;
-      updateProduct.actionPrice = -1;
-    } else if (req.body.actionPrice) {
-      updateProduct.actionPrice = Number(req.body.actionPrice);
+    // Discount
+    if (req.body.action || req.body.actionPrice) {
+      const action = true ? req.body.action === "1" : false;
+      const actionPrice = Number(req.body.actionPrice);
+      const minActionProcent = -5;
+
+      if (action === true && product.action === false) {
+        if (actionPrice >= 0 && isNaN(actionPrice) === false) {
+          const actionProcent = Number(
+            ((100 * (actionPrice - product.price)) / product.price).toFixed(2)
+          );
+
+          if (actionProcent <= minActionProcent) {
+            updateProduct.action = action;
+            updateProduct.actionPrice = actionPrice;
+          } else {
+            return res.status(400).json({
+              message: `Акційна ціна повинна бути меншою за ціну на ${minActionProcent}%. Ваш відсоток знижки = ${actionProcent}%.`,
+            });
+          }
+        } else {
+          return res.status(400).json({
+            message: `Ви відмітили "Акція" прапорцем тому знижка товару є обов'язковою!`,
+          });
+        }
+      } else if (action === false && product.action === true) {
+        updateProduct.action = action;
+        updateProduct.actionPrice = -1;
+      } else if (action === true && product.action === true) {
+        if (product.actionPrice !== actionPrice) {
+          if (actionPrice >= 0 && isNaN(actionPrice) === false) {
+            const actionProcent = Number(
+              ((100 * (actionPrice - product.price)) / product.price).toFixed(2)
+            );
+
+            if (actionProcent <= minActionProcent) {
+              updateProduct.actionPrice = actionPrice;
+            } else {
+              return res.status(400).json({
+                message: `Акційна ціна повинна бути меншою за ціну на ${minActionProcent}%. Ваш відсоток знижки = ${actionProcent}%.`,
+              });
+            }
+          } else {
+            return res.status(400).json({
+              message: `Ви відмітили "Акція" прапорцем тому знижка товару є обов'язковою!`,
+            });
+          }
+        }
+      }
     }
 
+    // Counter & Status
     if (req.body.counter) {
-      updateProduct.counter = Number(req.body.counter);
+      const counter = Number(req.body.counter);
+
+      if (product.counter !== counter) {
+        if (counter >= 0 && isNaN(counter) === false) {
+          console.log("new counter");
+          updateProduct.counter = counter;
+        } else {
+          return res.status(400).json({
+            message: "Ви ввели не дійсну кількість товару.",
+          });
+        }
+      } else {
+        console.log("Counter has NOT been changed.");
+      }
+    }
+    if (req.body.status) {
+      const status = Number(req.body.status);
+
+      if (product.status !== status) {
+        if (validateStatus(status)) {
+          console.log("new status");
+          updateProduct.status = status;
+        } else {
+          return res.status(400).json({
+            message: "Вибрано не існуючий статус товару.",
+          });
+        }
+      } else {
+        console.log("Status has NOT been changed.");
+      }
     }
 
-    if (req.body.category) {
-      const category = req.body.category.split(" ");
-      category.forEach((item, idx) => {
-        category[idx] = Number(item);
-      });
-      updateProduct.category = category;
+    // Category & Characteristics
+    if (req.body.category && req.body.characteristics) {
+      let category = req.body.category.split(" ");
 
-      const characteristics = transformCharacteristicsStringToArray(
+      if (product.category.join(" ") !== category.join(" ")) {
+        for (let idx = 0; idx < category.length; idx++) {
+          category[idx] = Number(category[idx]);
+
+          if (category[idx] < 0 || isNaN(category[idx]) === true) {
+            return res.status(400).json({
+              message: "Категорію товару не можливо визначити",
+            });
+          }
+        }
+
+        if (category.length !== 2 && category.length !== 3) {
+          return res.status(400).json({
+            message: "Вибрана не існуюча категорія товару",
+          });
+        }
+
+        let categoryName = [];
+        categoryName.push(
+          Catalog_characteristics.categoryList_characteristics[category[0]]
+            .nameCategory
+        );
+        categoryName.push(
+          Catalog_characteristics.categoryList_characteristics[category[0]]
+            .nameListCategory[category[1]].subNameCategory
+        );
+        if (category.length === 3) {
+          categoryName.push(
+            Catalog_characteristics.categoryList_characteristics[category[0]]
+              .nameListCategory[category[1]].subNameListCategory[category[2]]
+              .titleSubNameListCategory
+          );
+        }
+
+        for (let idx = 0; idx < categoryName.length; idx++) {
+          if (typeof categoryName[idx] !== "string") {
+            return res.status(400).json({
+              message: "Категорію товару не можливо визначити",
+            });
+          }
+        }
+
+        console.log("new category");
+        updateProduct.category = category;
+        updateProduct.categoryName = categoryName;
+      } else {
+        console.log("Category has NOT been changed.");
+      }
+
+      let characteristics = transformCharacteristicsStringToArray(
         req.body.characteristics
       );
-      updateProduct.characteristics = characteristics;
+      if (product.characteristics.join("-") !== characteristics.join("-")) {
+        console.log("new characteristics");
+        updateProduct.characteristics = characteristics;
+
+        let options;
+        if (category.length === 3) {
+          options =
+            Catalog_characteristics.categoryList_characteristics[category[0]]
+              .nameListCategory[category[1]].subNameListCategory[category[2]]
+              .characteristics;
+        } else if (category.length === 2) {
+          options =
+            Catalog_characteristics.categoryList_characteristics[category[0]]
+              .nameListCategory[category[1]].characteristics;
+        }
+
+        if (options.length !== characteristics.length) {
+          return res.status(400).json({
+            message: "Не всі характеристики вибрані",
+          });
+        }
+
+        const characteristicsName = {};
+        for (let idx = 0; idx < options.length; idx++) {
+          characteristicsName[options[idx].query_name] = [];
+
+          for (let i = 0; i < characteristics[idx].length; i++) {
+            characteristicsName[options[idx].query_name].push(
+              options[idx].select[characteristics[idx][i]]
+            );
+          }
+        }
+
+        console.log("new characteristicsName");
+        updateProduct.characteristicsName = characteristicsName;
+      } else {
+        console.log("Characteristics has NOT been changed.");
+      }
     } else if (req.body.characteristics) {
       const characteristics = transformCharacteristicsStringToArray(
         req.body.characteristics
       );
+      console.log("new characteristics");
       updateProduct.characteristics = characteristics;
+
+      let options;
+      if (category.length === 3) {
+        options =
+          Catalog_characteristics.categoryList_characteristics[category[0]]
+            .nameListCategory[category[1]].subNameListCategory[category[2]]
+            .characteristics;
+      } else if (category.length === 2) {
+        options =
+          Catalog_characteristics.categoryList_characteristics[category[0]]
+            .nameListCategory[category[1]].characteristics;
+      }
+
+      if (options.length !== characteristics.length) {
+        return res.status(400).json({
+          message: "Не всі характеристики вибрані",
+        });
+      }
+
+      const characteristicsName = {};
+      for (let idx = 0; idx < options.length; idx++) {
+        characteristicsName[options[idx].query_name] = [];
+
+        for (let i = 0; i < characteristics[idx].length; i++) {
+          characteristicsName[options[idx].query_name].push(
+            options[idx].select[characteristics[idx][i]]
+          );
+        }
+      }
+
+      console.log("new characteristicsName");
+      updateProduct.characteristicsName = characteristicsName;
     }
 
-    if (req.body.status) {
-      updateProduct.status = Number(req.body.status);
-    }
-
+    // Keywords
     if (req.body.keywords) {
-      updateProduct.keywords = req.body.keywords.split(" ");
+      const maxLengthKeywords = 200;
+      const minLengthWord = 2;
+      const maxLengthWord = 10;
+
+      let keywords = req.body.keywords;
+      const product_keywords = product.keywords.join(" ");
+
+      if (product_keywords !== keywords) {
+        if (keywords.split(" ").join().length > maxLengthKeywords) {
+          return res.status(400).json({
+            message: `Максимальна довжина ключових слів ${maxLengthKeywords} символів`,
+          });
+        }
+
+        keywords = keywords.split(" ");
+        for (let idx = 0; idx < keywords.length; idx++) {
+          if (
+            keywords[idx].length < minLengthWord ||
+            keywords[idx].length > maxLengthKeywords
+          ) {
+            return res.status(400).json({
+              message: `Мінімальна довжина одного слова ${minLengthWord}. Максимальна довжина одного слова ${maxLengthWord}.`,
+            });
+          }
+        }
+
+        console.log("new keywords");
+        updateProduct.keywords = keywords;
+      } else {
+        console.log("Keywords has NOT been changed.");
+      }
     }
 
+    // Description
     if (req.body.description) {
-      updateProduct.description = req.body.description;
+      const minLengthDescription = 60;
+      const maxLengthDescription = 5000;
+      const description = req.body.description;
+
+      if (product.description !== description) {
+        if (
+          description.length < minLengthDescription ||
+          description.length > maxLengthDescription
+        ) {
+          return res.status(400).json({
+            message: `Мінімальна довжина опису товару ${minLengthDescription}. Максимальна довжина опису товару ${maxLengthDescription}.`,
+          });
+        }
+
+        console.log("new description");
+        updateProduct.description = description;
+      } else {
+        console.log("Description has NOT been changed.");
+      }
     }
 
-    await Product.findByIdAndUpdate(
-      req.params.id,
-      { $set: updateProduct },
-      { new: true }
-    );
-    console.log(updateProduct);
+    if (Object.keys(updateProduct).length > 0) {
+      console.log(updateProduct);
+      await Product.findByIdAndUpdate(
+        req.params.id,
+        { $set: updateProduct },
+        { new: true }
+      );
 
-    return res.status(200).json({ message: "Товар успішно змінено" });
+      return res.status(200).json({ message: "Товар успішно змінено" });
+    } else {
+      return res.status(200).json({ message: "Нових змін не відбулося" });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -304,6 +612,18 @@ module.exports.deleteProduct = async function (req, res) {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+function validateStatus(status) {
+  if (isNaN(status) === false) {
+    if (status >= 0 && status <= 3) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
 
 function deleteImgFromFolder(linkImg) {
   fs.unlink(linkImg, (err) => {
