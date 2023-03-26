@@ -2,6 +2,26 @@ const Product = require("../models/Product");
 const fs = require("fs");
 const Catalog_characteristics = require("../db/catalog_characteristics");
 
+const Product_Validation = {
+  name: {
+    minLengthName: 12,
+    maxLengthName: 50,
+  },
+  price: {
+    maxPrice: 10000000,
+    minActionProcent: -5,
+  },
+  keywords: {
+    maxLengthKeywords: 200,
+    minLengthWord: 2,
+    maxLengthWord: 10,
+  },
+  description: {
+    minLengthDescription: 60,
+    maxLengthDescription: 5000,
+  },
+};
+
 module.exports.getAllProduct = async function (req, res) {
   console.log("Server getAllUser");
 
@@ -64,133 +84,263 @@ module.exports.createProduct = async function (req, res) {
   console.log("Server createProduct");
 
   try {
-    console.log(req.body);
-
+    // Photo
     const files = Object.values(req.files);
     const imageSrc = []; // ["folder/name.extension", ...]
-    files.forEach((image) => {
-      imageSrc.push(image[0].path);
-    });
-
-    const keywords = req.body.keywords.split(" "); // ["phone", "samsung", "apple"]
-
-    const category = req.body.category.split(" "); // '0 1 0' >>> [ '0', '1', '1' ]
-    category.forEach((element, idx) => {
-      category[idx] = Number(element);
-    }); // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
-
-    let categoryName = [];
-    categoryName.push(
-      Catalog_characteristics.categoryList_characteristics[category[0]]
-        .nameCategory
-    );
-    categoryName.push(
-      Catalog_characteristics.categoryList_characteristics[category[0]]
-        .nameListCategory[category[1]].subNameCategory
-    );
-    if (category.length === 3) {
-      categoryName.push(
-        Catalog_characteristics.categoryList_characteristics[category[0]]
-          .nameListCategory[category[1]].subNameListCategory[category[2]]
-          .titleSubNameListCategory
-      );
+    if (files.length > 0) {
+      for (let idx = 0; idx < files.length; idx++) {
+        imageSrc.push(files[idx].path);
+      }
+    } else {
+      return res.status(400).json({ message: "Фото товару є обовз'язковим" });
     }
 
-    const characteristics = transformCharacteristicsStringToArray(
-      req.body.characteristics
-    );
-    const characteristicsName = {};
+    // Name
+    let name;
+    if (req.body.name) {
+      name = req.body.name;
+      if (
+        name.length < Product_Validation.name.minLengthName ||
+        name.length > Product_Validation.name.maxLengthName
+      ) {
+        return res.status(400).json({
+          message: `Мінімальна довжина назви товару ${Product_Validation.name.minLengthName} символів. Максимальна довжина назви товару ${Product_Validation.name.maxLengthName} символів.`,
+        });
+      }
+    } else {
+      return res.status(400).json({ message: "Назва товару є обовз'язковою" });
+    }
 
-    for (let idx = 0; idx < characteristics.length; idx++) {
-      for (let j = 0; j < characteristics[idx].length; j++) {
-        if (category.length === 3) {
-          if (
-            characteristicsName[
-              Catalog_characteristics.categoryList_characteristics[category[0]]
-                .nameListCategory[category[1]].subNameListCategory[category[2]]
-                .characteristics[idx].query_name
-            ]
-          ) {
-            characteristicsName[
-              Catalog_characteristics.categoryList_characteristics[category[0]]
-                .nameListCategory[category[1]].subNameListCategory[category[2]]
-                .characteristics[idx].query_name
-            ].push(
-              Catalog_characteristics.categoryList_characteristics[category[0]]
-                .nameListCategory[category[1]].subNameListCategory[category[2]]
-                .characteristics[idx].select[characteristics[idx][j]]
+    // Price
+    let price;
+    if (req.body.price) {
+      price = Number(req.body.price);
+
+      if (price >= 0 && isNaN(price) === false) {
+        if (price > Product_Validation.price.maxPrice) {
+          return res.status(400).json({
+            message: `Максимальна ціна на товар ${Product_Validation.price.maxPrice.toLocaleString(
+              "ru-RU"
+            )} грн.`,
+          });
+        }
+      } else {
+        return res.status(400).json({ message: "Ви ввели не дійсну ціну" });
+      }
+    } else {
+      return res.status(400).json({ message: "Ціна товару є обовз'язковою" });
+    }
+
+    // Discount &
+    let action; // true || false
+    let actionPrice;
+    if (req.body.action === "1" || req.body.action === "0") {
+      if (req.body.action === "1") {
+        action = true;
+
+        if (req.body.actionPrice) {
+          actionPrice = Number(req.body.actionPrice);
+
+          if (actionPrice >= 0 && isNaN(actionPrice) === false) {
+            if (actionPrice > price) {
+              return res
+                .status(400)
+                .json({ message: "Акційна ціна не може бути більшою за ціну" });
+            }
+
+            const actionProcent = Number(
+              ((100 * (actionPrice - price)) / price).toFixed(2)
             );
+
+            if (actionProcent > Product_Validation.price.minActionProcent) {
+              return res.status(400).json({
+                message: `Акційна ціна повинна бути меншою за ціну на ${Product_Validation.price.minActionProcent}%. Ваш відсоток знижки = ${actionProcent}%`,
+              });
+            }
           } else {
-            characteristicsName[
-              Catalog_characteristics.categoryList_characteristics[
-                category[0]
-              ].nameListCategory[category[1]].subNameListCategory[
-                category[2]
-              ].characteristics[idx].query_name
-            ] = [
-              Catalog_characteristics.categoryList_characteristics[category[0]]
-                .nameListCategory[category[1]].subNameListCategory[category[2]]
-                .characteristics[idx].select[characteristics[idx][j]],
-            ];
+            return res
+              .status(400)
+              .json({ message: "Ви ввели не дійсну акційну ціну" });
           }
-        } else if (category.length === 2) {
-          if (
-            characteristicsName[
-              Catalog_characteristics.categoryList_characteristics[category[0]]
-                .nameListCategory[category[1]].characteristics[idx].query_name
-            ]
-          ) {
-            characteristicsName[
-              Catalog_characteristics.categoryList_characteristics[category[0]]
-                .nameListCategory[category[1]].characteristics[idx].query_name
-            ].push(
-              Catalog_characteristics.categoryList_characteristics[category[0]]
-                .nameListCategory[category[1]].characteristics[idx].select[
-                characteristics[idx][j]
-              ]
-            );
-          } else {
-            characteristicsName[
-              Catalog_characteristics.categoryList_characteristics[
-                category[0]
-              ].nameListCategory[category[1]].characteristics[idx].query_name
-            ] = [
-              Catalog_characteristics.categoryList_characteristics[category[0]]
-                .nameListCategory[category[1]].characteristics[idx].select[
-                characteristics[idx][j]
-              ],
-            ];
-          }
+        } else {
+          return res.status(400).json({
+            message: `Ви відмітили "Акція" прапорцем тому знижка товару є обов'язковою!`,
+          });
+        }
+      } else {
+        action = false;
+        actionPrice = -1;
+      }
+    } else {
+      action = false;
+      actionPrice = -1;
+    }
+
+    // Counter & Status
+    let counter;
+    if (req.body.counter) {
+      counter = Number(req.body.counter);
+
+      if (counter < 0 || isNaN(counter)) {
+        return res.status(400).json({
+          message: "Ви ввели не дійсну кількість товару",
+        });
+      }
+    } else {
+      return res.status(400).json({
+        message: "Кількість товару є обовз'язковою",
+      });
+    }
+
+    let status; // 0 = В наявнності, 1 = Очікується постачання , 2 = Немає в наявності, 3 = Закінчується
+    if (req.body.status) {
+      status = Number(req.body.status);
+
+      if (status > 0 || isNaN(status) === false) {
+        if (validateStatus(status) === false) {
+          return res.status(400).json({
+            message: "Вибрано не існуючий статус товару",
+          });
+        }
+      } else {
+        return res.status(400).json({
+          message: "Ви ввели не дійсний статус товару",
+        });
+      }
+    } else {
+      return res.status(400).json({
+        message: "Статус товару є обовз'язковим",
+      });
+    }
+
+    // Category
+    let category;
+    let categoryName;
+    if (req.body.category) {
+      category = req.body.category.split(" "); // '0 1 0' > [ '0', '1', '1' ]
+
+      for (let idx = 0; idx < category.length; idx++) {
+        category[idx] = Number(category[idx]);
+
+        if (category[idx] < 0 || isNaN(category[idx]) === true) {
+          return res.status(400).json({
+            message: "Категорію товару не можливо визначити",
+          });
+        }
+      } // [ '0', '1', '1' ] >>> [ 0, 1, 1 ]
+
+      if (category.length !== 2 && category.length !== 3) {
+        return res.status(400).json({
+          message: "Вибрана не існуюча категорія товару",
+        });
+      }
+
+      categoryName = [];
+      if (Catalog_characteristics.categoryList_characteristics[category[0]]) {
+        categoryName.push(
+          Catalog_characteristics.categoryList_characteristics[category[0]]
+            .nameCategory
+        );
+      } else {
+        return res.status(400).json({
+          message: "Вибрана не існуюча категорія товару",
+        });
+      }
+      if (
+        Catalog_characteristics.categoryList_characteristics[category[0]]
+          .nameListCategory[category[1]]
+      ) {
+        categoryName.push(
+          Catalog_characteristics.categoryList_characteristics[category[0]]
+            .nameListCategory[category[1]].subNameCategory
+        );
+      } else {
+        return res.status(400).json({
+          message: "Вибрана не існуюча категорія товару",
+        });
+      }
+      if (category.length === 3) {
+        if (
+          Catalog_characteristics.categoryList_characteristics[category[0]]
+            .nameListCategory[category[1]].subNameListCategory[category[2]]
+        ) {
+          categoryName.push(
+            Catalog_characteristics.categoryList_characteristics[category[0]]
+              .nameListCategory[category[1]].subNameListCategory[category[2]]
+              .titleSubNameListCategory
+          );
+        } else {
+          return res.status(400).json({
+            message: "Вибрана не існуюча категорія товару",
+          });
+        }
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Категорія товару є обовз'язковою" });
+    }
+
+    // Characteristics
+    // ?
+
+    // Keywords
+    let keywords; // ["phone", "samsung", "apple"] > required = false
+    if (req.body.keywords) {
+      keywords = req.body.keywords.split(" ");
+
+      for (let idx = 0; idx < keywords.length; idx++) {
+        if (
+          keywords[idx].length < Product_Validation.keywords.minLengthWord ||
+          keywords[idx].length > Product_Validation.keywords.maxLengthWord
+        ) {
+          return res.status(400).json({
+            message: `Одне з ключових слів не відповідає умові. Мінімальна кількість ${Product_Validation.keywords.minLengthWord} символів. Максимальна кількість ${Product_Validation.keywords.maxLengthWord} символів`,
+          });
         }
       }
     }
 
-    const status = Number(req.body.status); // 0 = В наявнності, 1 = Очікується постачання , 2 = Немає в наявності, 3 = Закінчується
+    // Description
+    let description;
+    if (req.body.description) {
+      description = req.body.description;
 
-    const action = Boolean(Number(req.body.action)); // true || false
-    const actionPrice = action === true ? Number(req.body.actionPrice) : -1; // if(action === true) {actionPrice = number} else {actionPrice = -1}
+      if (
+        description.length <
+          Product_Validation.description.minLengthDescription ||
+        description.length > Product_Validation.description.maxLengthDescription
+      ) {
+        return res.status(400).json({
+          message: `Мінімальна довжина опису товару ${Product_Validation.description.minLengthDescription}. Максимальна довжина опису товару ${Product_Validation.description.maxLengthDescription}`,
+        });
+      }
+    } else {
+      return res.status(400).json({ message: "Опис товару є обовз'язковим" });
+    }
 
-    const product = new Product({
+    const product = await new Product({
       imageSrc,
-      name: req.body.name,
-      price: req.body.price,
+      name,
+      price,
       action,
       actionPrice,
-      counter: Number(req.body.counter),
+      counter,
+      status,
       category,
       categoryName,
-      characteristics,
-      characteristicsName,
-      status,
+      // characteristics,
+      // characteristicsName,
       keywords,
-      description: req.body.description,
+      description,
       comments: [],
       questions: [],
       accessories: [],
       user: req.user.id,
     });
 
-    await product.save();
+    console.log(product);
+    // await product.save();
     return res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
     console.log(error);
