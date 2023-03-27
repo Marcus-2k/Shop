@@ -85,11 +85,10 @@ module.exports.createProduct = async function (req, res) {
 
   try {
     // Photo
-    const files = Object.values(req.files);
     const imageSrc = []; // ["folder/name.extension", ...]
-    if (files.length > 0) {
-      for (let idx = 0; idx < files.length; idx++) {
-        imageSrc.push(files[idx].path);
+    if (Object.keys(req.files).length >= 1) {
+      for (const key in req.files) {
+        imageSrc.push(req.files[key][0].path);
       }
     } else {
       return res.status(400).json({ message: "Фото товару є обовз'язковим" });
