@@ -281,7 +281,18 @@ module.exports.createProduct = async function (req, res) {
     }
 
     // Characteristics
-    // ?
+    let data;
+    if (req.body.characteristics) {
+      data = createCharacteristics(category, req.body.characteristics);
+
+      if (data.message !== undefined) {
+        return res.status(400).json({ message: data.message });
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Характеристики товару є обовз'язковими" });
+    }
 
     // Keywords
     let keywords; // ["phone", "samsung", "apple"] > required = false
@@ -328,8 +339,8 @@ module.exports.createProduct = async function (req, res) {
       status,
       category,
       categoryName,
-      // characteristics,
-      // characteristicsName,
+      characteristics: data.characteristicsNumber,
+      characteristicsName: data.characteristicsName,
       keywords,
       description,
       comments: [],
@@ -338,8 +349,7 @@ module.exports.createProduct = async function (req, res) {
       user: req.user.id,
     });
 
-    console.log(product);
-    // await product.save();
+    await product.save();
     return res.status(201).json({ message: "Товар створено успішно." });
   } catch (error) {
     console.log(error);
@@ -586,85 +596,46 @@ module.exports.updateProduct = async function (req, res) {
         console.log("Category has NOT been changed.");
       }
 
-      let characteristics = transformCharacteristicsStringToArray(
-        req.body.characteristics
-      );
-      if (product.characteristics.join("-") !== characteristics.join("-")) {
+      let data = createCharacteristics(category, req.body.characteristics);
+
+      if (data.message !== undefined) {
+        return res.status(400).json({ message: data.message });
+      }
+
+      if (
+        product.characteristics.join("-") !==
+        data.characteristicsNumber.join("-")
+      ) {
         console.log("new characteristics");
-        updateProduct.characteristics = characteristics;
-
-        let options;
-        if (category.length === 3) {
-          options =
-            Catalog_characteristics.categoryList_characteristics[category[0]]
-              .nameListCategory[category[1]].subNameListCategory[category[2]]
-              .characteristics;
-        } else if (category.length === 2) {
-          options =
-            Catalog_characteristics.categoryList_characteristics[category[0]]
-              .nameListCategory[category[1]].characteristics;
-        }
-
-        if (options.length !== characteristics.length) {
-          return res.status(400).json({
-            message: "Не всі характеристики вибрані",
-          });
-        }
-
-        const characteristicsName = {};
-        for (let idx = 0; idx < options.length; idx++) {
-          characteristicsName[options[idx].query_name] = [];
-
-          for (let i = 0; i < characteristics[idx].length; i++) {
-            characteristicsName[options[idx].query_name].push(
-              options[idx].select[characteristics[idx][i]]
-            );
-          }
-        }
+        updateProduct.characteristics = data.characteristicsNumber;
 
         console.log("new characteristicsName");
-        updateProduct.characteristicsName = characteristicsName;
+        updateProduct.characteristicsName = data.characteristicsName;
       } else {
         console.log("Characteristics has NOT been changed.");
       }
     } else if (req.body.characteristics) {
-      const characteristics = transformCharacteristicsStringToArray(
+      let data = createCharacteristics(
+        product.category,
         req.body.characteristics
       );
-      console.log("new characteristics");
-      updateProduct.characteristics = characteristics;
 
-      let options;
-      if (category.length === 3) {
-        options =
-          Catalog_characteristics.categoryList_characteristics[category[0]]
-            .nameListCategory[category[1]].subNameListCategory[category[2]]
-            .characteristics;
-      } else if (category.length === 2) {
-        options =
-          Catalog_characteristics.categoryList_characteristics[category[0]]
-            .nameListCategory[category[1]].characteristics;
+      if (data.message !== undefined) {
+        return res.status(400).json({ message: data.message });
       }
 
-      if (options.length !== characteristics.length) {
-        return res.status(400).json({
-          message: "Не всі характеристики вибрані",
-        });
+      if (
+        product.characteristics.join("-") !==
+        data.characteristicsNumber.join("-")
+      ) {
+        console.log("new characteristics");
+        updateProduct.characteristics = data.characteristicsNumber;
+
+        console.log("new characteristicsName");
+        updateProduct.characteristicsName = data.characteristicsName;
+      } else {
+        console.log("Characteristics has NOT been changed.");
       }
-
-      const characteristicsName = {};
-      for (let idx = 0; idx < options.length; idx++) {
-        characteristicsName[options[idx].query_name] = [];
-
-        for (let i = 0; i < characteristics[idx].length; i++) {
-          characteristicsName[options[idx].query_name].push(
-            options[idx].select[characteristics[idx][i]]
-          );
-        }
-      }
-
-      console.log("new characteristicsName");
-      updateProduct.characteristicsName = characteristicsName;
     }
 
     // Keywords
@@ -784,19 +755,78 @@ function deleteImgFromFolder(linkImg) {
   }); // Delete img, in folder uploads
 }
 
-function transformCharacteristicsStringToArray(string) {
-  const characteristicsArray = string.split("-"); // 3-2-4-2-3-0,3-1-1-2,3-1-1,2 >>> ['3','2','4','2','3','0,3','1','1','2,3','1','1,2']
+function createCharacteristics(category, string) {
+  let stringArray = string.split("-"); // 3-2-4-2-3-0,3-1-1-2,3-1-1,2 >>> ['3','2','4','2','3','0,3','1','1','2,3','1','1,2']
+  let characteristicsNumber = [];
 
-  let characteristics = [];
-  characteristicsArray.forEach((item, i) => {
-    characteristics.push(item.split(","));
-  }); // ['3','2','4','2','3','0,3','1','1','2,3','1','1,2'] >>> [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']]
+  for (let idx = 0; idx < stringArray.length; idx++) {
+    characteristicsNumber.push(stringArray[idx].split(","));
+  } // ['3','2','4','2','3','0,3','1','1','2,3','1','1,2'] >>> [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']]
 
-  characteristics.forEach((item, i) => {
-    item.forEach((element, idx) => {
-      characteristics[i][idx] = Number(element);
-    });
-  }); // [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']] >>> [[3],[2],[4],[2],[3],[0,3],[1],[1],[2,3],[1],[1,2]]
+  for (let i = 0; i < characteristicsNumber.length; i++) {
+    for (let idx = 0; idx < characteristicsNumber[i].length; idx++) {
+      characteristicsNumber[i][idx] = Number(characteristicsNumber[i][idx]);
 
-  return characteristics;
+      if (
+        characteristicsNumber[i][idx] < 0 ||
+        isNaN(characteristicsNumber[i][idx])
+      ) {
+        return {
+          message: "Характеристики не вибрані або не можливо визначити",
+        };
+      }
+    }
+  } // [['3'],['2'],['4'],['2'],['3'],['0','3'],['1'],['1'],['2','3'],['1'],['1','2']] >>> [[3],[2],[4],[2],[3],[0,3],[1],[1],[2,3],[1],[1,2]]
+
+  let characteristics;
+  let characteristicsName = {};
+
+  if (category.length === 3) {
+    characteristics =
+      Catalog_characteristics.categoryList_characteristics[category[0]]
+        .nameListCategory[category[1]].subNameListCategory[category[2]]
+        .characteristics;
+  } else if (category.length === 2) {
+    characteristics =
+      Catalog_characteristics.categoryList_characteristics[category[0]]
+        .nameListCategory[category[1]].characteristics;
+  } else {
+    return {
+      message: "Категорія не вибрана або не можливо визначити категорію",
+    };
+  }
+
+  if (characteristicsNumber.length !== characteristics.length) {
+    return {
+      message: "Не всі характеристики вибрані",
+    };
+  }
+
+  for (let i = 0; i < characteristics.length; i++) {
+    characteristicsName[characteristics[i].query_name] = [];
+
+    if (characteristics[i].multiple) {
+      for (let idx = 0; idx < characteristicsNumber[i].length; idx++) {
+        characteristicsName[characteristics[i].query_name].push(
+          characteristics[i].select[characteristicsNumber[i][idx]]
+        );
+      }
+    } else {
+      characteristicsName[characteristics[i].query_name].push(
+        characteristics[i].select[characteristicsNumber[i][0]]
+      );
+    }
+  }
+
+  let i = 0;
+  for (const key in characteristicsName) {
+    if (characteristicsName[key].indexOf(undefined) >= 0) {
+      return {
+        message: `Для характеристики "${characteristics[i].name}" вибрано не існуюче значення`,
+      };
+    }
+    i++;
+  }
+
+  return { characteristicsNumber, characteristicsName };
 }
