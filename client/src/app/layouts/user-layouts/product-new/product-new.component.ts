@@ -429,6 +429,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
               next: (data) => {
                 console.log(data);
                 this.showMessage.open(data.message, undefined);
+                this.router.navigate(["/account/product"]);
               },
               error: (
                 response: HttpErrorResponse & { error: { message: string } }
@@ -445,6 +446,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
             next: (data) => {
               console.log(data);
               this.showMessage.open(data.message, undefined);
+              this.router.navigate(["/account/product"]);
             },
             error: (
               response: HttpErrorResponse & { error: { message: string } }
@@ -467,9 +469,5 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     } else {
       // !
     }
-  }
-
-  afterCreateUpdateProduct() {
-    this.router.navigate(["/account/product"]);
   }
 }
