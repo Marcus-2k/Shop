@@ -55,7 +55,7 @@ import { ProductNewPriceComponent } from "./layouts/user-layouts/product-new/pro
 import { ProductNewStatusComponent } from "./layouts/user-layouts/product-new/product-new-status/product-new-status.component";
 import { ProductNewCategoryComponent } from "./layouts/user-layouts/product-new/product-new-category/product-new-category.component";
 import { ProductNewCharacteristicsComponent } from "./layouts/user-layouts/product-new/product-new-characteristics/product-new-characteristics.component";
-import { ProductNewKeyWordsComponent } from "./layouts/user-layouts/product-new/product-new-key-words/product-new-key-words.component";
+import { ProductNewKeywordsComponent } from "./layouts/user-layouts/product-new/product-new-keywords/product-new-keywords.component";
 import { ProductNewDescriptionComponent } from "./layouts/user-layouts/product-new/product-new-description/product-new-description.component";
 // ProductNew >>> components END
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
@@ -164,7 +164,7 @@ import { environment } from "../environments/environment";
     ProductNewStatusComponent,
     ProductNewCategoryComponent,
     ProductNewCharacteristicsComponent,
-    ProductNewKeyWordsComponent,
+    ProductNewKeywordsComponent,
     ProductNewDescriptionComponent,
     PricePipe,
     FindByTextPipe,

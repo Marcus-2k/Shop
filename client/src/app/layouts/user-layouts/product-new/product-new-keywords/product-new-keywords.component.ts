@@ -7,11 +7,11 @@ import { Store } from "@ngrx/store";
 import { ProductNewActions } from "src/app/store/product-new/product-new.action";
 
 @Component({
-  selector: "app-product-new-key-words",
-  templateUrl: "./product-new-key-words.component.html",
-  styleUrls: ["./product-new-key-words.component.scss"],
+  selector: "app-product-new-keywords",
+  templateUrl: "./product-new-keywords.component.html",
+  styleUrls: ["./product-new-keywords.component.scss"],
 })
-export class ProductNewKeyWordsComponent implements OnInit {
+export class ProductNewKeywordsComponent implements OnInit {
   constructor(private store$: Store) {}
 
   @Input() InputData_Keywords: InputData_Keywords | undefined;
