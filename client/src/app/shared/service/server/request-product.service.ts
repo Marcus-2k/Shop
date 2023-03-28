@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Product, ProductUpdate } from "src/app/shared/interface/interfaces";
@@ -21,17 +21,20 @@ export class RequestProductService {
     return this.http.get<ProductUpdate>(`${this.url_server}${id}`);
   }
 
-  updateById(upProduct: any, id: any): Observable<any> {
-    return this.http.patch<any>(`${this.url_server}${id}`, upProduct);
+  createProduct(data: FormData): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.url_server}`, data);
+  }
+
+  updateById(data: FormData, id: string): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(
+      `${this.url_server}${id}`,
+      data
+    );
   }
 
   deleteById(id: string): Observable<{ message: string; deleted: boolean }> {
     return this.http.delete<{ message: string; deleted: boolean }>(
       `${this.url_server}${id}`
     );
-  }
-
-  createProduct(product: any): Observable<Product> {
-    return this.http.post<any>(`${this.url_server}`, product);
   }
 }
