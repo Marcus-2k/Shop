@@ -25,8 +25,10 @@ export class RequestProductService {
     return this.http.patch<any>(`${this.url_server}${id}`, upProduct);
   }
 
-  deleteById(id: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.url_server}${id}`);
+  deleteById(id: string): Observable<{ message: string; deleted: boolean }> {
+    return this.http.delete<{ message: string; deleted: boolean }>(
+      `${this.url_server}${id}`
+    );
   }
 
   createProduct(product: any): Observable<Product> {

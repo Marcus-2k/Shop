@@ -1,6 +1,8 @@
 const Product = require("../models/Product");
+
 const fs = require("fs");
 const Catalog_characteristics = require("../db/catalog_characteristics");
+const jwt_decode = require("jwt-decode");
 
 const Product_Validation = {
   name: {
@@ -718,15 +720,33 @@ module.exports.deleteProduct = async function (req, res) {
   console.log("Server deleteProduct");
 
   try {
-    // const product = await Product.findById(req.params.id, { imageSrc: 1 });
+    const token_decode = jwt_decode(req.headers.authorization);
 
-    // product.imageSrc.forEach((item) => {
-    // deleteImgFromFolder(item);
-    // }); // Delete file from folder uploads
+    let product = await Product.findById(req.params.id, {
+      imageSrc: 1,
+      user: 1,
+    });
 
-    // await Product.remove({ _id: req.params.id }); // Delete card in DB
+    if (!product) {
+      return res.status(200).json({ message: "Товар не існує" });
+    }
+    product = JSON.parse(JSON.stringify(product));
 
-    return res.status(200).json({ message: "Товар успішно видалено" });
+    if (token_decode.id === product.user) {
+      await Product.deleteOne({ _id: req.params.id });
+
+      for (let idx = 0; idx < product.imageSrc.length; idx++) {
+        deleteImgFromFolder(product.imageSrc[idx]);
+      }
+
+      return res
+        .status(200)
+        .json({ message: "Товар успішно видалено", deleted: true });
+    } else {
+      return res
+        .status(200)
+        .json({ message: "Недостатньо прав доступу", deleted: false });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });

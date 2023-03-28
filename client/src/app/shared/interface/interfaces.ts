@@ -84,9 +84,6 @@ export interface ProductSearch {
   user: string;
   _id: string;
 }
-export interface ProductDelete {
-  _id: string;
-}
 export interface ProductUpdate {
   imageSrc: string[];
   name: string;
