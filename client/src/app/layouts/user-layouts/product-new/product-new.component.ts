@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 
 import { InputData } from "src/app/shared/interface/pages/product-new/interfaces";
+import { HttpErrorResponse } from "@angular/common/http";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
@@ -427,11 +428,15 @@ export class ProductNewComponent implements OnInit, OnDestroy {
             .subscribe({
               next: (data) => {
                 console.log(data);
-                this.showMessage.open("Товар оновлено успішно.", undefined);
+                this.showMessage.open(data.message, undefined);
               },
-              error: (error) => {
-                console.log(error);
-                this.showMessage.open("Помилка на серверові.", undefined);
+              error: (
+                response: HttpErrorResponse & { error: { message: string } }
+              ) => {
+                console.log(response);
+                if (response.status === 400) {
+                  this.showMessage.open(response.error.message, undefined);
+                }
               },
               complete: () => {},
             });
@@ -439,11 +444,15 @@ export class ProductNewComponent implements OnInit, OnDestroy {
           this.requestProduct.createProduct(formData).subscribe({
             next: (data) => {
               console.log(data);
-              this.showMessage.open("Товар створено успішно.", undefined);
+              this.showMessage.open(data.message, undefined);
             },
-            error: (error) => {
-              console.log(error);
-              this.showMessage.open("Помилка на серверові.", undefined);
+            error: (
+              response: HttpErrorResponse & { error: { message: string } }
+            ) => {
+              console.log(response);
+              if (response.status === 400) {
+                this.showMessage.open(response.error.message, undefined);
+              }
             },
             complete: () => {},
           });
