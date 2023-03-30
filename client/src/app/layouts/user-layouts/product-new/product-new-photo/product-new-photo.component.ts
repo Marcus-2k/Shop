@@ -41,6 +41,7 @@ export class ProductNewPhotoComponent implements OnInit {
           idx++
         ) {
           this.images.push(this.InputData_Photo.photo_preview[idx]);
+          this.numberPhoto++;
         }
       }
 
