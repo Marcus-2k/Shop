@@ -61,7 +61,20 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         });
       } else {
         this.renameTitle.renameTitleSite("Створення товару");
-        this.store$.dispatch(ProductNewActions.initialState({ data: null }));
+
+        this.store$
+          .select(ProductNewSelector.getProductNew)
+          .subscribe((data) => {
+            if (
+              data.dataProduct === null ||
+              data.dataProduct.infoData.update === true
+            ) {
+              this.store$.dispatch(
+                ProductNewActions.initialState({ data: null })
+              );
+            }
+          })
+          .unsubscribe();
 
         this.productNewStore$ = this.store$
           .select(ProductNewSelector.getProductNew)
@@ -128,8 +141,8 @@ export class ProductNewComponent implements OnInit, OnDestroy {
   };
 
   loader: boolean = true;
+  update: boolean = false; // Mode update true || false
 
-  update: boolean = false; // Mode update true/false
   images: (File | string)[] = [];
 
   productNewStore$: Subscription | undefined;
