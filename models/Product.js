@@ -26,8 +26,16 @@ const productSchema = new Schema({
     type: Number, // 15
     required: true,
   },
+  status: {
+    type: Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується',
+    required: true,
+  },
   category: {
     type: Array, // [ 1, 2, 9 ]
+    required: true,
+  },
+  categoryName: {
+    type: Array, // [ "Ноутбуки та комп'ютери", 'Комплектуючі', 'SSD' ]
     required: true,
   },
   characteristics: {
@@ -36,10 +44,6 @@ const productSchema = new Schema({
   },
   characteristicsName: {
     type: Object, // { body_material: ["Метал", "Пластик", "Скло"], cpu_mp: ["Qualcomm Snapdragon"] ...}
-    required: true,
-  },
-  status: {
-    type: Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується',
     required: true,
   },
   keywords: {

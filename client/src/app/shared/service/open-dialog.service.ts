@@ -1,14 +1,18 @@
 import { Injectable } from "@angular/core";
 
+import { Observable } from "rxjs";
+
 import { Router } from "@angular/router";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 import { MyOrder, Redirect } from "../interface/interfaces";
 import { ProductCard_MyOrder } from "../interface/product-card/product-card.interfaces";
+import { DialogData_ProductNewCatalog } from "../interface/dialog/dialog.interfaces";
 
 import { LoginComponent } from "src/app/layouts/login/login.component";
 import { RegisterComponent } from "src/app/layouts/register/register.component";
 import { MyOrderDetailComponent } from "src/app/layouts/user-layouts/my-order/my-order-detail/my-order-detail.component";
+import { ProductNewCatalogComponent } from "src/app/template/dialog/product-new-catalog/product-new-catalog.component";
 
 import { OpenSnackBarService } from "./open-snack-bar.service";
 
@@ -82,5 +86,20 @@ export class OpenDialogService {
         width: "70%",
         data: { myOrder: myOrder, productCard: productCard },
       });
+  }
+
+  openProductNewCatlogWindow(): Observable<
+    DialogData_ProductNewCatalog | undefined
+  > {
+    const dialogRef: MatDialogRef<
+      ProductNewCatalogComponent,
+      DialogData_ProductNewCatalog | undefined
+    > = this.dialog.open(ProductNewCatalogComponent, {
+      width: "100%",
+      height: "60%",
+      data: { categoryListNumber: [0], categoryListName: [""] },
+    });
+
+    return dialogRef.afterClosed();
   }
 }

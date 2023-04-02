@@ -8,5 +8,6 @@ router.get(
   "/category/characteristics",
   controller.getCategoryAndCharacteristics
 );
+router.post("/only-characteristics", controller.getCharacteristics);
 
 module.exports = router;

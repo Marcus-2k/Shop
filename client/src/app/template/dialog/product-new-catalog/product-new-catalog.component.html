@@ -1,0 +1,111 @@
+<!--  -->
+
+<div class="category">
+  <div class="category-first" *ngIf="!oneCategory">
+    <div class="category-first__title">
+      <h2>Виберіть категорію</h2>
+    </div>
+
+    <div class="category-first-content">
+      <div
+        class="category-first-content-item"
+        *ngFor="let categoryItem of categoryList; let idx = index"
+        [ngClass]="{
+          one__color: 0 === idx,
+          two__color: 1 === idx,
+          three__color: 2 === idx,
+          four__color: 3 === idx,
+          five__color: 4 === idx,
+          six__color: 5 === idx,
+          seven__color: 6 === idx,
+          eight__color: 7 === idx,
+          nine__color: 8 === idx,
+          ten__color: 9 === idx,
+          eleven__color: 10 === idx,
+          twelve__color: 11 === idx
+        }"
+        (click)="selectCategoryFirst(idx)"
+      >
+        <h2 class="item-title">{{ categoryItem.nameCategory }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-list list" *ngIf="oneCategory">
+    <div class="list-one list-block">
+      <ng-container *ngIf="oneCategory">
+        <div
+          class="list-one-item list-block-item"
+          *ngFor="let category of categoryList; let idx = index"
+          [ngClass]="{ active__block: oneIndex === idx }"
+          (click)="editOneCategory(idx)"
+        >
+          <h2 class="list-block-item-title">{{ category.nameCategory }}</h2>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="list-two list-block">
+      <ng-container *ngIf="twoCategory">
+        <div
+          class="list-two-item list-block-item"
+          *ngFor="
+            let category of categoryList[oneIndex].nameListCategory;
+            let idx = index
+          "
+          (click)="editTwoCategory(idx)"
+          [ngClass]="{ active__block: twoIndex === idx }"
+        >
+          <h2 class="list-block-item-title">
+            {{ category.subNameCategory }}
+          </h2>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="list-three list-block">
+      <ng-container
+        *ngIf="
+          threeCategory &&
+          categoryList[oneIndex].nameListCategory[twoIndex]
+            .subNameListCategory !== undefined
+        "
+      >
+        <div
+          class="list-three-item list-block-item"
+          *ngFor="
+            let category of categoryList[oneIndex].nameListCategory[twoIndex]
+              .subNameListCategory;
+            let idx = index
+          "
+          (click)="editThreeCategory(idx)"
+          [ngClass]="{ active__block: threeIndex === idx }"
+        >
+          <h2 class="list-block-item-title">
+            {{ category.titleSubNameListCategory }}
+          </h2>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="category-btn">
+    <ng-container *ngIf="twoCategory && threeCategory">
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="
+          (categoryList[oneIndex].nameListCategory[twoIndex].characteristics !==
+            undefined &&
+            threeIndex === -1) ||
+          (threeIndex !== -1 &&
+            categoryList[oneIndex].nameListCategory[twoIndex]
+              .subNameListCategory !== undefined)
+        "
+        (click)="selectThisCategory()"
+      >
+        Вибрати категорію
+      </button>
+    </ng-container>
+  </div>
+</div>

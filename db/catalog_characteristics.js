@@ -6,7 +6,7 @@ module.exports.categoryList_characteristics = [
     nameListCategory: [
       {
         subNameCategory: "Ноутбуки",
-        characteristics: options.optionsLaptop,
+        characteristics: options.Laptop,
         permissionUse: true,
       },
       {
@@ -15,32 +15,32 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Флеш пам'ять USB",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Сумки та рюкзаки для ноутбуків",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Підставки та столики для ноутбуків",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Веб-камери",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Універсальні мобільні батареї",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Кабелі та перехідники",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -51,19 +51,19 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Чохли та клавіатури для планшетів",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Захисні плівки та скло",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
       },
       {
         subNameCategory: "Електронні книги",
-        characteristics: options.optionsDevelop,
+        characteristics: options.Develop,
         permissionUse: false,
       },
       {
@@ -72,47 +72,47 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Відеокарта",
-            characteristics: options.optionsVideocards,
+            characteristics: options.Videocards,
             permissionUse: true,
           },
           {
             titleSubNameListCategory: "Процесори",
-            characteristics: options.optionsCPU_PC,
+            characteristics: options.CPU_PC,
             permissionUse: true,
           },
           {
             titleSubNameListCategory: "SSD",
-            characteristics: options.optionsSSD,
+            characteristics: options.SSD,
             permissionUse: true,
           },
           {
             titleSubNameListCategory: "HDD",
-            characteristics: options.optionsHDD,
+            characteristics: options.HDD,
             permissionUse: true,
           },
           {
             titleSubNameListCategory: "ОЗП",
-            characteristics: options.optionsRAM,
+            characteristics: options.RAM,
             permissionUse: true,
           },
           {
             titleSubNameListCategory: "Материнські плати",
-            characteristics: options.optionsMotherboards,
+            characteristics: options.Motherboards,
             permissionUse: true,
           },
           {
             titleSubNameListCategory: "Блоки живлення",
-            characteristics: options.optionsPSU,
+            characteristics: options.PSU,
             permissionUse: true,
           },
           {
             titleSubNameListCategory: "Корпуси",
-            characteristics: options.optionsCases,
+            characteristics: options.Cases,
             permissionUse: true,
           },
           {
             titleSubNameListCategory: "Системне охолодження",
-            characteristics: options.optionsCoolers,
+            characteristics: options.Coolers,
             permissionUse: true,
           },
         ],
@@ -123,22 +123,22 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Монітори",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Миші",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Комплект клавіатура + миша",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Мереживе сховище (NAS)",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -149,22 +149,22 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "БФП/Принтери",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Проектори",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Витратні матеріали для принтерів",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Телефонні апарати",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -175,17 +175,17 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Операційні системи",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Офісні програми",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Антивіруси",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -196,27 +196,27 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Play Station",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Ігрові консолі та приставки",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Джойстики та аксесуари",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Ігри",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Ігрові поверхні",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -227,27 +227,27 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Патч-корди",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Маршрутизатори",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "IP-камери",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Комутатори",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Бездротові точки доступу",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -259,7 +259,7 @@ module.exports.categoryList_characteristics = [
     nameListCategory: [
       {
         subNameCategory: "Телефони",
-        characteristics: options.optionsSmartphone,
+        characteristics: options.Smartphone,
         permissionUse: false,
       },
       {
@@ -267,57 +267,57 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Універсальні мобільні батареї",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Картри пам'яті",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Чохли для мобільних телефонів",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Захисні плівки та скло",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Монопади для селфі",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Гарнітури",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "3D і VR окуляри",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Тримачі",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Кабелі синхронізації",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Гарнітури Bluetooth",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Мобільний зв'язок та інтернет",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -328,32 +328,32 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Телевізори",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Підставки кріплення для ТВ",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Кабелі та перехідники",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "ТВ-антени та ресивери",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Універсальні пульти ДК",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Аксесуари для ТВ",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -364,57 +364,57 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Фотоапарати",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Відеокамери",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Об'єктиви",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Екшн-камери й аксесуари",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Акумулятори та батарейки",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Штативи",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Зарядні пристрої",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Спалахи",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Акумелятори для фото та відеокамер",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Студійне обладнання",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Сумки та чохли",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -425,32 +425,32 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "DVD/HD-медіаплеєри",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Музичні центри",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Домашні кінотеатри",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Активні акустичні системи",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Акустика Hi-Fi",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "AV-ресивер",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -461,12 +461,12 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Проектори",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Екрани",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -477,62 +477,62 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Планшети",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Навушники",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Електронні книги",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Розумні годинники браслети",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Фітнес-браслети",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "MP3-плеєри",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Диктофони",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Спортивні годинники",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Аксесуари для пленшетів",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Велокомп'ютери",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Портативна акустика",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Зовнішні жорсткі диски",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],
@@ -543,22 +543,22 @@ module.exports.categoryList_characteristics = [
         subNameListCategory: [
           {
             titleSubNameListCategory: "Відеореєстратори",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "GPS-навігатори",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Автозвук",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
           {
             titleSubNameListCategory: "Автосигналізації",
-            characteristics: options.optionsDevelop,
+            characteristics: options.Develop,
             permissionUse: false,
           },
         ],

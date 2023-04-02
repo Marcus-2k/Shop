@@ -1,3 +1,19 @@
+/**
+ * <<< RULES >>>
+ *
+ * 1. The first letter of the word is capitalized
+ * 2. Separator of each word "_"
+ * 3. Write the words "of", "in" with a lowercase letter
+ * 4. The letters of the abbreviation are all uppercase
+ *
+ * <<< FOR EXAMPLE >>>
+ *
+ * 1. Producer
+ * 2. Operating_System_PC
+ * 3. Made_in, Type_of_Packaging
+ * 4. Component_CBA, CPU_PC, Number_of_SATA_Connectors
+ */
+
 module.exports = {
   Producer: {
     name: "Бренд",
@@ -16,10 +32,135 @@ module.exports = {
       "Microsoft",
       "Samsung",
       "Xiaomi",
+
+      // "ASUS",
+      // "Acer",
+      // "Apple",
+      // "Dell",
+      // "Gigabyte",
+      // "HP",
+      // "Huawei",
+      // "Lenovo",
+      // "MSI",
+      // "Microsoft",
+      // "Samsung",
+      // "Xiaomi",
+      // "2E",
+      // "2E Gaming",
+      // "AMD",
+      // "AVGO",
+      // "AWOW",
+      // "Aero",
+      // "Alien",
+      // "Alienware",
+      // "Alldocube",
+      // "Allview",
+      // "Ansta",
+      // "Aorus",
+      // "Archos",
+      // "BMAX",
+      // "Belinea",
+      // "Blackview",
+      // "CSL",
+      // "Chuwi",
+      // "Clevo",
+      // "Core Innovations",
+      // "CyberPower",
+      // "DM",
+      // "Daysky",
+      // "Denver",
+      // "Difinity",
+      // "Digma",
+      // "Dream Machines",
+      // "DuoDuoGo",
+      // "Durabook",
+      // "Element",
+      // "Eluktronics",
+      // "Epic",
+      // "Epik",
+      // "Ergo",
+      // "Evoo",
+      // "Fujitsu",
+      // "GOODTEL",
+      // "Gateway",
+      // "Getac",
+      // "Google",
+      // "HIRO",
+      // "HPA",
+      // "Haier",
+      // "Honor",
+      // "Hyundai",
+      // "IOTA",
+      // "Insys",
+      // "Intel",
+      // "Jepssen",
+      // "Jumper",
+      // "KUU",
+      // "Kiano",
+      // "Kruger&Matz",
+      // "LG",
+      // "LHMZNIY",
+      // "Laptop",
+      // "LincPlus",
+      // "Maxcom",
+      // "Meberry",
+      // "Mediacom",
+      // "Medion",
+      // "Microtech",
+      // "Millenium",
+      // "Mixzo",
+      // "Motile",
+      // "Multicom",
+      // "NEC",
+      // "NiPoGi",
+      // "NuVision",
+      // "ONN",
+      // "ORDISSIMO",
+      // "Odys",
+      // "Onkyo",
+      // "Packard Bell",
+      // "Panasonic",
+      // "Pavoma",
+      // "Pixus",
+      // "Porsche Design",
+      // "Prestigio",
+      // "Prixton",
+      // "Prologix",
+      // "Prowise",
+      // "RCA",
+      // "RM",
+      // "Razer",
+      // "realme",
+      // "SGIN",
+      // "Schenker",
+      // "Shinobee",
+      // "Siemens",
+      // "Sign",
+      // "Silver",
+      // "Sony",
+      // "TOPOSH",
+      // "Techbite",
+      // "Teclast",
+      // "Terra",
+      // "Thomson",
+      // "Toshiba",
+      // "TrekStor",
+      // "UTEPO",
+      // "Umax",
+      // "VAIO",
+      // "VONO",
+      // "ViewSonic",
+      // "Vinga",
+      // "XIDU",
+      // "XMG",
+      // "XPG",
+      // "YASHI",
+      // "Yepo",
+      // "Без бренда",
     ],
     multiple: false,
   },
-  OperatingSystem_PC: {
+  Operating_System_PC: {
     name: "Операційна система",
     query_name: "operating_system_pc",
     htmlElement: "select",
@@ -36,7 +177,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  OperatingSystem_MP: {
+  Operating_System_MP: {
     name: "Операційна система",
     query_name: "operating_system_mp",
     htmlElement: "select",
@@ -108,14 +249,14 @@ module.exports = {
     ],
     multiple: false,
   },
-  ScreenDiagonal: {
+  Screen_Diagonal: {
     name: "Діагональ екрана",
     query_name: "screen_diagonal",
     htmlElement: "select",
     select: ["9", "12.5", "13", "14", "15", "15.6", "16", "17", "18", "20"],
     multiple: false,
   },
-  TypeMemory: {
+  Type_Memory: {
     name: "Тип накопичувача",
     query_name: "type_memory",
     htmlElement: "select",
@@ -181,7 +322,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  NewUsed: {
+  New_Used: {
     name: "Новий - Вживаний",
     query_name: "new_used",
     htmlElement: "select",
@@ -195,7 +336,7 @@ module.exports = {
     select: ["Немає", "1 рік", "2 роки"],
     multiple: false,
   },
-  SizeSSD: {
+  Size_SSD: {
     name: "Обсяг SSD",
     query_name: "size_ssd",
     htmlElement: "select",
@@ -219,7 +360,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  SizeHDD: {
+  Size_HDD: {
     name: "Обсяг HDD",
     query_name: "size_hdd",
     htmlElement: "select",
@@ -243,7 +384,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  TypeMatrix: {
+  Type_Matrix: {
     name: "Тип матриці",
     query_name: "type_matrix",
     htmlElement: "select",
@@ -268,7 +409,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  ScreenRefreshRate: {
+  Screen_Refresh_Rate: {
     name: "Частота оновлення екрану",
     query_name: "screen_refresh_rate",
     htmlElement: "select",
@@ -287,14 +428,14 @@ module.exports = {
     ],
     multiple: true,
   },
-  BodyMaterial: {
+  Body_Material: {
     name: "Матеріал корпусу",
     query_name: "body_material",
     htmlElement: "select",
     select: ["Метал", "Пластик", "Скло", "Інший"],
     multiple: true,
   },
-  MadeIn: {
+  Made_in: {
     name: "Країна-виробник",
     query_name: "made_in",
     htmlElement: "select",
@@ -329,7 +470,7 @@ module.exports = {
     ],
     multiple: true,
   },
-  MemoryCapacity: {
+  Memory_Capacity: {
     name: "Обсяг пам'яті",
     query_name: "memory_capacity",
     htmlElement: "select",
@@ -353,7 +494,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  MemoryBusBitSize: {
+  Memory_Bus_Bit_Size: {
     name: "Розрядність шини пам'яті",
     query_name: "memory_bus_bit_size",
     htmlElement: "select",
@@ -376,7 +517,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  TypeMemory_Videocards: {
+  Type_Memory_Videocards: {
     name: "Тип пам'яті ",
     query_name: "type_memory_videocards",
     htmlElement: "select",
@@ -399,7 +540,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  GraphicsProcessor: {
+  Graphics_Processor: {
     name: "Виробник графічного процесора ",
     query_name: "graphics_processor",
     htmlElement: "select",
@@ -440,7 +581,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  GraphicsProcessorFamily: {
+  Graphics_Processor_Family: {
     name: "Сімейство графічного процесора",
     query_name: "graphics_processor_family",
     htmlElement: "select",
@@ -455,7 +596,7 @@ module.exports = {
     ],
     multiple: false,
   },
-  Connectors: {
+  Connector: {
     name: "Роз'єми",
     query_name: "connector",
     htmlElement: "select",
@@ -476,13 +617,13 @@ module.exports = {
     multiple: true,
   },
   Form_Factor_Videocards: {
-    name: "Форм-фактор",
+    name: "Форм-фактор Відеокарти",
     query_name: "form_factor_videocards",
     htmlElement: "select",
     select: ["Дискретна (Стандартна)", "Зовнішня", "Міні", "Низькопрофільна"],
     multiple: false,
   },
-  AdditionalPowerSupply: {
+  Additional_Power_Supply: {
     name: "Додаткове живлення",
     query_name: "additional_power_supply",
     htmlElement: "select",
@@ -500,14 +641,14 @@ module.exports = {
     ],
     multiple: false,
   },
-  CoolingSystemType: {
+  Cooling_System_Type: {
     name: "Тип системи охолодження",
     query_name: "cooling_system_type",
     htmlElement: "select",
     select: ["Активна", "Водяне охолодження", "Пасивна"],
     multiple: false,
   },
-  GraphicChip: {
+  Graphic_Chip: {
     name: "Графічний чип",
     query_name: "graphic_chip",
     htmlElement: "select",
@@ -628,7 +769,7 @@ module.exports = {
     multiple: false,
   },
   Form_Factor_Storage: {
-    name: "Форм-фактор",
+    name: "Форм-фактор Накопичувача",
     query_name: "form_factor_storage",
     htmlElement: "select",
     select: [
@@ -816,9 +957,9 @@ module.exports = {
     ],
     multiple: false,
   },
-  Packaging_Type: {
+  Type_of_Packaging: {
     name: "Тип упаковки",
-    query_name: "number_cores",
+    query_name: "type_of_packaging",
     htmlElement: "select",
     select: ["BOX", "Tray"],
     multiple: false,
@@ -1219,7 +1360,7 @@ module.exports = {
     multiple: false,
   },
   Form_Factor_Motherboard: {
-    name: "Формфактор",
+    name: "Форм-фактор Материнської плати",
     query_name: "form_factor_motherboard",
     htmlElement: "select",
     select: [
@@ -1264,23 +1405,33 @@ module.exports = {
       "5 шт",
       "6 шт",
       "7 шт",
+      "8 шт",
+      "9 шт",
+      "10 шт",
+      "11 шт",
+      "12 шт",
       "Без слота PCI Express x16",
     ],
-    multiple: true,
+    multiple: false,
   },
   PCI_Express_x1: {
-    name: "PCI_Express_x1",
+    name: "PCI Express x1",
     query_name: "pci_express_x1",
     htmlElement: "select",
     select: [
-      "1 шт  ",
-      "11 шт ",
-      "12 шт ",
-      "2 шт  ",
-      "3 шт  ",
-      "4 шт  ",
-      "8 шт  ",
-      "Без слота PCI Express x1 ",
+      "1 шт",
+      "2 шт",
+      "3 шт",
+      "4 шт",
+      "5 шт",
+      "6 шт",
+      "7 шт",
+      "8 шт",
+      "9 шт",
+      "10 шт",
+      "11 шт",
+      "12 шт",
+      "Без слота PCI Express x1",
     ],
     multiple: false,
   },
@@ -1289,9 +1440,10 @@ module.exports = {
     query_name: "usb",
     htmlElement: "select",
     select: ["USB 2.0", "USB 3.0", "USB 3.1", "USB 3.2", "USB Type-C"],
-    multiple: false,
+    multiple: true,
   },
-  // Блок живлення ========================================================================================================
+
+  // Power Supply Unit (PSU) ==============================================================================================
   // Потужність
   // Підтримка 80 PLUS
   // Живлення материнської плати
@@ -1324,7 +1476,7 @@ module.exports = {
       "Модульні (з відстібними дротами)",
       "Підсвітка",
     ],
-    multiple: false,
+    multiple: true,
   },
   Form_Factor_PSU: {
     name: "Форм-фактор БЖ",
@@ -1378,8 +1530,9 @@ module.exports = {
     select: ["Активна", "Пасивна"],
     multiple: false,
   },
-  // Блок живлення ========================================================================================================
-  // Корпус ===============================================================================================================
+  // Power Supply Unit (PSU) ==============================================================================================
+
+  // Сomputer Сase ========================================================================================================
   // Кількість встановлених вентиляторів
   // Кількість внутрішніх відсіків 3.5"
   // Кількість відсіків 5.25"
@@ -1418,10 +1571,10 @@ module.exports = {
       "З підтримкою СВО",
       "З системою організації кабелів",
     ],
-    multiple: false,
+    multiple: true,
   },
   PSU_Location: {
-    name: "Розташування БП",
+    name: "Розташування БЖ",
     query_name: "psu_location",
     htmlElement: "select",
     select: ["Верхнє", "Нижнє"],
@@ -1444,7 +1597,7 @@ module.exports = {
       "Керування вентиляторами",
       "Керування підсвічуванням",
     ],
-    multiple: false,
+    multiple: true,
   },
   View: {
     name: "Вид",
@@ -1483,8 +1636,9 @@ module.exports = {
     select: ["Вертикальний", "Горизонтальний", "Універсальний"],
     multiple: false,
   },
-  // Корпус ===============================================================================================================
-  // Система охолодження ==================================================================================================
+  // Сomputer Сase ========================================================================================================
+
+  // Cooling System =======================================================================================================
   // Максимальний TDP
   // Роз'єми живлення
   // Максимальний рівень шуму
@@ -1596,5 +1750,5 @@ module.exports = {
     ],
     multiple: false,
   },
-  // Система охолодження ==================================================================================================
+  // Cooling System =======================================================================================================
 };

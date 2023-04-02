@@ -48,6 +48,16 @@ import { UserComponent } from "./layouts/user-layouts/user/user.component";
 import { MyOrderComponent } from "./layouts/user-layouts/my-order/my-order.component";
 import { ProductComponent } from "./layouts/user-layouts/product/product.component";
 import { ProductNewComponent } from "./layouts/user-layouts/product-new/product-new.component";
+// ProductNew >>> components START
+import { ProductNewPhotoComponent } from "./layouts/user-layouts/product-new/product-new-photo/product-new-photo.component";
+import { ProductNewTitleComponent } from "./layouts/user-layouts/product-new/product-new-title/product-new-title.component";
+import { ProductNewPriceComponent } from "./layouts/user-layouts/product-new/product-new-price/product-new-price.component";
+import { ProductNewStatusComponent } from "./layouts/user-layouts/product-new/product-new-status/product-new-status.component";
+import { ProductNewCategoryComponent } from "./layouts/user-layouts/product-new/product-new-category/product-new-category.component";
+import { ProductNewCharacteristicsComponent } from "./layouts/user-layouts/product-new/product-new-characteristics/product-new-characteristics.component";
+import { ProductNewKeywordsComponent } from "./layouts/user-layouts/product-new/product-new-keywords/product-new-keywords.component";
+import { ProductNewDescriptionComponent } from "./layouts/user-layouts/product-new/product-new-description/product-new-description.component";
+// ProductNew >>> components END
 import { SettingsComponent } from "./layouts/user-layouts/settings/settings.component";
 import { NewslettersComponent } from "./layouts/user-layouts/newsletters/newsletters.component";
 import { WishlistComponent } from "./layouts/user-layouts/wishlist/wishlist.component";
@@ -109,6 +119,7 @@ import { MyOrderDetailComponent } from "./layouts/user-layouts/my-order/my-order
 // Pop-up windows (Dialog) START ============================================================================================================
 import { DialogSearchSettlements } from "./template/dialog/dialog-search-settlements/dialog-search-settlements";
 import { DialogGetWarehouses } from "./template/dialog/dialog-get-warehouses/dialog-get-warehouses";
+import { ProductNewCatalogComponent } from "./template/dialog/product-new-catalog/product-new-catalog.component";
 // Pop-up windows (Dialog) END ==============================================================================================================
 // NgRx START ===============================================================================================================================
 import { StoreModule } from "@ngrx/store";
@@ -120,6 +131,7 @@ import { FavoriteEffects } from "./store/favorite/favorite.effects";
 import { ShoppingCartEffects } from "./store/cart/cart.effects";
 import { OrderEffects } from "./store/orders/order.effects";
 import { MyOrderEffects } from "./store/my-orders/my-order.effects";
+import { ProductNewEffects } from "./store/product-new/product-new.effects";
 // NgRx END =================================================================================================================================
 import { environment } from "../environments/environment";
 
@@ -146,6 +158,14 @@ import { environment } from "../environments/environment";
     CartOrderPaymentComponent,
     ProductComponent,
     ProductNewComponent,
+    ProductNewPhotoComponent,
+    ProductNewTitleComponent,
+    ProductNewPriceComponent,
+    ProductNewStatusComponent,
+    ProductNewCategoryComponent,
+    ProductNewCharacteristicsComponent,
+    ProductNewKeywordsComponent,
+    ProductNewDescriptionComponent,
     PricePipe,
     FindByTextPipe,
     NewslettersComponent,
@@ -176,6 +196,7 @@ import { environment } from "../environments/environment";
     HistoryViewComponent,
     DialogSearchSettlements,
     DialogGetWarehouses,
+    ProductNewCatalogComponent,
     MyOrderComponent,
     ProductCardMyOrderComponent,
     OrderStatusComponent,
@@ -206,6 +227,7 @@ import { environment } from "../environments/environment";
       ShoppingCartEffects,
       OrderEffects,
       MyOrderEffects,
+      ProductNewEffects,
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,

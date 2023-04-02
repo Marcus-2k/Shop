@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import { Product, ProductDelete } from "src/app/shared/interface/interfaces";
+import { Product } from "src/app/shared/interface/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
@@ -41,17 +41,18 @@ export class ProductComponent implements OnInit {
 
   productList: Product[] = [];
 
-  deleteProductServer(event: ProductDelete): void {
-    //
-    this.requestProduct.deleteById(event._id).subscribe(
-      (res) => {
-        this.showNotice.message(res.message);
-        // this.productList.splice(index, 1);
+  deleteById(event: { id: string }, index: number): void {
+    this.requestProduct.deleteById(event.id).subscribe({
+      next: (data) => {
+        this.showNotice.message(data.message);
+        if (data.deleted) {
+          this.productList.splice(index, 1);
+        }
       },
-      (error) => {
+      error: (error) => {
         console.log(error);
-      }
-    );
-    //
+      },
+      complete: () => {},
+    });
   }
 }

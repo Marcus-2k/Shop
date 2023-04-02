@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Product, ProductDelete } from "src/app/shared/interface/interfaces";
+import { Product } from "src/app/shared/interface/interfaces";
 
 import { environment } from "src/environments/environment";
 
@@ -22,10 +22,9 @@ export class ProductCardUserComponent implements OnInit {
 
   deleteProduct() {
     if (this.productItem?._id) {
-      const deleteItem: ProductDelete = {
-        _id: this.productItem._id,
-      };
-      this.transferDeleteProduct.emit(deleteItem);
+      this.transferDeleteProduct.emit({
+        id: this.productItem._id,
+      });
     }
   }
 

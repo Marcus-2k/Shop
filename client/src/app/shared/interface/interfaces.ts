@@ -84,9 +84,6 @@ export interface ProductSearch {
   user: string;
   _id: string;
 }
-export interface ProductDelete {
-  _id: string;
-}
 export interface ProductUpdate {
   imageSrc: string[];
   name: string;
@@ -95,7 +92,9 @@ export interface ProductUpdate {
   actionPrice: number;
   counter: number;
   category: number[];
+  categoryName: string[];
   characteristics: number[][];
+  characteristicsName: Options[];
   status: 0 | 1 | 2 | 3;
   keywords: string[];
   description: string;

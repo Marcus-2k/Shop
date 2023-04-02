@@ -1,435 +1,85 @@
 <!-- -->
-<div class="new">
+
+<div class="new" *ngIf="!loader">
   <div class="new-content">
-    <!--  -->
-    <button mat-raised-button color="primary" (click)="test()">
-      TEST FUNCTION
-    </button>
-    <!--  -->
-    <div class="new-content-block__placeholder placeholder">
-      <div
-        class="placeholder-content example-list"
-        cdkDropList
-        (cdkDropListDropped)="drop($event)"
-        cdkDropListOrientation="horizontal"
-      >
-        <div class="example-box" *ngFor="let image of imagePreview" cdkDrag>
-          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-          <img [src]="image" *ngIf="image !== undefined && update === false" />
-          <img
-            src="../../../../assets//img/300x300.png"
-            *ngIf="image === undefined && update === false"
-          />
-          <img
-            [src]="
-              image
-                ? url_server_folder + image
-                : '../../../../assets//img/300x300.png'
-            "
-            *ngIf="update === true"
-          />
-        </div>
-      </div>
-    </div>
-    <!--  -->
-    <div class="new-content-block__form form">
+    <form class="new-content-form">
       <!-- ============================================================== -->
       <div class="form-item form-photo">
-        <div class="form-item-title">
-          <p class="title">Фото вашого товару*</p>
-        </div>
-
-        <div class="form-photo-btn">
-          <button
-            class="btn-photo btn-download"
-            mat-raised-button
-            color="primary"
-            (click)="triggerClick()"
-          >
-            Завантажити фото
-            <span class="material-symbols-outlined"> file_download </span>
-          </button>
-          <button
-            class="btn-photo btn-delete"
-            mat-raised-button
-            color="warn"
-            *ngIf="update && imagesValidation"
-            (click)="deletePhoto()"
-          >
-            <span class="material-symbols-outlined"> delete </span>
-            Видалити фото
-          </button>
-        </div>
-
-        <input
-          class="display-none"
-          type="file"
-          accept="image/jpeg, image/png, image/webp"
-          multiple
-          [max]="maxCounterFile"
-          (change)="onFileUpload($event)"
-          #inputFile
-        />
-
-        <span class="error error__text" *ngIf="errorImagesDownload"
-          >Фото товара є обов'язковим.</span
-        >
+        <app-product-new-photo
+          [InputData_Photo]="InputData.photoData"
+          [update]="update"
+          (sendPhoto)="getPhoto($event)"
+        ></app-product-new-photo>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-name">
-        <div class="form-item-title">
-          <p class="title">Назва товару*</p>
-        </div>
-
-        <mat-form-field class="width-input" appearance="fill">
-          <mat-label>Назва товару</mat-label>
-          <input
-            matInput
-            type="text"
-            #inputTitle
-            required
-            id="name"
-            [(ngModel)]="nameProduct"
-          />
-        </mat-form-field>
+        <app-product-new-title
+          [InputData_Title]="InputData.titleData"
+          [appearance]="InputData.appearance"
+        ></app-product-new-title>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-price">
-        <div class="form-item-title">
-          <p class="title">Ціна товару*</p>
-        </div>
-
-        <mat-form-field class="width-input" appearance="fill">
-          <mat-label>Ціна товару</mat-label>
-          <input
-            matInput
-            type="number"
-            class="number__input"
-            #inputPrice
-            required
-            placeholder="9 950"
-            [(ngModel)]="priceProduct"
-            (ngModelChange)="procentActionNumber()"
-          />
-        </mat-form-field>
-      </div>
-      <!-- ============================================================== -->
-      <div class="form-item form-action">
-        <div class="form-item-title">
-          <p class="title">Акція на товар*</p>
-        </div>
-
-        <mat-checkbox
-          class="form-action-checkbox"
-          (click)="procentActionNumber()"
-          [(ngModel)]="action"
-          >Акція на товар</mat-checkbox
-        >
-
-        <div class="form-action-price__procent" *ngIf="action">
-          <p class="procent__text" *ngIf="actionProcent <= minActionProcent">
-            Знижка {{ actionProcent }}%
-          </p>
-          <p
-            class="procent__text error"
-            *ngIf="actionProcent > minActionProcent"
-          >
-            Мінімальна знижка на товар {{ minActionProcent }}%
-          </p>
-        </div>
-
-        <div class="new__action-price" *ngIf="action">
-          <mat-form-field class="width-input" appearance="fill">
-            <mat-label>Акційна ціна</mat-label>
-            <input
-              matInput
-              type="number"
-              class="number__input"
-              required
-              [(ngModel)]="actionPrice"
-              #actionPriceInput
-              (ngModelChange)="procentActionNumber()"
-            />
-          </mat-form-field>
-        </div>
-      </div>
-      <!-- ============================================================== -->
-      <div class="form-item form-counter">
-        <div class="form-item-title">
-          <p class="title">Кількість товару*</p>
-        </div>
-
-        <mat-form-field class="width-input" appearance="fill">
-          <mat-label>Кількість товару в наявності</mat-label>
-          <input
-            matInput
-            [(ngModel)]="counterProduct"
-            (ngModelChange)="statusNumber = -1"
-            type="number"
-            class="number__input"
-            [min]="0"
-            required
-          />
-        </mat-form-field>
-      </div>
-      <!-- ============================================================== -->
-      <div class="form-item form-category">
-        <div class="form-item-title">
-          <p class="title">Категорія товару*</p>
-        </div>
-
-        <div class="form-category-content" (click)="popuapOpen()">
-          <div class="category-not__selected" *ngIf="!categorySelected">
-            <p class="category-not__selected-title">Категорія не вибрана</p>
-          </div>
-
-          <div class="category-selected" *ngIf="categorySelected">
-            <p class="category-selected-title">
-              {{ categoryList[oneIndex].nameCategory }}
-            </p>
-
-            <span class="category-selected-slash">&nbsp;/&nbsp;</span>
-
-            <p class="category-selected-title">
-              {{
-                categoryList[oneIndex].nameListCategory[twoIndex]
-                  .subNameCategory
-              }}
-            </p>
-
-            <span
-              class="category-selected-slash"
-              *ngIf="categoryNumber.length === 3"
-              >&nbsp;/&nbsp;</span
-            >
-
-            <ng-container
-              *ngIf="
-                categoryNumber.length === 3 &&
-                categoryList[oneIndex].nameListCategory[twoIndex]
-                  .subNameListCategory !== undefined
-              "
-            >
-              <p class="category-selected-title">
-                {{
-                  categoryList[oneIndex].nameListCategory[twoIndex]
-                    .subNameListCategory[threeIndex].titleSubNameListCategory
-                }}
-              </p>
-            </ng-container>
-          </div>
-        </div>
-
-        <div class="form-category-error" *ngIf="categoryErrorShow">
-          <span class="error">Виберіть категорію товара</span>
-        </div>
-      </div>
-      <!-- ============================================================== -->
-      <div class="form-item form-characteristics" *ngIf="categorySelected">
-        <div class="form-item-title">
-          <p class="title">Характеристики товару*</p>
-        </div>
-
-        <div class="form-characteristics-select">
-          <ng-container
-            *ngFor="let options of characteristics; let idx = index"
-          >
-            <div class="item">
-              <mat-form-field appearance="fill">
-                <mat-label>№{{ idx }}&nbsp;{{ options.name }}</mat-label>
-                <ng-container *ngIf="options.multiple">
-                  <mat-select
-                    disableRipple
-                    class="characteristics-select"
-                    #selectedValue
-                    [(ngModel)]="characteristicsNumber[idx]"
-                    (ngModelChange)="checkingValidityCharacteristics()"
-                    multiple
-                    required
-                  >
-                    <!-- <mat-option [value]="-1">-1-Параметр не вибрано</mat-option> -->
-                    <ng-container
-                      *ngFor="let option of options.select; let i = index"
-                    >
-                      <mat-option [value]="i">
-                        <!-- {{ i + "-" }} -->
-                        {{ option }}
-                      </mat-option>
-                    </ng-container>
-                  </mat-select>
-                </ng-container>
-                <ng-container *ngIf="options.multiple === false">
-                  <mat-select
-                    disableRipple
-                    class="characteristics-select"
-                    #selectedValue
-                    [(ngModel)]="characteristicsNumber[idx][0]"
-                    (ngModelChange)="checkingValidityCharacteristics()"
-                    required
-                  >
-                    <!-- <mat-option [value]="-1">-1-Параметр не вибрано</mat-option> -->
-                    <ng-container
-                      *ngFor="let option of options.select; let i = index"
-                    >
-                      <mat-option [value]="i">
-                        <!-- {{ i + "-" }} -->
-                        {{ option }}
-                      </mat-option>
-                    </ng-container>
-                  </mat-select>
-                </ng-container>
-              </mat-form-field>
-              <!--  -->
-            </div>
-          </ng-container>
-        </div>
+        <app-product-new-price
+          [InputData_Price]="InputData.priceData"
+          [appearance]="InputData.appearance"
+          [update]="update"
+        ></app-product-new-price>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-status">
-        <div class="form-item-title">
-          <p class="title">Статус товару*</p>
-        </div>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Статус товару</mat-label>
-          <mat-select
-            disableRipple
-            class="select__params"
-            required
-            [(ngModel)]="statusNumber"
-          >
-            <mat-option
-              [value]="0"
-              [disabled]="counterProduct === 0 || counterProduct <= 10"
-              >В наявності</mat-option
-            >
-            <mat-option [value]="1" [disabled]="counterProduct !== 0"
-              >Очікується постачання</mat-option
-            >
-            <mat-option [value]="2" [disabled]="counterProduct !== 0"
-              >Немає в наявності</mat-option
-            >
-            <mat-option
-              [value]="3"
-              [disabled]="counterProduct > 10 || counterProduct === 0"
-              >Закінчується</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
+        <app-product-new-status
+          [InputData_Status]="InputData.statusData"
+          [appearance]="InputData.appearance"
+          [update]="update"
+        ></app-product-new-status>
       </div>
       <!-- ============================================================== -->
-      <div class="form-item form-words">
-        <div class="form-item-title">
-          <p class="title">Ключові слова</p>
+      <div class="form-item form-category">
+        <app-product-new-category
+          [InputData_Category]="InputData.categoryData"
+          [update]="update"
+        ></app-product-new-category>
+      </div>
+      <!-- ============================================================== -->
+      <ng-container
+        *ngIf="
+          InputData.categoryData.categorySelected &&
+          InputData.categoryData.categoryNumber !== null &&
+          InputData.characteristicsData.characteristicsName
+        "
+      >
+        <div class="form-item form-characteristics">
+          <app-product-new-characteristics
+            [InputData_Characteristics]="InputData.characteristicsData"
+            [appearance]="InputData.appearance"
+            [update]="update"
+          ></app-product-new-characteristics>
         </div>
-
-        <mat-form-field class="form-words-field" appearance="fill">
-          <mat-label>Ключові слова</mat-label>
-          <textarea
-            matInput
-            type="text"
-            class="input-keywords"
-            [(ngModel)]="keywords"
-            #inputKeywords
-            (keyup)="keyupInputKeywords(inputKeywords.value)"
-          ></textarea>
-        </mat-form-field>
-
-        <div class="form-words-length">
-          <span [ngClass]="{ error: lengthKeywords > maxLengthKeywords }"
-            >Символів
-            <span>{{ lengthKeywords }}</span>
-            <span>/</span>
-            <span>{{ maxLengthKeywords }}</span>
-          </span>
-        </div>
-
-        <div class="form-words-item">
-          <ng-container *ngFor="let word of keywordsArray">
-            <div
-              class="form-words-item-word"
-              *ngIf="word.length >= 1"
-              [ngClass]="{
-                error:
-                  word.length < minwordLength || word.length > maxwordLength
-              }"
-              [title]="
-                word.length < minwordLength
-                  ? 'Мінімальна кількість символів ' + minwordLength
-                  : word.length > maxwordLength
-                  ? 'Максимальна кількість символів ' + maxwordLength
-                  : ''
-              "
-            >
-              <p class="word__text">#{{ word }}</p>
-            </div>
-          </ng-container>
-        </div>
-
-        <div class="form-words-delete" *ngIf="!validityKeywords">
-          <button
-            class="delete-button"
-            mat-raised-button
-            color="warn"
-            (click)="deleteErrorKeywords()"
-          >
-            Видалити всі не правильні кілючові слова
-          </button>
-        </div>
+      </ng-container>
+      <!-- ============================================================== -->
+      <div class="form-item form-keywords">
+        <app-product-new-keywords
+          [InputData_Keywords]="InputData.keywordsData"
+          [appearance]="InputData.appearance"
+          [update]="update"
+        ></app-product-new-keywords>
       </div>
       <!-- ============================================================== -->
       <div class="form-item form-description">
-        <div class="form-item-title">
-          <p class="title">Опис товару*</p>
-        </div>
-
-        <mat-form-field class="form-description-field" appearance="fill">
-          <mat-label>Опис товару</mat-label>
-          <textarea
-            matInput
-            type="text"
-            class="input-description"
-            required
-            #inputDescription
-            [(ngModel)]="description"
-            [minlength]="minLengthDescription"
-            [maxlength]="maxLengthDescription"
-          ></textarea>
-        </mat-form-field>
-
-        <div class="form-description-length">
-          <span
-            [ngClass]="{
-              ok:
-                description.length >= minLengthDescription &&
-                description.length <= maxLengthDescription,
-              error: description.length > maxLengthDescription
-            }"
-          >
-            Символів {{ description.length }}/{{ maxLengthDescription }}
-          </span>
-        </div>
+        <app-product-new-description
+          [InputData_Description]="InputData.descriptionData"
+          [appearance]="InputData.appearance"
+        ></app-product-new-description>
       </div>
       <!-- ============================================================== -->
-      <div class="form-item form-create">
+      <div class="form-item form-submit">
         <button
           mat-raised-button
           color="primary"
           type="submit"
           *ngIf="!update"
           (click)="createProduct()"
-          [disabled]="
-            !imagesValidation ||
-            nameProduct.length <= minLengthNameProduct ||
-            (action && actionProcent > minActionProcent) ||
-            counterProduct <= -1 ||
-            !validityCharacteristics ||
-            statusNumber === -1 ||
-            !validityKeywords ||
-            lengthKeywords > maxLengthKeywords ||
-            description.length < minLengthDescription ||
-            description.length > maxLengthDescription
-          "
         >
           Створити
         </button>
@@ -439,147 +89,16 @@
           color="primary"
           type="submit"
           *ngIf="update"
-          (click)="upProduct()"
-          [disabled]="
-            (!imagesValidation &&
-              up_Product?.name === nameProduct &&
-              up_Product?.price === priceProduct &&
-              (up_Product?.action === action ||
-                (action === true && actionProcent > minActionProcent)) &&
-              up_Product?.actionPrice === actionPrice &&
-              up_Product?.counter === counterProduct &&
-              (!validityCharacteristics || up_validityCharacteristics) &&
-              up_Product?.status === statusNumber &&
-              (!validityKeywords || up_validityKeywords) &&
-              (up_Product?.description === description ||
-                description.length < minLengthDescription ||
-                description.length > maxLengthDescription)) ||
-            statusNumber === -1
-          "
+          (click)="createProduct()"
         >
           Зберегти
         </button>
       </div>
       <!-- ============================================================== -->
-    </div>
-    <!--  -->
+    </form>
   </div>
 </div>
 
-<div class="popuap-select" *ngIf="popuapShow">
-  <div class="popuap-select-content category">
-    <!--  -->
-    <a class="close" (click)="popuapClose(true)"
-      ><span class="material-symbols-outlined"> close </span></a
-    >
-    <!--  -->
-    <div class="category-first" *ngIf="!oneCategory">
-      <div class="category-first__title">
-        <h2>Виберіть категорію</h2>
-      </div>
-
-      <div class="category-first-content">
-        <div
-          class="category-first-content-item"
-          *ngFor="let categoryItem of categoryList; let idx = index"
-          [ngClass]="{
-            one__color: 0 === idx,
-            two__color: 1 === idx,
-            three__color: 2 === idx,
-            four__color: 3 === idx,
-            five__color: 4 === idx,
-            six__color: 5 === idx,
-            seven__color: 6 === idx,
-            eight__color: 7 === idx,
-            nine__color: 8 === idx,
-            ten__color: 9 === idx,
-            eleven__color: 10 === idx,
-            twelve__color: 11 === idx
-          }"
-          (click)="selectCategoryFirst(idx)"
-        >
-          <h2 class="item-title">{{ categoryItem.nameCategory }}</h2>
-        </div>
-      </div>
-    </div>
-    <!--  -->
-    <div class="category-list list" *ngIf="oneCategory">
-      <div class="list-one list-block">
-        <ng-container *ngIf="oneCategory">
-          <div
-            class="list-one-item list-block-item"
-            *ngFor="let category of categoryList; let idx = index"
-            [ngClass]="{ active__block: oneIndex === idx }"
-            (click)="editOneCategory(idx)"
-          >
-            <h2 class="list-block-item-title">{{ category.nameCategory }}</h2>
-          </div>
-        </ng-container>
-      </div>
-
-      <div class="list-two list-block">
-        <ng-container *ngIf="twoCategory">
-          <div
-            class="list-two-item list-block-item"
-            *ngFor="
-              let category of categoryList[oneIndex].nameListCategory;
-              let idx = index
-            "
-            (click)="editTwoCategory(idx)"
-            [ngClass]="{ active__block: twoIndex === idx }"
-          >
-            <h2 class="list-block-item-title">
-              {{ category.subNameCategory }}
-            </h2>
-          </div>
-        </ng-container>
-      </div>
-
-      <div class="list-three list-block">
-        <ng-container
-          *ngIf="
-            threeCategory &&
-            categoryList[oneIndex].nameListCategory[twoIndex]
-              .subNameListCategory !== undefined
-          "
-        >
-          <div
-            class="list-three-item list-block-item"
-            *ngFor="
-              let category of categoryList[oneIndex].nameListCategory[twoIndex]
-                .subNameListCategory;
-              let idx = index
-            "
-            (click)="editThreeCategory(idx)"
-            [ngClass]="{ active__block: threeIndex === idx }"
-          >
-            <h2 class="list-block-item-title">
-              {{ category.titleSubNameListCategory }}
-            </h2>
-          </div>
-        </ng-container>
-      </div>
-    </div>
-    <!--  -->
-    <div class="category-selected">
-      <ng-container *ngIf="twoCategory && threeCategory">
-        <button
-          mat-raised-button
-          color="primary"
-          *ngIf="
-            (categoryList[oneIndex].nameListCategory[twoIndex]
-              .characteristics !== undefined &&
-              threeIndex === -1) ||
-            (threeIndex !== -1 &&
-              categoryList[oneIndex].nameListCategory[twoIndex]
-                .subNameListCategory !== undefined)
-          "
-          (click)="selectThisCategory()"
-        >
-          Вибрати категорію
-        </button>
-      </ng-container>
-    </div>
-    <!--  -->
-  </div>
+<div class="content-element-center" *ngIf="loader">
+  <mat-spinner></mat-spinner>
 </div>

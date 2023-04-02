@@ -1,0 +1,63 @@
+<!--  -->
+<ng-container *ngIf="InputData_Characteristics">
+  <div class="form-item-title">
+    <p class="title">Характеристики товару*</p>
+  </div>
+
+  <div class="form-item-characteristics">
+    <ng-container
+      *ngFor="
+        let options of InputData_Characteristics.characteristicsName;
+        let idx = index
+      "
+    >
+      <div class="item">
+        <mat-form-field
+          [appearance]="appearance"
+          [matTooltip]="'№' + idx + '&nbsp;' + options.name"
+          [matTooltipPosition]="'above'"
+        >
+          <mat-label>{{ options.name }}</mat-label>
+          <ng-container *ngIf="options.multiple">
+            <mat-select
+              [(ngModel)]="characteristicsNumber[idx]"
+              (ngModelChange)="updateCharacteristicsStore()"
+              multiple
+              required
+            >
+              <ng-container
+                *ngFor="let option of options.select; let i = index"
+              >
+                <mat-option [value]="i">
+                  <!-- {{ "№" + i }} -->
+                  {{ option }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+          </ng-container>
+
+          <ng-container *ngIf="options.multiple === false">
+            <mat-select
+              [(ngModel)]="characteristicsNumber[idx][0]"
+              (ngModelChange)="updateCharacteristicsStore()"
+              required
+            >
+              <ng-container
+                *ngFor="let option of options.select; let i = index"
+              >
+                <mat-option [value]="i">
+                  <!-- {{ "№" + i }} -->
+                  {{ option }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+          </ng-container>
+
+          <mat-error *ngIf="characteristicsNumber[idx][0] === undefined">
+            Характеристика <strong>{{ options.name }}</strong> є обов'язковою
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

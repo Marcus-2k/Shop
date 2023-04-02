@@ -16,10 +16,13 @@
     <!--  -->
     <div class="product__content-card">
       <ul class="catalog-card">
-        <li class="catalog-card-item" *ngFor="let product of productList">
+        <li
+          class="catalog-card-item"
+          *ngFor="let product of productList; let idx = index"
+        >
           <app-product-card-user
             [productItem]="product"
-            (transferDeleteProduct)="deleteProductServer($event)"
+            (transferDeleteProduct)="deleteById($event, idx)"
           ></app-product-card-user>
         </li>
       </ul>
