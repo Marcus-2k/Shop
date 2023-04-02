@@ -3,7 +3,6 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import {
-  ProductCard,
   ProductInfo,
   ProductCharacteristics,
   ProductComments,
@@ -11,6 +10,7 @@ import {
   ProductAccessories,
   ProductPhoto,
 } from "../../interface/interfaces";
+import { Card } from "../../interface/card/card.interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -20,8 +20,8 @@ export class RequestCardService {
 
   url_server: string = environment.URL_SERVER_API + "card/";
 
-  getByIdCard(id: string): Observable<ProductCard> {
-    return this.http.get<ProductCard>(`${this.url_server}${id}`);
+  getByIdCard(id: string): Observable<Card> {
+    return this.http.get<Card>(`${this.url_server}${id}`);
   }
 
   getByIdCardInfo(id: string): Observable<ProductInfo> {
@@ -48,7 +48,7 @@ export class RequestCardService {
 
   getByIdCardAccessories(id: string): Observable<ProductAccessories> {
     return this.http.get<ProductAccessories>(
-      `${this.url_server}card/${id}/accessories`
+      `${this.url_server}${id}/accessories`
     );
   }
 }

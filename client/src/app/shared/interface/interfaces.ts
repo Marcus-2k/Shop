@@ -41,18 +41,7 @@ export interface Product {
   user: string;
   _id: string;
 }
-export interface ProductCard {
-  imageSrc: string[];
-  name: string;
-  price: number;
-  action: boolean;
-  actionPrice: number;
-  counter: number;
-  status: 0 | 1 | 2 | 3;
-  description: string;
-  user: string;
-  _id: string;
-}
+
 export interface ProductInfo {
   imageSrc: string[];
   description: string;

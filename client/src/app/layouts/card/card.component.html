@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card__content">
+  <div class="card__content" *ngIf="product && widget_breadcrumbs">
     <div class="card__content-breadcrumbs">
       <span
         [matTooltip]="'Інтернет магазин'"
@@ -8,35 +8,44 @@
       >
         home
       </span>
-
       <span class="material-symbols-outlined"> navigate_next </span>
 
-      <span
-        [matTooltip]="levelOne ? levelOne : ''"
-        routerLink="/"
+      <a
+        [matTooltip]="widget_breadcrumbs.first.name"
+        [routerLink]="'/' + widget_breadcrumbs.first.link"
         class="breadcrumbs-item"
-        >{{ levelOne }}</span
       >
+        {{ widget_breadcrumbs.first.name }}
+      </a>
+      <span class="material-symbols-outlined"> navigate_next </span>
 
-      <span class="material-symbols-outlined" *ngIf="levelTwo">
-        navigate_next
+      <a
+        [matTooltip]="widget_breadcrumbs.second.name"
+        [routerLink]="'/search/' + widget_breadcrumbs.second.link"
+        class="breadcrumbs-item"
+      >
+        {{ widget_breadcrumbs.second.name }}
+      </a>
+      <span class="material-symbols-outlined"> navigate_next </span>
+
+      <ng-container *ngIf="widget_breadcrumbs.third">
+        <a
+          [matTooltip]="widget_breadcrumbs.third.name"
+          [routerLink]="'/search/' + widget_breadcrumbs.third.link"
+          class="breadcrumbs-item"
+        >
+          {{ widget_breadcrumbs.third.name }}
+        </a>
+        <span class="material-symbols-outlined"> navigate_next </span>
+      </ng-container>
+
+      <span class="breadcrumbs-item">
+        {{ widget_breadcrumbs.location.name }}
       </span>
-
-      <span
-        [matTooltip]="levelTwo ? levelTwo : ''"
-        routerLink="/"
-        class="breadcrumbs-item"
-        *ngIf="levelTwo"
-        >{{ levelTwo }}</span
-      >
-
-      <span class="material-symbols-outlined"> navigate_next </span>
-
-      <span class="breadcrumbs-item">{{ location }}</span>
     </div>
     <!--  -->
     <div class="card__content-title">
-      <h1 class="card__title">{{ titleProduct }}</h1>
+      <h1 class="card__title">{{ widget_breadcrumbs.location.name }}</h1>
     </div>
     <!--  -->
     <div class="card__content-navigation">

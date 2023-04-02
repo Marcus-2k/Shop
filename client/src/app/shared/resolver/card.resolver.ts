@@ -7,11 +7,13 @@ import {
   Router,
 } from "@angular/router";
 import { catchError, Observable, throwError } from "rxjs";
-import { ProductCard } from "src/app/shared/interface/interfaces";
+
+import { Card } from "../interface/card/card.interfaces";
+
 import { RequestCardService } from "src/app/shared/service/server/request-card.service";
 
 @Injectable({ providedIn: "root" })
-export class CardResolver implements Resolve<ProductCard> {
+export class CardResolver implements Resolve<Card> {
   constructor(
     private requestCard: RequestCardService,
     private router: Router
@@ -20,7 +22,7 @@ export class CardResolver implements Resolve<ProductCard> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<ProductCard> | Promise<ProductCard> | ProductCard {
+  ): Observable<Card> | Promise<Card> | Card {
     console.log("Start Card Resolver");
 
     return this.requestCard.getByIdCard(route.params["id"]).pipe(
@@ -28,7 +30,7 @@ export class CardResolver implements Resolve<ProductCard> {
         if (error.status === 404) {
           this.router.navigate(["/404"]);
         }
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
