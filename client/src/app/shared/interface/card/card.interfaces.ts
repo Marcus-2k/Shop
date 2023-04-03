@@ -1,21 +1,8 @@
 export interface Widget_Breadcrumbs {
-  first: {
-    name: string;
-    link: string;
-  };
-  second: {
-    name: string;
-    link: string;
-  };
-  third:
-    | {
-        name: string;
-        link: string;
-      }
-    | undefined;
-  location: {
-    name: string;
-  };
+  first: { name: string; link: string };
+  second: { name: string; link: string };
+  third: { name: string; link: string } | undefined;
+  location: { name: string } | undefined;
 }
 
 export interface ProductCard {

@@ -1,50 +1,13 @@
 <div class="card">
   <div class="card__content" *ngIf="product && widget_breadcrumbs">
     <div class="card__content-breadcrumbs">
-      <span
-        [matTooltip]="'Інтернет магазин'"
-        routerLink="/"
-        class="material-symbols-outlined breadcrumbs-item"
-      >
-        home
-      </span>
-      <span class="material-symbols-outlined"> navigate_next </span>
-
-      <a
-        [matTooltip]="widget_breadcrumbs.first.name"
-        [routerLink]="'/' + widget_breadcrumbs.first.link"
-        class="breadcrumbs-item"
-      >
-        {{ widget_breadcrumbs.first.name }}
-      </a>
-      <span class="material-symbols-outlined"> navigate_next </span>
-
-      <a
-        [matTooltip]="widget_breadcrumbs.second.name"
-        [routerLink]="'/search/' + widget_breadcrumbs.second.link"
-        class="breadcrumbs-item"
-      >
-        {{ widget_breadcrumbs.second.name }}
-      </a>
-      <span class="material-symbols-outlined"> navigate_next </span>
-
-      <ng-container *ngIf="widget_breadcrumbs.third">
-        <a
-          [matTooltip]="widget_breadcrumbs.third.name"
-          [routerLink]="'/search/' + widget_breadcrumbs.third.link"
-          class="breadcrumbs-item"
-        >
-          {{ widget_breadcrumbs.third.name }}
-        </a>
-        <span class="material-symbols-outlined"> navigate_next </span>
-      </ng-container>
-
-      <span class="breadcrumbs-item">
-        {{ widget_breadcrumbs.location.name }}
-      </span>
+      <app-widget-breadcrumbs
+        [widget_breadcrumbs]="widget_breadcrumbs"
+        [type]="'card'"
+      ></app-widget-breadcrumbs>
     </div>
     <!--  -->
-    <div class="card__content-title">
+    <div class="card__content-title" *ngIf="widget_breadcrumbs.location">
       <h1 class="card__title">{{ widget_breadcrumbs.location.name }}</h1>
     </div>
     <!--  -->

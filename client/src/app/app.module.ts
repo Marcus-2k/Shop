@@ -36,6 +36,9 @@ import { FooterComponent } from "./layouts/main/footer/footer.component";
 import { LoginComponent } from "./layouts/login/login.component";
 import { RegisterComponent } from "./layouts/register/register.component";
 
+// Widgets
+import { WidgetBreadcrumbsComponent } from "./layouts/components/widgets/widget-breadcrumbs/widget-breadcrumbs.component";
+
 // Page Search Product
 import { SearchComponent } from "./layouts/search/search.component";
 import { SearchEmptyComponent } from "./layouts/search/search-empty/search-empty.component";
@@ -208,6 +211,7 @@ import { environment } from "../environments/environment";
     SearchEmptyComponent,
     WidgetAutoPortalComponent,
     WidgetSectionIdComponent,
+    WidgetBreadcrumbsComponent,
   ],
   imports: [
     BrowserModule,
