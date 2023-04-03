@@ -1,4 +1,5 @@
 import { Params } from "@angular/router";
+import { Widget_Breadcrumbs } from "./card/card.interfaces";
 
 // Auth START ==========================================================================================
 export interface UserRegister {
@@ -291,8 +292,11 @@ export interface CategoryHome {
 export interface FoundData {
   product: Product[];
   filters: Filter[];
+
   widget_auto_portal: WidgetAutoPortal[] | undefined;
   widget_section_id: WidgetSectionId[] | undefined;
+  widget_breadcrumbs: Widget_Breadcrumbs | undefined;
+
   number_of_product: number;
   currentPage: number;
   maxPage: number;

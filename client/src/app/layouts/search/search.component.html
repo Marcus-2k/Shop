@@ -12,6 +12,25 @@
     <div class="search">
       <div class="search__content">
         <div class="search__content-header">
+          <ng-container>
+            <div
+              class="widget_breadcrumbs"
+              *ngIf="widget_breadcrumbs !== undefined"
+            >
+              <app-widget-breadcrumbs
+                [widget_breadcrumbs]="widget_breadcrumbs"
+                [type]="'search'"
+              ></app-widget-breadcrumbs>
+            </div>
+
+            <div
+              class="widget_breadcrumbs"
+              *ngIf="widget_breadcrumbs === undefined"
+            >
+              <h2 class="search__text">&laquo;{{ search_text }}&raquo;</h2>
+            </div>
+          </ng-container>
+
           <div
             class="widget_auto_portal"
             *ngIf="widget_auto_portal !== undefined"

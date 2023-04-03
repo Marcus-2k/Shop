@@ -67,6 +67,12 @@ module.exports.search = async function (req, res) {
     let filters;
     let widget_auto_portal;
     let widget_section_id;
+    let widget_breadcrumbs;
+    /**
+     * If the request was made via "navigate_link", the server will create breadcrumbs.
+     * The first and second level of the category will be added,
+     * and the third level if "type === 1" of the category
+     */
 
     if (navigate_link) {
       let { categoryList, type } = await SearchService.searchCategoryByParams(
@@ -76,14 +82,45 @@ module.exports.search = async function (req, res) {
         return res.status(500).json({ message: "Server error" });
       }
 
+      widget_breadcrumbs = {
+        first: {
+          name: catalog.categoryList[categoryList[0][0]].nameCategory,
+          link: catalog.categoryList[categoryList[0][0]].navigate_link,
+        },
+        second: {
+          name: catalog.categoryList[categoryList[0][0]].nameListCategory[
+            categoryList[0][1]
+          ].subNameCategory,
+          link: catalog.categoryList[categoryList[0][0]].nameListCategory[
+            categoryList[0][1]
+          ].navigate_link,
+        },
+        third: undefined,
+      };
+
       if (type === 1) {
         FilterQuery = { category: categoryList[0] };
+
+        // widget_breadcrumbs
+        if (categoryList.length === 1) {
+          widget_breadcrumbs.third = {
+            name: catalog.categoryList[categoryList[0][0]].nameListCategory[
+              categoryList[0][1]
+            ].subNameListCategory[categoryList[0][2]].titleSubNameListCategory,
+            link: catalog.categoryList[categoryList[0][0]].nameListCategory[
+              categoryList[0][1]
+            ].subNameListCategory[categoryList[0][2]].navigate_link,
+          };
+        }
       } else if (type === 2) {
         FilterQuery = { category: { $in: categoryList } };
         widget_auto_portal =
           catalog.categoryList[categoryList[0][0]].nameListCategory[
             categoryList[0][1]
           ].subNameListCategory;
+
+        // widget_breadcrumbs
+        widget_breadcrumbs.third = undefined;
       } else {
         return res.status(500).json({ message: "Server error" });
       }
@@ -322,6 +359,7 @@ module.exports.search = async function (req, res) {
       filters,
       widget_auto_portal,
       widget_section_id,
+      widget_breadcrumbs,
       number_of_product: count,
       currentPage,
       maxPage,

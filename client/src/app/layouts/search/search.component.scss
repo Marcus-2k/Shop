@@ -13,6 +13,14 @@
       max-height: 100%;
       display: flex;
       flex-direction: column;
+      .widget_breadcrumbs {
+        .search__text {
+          margin: 0;
+          font-size: 24px;
+          padding-top: 15px;
+          padding-bottom: 15px;
+        }
+      }
       .reset {
         display: flex;
         align-items: center;
