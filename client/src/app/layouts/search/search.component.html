@@ -102,7 +102,10 @@
               </div>
 
               <div class="settings__tile">
-                <mat-button-toggle-group [(ngModel)]="type_tile">
+                <mat-button-toggle-group
+                  [(ngModel)]="type_tile"
+                  (ngModelChange)="tileChange()"
+                >
                   <mat-button-toggle
                     [value]="'large'"
                     matTooltip="Крупна плитка"

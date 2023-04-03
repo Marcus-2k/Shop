@@ -196,6 +196,13 @@ export class SearchComponent implements OnInit {
 
     this.renameTitle.renameTitleSite("Інтернет-магазин");
 
+    const type_tile: string | null = localStorage.getItem("type_tile");
+    if (type_tile) {
+      if (type_tile === "large" || type_tile === "small") {
+        this.type_tile = type_tile;
+      }
+    }
+
     console.log(this.queryParams);
     console.log(this.params);
   }
@@ -284,6 +291,9 @@ export class SearchComponent implements OnInit {
     this.queryParams["type_sort"] = this.type_sort;
 
     this.searchByQuery();
+  }
+  tileChange() {
+    localStorage.setItem("type_tile", this.type_tile);
   }
   // Header END ===================================================================================
   // Sidebar START ================================================================================
