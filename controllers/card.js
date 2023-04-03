@@ -16,25 +16,52 @@ module.exports.getByIdCard = async function (req, res) {
       category: 1,
       status: 1,
       user: 1,
-    }).catch((error) => {
-      console.log(error);
     });
 
     if (product) {
       product.imageSrc = product.imageSrc.splice(0, 1);
 
+      let widget_breadcrumbs = {
+        first: {
+          name: Catalog.categoryList[product.category[0]].nameCategory,
+          link: Catalog.categoryList[product.category[0]].navigate_link,
+        },
+        second: {
+          name: Catalog.categoryList[product.category[0]].nameListCategory[
+            product.category[1]
+          ].subNameCategory,
+          link: Catalog.categoryList[product.category[0]].nameListCategory[
+            product.category[1]
+          ].navigate_link,
+        },
+        third: undefined,
+        location: { name: product.name },
+      };
+
+      if (
+        Catalog.categoryList[product.category[0]].nameListCategory[
+          product.category[1]
+        ].type === 2
+      ) {
+        widget_breadcrumbs.third = {
+          name: Catalog.categoryList[product.category[0]].nameListCategory[
+            product.category[1]
+          ].subNameListCategory[product.category[2]].titleSubNameListCategory,
+          link: Catalog.categoryList[product.category[0]].nameListCategory[
+            product.category[1]
+          ].subNameListCategory[product.category[2]].navigate_link,
+        };
+      } else if (
+        Catalog.categoryList[product.category[0]].nameListCategory[
+          product.category[1]
+        ].type === 1
+      ) {
+        widget_breadcrumbs.third = undefined;
+      }
+
       const productCard = {
         product,
-        breadCrumbs: {
-          levelOne: Catalog.categoryList[product.category[0]].nameCategory,
-          levelTwo:
-            product.category.length === 3
-              ? Catalog.categoryList[product.category[0]].nameListCategory[
-                  product.category[1]
-                ].subNameCategory
-              : undefined,
-          location: product.name,
-        },
+        widget_breadcrumbs: widget_breadcrumbs,
       };
 
       return res.status(200).json(productCard);

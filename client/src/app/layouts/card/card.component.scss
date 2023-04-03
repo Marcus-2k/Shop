@@ -7,19 +7,6 @@
       padding: 0 15px;
     }
     &-breadcrumbs {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      padding-top: 25px;
-      span {
-        color: #4857b4;
-        cursor: context-menu;
-        font-size: 14px;
-        margin: 0 2.5px;
-      }
-      .breadcrumbs-item {
-        cursor: pointer;
-      }
     }
     &-title {
       margin-top: calc(15px + (25 - 15) * ((100vw - 320px) / (1920 - 320)));

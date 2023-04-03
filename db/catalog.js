@@ -2,6 +2,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Ноутбуки та комп'ютери",
     nameCategoryImg: "uploads/catalog/laptop.png",
+    navigate_link: "computers-notebooks",
     nameListCategory: [
       {
         subNameCategory: "Ноутбуки",
@@ -390,6 +391,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Смартфони, ТВ і електроніка",
     nameCategoryImg: "uploads/catalog/smartphone.png",
+    navigate_link: "telefony-tv-i-ehlektronika/",
     nameListCategory: [
       // {
       //   subNameCategory: "Телефони",
@@ -822,6 +824,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Товари для геймерів",
     nameCategoryImg: "uploads/catalog/gamepad.png",
+    navigate_link: "game-zone",
     nameListCategory: [
       {
         subNameCategory: "Play Station",
@@ -1148,6 +1151,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Побутова техніка",
     nameCategoryImg: "uploads/catalog/electric-appliance.png",
+    navigate_link: "household-appliances",
     nameListCategory: [
       {
         subNameCategory: "Велика побутова техніка",
@@ -1624,6 +1628,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Товари для дому",
     nameCategoryImg: "uploads/catalog/shelf.png",
+    navigate_link: "household-goods",
     nameListCategory: [
       {
         subNameCategory: "Меблі",
@@ -2082,6 +2087,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Інструменти та автотовари",
     nameCategoryImg: "uploads/catalog/machine-drill.png",
+    navigate_link: "tools-and-automotive-products",
     nameListCategory: [
       {
         subNameCategory: "Інструменти",
@@ -2563,6 +2569,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Сантехніка та ремонт",
     nameCategoryImg: "uploads/catalog/bathtub.png",
+    navigate_link: "plumbing-and-repair",
     nameListCategory: [
       {
         subNameCategory: "Ванни, бокси, душові",
@@ -2952,6 +2959,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Дача, сад і город",
     nameCategoryImg: "uploads/catalog/gardening-tools.png",
+    navigate_link: "cottage-garden-and-vegetable-garden",
     nameListCategory: [
       {
         subNameCategory: "Садова техніка",
@@ -3373,6 +3381,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Спорт і захоплення",
     nameCategoryImg: "uploads/catalog/sport.png",
+    navigate_link: "sports-and-hobbies",
     nameListCategory: [
       {
         subNameCategory: "Тренажери та фітнес",
@@ -3763,6 +3772,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Одяг, взуття та прикраси",
     nameCategoryImg: "uploads/catalog/fashion.png",
+    navigate_link: "clothes-shoes-and-jewelry",
     nameListCategory: [
       {
         subNameCategory: "Одяг для жінок",
@@ -4282,6 +4292,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Краса та здоров'я",
     nameCategoryImg: "uploads/catalog/skin-care.png",
+    navigate_link: "beauty-and-health",
     nameListCategory: [
       {
         subNameCategory: "Техніка для краси та здоров'я",
@@ -4706,6 +4717,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Дитячі товари",
     nameCategoryImg: "uploads/catalog/children.png",
+    navigate_link: "childrens-products",
     nameListCategory: [
       {
         subNameCategory: "Іграшки",

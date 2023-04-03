@@ -8,6 +8,7 @@ import {
   WidgetAutoPortal,
   WidgetSectionId,
 } from "src/app/shared/interface/interfaces";
+import { Widget_Breadcrumbs } from "src/app/shared/interface/card/card.interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
@@ -125,12 +126,15 @@ export class SearchComponent implements OnInit {
           console.log("Кількість сторінок", response.maxPage);
           console.log("Товарів на сторінку", response.limit);
           console.log("Загальна кількість товарів", response.number_of_product);
+          console.log("Хлібні крихти", response.widget_breadcrumbs);
           console.log("=====================================================");
           // ==============================================================================================
           this.productList = response.product;
           this.listFilter = response.filters;
           this.widget_auto_portal = response.widget_auto_portal;
           this.widget_section_id = response.widget_section_id;
+          this.widget_breadcrumbs = response.widget_breadcrumbs;
+
           this.number_of_product = response.number_of_product;
 
           this.currentPage = response.currentPage;
@@ -289,6 +293,7 @@ export class SearchComponent implements OnInit {
 
   widget_auto_portal: WidgetAutoPortal[] | undefined;
   widget_section_id: WidgetSectionId[] | undefined;
+  widget_breadcrumbs: Widget_Breadcrumbs | undefined;
 
   filterSearch(nameInput: string, nameQuery: string, checked: boolean) {
     if (checked === true) {

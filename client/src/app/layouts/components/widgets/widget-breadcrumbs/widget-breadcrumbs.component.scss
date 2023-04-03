@@ -1,0 +1,17 @@
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  span {
+    color: #4857b4;
+    cursor: context-menu;
+    font-size: 14px;
+    margin: 0 2.5px;
+  }
+  &-item {
+    cursor: pointer;
+    color: #4857b4;
+  }
+}
