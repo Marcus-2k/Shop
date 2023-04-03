@@ -59,38 +59,70 @@
             </ng-container>
           </div>
 
-          <div class="settings" [ngClass]="{ mobile: widthWindow <= 1000 }">
-            <div class="settings__filter-mobile" *ngIf="widthWindow <= 1000">
-              <button
-                class="filter__button"
-                mat-raised-button
-                color="primary"
-                (click)="onFilterSidebar()"
-              >
-                <span class="material-symbols-outlined"> filter_alt </span>
-                <span class="filter__button-text">Фільтри</span>
-              </button>
-            </div>
-            <div class="settings__sort">
-              <mat-form-field appearance="fill" class="settings__sort-select">
-                <mat-label>Відсортувати товари:</mat-label>
-                <mat-select
-                  disableRipple
-                  class="characteristics-select"
-                  #selectSort
-                  [(ngModel)]="type_sort"
-                  (ngModelChange)="productSort()"
+          <div class="settings">
+            <div class="settings-left">
+              <div class="settings__filter-mobile">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="onFilterSidebar()"
                 >
-                  <mat-option [value]="0">Від дешевих до дорогих</mat-option>
-                  <mat-option [value]="1">Від дорогих до дешевих</mat-option>
-                  <mat-option [value]="2" [disabled]="true"
-                    >Популярні</mat-option
+                  <span class="material-symbols-outlined"> filter_alt </span>
+                  <span class="filter__button-text">Фільтри</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="settings-right">
+              <div class="settings__sort">
+                <mat-form-field
+                  appearance="outline"
+                  class="settings__sort-select"
+                >
+                  <mat-label>Відсортувати товари:</mat-label>
+                  <mat-select
+                    disableRipple
+                    class="characteristics-select"
+                    #selectSort
+                    [(ngModel)]="type_sort"
+                    (ngModelChange)="productSort()"
                   >
-                  <mat-option [value]="3" [disabled]="true">Новинки</mat-option>
-                  <mat-option [value]="4">Акційні</mat-option>
-                  <mat-option [value]="5">За рейтингом</mat-option>
-                </mat-select>
-              </mat-form-field>
+                    <mat-option [value]="0">Від дешевих до дорогих</mat-option>
+                    <mat-option [value]="1">Від дорогих до дешевих</mat-option>
+                    <mat-option [value]="2" [disabled]="true">
+                      Популярні
+                    </mat-option>
+                    <mat-option [value]="3" [disabled]="true"
+                      >Новинки</mat-option
+                    >
+                    <mat-option [value]="4">Акційні</mat-option>
+                    <mat-option [value]="5">За рейтингом</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="settings__tile">
+                <mat-button-toggle-group [(ngModel)]="type_tile">
+                  <mat-button-toggle
+                    [value]="'large'"
+                    matTooltip="Крупна плитка"
+                    appearance="standard"
+                  >
+                    <mat-icon>
+                      <span class="material-symbols-outlined tile_large">
+                        apps
+                      </span>
+                    </mat-icon>
+                  </mat-button-toggle>
+                  <mat-button-toggle [value]="'small'" matTooltip="Мала плитка">
+                    <mat-icon>
+                      <span class="material-symbols-outlined tile_small">
+                        background_grid_small
+                      </span>
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
             </div>
           </div>
         </div>
@@ -190,6 +222,10 @@
                 <ul class="cards-catalog">
                   <li
                     class="cards-catalog-item"
+                    [ngClass]="{
+                      large: type_tile === 'large',
+                      small: type_tile === 'small'
+                    }"
                     *ngFor="let product of productList"
                   >
                     <app-product-card

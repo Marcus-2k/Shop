@@ -10,7 +10,6 @@
     flex-direction: column;
     &-header {
       height: auto;
-      max-height: 100%;
       display: flex;
       flex-direction: column;
       .widget_breadcrumbs {
@@ -51,18 +50,33 @@
       }
       .settings {
         height: auto;
-        margin-top: 0.5%;
-        max-height: 50%;
         display: flex;
-        align-items: center;
-        justify-content: end;
+        margin-bottom: 15px;
+        &-left {
+          display: flex;
+        }
+        &-right {
+          display: flex;
+        }
+
         &__filter-mobile {
+          display: none;
         }
         &__sort {
+          &-select {
+            height: 48px;
+          }
         }
-      }
-      .settings.mobile {
-        justify-content: space-between;
+        &__tile {
+          margin-top: 0.25em;
+          margin-left: 15px;
+          .tile_large {
+            font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 48;
+          }
+          .tile_small {
+            font-variation-settings: "FILL" 1, "wght" 700, "GRAD" 0, "opsz" 48;
+          }
+        }
       }
     }
     &-main {
@@ -151,8 +165,16 @@
             flex-wrap: wrap;
             width: 100%;
             &-item {
-              width: 25%;
               height: 450px;
+            }
+            &-item.large {
+              width: 33.3%;
+              @media (max-width: 1250px) {
+                width: 50%;
+              }
+            }
+            &-item.small {
+              width: 25%;
               @media (max-width: 1250px) {
                 width: 33.3%;
               }
@@ -184,21 +206,18 @@
 @media (max-width: 1000px) {
   .search {
     &__content {
-      display: flex;
-      flex-direction: column;
       &-header {
-        .reset {
-        }
         .settings {
-          margin-bottom: 15px;
-          display: flex;
-          align-content: center;
-          .settings__sort {
-            &-select {
-              width: calc(
-                180px + (350 - 180) * ((100vw - 320px) / (768 - 320))
-              );
-              height: calc(50px + (60 - 50) * ((100vw - 320px) / (768 - 320)));
+          justify-content: space-between;
+          &__filter-mobile {
+            display: block;
+            margin-right: 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            button {
+              display: flex;
+              align-items: center;
             }
           }
         }

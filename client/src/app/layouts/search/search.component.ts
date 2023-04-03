@@ -275,6 +275,7 @@ export class SearchComponent implements OnInit {
   // Сommon END ===================================================================================
   // Header START =================================================================================
   type_sort: number = 0;
+  type_tile: "large" | "small" = "small";
 
   productSort() {
     if (this.queryParams.hasOwnProperty("type_sort")) {

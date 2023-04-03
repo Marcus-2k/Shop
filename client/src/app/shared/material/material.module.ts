@@ -25,6 +25,7 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ClipboardModule } from "@angular/cdk/clipboard";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 const Material = [
   MatSelectModule,
@@ -52,6 +53,7 @@ const Material = [
   MatSnackBarModule,
   ClipboardModule,
   MatProgressBarModule,
+  MatButtonToggleModule,
 ];
 
 @NgModule({
