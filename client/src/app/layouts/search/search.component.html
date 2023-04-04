@@ -166,7 +166,9 @@
                       (click)="filter.show = !filter.show"
                     >
                       <button class="btn__filter">
-                        <p class="title">{{ filter.title }}</p>
+                        <p class="title">
+                          {{ filter.title }}
+                        </p>
                         <p
                           class="arrow"
                           [ngClass]="{ active__arrow: filter.show }"
@@ -203,11 +205,13 @@
                           #checkboxInput
                         >
                           <!-- ID-{{ i + "" + "0" + idx }}&nbsp;&nbsp;&nbsp; -->
-                          {{ filterItem.name }}
-                          <span class="counter"
-                            >&nbsp;({{ filterItem.counter + 1 }})</span
-                          ></mat-checkbox
-                        >
+                          <span>
+                            {{ filterItem.name }}
+                          </span>
+                          <span class="counter">
+                            &nbsp;({{ filterItem.counter + 1 }})
+                          </span>
+                        </mat-checkbox>
                       </li>
                     </ul>
                   </div>

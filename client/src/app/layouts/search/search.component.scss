@@ -51,7 +51,9 @@
       .settings {
         height: auto;
         display: flex;
-        margin-bottom: 15px;
+        justify-content: end;
+        margin-top: 10px;
+        margin-bottom: 10px;
         &-left {
           display: flex;
         }
@@ -143,7 +145,7 @@
                   transition: 0.4s;
                 }
               }
-              .show {
+              &-list.show {
                 display: block;
               }
             }
@@ -237,8 +239,9 @@
           .select {
             width: calc(320px + (350 - 320) * ((100vw - 320px) / (768 - 320)));
             height: 100%;
-            overflow-y: scroll;
+            overflow-y: auto;
             overflow-x: hidden;
+            background-color: #fff;
             &::-webkit-scrollbar {
               width: 5px;
               height: 0px;
@@ -255,7 +258,7 @@
             &__content {
             }
             .category {
-              padding: 15px;
+              padding: 7.5px;
             }
           }
           .select--space {
