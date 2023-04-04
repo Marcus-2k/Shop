@@ -42,10 +42,22 @@
           border-radius: 10px;
           background-color: #d8d8d8;
         }
-        .reset-item {
-          margin-top: 5px;
-          margin-bottom: 5px;
+        &-number_of_product {
           margin-right: 5px;
+          .number_of_product-text {
+            margin: 0;
+          }
+        }
+        &-all {
+          margin-right: 5px;
+        }
+        &-item {
+          display: flex;
+          &-li {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            margin-right: 5px;
+          }
         }
       }
       .settings {

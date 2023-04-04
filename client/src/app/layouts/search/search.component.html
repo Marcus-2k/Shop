@@ -41,22 +41,47 @@
           </div>
 
           <div class="reset">
-            <ng-container *ngFor="let filter of listFilter">
-              <ng-container *ngFor="let filterItem of filter.checkboxList">
-                <ng-container *ngIf="filterItem.active">
-                  <li class="reset-item">
-                    <button
-                      mat-stroked-button
-                      (click)="
-                        filterSearch(filterItem.name, filter.query_name, false)
-                      "
-                    >
-                      {{ filterItem.name }}&nbsp;&Cross;
-                    </button>
-                  </li>
+            <div
+              class="reset-number_of_product"
+              *ngIf="counterActiveFilter > 0"
+            >
+              <p class="number_of_product-text">
+                Обрано {{ number_of_product }} товарів
+              </p>
+            </div>
+
+            <div class="reset-all" *ngIf="counterActiveFilter > 0">
+              <button
+                mat-stroked-button
+                color="warn"
+                (click)="resetAllFilter()"
+              >
+                Скасувати
+              </button>
+            </div>
+
+            <div class="reset-item">
+              <ng-container *ngFor="let filter of listFilter">
+                <ng-container *ngFor="let filterItem of filter.checkboxList">
+                  <ng-container *ngIf="filterItem.active">
+                    <li class="reset-item-li">
+                      <button
+                        mat-stroked-button
+                        (click)="
+                          filterSearch(
+                            filterItem.name,
+                            filter.query_name,
+                            false
+                          )
+                        "
+                      >
+                        {{ filterItem.name }}&nbsp;&Cross;
+                      </button>
+                    </li>
+                  </ng-container>
                 </ng-container>
               </ng-container>
-            </ng-container>
+            </div>
           </div>
 
           <div class="settings">

@@ -163,6 +163,7 @@ export class SearchComponent implements OnInit {
                     this.listFilter[i].checkboxList[idx].name
                   ) !== -1
                 ) {
+                  this.counterActiveFilter++;
                   this.listFilter[i].checkboxList[idx].active = true;
                 }
               }
@@ -284,6 +285,23 @@ export class SearchComponent implements OnInit {
   type_sort: number = 0;
   type_tile: "large" | "small" = "small";
 
+  counterActiveFilter: number = 0;
+  resetAllFilter() {
+    for (const key in this.queryParams) {
+      if (key !== "type_sort" && key !== "limit" && key !== "page") {
+        delete this.queryParams[key];
+      }
+    }
+
+    for (let idx = 0; idx < this.listFilter.length; idx++) {
+      for (let i = 0; i < this.listFilter[idx].checkboxList.length; i++) {
+        this.listFilter[idx].checkboxList[i].active = false;
+      }
+    }
+
+    this.searchByQuery();
+  }
+
   productSort() {
     if (this.queryParams.hasOwnProperty("type_sort")) {
       delete this.queryParams["type_sort"];
@@ -339,6 +357,7 @@ export class SearchComponent implements OnInit {
         this.queryParams["type_sort"] = this.type_sort;
       }
 
+      this.counterActiveFilter++;
       this.searchByQuery();
     } else if (checked === false) {
       const nameQueryForServer: string = nameQuery;
@@ -378,6 +397,7 @@ export class SearchComponent implements OnInit {
         this.queryParams["type_sort"] = this.type_sort;
       }
 
+      this.counterActiveFilter--;
       this.searchByQuery();
     }
   }
