@@ -9,5 +9,6 @@ router.get(
   controller.getCategoryAndCharacteristics
 );
 router.post("/only-characteristics", controller.getCharacteristics);
+router.get("/:navigate_link", controller.getCatalogSection);
 
 module.exports = router;

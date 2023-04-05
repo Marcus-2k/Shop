@@ -11,5 +11,5 @@ export class WidgetBreadcrumbsComponent {
   constructor() {}
 
   @Input() widget_breadcrumbs: undefined | Widget_Breadcrumbs;
-  @Input() type: undefined | "card" | "search";
+  @Input() type: undefined | "card" | "search" | "catalog-section";
 }

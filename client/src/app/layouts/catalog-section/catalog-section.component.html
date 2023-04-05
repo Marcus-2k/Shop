@@ -1,1 +1,12 @@
 <!--  -->
+
+<div class="catalog-section" *ngIf="catalogSection && widget_breadcrumbs">
+  <div class="catalog-section-breadcrumbs">
+    <app-widget-breadcrumbs
+      [type]="'catalog-section'"
+      [widget_breadcrumbs]="widget_breadcrumbs"
+    ></app-widget-breadcrumbs>
+  </div>
+
+  <div class="catalog-section-content"></div>
+</div>
