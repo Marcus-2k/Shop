@@ -253,6 +253,7 @@ export interface News {
 export interface CategoryProduct {
   nameCategory: string;
   nameCategoryImg: string;
+  navigate_link: string;
   nameListCategory: {
     subNameCategory: string;
     navigate_link: string;
