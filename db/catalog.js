@@ -8,6 +8,7 @@ module.exports.categoryList = [
         subNameCategory: "Ноутбуки",
         navigate_link: "notebooks",
         type: 1,
+        image_link: "uploads/catalog/computers-notebooks/laptops.webp",
         permissionUse: true,
         subNameListCategory: [
           {
@@ -46,6 +47,7 @@ module.exports.categoryList = [
         subNameCategory: "Аксесуари для ноутбуків і ПК",
         navigate_link: "computers-notebooks-accessories",
         type: 2,
+        image_link: "uploads/catalog/computers-notebooks/accessories.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -96,6 +98,7 @@ module.exports.categoryList = [
         subNameCategory: "Аксесуари для планшетів",
         navigate_link: "tablet-covers",
         type: 2,
+        image_link: "uploads/catalog/computers-notebooks/pad.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -118,6 +121,7 @@ module.exports.categoryList = [
         subNameCategory: "Електронні книги",
         navigate_link: "e-books",
         type: 1,
+        image_link: "uploads/catalog/computers-notebooks/e_books.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -132,6 +136,8 @@ module.exports.categoryList = [
         subNameCategory: "Комплектуючі",
         navigate_link: "computer-components",
         type: 2,
+        image_link:
+          "uploads/catalog/computers-notebooks/computer_components.webp",
         permissionUse: true,
         subNameListCategory: [
           {
@@ -203,6 +209,7 @@ module.exports.categoryList = [
         subNameCategory: "Комп'ютери",
         navigate_link: "computers",
         type: 2,
+        image_link: "uploads/catalog/computers-notebooks/computers.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -239,6 +246,7 @@ module.exports.categoryList = [
         subNameCategory: "Оргтехніка",
         navigate_link: "office-equipment",
         type: 2,
+        image_link: "uploads/catalog/computers-notebooks/office_equipment.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -275,6 +283,7 @@ module.exports.categoryList = [
         subNameCategory: "Програмне забезпечення",
         navigate_link: "soft",
         type: 2,
+        image_link: "uploads/catalog/computers-notebooks/software.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -304,6 +313,7 @@ module.exports.categoryList = [
         subNameCategory: "Товари для геймерів",
         navigate_link: "game-zone",
         type: 2,
+        image_link: "uploads/catalog/computers-notebooks/goods_for_gamers.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -347,6 +357,8 @@ module.exports.categoryList = [
         subNameCategory: "Мережеве обладнання",
         navigate_link: "network-equipment",
         type: 2,
+        image_link:
+          "uploads/catalog/computers-notebooks/network_equipment.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -391,7 +403,7 @@ module.exports.categoryList = [
   {
     nameCategory: "Смартфони, ТВ і електроніка",
     nameCategoryImg: "uploads/catalog/smartphone.png",
-    navigate_link: "telefony-tv-i-ehlektronika/",
+    navigate_link: "telefony-tv-i-ehlektronika",
     nameListCategory: [
       // {
       //   subNameCategory: "Телефони",
@@ -403,6 +415,7 @@ module.exports.categoryList = [
         subNameCategory: "Аксесуари для мобільних телефонів",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -488,6 +501,7 @@ module.exports.categoryList = [
         subNameCategory: "Телевізори та аксесуари",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -538,6 +552,7 @@ module.exports.categoryList = [
         subNameCategory: "Фото та відео",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -623,6 +638,7 @@ module.exports.categoryList = [
         subNameCategory: "Аудіо та домашні кінотеатри",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -673,6 +689,7 @@ module.exports.categoryList = [
         subNameCategory: "Проекційне обладнання",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -695,6 +712,7 @@ module.exports.categoryList = [
         subNameCategory: "Портативна електроніка",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -787,6 +805,7 @@ module.exports.categoryList = [
         subNameCategory: "Автоелектроніка",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -830,6 +849,7 @@ module.exports.categoryList = [
         subNameCategory: "Play Station",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -908,6 +928,7 @@ module.exports.categoryList = [
         subNameCategory: "Ігрові комп'ютери",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -937,6 +958,7 @@ module.exports.categoryList = [
         subNameCategory: "Комплектуючі для геймерів",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1001,6 +1023,7 @@ module.exports.categoryList = [
         subNameCategory: "Ігрова перефирія",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1058,6 +1081,7 @@ module.exports.categoryList = [
         subNameCategory: "Атрибутика й сувеніри",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1157,6 +1181,7 @@ module.exports.categoryList = [
         subNameCategory: "Велика побутова техніка",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1214,6 +1239,7 @@ module.exports.categoryList = [
         subNameCategory: "Вбудована техніка",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1264,6 +1290,7 @@ module.exports.categoryList = [
         subNameCategory: "Кліматична техніка",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1314,6 +1341,7 @@ module.exports.categoryList = [
         subNameCategory: "Кухня",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1413,6 +1441,7 @@ module.exports.categoryList = [
         subNameCategory: "Сантехніка та ванна кімната",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1470,6 +1499,7 @@ module.exports.categoryList = [
         subNameCategory: "Догляд та прибирання",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1506,6 +1536,7 @@ module.exports.categoryList = [
         subNameCategory: "Побутова хімія",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1542,6 +1573,7 @@ module.exports.categoryList = [
         subNameCategory: "Для краси та здоров'я",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1634,6 +1666,7 @@ module.exports.categoryList = [
         subNameCategory: "Меблі",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1677,6 +1710,7 @@ module.exports.categoryList = [
         subNameCategory: "Домашній текстиль",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1741,6 +1775,7 @@ module.exports.categoryList = [
         subNameCategory: "Системи охорони і безпеки",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1791,6 +1826,7 @@ module.exports.categoryList = [
         subNameCategory: "Посуд",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1834,6 +1870,7 @@ module.exports.categoryList = [
         subNameCategory: "Інветар для дому та офісу",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1884,6 +1921,7 @@ module.exports.categoryList = [
         subNameCategory: "Господарські товари",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1913,6 +1951,7 @@ module.exports.categoryList = [
         subNameCategory: "Побутова хімія",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1942,6 +1981,7 @@ module.exports.categoryList = [
         subNameCategory: "Освітлення",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1999,6 +2039,7 @@ module.exports.categoryList = [
         subNameCategory: "Лічильники",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2035,6 +2076,7 @@ module.exports.categoryList = [
         subNameCategory: "Годинники",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2057,6 +2099,7 @@ module.exports.categoryList = [
         subNameCategory: "Товари для тварин",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2093,6 +2136,7 @@ module.exports.categoryList = [
         subNameCategory: "Інструменти",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2185,6 +2229,7 @@ module.exports.categoryList = [
         subNameCategory: "Витратні матеріали та приладдя",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2235,6 +2280,7 @@ module.exports.categoryList = [
         subNameCategory: "Обладнання",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2320,6 +2366,7 @@ module.exports.categoryList = [
         subNameCategory: "Ручний інструмент",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2370,6 +2417,7 @@ module.exports.categoryList = [
         subNameCategory: "Електромонтажне обладнання",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2392,6 +2440,7 @@ module.exports.categoryList = [
         subNameCategory: "Автотовари",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2575,6 +2624,7 @@ module.exports.categoryList = [
         subNameCategory: "Ванни, бокси, душові",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2632,6 +2682,7 @@ module.exports.categoryList = [
         subNameCategory: "Мийки, змішувачі, сифони",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2647,6 +2698,7 @@ module.exports.categoryList = [
         subNameCategory: "Кераміка",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2662,6 +2714,7 @@ module.exports.categoryList = [
         subNameCategory: "Інсталяції та комплектуючі",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2691,6 +2744,7 @@ module.exports.categoryList = [
         subNameCategory: "Сушильники для рушників і радіатори",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2713,6 +2767,7 @@ module.exports.categoryList = [
         subNameCategory: "Інструменти",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2735,6 +2790,7 @@ module.exports.categoryList = [
         subNameCategory: "Обладнання",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2764,6 +2820,7 @@ module.exports.categoryList = [
         subNameCategory: "Ручний інструмент",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2793,6 +2850,7 @@ module.exports.categoryList = [
         subNameCategory: "Освітлення",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2878,6 +2936,7 @@ module.exports.categoryList = [
         subNameCategory: "Лічильники",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2914,6 +2973,7 @@ module.exports.categoryList = [
         subNameCategory: "Меблі для ванної кімнати",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2943,6 +3003,7 @@ module.exports.categoryList = [
         subNameCategory: "Будівельні матеріали",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2965,6 +3026,7 @@ module.exports.categoryList = [
         subNameCategory: "Садова техніка",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3036,6 +3098,7 @@ module.exports.categoryList = [
         subNameCategory: "Сиситеми поливання",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3079,6 +3142,7 @@ module.exports.categoryList = [
         subNameCategory: "Садовий інвентар",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3150,6 +3214,7 @@ module.exports.categoryList = [
         subNameCategory: "Насіння та добрива",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3200,6 +3265,7 @@ module.exports.categoryList = [
         subNameCategory: "Саджанці",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3222,6 +3288,7 @@ module.exports.categoryList = [
         subNameCategory: "Садові меблі та декор",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3258,6 +3325,7 @@ module.exports.categoryList = [
         subNameCategory: "Корм для тварин",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3301,6 +3369,7 @@ module.exports.categoryList = [
         subNameCategory: "Догляд за вихованцем",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3337,6 +3406,7 @@ module.exports.categoryList = [
         subNameCategory: "Інвентар для дому",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3387,6 +3457,7 @@ module.exports.categoryList = [
         subNameCategory: "Тренажери та фітнес",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3437,6 +3508,7 @@ module.exports.categoryList = [
         subNameCategory: "Спортивне харчування",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3466,6 +3538,7 @@ module.exports.categoryList = [
         subNameCategory: "Велисипеди та аксесуари",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3495,6 +3568,7 @@ module.exports.categoryList = [
         subNameCategory: "Риболовля",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3524,6 +3598,7 @@ module.exports.categoryList = [
         subNameCategory: "Туризм і кемпінг",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3560,6 +3635,7 @@ module.exports.categoryList = [
         subNameCategory: "Аксесуари для активного відпочинку",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3596,6 +3672,7 @@ module.exports.categoryList = [
         subNameCategory: "Спортивна стрільба",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3632,6 +3709,7 @@ module.exports.categoryList = [
         subNameCategory: "Ігрові види спорту",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3661,6 +3739,7 @@ module.exports.categoryList = [
         subNameCategory: "Басейн і аквафітнес",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3683,6 +3762,7 @@ module.exports.categoryList = [
         subNameCategory: "Радіокеровані моделі",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3698,6 +3778,7 @@ module.exports.categoryList = [
         subNameCategory: "Музичні інструменти",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3727,6 +3808,7 @@ module.exports.categoryList = [
         subNameCategory: "Оптика",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3749,6 +3831,7 @@ module.exports.categoryList = [
         subNameCategory: "Електротранспорт",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3778,6 +3861,7 @@ module.exports.categoryList = [
         subNameCategory: "Одяг для жінок",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3856,6 +3940,7 @@ module.exports.categoryList = [
         subNameCategory: "Жіноче взуття",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3906,6 +3991,7 @@ module.exports.categoryList = [
         subNameCategory: "Аксесуари для жінок",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3949,6 +4035,7 @@ module.exports.categoryList = [
         subNameCategory: "Одяг для чоловіків",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4020,6 +4107,7 @@ module.exports.categoryList = [
         subNameCategory: "Чоловіче взуття",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4070,6 +4158,7 @@ module.exports.categoryList = [
         subNameCategory: "Аксусуари для чоловіків",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4113,6 +4202,7 @@ module.exports.categoryList = [
         subNameCategory: "Дитячий одяг",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4240,6 +4330,7 @@ module.exports.categoryList = [
         subNameCategory: "Дитяче взуття",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4262,6 +4353,7 @@ module.exports.categoryList = [
         subNameCategory: "Аксусуари для дітей",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4298,6 +4390,7 @@ module.exports.categoryList = [
         subNameCategory: "Техніка для краси та здоров'я",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4341,6 +4434,7 @@ module.exports.categoryList = [
         subNameCategory: "Дерматокосметика",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4356,6 +4450,7 @@ module.exports.categoryList = [
         subNameCategory: "Засоби для гоління",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4385,6 +4480,7 @@ module.exports.categoryList = [
         subNameCategory: "Особиста гігієна",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4414,6 +4510,7 @@ module.exports.categoryList = [
         subNameCategory: "Догляд за обличчям",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4457,6 +4554,7 @@ module.exports.categoryList = [
         subNameCategory: "Догляд за тілом",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4493,6 +4591,7 @@ module.exports.categoryList = [
         subNameCategory: "Догляд за волоссям",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4536,6 +4635,7 @@ module.exports.categoryList = [
         subNameCategory: "Парфуми",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4565,6 +4665,7 @@ module.exports.categoryList = [
         subNameCategory: "Фарбування волосся",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4587,6 +4688,7 @@ module.exports.categoryList = [
         subNameCategory: "Догляд за порожниною рта",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4616,6 +4718,7 @@ module.exports.categoryList = [
         subNameCategory: "Декоративна косметика",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4687,6 +4790,7 @@ module.exports.categoryList = [
         subNameCategory: "Аксесуари",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4723,6 +4827,7 @@ module.exports.categoryList = [
         subNameCategory: "Іграшки",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4808,6 +4913,7 @@ module.exports.categoryList = [
         subNameCategory: "Дитяче харчування",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4872,6 +4978,7 @@ module.exports.categoryList = [
         subNameCategory: "Прогулянки й активний відпочинок",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4929,6 +5036,7 @@ module.exports.categoryList = [
         subNameCategory: "Гігієна та догляд за дитиною",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4972,6 +5080,7 @@ module.exports.categoryList = [
         subNameCategory: "Дитячий одяг, взуття та аксесуари",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -5008,6 +5117,7 @@ module.exports.categoryList = [
         subNameCategory: "Шкільне приладдя",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -5037,6 +5147,7 @@ module.exports.categoryList = [
         subNameCategory: "Дитяча кімната",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -5080,6 +5191,7 @@ module.exports.categoryList = [
         subNameCategory: "Розвиток і творчість",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -5131,6 +5243,7 @@ module.exports.categoryList = [
         subNameCategory: "Товари для мам",
         navigate_link: "link",
         type: 2,
+        image_link: "link",
         permissionUse: false,
         subNameListCategory: [
           {
