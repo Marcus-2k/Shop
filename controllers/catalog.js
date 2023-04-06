@@ -29,11 +29,13 @@ module.exports.getCategoryHome = async function (req, res) {
   console.log("Server getCategoryHome");
 
   try {
+    const CLONE_CATALOG = JSON.parse(JSON.stringify(Catalog.categoryList));
     let catalogPopuap = [];
-    Catalog.categoryList.forEach((element) => {
+    CLONE_CATALOG.forEach((element) => {
       const homeElement = {
         nameCategory: element.nameCategory,
         nameCategoryImg: element.nameCategoryImg,
+        navigate_link: element.navigate_link,
       };
 
       catalogPopuap.push(homeElement);

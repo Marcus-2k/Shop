@@ -287,6 +287,7 @@ export interface Options {
 export interface CategoryHome {
   nameCategory: string;
   nameCategoryImg: string;
+  navigate_link: string;
 }
 // Category END ========================================================================================
 // Page Search START ===================================================================================
