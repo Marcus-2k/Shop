@@ -257,6 +257,7 @@ export interface CategoryProduct {
   nameListCategory: {
     subNameCategory: string;
     navigate_link: string;
+    image_link: string;
     permissionUse: boolean;
     subNameListCategory:
       | {

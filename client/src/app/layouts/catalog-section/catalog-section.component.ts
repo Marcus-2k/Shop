@@ -1,9 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
-import { Widget_Breadcrumbs } from "src/app/shared/interface/card/card.interfaces";
+
 import { CategoryProduct } from "src/app/shared/interface/interfaces";
+import { Widget_Breadcrumbs } from "src/app/shared/interface/card/card.interfaces";
 
 import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
+
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-catalog-section",
@@ -42,6 +45,8 @@ export class CatalogSectionComponent implements OnInit {
       // !
     }
   }
+
+  url_server_folder = environment.URL_SERVER_FOLDER;
 
   catalogSection: CategoryProduct | undefined;
   widget_breadcrumbs: Widget_Breadcrumbs | undefined;
