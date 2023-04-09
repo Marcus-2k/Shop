@@ -405,17 +405,20 @@ module.exports.categoryList = [
     nameCategoryImg: "uploads/catalog/smartphone.png",
     navigate_link: "telefony-tv-i-ehlektronika",
     nameListCategory: [
-      // {
-      //   subNameCategory: "Телефони",
-      //   navigate_link: "mobile-smartphones",
-      //   type: 1,
-      //   permissionUse: false,
-      // },
+      {
+        subNameCategory: "Телефони",
+        navigate_link: "mobile-smartphones",
+        type: 1,
+        image_link:
+          "uploads/catalog/telefony-tv-i-ehlektronika/mobile-smartphones.webp",
+        permissionUse: false,
+      },
       {
         subNameCategory: "Аксесуари для мобільних телефонів",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/telefony-tv-i-ehlektronika/accessories-for-mobile-phones.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -501,7 +504,8 @@ module.exports.categoryList = [
         subNameCategory: "Телевізори та аксесуари",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/telefony-tv-i-ehlektronika/tv-and-accessories.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -552,7 +556,8 @@ module.exports.categoryList = [
         subNameCategory: "Фото та відео",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/telefony-tv-i-ehlektronika/photos-and-videos.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -638,7 +643,8 @@ module.exports.categoryList = [
         subNameCategory: "Аудіо та домашні кінотеатри",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/telefony-tv-i-ehlektronika/audio-and-home-theaters.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -689,7 +695,8 @@ module.exports.categoryList = [
         subNameCategory: "Проекційне обладнання",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/telefony-tv-i-ehlektronika/projection-equipment.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -712,7 +719,8 @@ module.exports.categoryList = [
         subNameCategory: "Портативна електроніка",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/telefony-tv-i-ehlektronika/portable-electronics.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -805,7 +813,8 @@ module.exports.categoryList = [
         subNameCategory: "Автоелектроніка",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/telefony-tv-i-ehlektronika/automotive-electronics.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -849,7 +858,7 @@ module.exports.categoryList = [
         subNameCategory: "Play Station",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/game-zone/play-station.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -928,7 +937,7 @@ module.exports.categoryList = [
         subNameCategory: "Ігрові комп'ютери",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/game-zone/gaming-computers.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -958,7 +967,7 @@ module.exports.categoryList = [
         subNameCategory: "Комплектуючі для геймерів",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/game-zone/components-for-gamers.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1023,7 +1032,7 @@ module.exports.categoryList = [
         subNameCategory: "Ігрова перефирія",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/game-zone/game-periphery.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1081,7 +1090,7 @@ module.exports.categoryList = [
         subNameCategory: "Атрибутика й сувеніри",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/game-zone/attributes-and-souvenirs.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1181,7 +1190,8 @@ module.exports.categoryList = [
         subNameCategory: "Велика побутова техніка",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-appliances/large-household-appliances.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1239,7 +1249,8 @@ module.exports.categoryList = [
         subNameCategory: "Вбудована техніка",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-appliances/built-in-equipment.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1290,7 +1301,8 @@ module.exports.categoryList = [
         subNameCategory: "Кліматична техніка",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-appliances/climate-control-equipment.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1341,7 +1353,7 @@ module.exports.categoryList = [
         subNameCategory: "Кухня",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/household-appliances/kitchen.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1441,7 +1453,8 @@ module.exports.categoryList = [
         subNameCategory: "Сантехніка та ванна кімната",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-appliances/plumbing-and-bathroom.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1499,7 +1512,8 @@ module.exports.categoryList = [
         subNameCategory: "Догляд та прибирання",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-appliances/care-and-cleaning.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1536,7 +1550,8 @@ module.exports.categoryList = [
         subNameCategory: "Побутова хімія",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-appliances/household-chemicals.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1573,7 +1588,8 @@ module.exports.categoryList = [
         subNameCategory: "Для краси та здоров'я",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-appliances/for-beauty-and-health.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1666,7 +1682,7 @@ module.exports.categoryList = [
         subNameCategory: "Меблі",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/household-goods/furniture.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1710,7 +1726,7 @@ module.exports.categoryList = [
         subNameCategory: "Домашній текстиль",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/household-goods/home-textiles.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1775,7 +1791,8 @@ module.exports.categoryList = [
         subNameCategory: "Системи охорони і безпеки",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-goods/safety-and-security-systems.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1826,7 +1843,7 @@ module.exports.categoryList = [
         subNameCategory: "Посуд",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/household-goods/tableware.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1867,10 +1884,11 @@ module.exports.categoryList = [
         ],
       },
       {
-        subNameCategory: "Інветар для дому та офісу",
+        subNameCategory: "Інвентар для дому та офісу",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/household-goods/inventory-for-home-and-office.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -1981,7 +1999,7 @@ module.exports.categoryList = [
         subNameCategory: "Освітлення",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/household-goods/lighting.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2076,7 +2094,7 @@ module.exports.categoryList = [
         subNameCategory: "Годинники",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/household-goods/watches.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2099,7 +2117,7 @@ module.exports.categoryList = [
         subNameCategory: "Товари для тварин",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/household-goods/products-for-animals.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2280,7 +2298,8 @@ module.exports.categoryList = [
         subNameCategory: "Обладнання",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/tools-and-automotive-products/equipment.jpg",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2624,7 +2643,8 @@ module.exports.categoryList = [
         subNameCategory: "Ванни, бокси, душові",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/plumbing-and-repair/bathtubs-boxes-showers.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2682,7 +2702,8 @@ module.exports.categoryList = [
         subNameCategory: "Мийки, змішувачі, сифони",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/plumbing-and-repair/sinks-mixers-siphons.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2698,7 +2719,7 @@ module.exports.categoryList = [
         subNameCategory: "Кераміка",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/plumbing-and-repair/ceramics.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2744,7 +2765,8 @@ module.exports.categoryList = [
         subNameCategory: "Сушильники для рушників і радіатори",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/plumbing-and-repair/towel-rails-and-radiators.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2850,7 +2872,7 @@ module.exports.categoryList = [
         subNameCategory: "Освітлення",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/plumbing-and-repair/lighting.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -2973,7 +2995,8 @@ module.exports.categoryList = [
         subNameCategory: "Меблі для ванної кімнати",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/plumbing-and-repair/furniture-for-the-bathroom.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3003,7 +3026,8 @@ module.exports.categoryList = [
         subNameCategory: "Будівельні матеріали",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/plumbing-and-repair/building-materials.webp",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3369,7 +3393,8 @@ module.exports.categoryList = [
         subNameCategory: "Догляд за вихованцем",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/cottage-garden-and-vegetable-garden/caring-for-your-pet.jpg",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -3538,7 +3563,8 @@ module.exports.categoryList = [
         subNameCategory: "Велисипеди та аксесуари",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/sports-and-hobbies/bicycles-and-accessories.jpg",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4158,7 +4184,8 @@ module.exports.categoryList = [
         subNameCategory: "Аксусуари для чоловіків",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link:
+          "uploads/catalog/clothes-shoes-and-jewelry/accessories-for-men.jpg",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4635,7 +4662,7 @@ module.exports.categoryList = [
         subNameCategory: "Парфуми",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/beauty-and-health/perfumes.png",
         permissionUse: false,
         subNameListCategory: [
           {
@@ -4827,7 +4854,7 @@ module.exports.categoryList = [
         subNameCategory: "Іграшки",
         navigate_link: "link",
         type: 2,
-        image_link: "link",
+        image_link: "uploads/catalog/childrens-products/toys.png",
         permissionUse: false,
         subNameListCategory: [
           {
