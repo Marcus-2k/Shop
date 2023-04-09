@@ -49,7 +49,7 @@ export interface ProductInfo {
 }
 export interface ProductCharacteristics {
   characteristics: number[];
-  characteristicsName: Options[];
+  characteristicsName: CHARACTERISTICS[];
 }
 export interface ProductComments {
   comments: [];
@@ -84,7 +84,7 @@ export interface ProductUpdate {
   category: number[];
   categoryName: string[];
   characteristics: number[][];
-  characteristicsName: Options[];
+  characteristicsName: CHARACTERISTICS[];
   status: 0 | 1 | 2 | 3;
   keywords: string[];
   description: string;
@@ -250,7 +250,7 @@ export interface News {
 }
 // News END ============================================================================================
 // Category START ======================================================================================
-export interface CategoryProduct {
+export interface CATALOG {
   nameCategory: string;
   nameCategoryImg: string;
   navigate_link: string;
@@ -269,15 +269,21 @@ export interface CategoryProduct {
       | undefined;
   }[];
 }
-export interface CategoryProduct_Characteristics {
+export interface CATALOG_HOME {
+  nameCategory: string;
+  nameCategoryImg: string;
+  navigate_link: string;
+}
+
+export interface CATEGORY {
   nameCategory: string;
   nameListCategory: {
     subNameCategory: string;
-    characteristics: Options[] | any; // Options[] | undefined
-    subNameListCategory: any; // { titleSubNameListCategory: string; characteristics: Options[]; } | undefined
+    characteristics: CHARACTERISTICS[] | any; // CHARACTERISTICS[] | undefined
+    subNameListCategory: any; // { titleSubNameListCategory: string; characteristics: CHARACTERISTICS[]; } | undefined
   }[];
 }
-export interface Options {
+export interface CHARACTERISTICS {
   name: string; // example Operating System
   query_name: string;
   htmlElement: "select"; // html tag
@@ -285,11 +291,6 @@ export interface Options {
   multiple: boolean;
 }
 
-export interface CategoryHome {
-  nameCategory: string;
-  nameCategoryImg: string;
-  navigate_link: string;
-}
 // Category END ========================================================================================
 // Page Search START ===================================================================================
 export interface FoundData {

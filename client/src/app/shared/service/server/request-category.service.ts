@@ -2,10 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import {
-  Options,
-  CategoryProduct_Characteristics,
-} from "../../interface/interfaces";
+import { CATEGORY, CHARACTERISTICS } from "../../interface/interfaces";
 
 import { environment } from "src/environments/environment";
 
@@ -17,14 +14,13 @@ export class RequestCategoryService {
 
   url_server: string = environment.URL_SERVER_API + "category/";
 
-  getCategory(): Observable<CategoryProduct_Characteristics[]> {
-    return this.http.get<CategoryProduct_Characteristics[]>(
-      `${this.url_server}`
-    );
+  getCategory(): Observable<CATEGORY[]> {
+    return this.http.get<CATEGORY[]>(`${this.url_server}`);
   }
-  getCharacteristics(categoryNumber: number[]): Observable<Options[]> {
-    return this.http.post<Options[]>(`${this.url_server}characteristics`, {
-      categoryNumber: categoryNumber,
-    });
+  getCharacteristics(categoryNumber: number[]): Observable<CHARACTERISTICS[]> {
+    return this.http.post<CHARACTERISTICS[]>(
+      `${this.url_server}characteristics`,
+      { categoryNumber: categoryNumber }
+    );
   }
 }

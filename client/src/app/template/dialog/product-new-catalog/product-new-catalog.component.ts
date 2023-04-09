@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { DialogData_ProductNewCatalog } from "src/app/shared/interface/dialog/dialog.interfaces";
-import { CategoryProduct_Characteristics } from "src/app/shared/interface/interfaces";
+import { CATEGORY } from "src/app/shared/interface/interfaces";
 
 import { RequestCategoryService } from "src/app/shared/service/server/request-category.service";
 
@@ -32,7 +32,7 @@ export class ProductNewCatalogComponent implements OnInit {
     });
   }
 
-  categoryList: CategoryProduct_Characteristics[] = [];
+  categoryList: CATEGORY[] = [];
 
   oneIndex: number = -1;
   twoIndex: number = -1;
