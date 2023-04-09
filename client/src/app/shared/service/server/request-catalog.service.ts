@@ -1,15 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import {
-  CategoryHome,
-  CategoryProduct,
-  CategoryProduct_Characteristics,
-  Options,
-} from "../../interface/interfaces";
+
+import { CategoryHome, CategoryProduct } from "../../interface/interfaces";
+import { Widget_Breadcrumbs } from "../../interface/card/card.interfaces";
 
 import { environment } from "src/environments/environment";
-import { Widget_Breadcrumbs } from "../../interface/card/card.interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -20,22 +16,10 @@ export class RequestCatalogService {
   url_server: string = environment.URL_SERVER_API + "catalog/";
 
   getCategory(): Observable<CategoryProduct[]> {
-    return this.http.get<CategoryProduct[]>(`${this.url_server}category/`);
+    return this.http.get<CategoryProduct[]>(`${this.url_server}`);
   }
   getCategoryHome(): Observable<CategoryHome[]> {
-    return this.http.get<CategoryHome[]>(`${this.url_server}category/home`);
-  }
-  getCategoryAndCharacteristics(): Observable<
-    CategoryProduct_Characteristics[]
-  > {
-    return this.http.get<CategoryProduct_Characteristics[]>(
-      `${this.url_server}category/characteristics`
-    );
-  }
-  getCharacteristics(categoryNumber: number[]): Observable<Options[]> {
-    return this.http.post<Options[]>(`${this.url_server}only-characteristics`, {
-      categoryNumber: categoryNumber,
-    });
+    return this.http.get<CategoryHome[]>(`${this.url_server}home`);
   }
   getCatalogSection(navigate_link: string): Observable<{
     widget_breadcrumbs: Widget_Breadcrumbs;

@@ -1,10 +1,10 @@
-import { Component, Inject, Input, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { DialogData_ProductNewCatalog } from "src/app/shared/interface/dialog/dialog.interfaces";
 import { CategoryProduct_Characteristics } from "src/app/shared/interface/interfaces";
 
-import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
+import { RequestCategoryService } from "src/app/shared/service/server/request-category.service";
 
 @Component({
   selector: "app-product-new-catalog",
@@ -13,7 +13,7 @@ import { RequestCatalogService } from "src/app/shared/service/server/request-cat
 })
 export class ProductNewCatalogComponent implements OnInit {
   constructor(
-    private requestCategory: RequestCatalogService,
+    private requestCategory: RequestCategoryService,
     public dialogRef: MatDialogRef<
       ProductNewCatalogComponent,
       DialogData_ProductNewCatalog | undefined
@@ -23,7 +23,7 @@ export class ProductNewCatalogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.requestCategory.getCategoryAndCharacteristics().subscribe({
+    this.requestCategory.getCategory().subscribe({
       next: (data) => {
         this.categoryList = data;
       },
