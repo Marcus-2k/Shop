@@ -1,5 +1,5 @@
 const { CATALOG } = require("../db/catalog");
-const Catalog_Characteristics = require("../db/catalog_characteristics");
+const { CATEGORY } = require("../db/category");
 
 module.exports.getCategory = async function (req, res) {
   console.log("Server getCategory");
@@ -52,9 +52,7 @@ module.exports.getCategoryAndCharacteristics = async function (req, res) {
   console.log("Server getCategoryAndCharacteristics");
 
   try {
-    return res
-      .status(200)
-      .json(Catalog_Characteristics.categoryList_characteristics);
+    return res.status(200).json(CATEGORY);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -76,14 +74,12 @@ module.exports.getCharacteristics = async function (req, res) {
     let characteristics = [];
     if (categoryNumber.length === 3) {
       characteristics =
-        Catalog_Characteristics.categoryList_characteristics[categoryNumber[0]]
-          .nameListCategory[categoryNumber[1]].subNameListCategory[
-          categoryNumber[2]
-        ].characteristics;
+        CATEGORY[categoryNumber[0]].nameListCategory[categoryNumber[1]]
+          .subNameListCategory[categoryNumber[2]].characteristics;
     } else if (categoryNumber.length === 2) {
       characteristics =
-        Catalog_Characteristics.categoryList_characteristics[categoryNumber[0]]
-          .nameListCategory[categoryNumber[1]].characteristics;
+        CATEGORY[categoryNumber[0]].nameListCategory[categoryNumber[1]]
+          .characteristics;
     } else {
       return res.status(404).json({ message: "Incorrect data entry" });
     }

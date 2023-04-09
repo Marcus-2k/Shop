@@ -2,7 +2,7 @@ const Product = require("../models/Product");
 const SearchService = require("../service/search-service");
 
 const { CATALOG } = require("../db/catalog");
-const catalog_option = require("../db/catalog_characteristics");
+const { CATEGORY } = require("../db/category");
 
 module.exports.search = async function (req, res) {
   console.log("Server search");
@@ -409,16 +409,14 @@ function createFilters(productList) {
       // console.log("if 3 ==========");
 
       characteristics =
-        catalog_option.categoryList_characteristics[productCategory[i][0]]
-          .nameListCategory[productCategory[i][1]].subNameListCategory[
-          productCategory[i][2]
-        ].characteristics;
+        CATEGORY[productCategory[i][0]].nameListCategory[productCategory[i][1]]
+          .subNameListCategory[productCategory[i][2]].characteristics;
     } else if (productCategory[i].length === 2) {
       // console.log("else if 2 ==========");
 
       characteristics =
-        catalog_option.categoryList_characteristics[productCategory[i][0]]
-          .nameListCategory[productCategory[i][1]].characteristics;
+        CATEGORY[productCategory[i][0]].nameListCategory[productCategory[i][1]]
+          .characteristics;
     } else {
       break;
     }

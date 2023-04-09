@@ -1,4 +1,4 @@
-const option = require("../db/option");
+const option = require("./option");
 
 /**
  * 1. "Develop" is used by default for categories that do not have their own characteristics
