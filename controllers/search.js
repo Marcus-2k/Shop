@@ -102,7 +102,7 @@ module.exports.search = async function (req, res) {
         FilterQuery = { category: categoryList[0] };
 
         // widget_breadcrumbs
-        if (categoryList.length === 1) {
+        if (categoryList.length === 1 && categoryList[0].length === 3) {
           widget_breadcrumbs.third = {
             name: catalog.categoryList[categoryList[0][0]].nameListCategory[
               categoryList[0][1]
