@@ -1,4 +1,4 @@
-module.exports.categoryList = [
+module.exports.CATALOG = [
   {
     nameCategory: "Ноутбуки та комп'ютери",
     nameCategoryImg: "uploads/catalog/laptop.png",

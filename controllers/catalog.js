@@ -1,11 +1,11 @@
-const Catalog = require("../db/catalog");
+const { CATALOG } = require("../db/catalog");
 const Catalog_Characteristics = require("../db/catalog_characteristics");
 
 module.exports.getCategory = async function (req, res) {
   console.log("Server getCategory");
 
   try {
-    let newCatalog = JSON.parse(JSON.stringify(Catalog.categoryList));
+    let newCatalog = JSON.parse(JSON.stringify(CATALOG));
 
     newCatalog.forEach((element) => {
       element.nameListCategory.forEach((item) => {
@@ -29,7 +29,7 @@ module.exports.getCategoryHome = async function (req, res) {
   console.log("Server getCategoryHome");
 
   try {
-    const CLONE_CATALOG = JSON.parse(JSON.stringify(Catalog.categoryList));
+    const CLONE_CATALOG = JSON.parse(JSON.stringify(CATALOG));
     let catalogPopuap = [];
     CLONE_CATALOG.forEach((element) => {
       const homeElement = {
@@ -106,7 +106,7 @@ module.exports.getCatalogSection = async function (req, res) {
       return res.status(404).json({ message: "Не існуючий розділ каталогу" });
     }
 
-    const CLONE_CATALOG = JSON.parse(JSON.stringify(Catalog.categoryList));
+    const CLONE_CATALOG = JSON.parse(JSON.stringify(CATALOG));
 
     for (let idx = 0; idx < CLONE_CATALOG.length; idx++) {
       if (CLONE_CATALOG[idx].navigate_link === navigate_link) {

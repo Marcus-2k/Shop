@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
-const Catalog = require("../db/catalog");
+
+const { CATALOG } = require("../db/catalog");
 const catalog_option = require("../db/catalog_characteristics");
 
 module.exports.getByIdCard = async function (req, res) {
@@ -23,14 +24,14 @@ module.exports.getByIdCard = async function (req, res) {
 
       let widget_breadcrumbs = {
         first: {
-          name: Catalog.categoryList[product.category[0]].nameCategory,
-          link: Catalog.categoryList[product.category[0]].navigate_link,
+          name: CATALOG[product.category[0]].nameCategory,
+          link: CATALOG[product.category[0]].navigate_link,
         },
         second: {
-          name: Catalog.categoryList[product.category[0]].nameListCategory[
+          name: CATALOG[product.category[0]].nameListCategory[
             product.category[1]
           ].subNameCategory,
-          link: Catalog.categoryList[product.category[0]].nameListCategory[
+          link: CATALOG[product.category[0]].nameListCategory[
             product.category[1]
           ].navigate_link,
         },
@@ -39,22 +40,20 @@ module.exports.getByIdCard = async function (req, res) {
       };
 
       if (
-        Catalog.categoryList[product.category[0]].nameListCategory[
-          product.category[1]
-        ].type === 2
+        CATALOG[product.category[0]].nameListCategory[product.category[1]]
+          .type === 2
       ) {
         widget_breadcrumbs.third = {
-          name: Catalog.categoryList[product.category[0]].nameListCategory[
+          name: CATALOG[product.category[0]].nameListCategory[
             product.category[1]
           ].subNameListCategory[product.category[2]].titleSubNameListCategory,
-          link: Catalog.categoryList[product.category[0]].nameListCategory[
+          link: CATALOG[product.category[0]].nameListCategory[
             product.category[1]
           ].subNameListCategory[product.category[2]].navigate_link,
         };
       } else if (
-        Catalog.categoryList[product.category[0]].nameListCategory[
-          product.category[1]
-        ].type === 1
+        CATALOG[product.category[0]].nameListCategory[product.category[1]]
+          .type === 1
       ) {
         widget_breadcrumbs.third = undefined;
       }
