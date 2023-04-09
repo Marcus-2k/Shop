@@ -253,9 +253,11 @@ export interface News {
 export interface CategoryProduct {
   nameCategory: string;
   nameCategoryImg: string;
+  navigate_link: string;
   nameListCategory: {
     subNameCategory: string;
     navigate_link: string;
+    image_link: string;
     permissionUse: boolean;
     subNameListCategory:
       | {
@@ -286,6 +288,7 @@ export interface Options {
 export interface CategoryHome {
   nameCategory: string;
   nameCategoryImg: string;
+  navigate_link: string;
 }
 // Category END ========================================================================================
 // Page Search START ===================================================================================

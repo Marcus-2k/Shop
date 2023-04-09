@@ -16,22 +16,25 @@
           margin-top: 10px;
           padding: 0 10px;
           font-size: 16px;
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-          &:hover {
-            .aside-list-item-link {
-              color: #3f51b5;
-              text-decoration: underline;
+          .aside-list-link {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            &:hover {
+              .aside-list-link-text {
+                color: #3f51b5;
+                text-decoration: underline;
+              }
             }
-          }
-          &-image {
-            margin-right: 10px;
-            width: 24px;
-            height: 24px;
-          }
-          &-link {
-            color: #000;
+            &-image {
+              margin-right: 10px;
+              width: 24px;
+              height: 24px;
+            }
+            &-text {
+              color: #000;
+              margin: 0;
+            }
           }
         }
       }

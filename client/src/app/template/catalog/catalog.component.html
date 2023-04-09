@@ -27,8 +27,8 @@
           (click)="windowWidth <= 1024 ? clickEditActiveCategory(idx) : ''"
         >
           <a
-            href=""
             class="list__item-link"
+            [routerLink]="['/', categoryOne.navigate_link]"
             *ngIf="windowWidth > 1024; else mobileCatalogTitle"
           >
             <span class="list__item-link-text">

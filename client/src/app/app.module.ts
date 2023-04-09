@@ -105,6 +105,7 @@ import { CardKeyWordsComponent } from "./layouts/card/components/card-key-words/
 import { CardShoppingCartComponent } from "./layouts/card/components/card-shopping-cart/card-shopping-cart.component";
 // Catalog
 import { CatalogComponent } from "./template/catalog/catalog.component";
+import { CatalogSectionComponent } from "./layouts/catalog-section/catalog-section.component";
 // Other
 import { ProductCardWishComponent } from "./template/product-card-wish/product-card-wish.component";
 import { ProductCardShoppingCartComponent } from "./template/product-card-shopping-cart/product-card-shopping-cart.component";
@@ -212,6 +213,7 @@ import { environment } from "../environments/environment";
     WidgetAutoPortalComponent,
     WidgetSectionIdComponent,
     WidgetBreadcrumbsComponent,
+    CatalogSectionComponent,
   ],
   imports: [
     BrowserModule,

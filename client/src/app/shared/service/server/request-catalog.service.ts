@@ -9,6 +9,7 @@ import {
 } from "../../interface/interfaces";
 
 import { environment } from "src/environments/environment";
+import { Widget_Breadcrumbs } from "../../interface/card/card.interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -35,5 +36,14 @@ export class RequestCatalogService {
     return this.http.post<Options[]>(`${this.url_server}only-characteristics`, {
       categoryNumber: categoryNumber,
     });
+  }
+  getCatalogSection(navigate_link: string): Observable<{
+    widget_breadcrumbs: Widget_Breadcrumbs;
+    catalog_section: CategoryProduct;
+  }> {
+    return this.http.get<{
+      widget_breadcrumbs: Widget_Breadcrumbs;
+      catalog_section: CategoryProduct;
+    }>(`${this.url_server}${navigate_link}`);
   }
 }

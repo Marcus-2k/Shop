@@ -26,6 +26,7 @@ import { NewslettersComponent } from "src/app/layouts/user-layouts/newsletters/n
 import { WishlistComponent } from "src/app/layouts/user-layouts/wishlist/wishlist.component";
 import { CartComponent } from "src/app/layouts/user-layouts/cart/cart.component";
 import { SearchComponent } from "src/app/layouts/search/search.component";
+import { CatalogSectionComponent } from "src/app/layouts/catalog-section/catalog-section.component";
 
 // Card Component
 import { CardComponent } from "src/app/layouts/card/card.component";
@@ -137,6 +138,21 @@ const routes: Routes = [
       },
     ],
   },
+  { path: "computers-notebooks", component: CatalogSectionComponent },
+  { path: "telefony-tv-i-ehlektronika", component: CatalogSectionComponent },
+  { path: "game-zone", component: CatalogSectionComponent },
+  { path: "household-appliances", component: CatalogSectionComponent },
+  { path: "household-goods", component: CatalogSectionComponent },
+  { path: "tools-and-automotive-products", component: CatalogSectionComponent },
+  { path: "plumbing-and-repair", component: CatalogSectionComponent },
+  {
+    path: "cottage-garden-and-vegetable-garden",
+    component: CatalogSectionComponent,
+  },
+  { path: "sports-and-hobbies", component: CatalogSectionComponent },
+  { path: "clothes-shoes-and-jewelry", component: CatalogSectionComponent },
+  { path: "beauty-and-health", component: CatalogSectionComponent },
+  { path: "childrens-products", component: CatalogSectionComponent },
   {
     path: "**",
     component: NotFoundComponent,

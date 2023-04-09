@@ -17,15 +17,17 @@
   >
     {{ widget_breadcrumbs.first.name }}
   </a>
-  <span class="material-symbols-outlined"> navigate_next </span>
 
-  <a
-    [matTooltip]="widget_breadcrumbs.second.name"
-    [routerLink]="'/search/' + widget_breadcrumbs.second.link"
-    class="breadcrumbs-item"
-  >
-    {{ widget_breadcrumbs.second.name }}
-  </a>
+  <ng-container *ngIf="type === 'card' || type === 'search'">
+    <span class="material-symbols-outlined"> navigate_next </span>
+    <a
+      [matTooltip]="widget_breadcrumbs.second.name"
+      [routerLink]="'/search/' + widget_breadcrumbs.second.link"
+      class="breadcrumbs-item"
+    >
+      {{ widget_breadcrumbs.second.name }}
+    </a>
+  </ng-container>
 
   <ng-container *ngIf="widget_breadcrumbs.third">
     <span class="material-symbols-outlined"> navigate_next </span>
