@@ -5,20 +5,7 @@ module.exports.getCategory = async function (req, res) {
   console.log("Server getCategory");
 
   try {
-    let newCatalog = JSON.parse(JSON.stringify(CATALOG));
-
-    newCatalog.forEach((element) => {
-      element.nameListCategory.forEach((item) => {
-        delete item.searchWords;
-        if (item.subNameListCategory !== undefined) {
-          item.subNameListCategory.forEach((subItem) => {
-            delete subItem.searchWords;
-          });
-        }
-      });
-    });
-
-    return res.status(200).json(newCatalog);
+    return res.status(200).json(CATALOG);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -30,6 +17,7 @@ module.exports.getCategoryHome = async function (req, res) {
 
   try {
     const CLONE_CATALOG = JSON.parse(JSON.stringify(CATALOG));
+
     let catalogPopuap = [];
     CLONE_CATALOG.forEach((element) => {
       const homeElement = {
@@ -63,8 +51,6 @@ module.exports.getCharacteristics = async function (req, res) {
   console.log("Server getCharacteristics");
 
   try {
-    console.log(req.body);
-
     const categoryNumber = req.body.categoryNumber;
 
     if (!categoryNumber) {
@@ -95,7 +81,6 @@ module.exports.getCatalogSection = async function (req, res) {
   console.log("Server getCatalogSection");
 
   try {
-    console.log(req.params);
     const { navigate_link } = req.params;
 
     if (!navigate_link) {
