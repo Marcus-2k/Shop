@@ -15,20 +15,16 @@ module.exports.getCatalogHome = async function (req, res) {
   console.log("Server getCatalogHome");
 
   try {
-    const CLONE_CATALOG = JSON.parse(JSON.stringify(CATALOG));
+    let sidebar_list = [];
+    for (let idx = 0; idx < CATALOG.length; idx++) {
+      sidebar_list.push({
+        nameCategory: CATALOG[idx].nameCategory,
+        nameCategoryImg: CATALOG[idx].nameCategoryImg,
+        navigate_link: CATALOG[idx].navigate_link,
+      });
+    }
 
-    let catalogPopuap = [];
-    CLONE_CATALOG.forEach((element) => {
-      const homeElement = {
-        nameCategory: element.nameCategory,
-        nameCategoryImg: element.nameCategoryImg,
-        navigate_link: element.navigate_link,
-      };
-
-      catalogPopuap.push(homeElement);
-    });
-
-    return res.status(200).json(catalogPopuap);
+    return res.status(200).json(sidebar_list);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
