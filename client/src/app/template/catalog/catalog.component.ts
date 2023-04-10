@@ -18,7 +18,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.requestCatalog.getCategory().subscribe(
+    this.requestCatalog.getCatalog().subscribe(
       (response) => {
         console.log(response);
         this.category = response;

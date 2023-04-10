@@ -15,10 +15,10 @@ export class RequestCatalogService {
 
   url_server: string = environment.URL_SERVER_API + "catalog/";
 
-  getCategory(): Observable<CATALOG[]> {
+  getCatalog(): Observable<CATALOG[]> {
     return this.http.get<CATALOG[]>(`${this.url_server}`);
   }
-  getCategoryHome(): Observable<CATALOG_HOME[]> {
+  getCatalogHome(): Observable<CATALOG_HOME[]> {
     return this.http.get<CATALOG_HOME[]>(`${this.url_server}home`);
   }
   getCatalogSection(navigate_link: string): Observable<{
