@@ -1,6 +1,6 @@
 <!--  -->
 
-<div class="catalog-section" *ngIf="catalogSection && widget_breadcrumbs">
+<div class="catalog-section" *ngIf="CATALOG && widget_breadcrumbs">
   <div class="catalog-section-breadcrumbs">
     <app-widget-breadcrumbs
       [type]="'catalog-section'"
@@ -14,7 +14,7 @@
 
   <div class="catalog-section-content">
     <div class="section">
-      <ng-container *ngFor="let list of catalogSection.nameListCategory">
+      <ng-container *ngFor="let list of CATALOG.nameListCategory">
         <ul class="section-list">
           <li class="section-list-item item--title">
             <a

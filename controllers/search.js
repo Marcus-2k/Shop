@@ -1,7 +1,8 @@
 const Product = require("../models/Product");
 const SearchService = require("../service/search-service");
-const catalog = require("../db/catalog");
-const catalog_option = require("../db/catalog_characteristics");
+
+const { CATALOG } = require("../db/catalog");
+const { CATEGORY } = require("../db/category");
 
 module.exports.search = async function (req, res) {
   console.log("Server search");
@@ -84,16 +85,14 @@ module.exports.search = async function (req, res) {
 
       widget_breadcrumbs = {
         first: {
-          name: catalog.categoryList[categoryList[0][0]].nameCategory,
-          link: catalog.categoryList[categoryList[0][0]].navigate_link,
+          name: CATALOG[categoryList[0][0]].nameCategory,
+          link: CATALOG[categoryList[0][0]].navigate_link,
         },
         second: {
-          name: catalog.categoryList[categoryList[0][0]].nameListCategory[
-            categoryList[0][1]
-          ].subNameCategory,
-          link: catalog.categoryList[categoryList[0][0]].nameListCategory[
-            categoryList[0][1]
-          ].navigate_link,
+          name: CATALOG[categoryList[0][0]].nameListCategory[categoryList[0][1]]
+            .subNameCategory,
+          link: CATALOG[categoryList[0][0]].nameListCategory[categoryList[0][1]]
+            .navigate_link,
         },
         third: undefined,
       };
@@ -104,10 +103,10 @@ module.exports.search = async function (req, res) {
         // widget_breadcrumbs
         if (categoryList.length === 1 && categoryList[0].length === 3) {
           widget_breadcrumbs.third = {
-            name: catalog.categoryList[categoryList[0][0]].nameListCategory[
+            name: CATALOG[categoryList[0][0]].nameListCategory[
               categoryList[0][1]
             ].subNameListCategory[categoryList[0][2]].titleSubNameListCategory,
-            link: catalog.categoryList[categoryList[0][0]].nameListCategory[
+            link: CATALOG[categoryList[0][0]].nameListCategory[
               categoryList[0][1]
             ].subNameListCategory[categoryList[0][2]].navigate_link,
           };
@@ -115,9 +114,8 @@ module.exports.search = async function (req, res) {
       } else if (type === 2) {
         FilterQuery = { category: { $in: categoryList } };
         widget_auto_portal =
-          catalog.categoryList[categoryList[0][0]].nameListCategory[
-            categoryList[0][1]
-          ].subNameListCategory;
+          CATALOG[categoryList[0][0]].nameListCategory[categoryList[0][1]]
+            .subNameListCategory;
 
         // widget_breadcrumbs
         widget_breadcrumbs.third = undefined;
@@ -411,16 +409,14 @@ function createFilters(productList) {
       // console.log("if 3 ==========");
 
       characteristics =
-        catalog_option.categoryList_characteristics[productCategory[i][0]]
-          .nameListCategory[productCategory[i][1]].subNameListCategory[
-          productCategory[i][2]
-        ].characteristics;
+        CATEGORY[productCategory[i][0]].nameListCategory[productCategory[i][1]]
+          .subNameListCategory[productCategory[i][2]].characteristics;
     } else if (productCategory[i].length === 2) {
       // console.log("else if 2 ==========");
 
       characteristics =
-        catalog_option.categoryList_characteristics[productCategory[i][0]]
-          .nameListCategory[productCategory[i][1]].characteristics;
+        CATEGORY[productCategory[i][0]].nameListCategory[productCategory[i][1]]
+          .characteristics;
     } else {
       break;
     }
@@ -538,15 +534,13 @@ function createWidget_section_id(categoryListUnique) {
 
     if (element.length === 3) {
       let filter_section_id = JSON.parse(
-        JSON.stringify(
-          catalog.categoryList[element[0]].nameListCategory[element[1]]
-        )
+        JSON.stringify(CATALOG[element[0]].nameListCategory[element[1]])
       );
 
       filter_section_id.subNameListCategory = [
         JSON.parse(
           JSON.stringify(
-            catalog.categoryList[element[0]].nameListCategory[element[1]]
+            CATALOG[element[0]].nameListCategory[element[1]]
               .subNameListCategory[element[2]]
           )
         ),
@@ -555,9 +549,7 @@ function createWidget_section_id(categoryListUnique) {
       section_id.push(filter_section_id);
     } else if (element.length === 2) {
       let filter_section_id = JSON.parse(
-        JSON.stringify(
-          catalog.categoryList[element[0]].nameListCategory[element[1]]
-        )
+        JSON.stringify(CATALOG[element[0]].nameListCategory[element[1]])
       );
       delete filter_section_id.subNameListCategory;
 

@@ -6,7 +6,10 @@ const cookieParser = require("cookie-parser");
 
 // Router START
 const authRoutes = require("./routes/auth");
-const catalogRoutes = require("./routes/catalog");
+
+const Catalog_Routes = require("./routes/catalog");
+const Category_Routes = require("./routes/category");
+
 const orderRoutes = require("./routes/order");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/accountUser");
@@ -75,7 +78,9 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)); // link to swagge
 
 // Router START ==========================================================================
 app.use("/api/auth", authRoutes);
-app.use("/api/catalog", catalogRoutes);
+
+app.use("/api/catalog", Catalog_Routes);
+app.use("/api/category", Category_Routes);
 
 app.use("/api/order", orderRoutes);
 

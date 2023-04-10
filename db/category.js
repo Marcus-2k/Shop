@@ -1,6 +1,6 @@
-const options = require("../db/options");
+const options = require("./options");
 
-module.exports.categoryList_characteristics = [
+module.exports.CATEGORY = [
   {
     nameCategory: "Ноутбуки та комп'ютери",
     nameListCategory: [

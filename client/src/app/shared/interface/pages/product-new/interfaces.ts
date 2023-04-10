@@ -1,5 +1,5 @@
 import { MatFormFieldAppearance } from "@angular/material/form-field";
-import { Options } from "../../interfaces";
+import { CHARACTERISTICS } from "../../interfaces";
 
 export interface InputData {
   photoData: InputData_Photo;
@@ -43,7 +43,7 @@ export interface InputData_Category {
 }
 export interface InputData_Characteristics {
   characteristicsNumber: number[][] | null;
-  characteristicsName: Options[] | null;
+  characteristicsName: CHARACTERISTICS[] | null;
 }
 export interface InputData_Keywords {
   keywords: string;

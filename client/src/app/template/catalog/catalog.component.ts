@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
-import { CategoryProduct } from "src/app/shared/interface/interfaces";
+import { CATALOG } from "src/app/shared/interface/interfaces";
 
 import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
 
@@ -18,7 +18,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.requestCatalog.getCategory().subscribe(
+    this.requestCatalog.getCatalog().subscribe(
       (response) => {
         console.log(response);
         this.category = response;
@@ -40,7 +40,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
   loader: boolean = true;
 
-  category: CategoryProduct[] = [];
+  category: CATALOG[] = [];
   activeCategory: number = 0;
 
   mouseEnterEditActiveCategory(idx: number) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 
-import { CategoryProduct } from "src/app/shared/interface/interfaces";
+import { CATALOG } from "src/app/shared/interface/interfaces";
 import { Widget_Breadcrumbs } from "src/app/shared/interface/card/card.interfaces";
 
 import { RequestCatalogService } from "src/app/shared/service/server/request-catalog.service";
@@ -33,7 +33,7 @@ export class CatalogSectionComponent implements OnInit {
       this.requestCatalog.getCatalogSection(navigate_link).subscribe({
         next: (data) => {
           console.log(data);
-          this.catalogSection = data.catalog_section;
+          this.CATALOG = data.catalog_section;
           this.widget_breadcrumbs = data.widget_breadcrumbs;
         },
         error: (err) => {
@@ -48,6 +48,6 @@ export class CatalogSectionComponent implements OnInit {
 
   url_server_folder = environment.URL_SERVER_FOLDER;
 
-  catalogSection: CategoryProduct | undefined;
+  CATALOG: CATALOG | undefined;
   widget_breadcrumbs: Widget_Breadcrumbs | undefined;
 }

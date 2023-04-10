@@ -1,94 +1,30 @@
-const Catalog = require("../db/catalog");
-const Catalog_Characteristics = require("../db/catalog_characteristics");
+const { CATALOG } = require("../db/catalog");
 
-module.exports.getCategory = async function (req, res) {
-  console.log("Server getCategory");
+module.exports.getCatalog = async function (req, res) {
+  console.log("Server getCatalog");
 
   try {
-    let newCatalog = JSON.parse(JSON.stringify(Catalog.categoryList));
+    return res.status(200).json(CATALOG);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 
-    newCatalog.forEach((element) => {
-      element.nameListCategory.forEach((item) => {
-        delete item.searchWords;
-        if (item.subNameListCategory !== undefined) {
-          item.subNameListCategory.forEach((subItem) => {
-            delete subItem.searchWords;
-          });
-        }
+module.exports.getCatalogHome = async function (req, res) {
+  console.log("Server getCatalogHome");
+
+  try {
+    let sidebar_list = [];
+    for (let idx = 0; idx < CATALOG.length; idx++) {
+      sidebar_list.push({
+        nameCategory: CATALOG[idx].nameCategory,
+        nameCategoryImg: CATALOG[idx].nameCategoryImg,
+        navigate_link: CATALOG[idx].navigate_link,
       });
-    });
-
-    return res.status(200).json(newCatalog);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Server error" });
-  }
-};
-
-module.exports.getCategoryHome = async function (req, res) {
-  console.log("Server getCategoryHome");
-
-  try {
-    const CLONE_CATALOG = JSON.parse(JSON.stringify(Catalog.categoryList));
-    let catalogPopuap = [];
-    CLONE_CATALOG.forEach((element) => {
-      const homeElement = {
-        nameCategory: element.nameCategory,
-        nameCategoryImg: element.nameCategoryImg,
-        navigate_link: element.navigate_link,
-      };
-
-      catalogPopuap.push(homeElement);
-    });
-
-    return res.status(200).json(catalogPopuap);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Server error" });
-  }
-};
-
-module.exports.getCategoryAndCharacteristics = async function (req, res) {
-  console.log("Server getCategoryAndCharacteristics");
-
-  try {
-    return res
-      .status(200)
-      .json(Catalog_Characteristics.categoryList_characteristics);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Server error" });
-  }
-};
-
-module.exports.getCharacteristics = async function (req, res) {
-  console.log("Server getCharacteristics");
-
-  try {
-    console.log(req.body);
-
-    const categoryNumber = req.body.categoryNumber;
-
-    if (!categoryNumber) {
-      return res.status(404).json({ message: "Incorrect data entry" });
     }
 
-    let characteristics = [];
-    if (categoryNumber.length === 3) {
-      characteristics =
-        Catalog_Characteristics.categoryList_characteristics[categoryNumber[0]]
-          .nameListCategory[categoryNumber[1]].subNameListCategory[
-          categoryNumber[2]
-        ].characteristics;
-    } else if (categoryNumber.length === 2) {
-      characteristics =
-        Catalog_Characteristics.categoryList_characteristics[categoryNumber[0]]
-          .nameListCategory[categoryNumber[1]].characteristics;
-    } else {
-      return res.status(404).json({ message: "Incorrect data entry" });
-    }
-
-    return res.status(200).json(characteristics);
+    return res.status(200).json(sidebar_list);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -99,14 +35,13 @@ module.exports.getCatalogSection = async function (req, res) {
   console.log("Server getCatalogSection");
 
   try {
-    console.log(req.params);
     const { navigate_link } = req.params;
 
     if (!navigate_link) {
       return res.status(404).json({ message: "Не існуючий розділ каталогу" });
     }
 
-    const CLONE_CATALOG = JSON.parse(JSON.stringify(Catalog.categoryList));
+    const CLONE_CATALOG = JSON.parse(JSON.stringify(CATALOG));
 
     for (let idx = 0; idx < CLONE_CATALOG.length; idx++) {
       if (CLONE_CATALOG[idx].navigate_link === navigate_link) {

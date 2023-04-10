@@ -1,6 +1,9 @@
 import { createAction, props } from "@ngrx/store";
 
-import { Options, ProductUpdate } from "src/app/shared/interface/interfaces";
+import {
+  CHARACTERISTICS,
+  ProductUpdate,
+} from "src/app/shared/interface/interfaces";
 
 export namespace ProductNewActions {
   export const initialState = createAction(
@@ -65,7 +68,7 @@ export namespace ProductNewActions {
   );
   export const getCharacteristicsData = createAction(
     "getCharacteristicsData",
-    props<{ characteristics: Options[] }>()
+    props<{ characteristics: CHARACTERISTICS[] }>()
   );
 
   export const resetCharacteristics = createAction("resetCharacteristics");
@@ -125,7 +128,7 @@ export interface ProductNewState {
       categoryError: boolean | null;
     };
     characteristicsData: {
-      characteristicsName: Options[] | null;
+      characteristicsName: CHARACTERISTICS[] | null;
 
       characteristics_original: number[][] | null;
       characteristics_present: number[][] | null;

@@ -1,8 +1,9 @@
 const Product = require("../models/Product");
 
 const fs = require("fs");
-const Catalog_characteristics = require("../db/catalog_characteristics");
 const jwt_decode = require("jwt-decode");
+
+const { CATEGORY } = require("../db/category");
 
 const Product_Validation = {
   name: {
@@ -60,16 +61,12 @@ module.exports.getByIdProduct = async function (req, res) {
 
     if (product.category.length === 3) {
       characteristicsName =
-        Catalog_characteristics.categoryList_characteristics[
-          product.category[0]
-        ].nameListCategory[product.category[1]].subNameListCategory[
-          product.category[2]
-        ].characteristics;
+        CATEGORY[product.category[0]].nameListCategory[product.category[1]]
+          .subNameListCategory[product.category[2]].characteristics;
     } else if (product.length === 2) {
       characteristicsName =
-        Catalog_characteristics.categoryList_characteristics[
-          product.category[0]
-        ].nameListCategory[product.category[1]].characteristics;
+        CATEGORY[product.category[0]].nameListCategory[product.category[1]]
+          .characteristics;
     }
 
     product = JSON.parse(JSON.stringify(product));
@@ -237,23 +234,16 @@ module.exports.createProduct = async function (req, res) {
       }
 
       categoryName = [];
-      if (Catalog_characteristics.categoryList_characteristics[category[0]]) {
-        categoryName.push(
-          Catalog_characteristics.categoryList_characteristics[category[0]]
-            .nameCategory
-        );
+      if (CATEGORY[category[0]]) {
+        categoryName.push(CATEGORY[category[0]].nameCategory);
       } else {
         return res.status(400).json({
           message: "Вибрана не існуюча категорія товару",
         });
       }
-      if (
-        Catalog_characteristics.categoryList_characteristics[category[0]]
-          .nameListCategory[category[1]]
-      ) {
+      if (CATEGORY[category[0]].nameListCategory[category[1]]) {
         categoryName.push(
-          Catalog_characteristics.categoryList_characteristics[category[0]]
-            .nameListCategory[category[1]].subNameCategory
+          CATEGORY[category[0]].nameListCategory[category[1]].subNameCategory
         );
       } else {
         return res.status(400).json({
@@ -262,13 +252,12 @@ module.exports.createProduct = async function (req, res) {
       }
       if (category.length === 3) {
         if (
-          Catalog_characteristics.categoryList_characteristics[category[0]]
-            .nameListCategory[category[1]].subNameListCategory[category[2]]
+          CATEGORY[category[0]].nameListCategory[category[1]]
+            .subNameListCategory[category[2]]
         ) {
           categoryName.push(
-            Catalog_characteristics.categoryList_characteristics[category[0]]
-              .nameListCategory[category[1]].subNameListCategory[category[2]]
-              .titleSubNameListCategory
+            CATEGORY[category[0]].nameListCategory[category[1]]
+              .subNameListCategory[category[2]].titleSubNameListCategory
           );
         } else {
           return res.status(400).json({
@@ -567,19 +556,14 @@ module.exports.updateProduct = async function (req, res) {
         }
 
         let categoryName = [];
+        categoryName.push(CATEGORY[category[0]].nameCategory);
         categoryName.push(
-          Catalog_characteristics.categoryList_characteristics[category[0]]
-            .nameCategory
-        );
-        categoryName.push(
-          Catalog_characteristics.categoryList_characteristics[category[0]]
-            .nameListCategory[category[1]].subNameCategory
+          CATEGORY[category[0]].nameListCategory[category[1]].subNameCategory
         );
         if (category.length === 3) {
           categoryName.push(
-            Catalog_characteristics.categoryList_characteristics[category[0]]
-              .nameListCategory[category[1]].subNameListCategory[category[2]]
-              .titleSubNameListCategory
+            CATEGORY[category[0]].nameListCategory[category[1]]
+              .subNameListCategory[category[2]].titleSubNameListCategory
           );
         }
 
@@ -803,13 +787,12 @@ function createCharacteristics(category, string) {
 
   if (category.length === 3) {
     characteristics =
-      Catalog_characteristics.categoryList_characteristics[category[0]]
-        .nameListCategory[category[1]].subNameListCategory[category[2]]
-        .characteristics;
+      CATEGORY[category[0]].nameListCategory[category[1]].subNameListCategory[
+        category[2]
+      ].characteristics;
   } else if (category.length === 2) {
     characteristics =
-      Catalog_characteristics.categoryList_characteristics[category[0]]
-        .nameListCategory[category[1]].characteristics;
+      CATEGORY[category[0]].nameListCategory[category[1]].characteristics;
   } else {
     return {
       message: "Категорія не вибрана або не можливо визначити категорію",

@@ -1,4 +1,4 @@
-const Catalog = require("../db/catalog");
+const { CATALOG } = require("../db/catalog");
 
 class SearchService {
   async searchCategoryByParams(params) {
@@ -8,26 +8,21 @@ class SearchService {
           let categoryList = [];
           let type = 0;
 
-          for (let i = 0; i < Catalog.categoryList.length; i++) {
-            for (
-              let idx = 0;
-              idx < Catalog.categoryList[i].nameListCategory.length;
-              idx++
-            ) {
+          for (let i = 0; i < CATALOG.length; i++) {
+            for (let idx = 0; idx < CATALOG[i].nameListCategory.length; idx++) {
               if (
-                Catalog.categoryList[i].nameListCategory[idx].navigate_link ===
+                CATALOG[i].nameListCategory[idx].navigate_link ===
                 params["navigate_link"]
               ) {
                 console.log(i, " + ", idx);
-                type = Catalog.categoryList[i].nameListCategory[idx].type;
+                type = CATALOG[i].nameListCategory[idx].type;
                 if (type === 1) {
                   categoryList.push([i, idx]);
                 } else if (type === 2) {
                   for (
                     let index = 0;
                     index <
-                    Catalog.categoryList[i].nameListCategory[idx]
-                      .subNameListCategory.length;
+                    CATALOG[i].nameListCategory[idx].subNameListCategory.length;
                     index++
                   ) {
                     categoryList.push([i, idx, index]);
@@ -37,26 +32,25 @@ class SearchService {
               }
 
               if (
-                Catalog.categoryList[i].nameListCategory[idx]
-                  .subNameListCategory !== undefined
+                CATALOG[i].nameListCategory[idx].subNameListCategory !==
+                undefined
               ) {
                 for (
                   let index = 0;
                   index <
-                  Catalog.categoryList[i].nameListCategory[idx]
-                    .subNameListCategory.length;
+                  CATALOG[i].nameListCategory[idx].subNameListCategory.length;
                   index++
                 ) {
                   if (
-                    Catalog.categoryList[i].nameListCategory[idx]
-                      .subNameListCategory[index].navigate_link ===
-                    params["navigate_link"]
+                    CATALOG[i].nameListCategory[idx].subNameListCategory[index]
+                      .navigate_link === params["navigate_link"]
                   ) {
                     // console.log(i, " + ", idx, " + ", index);
                     categoryList.push([i, idx, index]);
                     type =
-                      Catalog.categoryList[i].nameListCategory[idx]
-                        .subNameListCategory[index].type;
+                      CATALOG[i].nameListCategory[idx].subNameListCategory[
+                        index
+                      ].type;
                     break;
                   }
                 }

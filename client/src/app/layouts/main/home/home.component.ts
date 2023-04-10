@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import {
   News,
   Product,
-  CategoryHome,
+  CATALOG_HOME,
 } from "src/app/shared/interface/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
       }
     }
 
-    this.requestCatalog.getCategoryHome().subscribe({
+    this.requestCatalog.getCatalogHome().subscribe({
       next: (response) => {
         console.log(response);
         this.categoryProductList = response;
@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit {
   }
 
   // Aside START ===========================================================================
-  categoryProductList: CategoryHome[] = [];
+  categoryProductList: CATALOG_HOME[] = [];
   // Aside END =============================================================================
   // Main START ============================================================================
   config: SwiperOptions = {
