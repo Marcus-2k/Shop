@@ -1,6 +1,6 @@
 {
   "name": "server-shop",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "server for online-store",
   "main": "index.js",
   "scripts": {
@@ -9,11 +9,7 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\"  \"npm run client\""
   },
-  "keywords": [
-    "Angular",
-    "Express"
-  ],
-  "author": "TOP_ARENA",
+  "author": "ARENA",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
