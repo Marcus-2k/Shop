@@ -1,4 +1,4 @@
-import Product from "../models/Product.js";
+import ProductModel from "../models/Product.js";
 import SearchService from "../service/search-service.js";
 
 import CATALOG from "../db/catalog.js";
@@ -123,13 +123,13 @@ export const search = async function (req, res) {
         return res.status(500).json({ message: "Server error" });
       }
 
-      product = await Product.find(FilterQuery, {
+      product = await ProductModel.find(FilterQuery, {
         category: 1,
         characteristics: 1,
         characteristicsName: 1,
       });
 
-      count = await Product.find({
+      count = await ProductModel.find({
         ...FilterQuery,
         ...getQueryParams(req.query),
       })
@@ -142,7 +142,7 @@ export const search = async function (req, res) {
     } else if (search_text) {
       FilterQuery.name = { $regex: search_text, $options: "i" };
 
-      product = await Product.find(FilterQuery, {
+      product = await ProductModel.find(FilterQuery, {
         category: 1,
         characteristics: 1,
         characteristicsName: 1,
@@ -151,7 +151,7 @@ export const search = async function (req, res) {
       let filtersData = createFilters(product);
       filters = filtersData.filters;
 
-      count = await Product.find({
+      count = await ProductModel.find({
         ...FilterQuery,
         ...getQueryParams(req.query),
       })
@@ -172,7 +172,7 @@ export const search = async function (req, res) {
     // Type sorting START ========================================================================================
     if (type_sort === 0) {
       // Сheap
-      product = await Product.find({
+      product = await ProductModel.find({
         ...FilterQuery,
         ...getQueryParams(req.query),
       })
@@ -244,7 +244,7 @@ export const search = async function (req, res) {
       }
     } else if (type_sort === 1) {
       // Expensive
-      product = await Product.find({
+      product = await ProductModel.find({
         ...FilterQuery,
         ...getQueryParams(req.query),
       })
@@ -324,7 +324,7 @@ export const search = async function (req, res) {
       // Novelty <Disabled Client>
     } else if (type_sort === 4) {
       // Action
-      product = await Product.find({
+      product = await ProductModel.find({
         ...FilterQuery,
         ...getQueryParams(req.query),
         action: true,
@@ -332,7 +332,7 @@ export const search = async function (req, res) {
         .limit(limit)
         .skip(limit * (currentPage - 1));
 
-      count = await Product.find({
+      count = await ProductModel.find({
         ...FilterQuery,
         ...getQueryParams(req.query),
         action: true,
@@ -343,7 +343,7 @@ export const search = async function (req, res) {
       maxPage = Math.ceil(count / limit);
     } else if (type_sort === 5) {
       // Grade
-      product = await Product.find({
+      product = await ProductModel.find({
         ...FilterQuery,
         ...getQueryParams(req.query),
       })

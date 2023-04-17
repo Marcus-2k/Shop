@@ -3,8 +3,8 @@ import jwt_decode from "jwt-decode";
 
 import fs from "fs";
 
-import User from "../models/User.js";
-import Product from "../models/Product.js";
+import UserModel from "../models/User.js";
+import ProductModel from "../models/Product.js";
 
 export async function getUserInfo(req, res) {
   console.log("Server getUserInfo");
@@ -12,7 +12,7 @@ export async function getUserInfo(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id, {
+    const user = await UserModel.findById(token_decode.id, {
       avatar: 1,
       name: 1,
       lastName: 1,
@@ -33,7 +33,7 @@ export async function editUser(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     if (user) {
       const updatedUser = {};
@@ -66,7 +66,7 @@ export async function editUser(req, res) {
         updatedUser.country = req.body.country;
       }
 
-      await User.findByIdAndUpdate(
+      await UserModel.findByIdAndUpdate(
         { _id: user._id },
         { $set: updatedUser },
         { new: true }
@@ -87,7 +87,7 @@ export async function editPasswordUser(req, res) {
   try {
     const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
 
-    const user = await User.findOne({ email: tokenDecode.email });
+    const user = await UserModel.findOne({ email: tokenDecode.email });
 
     if (user) {
       const passwordResult = bcrypt.compareSync(
@@ -101,7 +101,7 @@ export async function editPasswordUser(req, res) {
           password: bcrypt.hashSync(req.body.newPassword, salt),
         };
 
-        await User.findByIdAndUpdate(
+        await UserModel.findByIdAndUpdate(
           { _id: user._id },
           { $set: newPassword },
           { new: true }
@@ -125,13 +125,13 @@ export async function getHistoryUser(req, res) {
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     if (user) {
       let product = [];
 
       for (let i = 0; i < user.history__view.length; i++) {
-        const itemProduct = await Product.findById(user.history__view[i]);
+        const itemProduct = await ProductModel.findById(user.history__view[i]);
         product.push(itemProduct);
       }
 
@@ -151,11 +151,11 @@ export async function newHistoryUser(req, res) {
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     if (user) {
       if (user.history__view.indexOf(req.body.id) === -1) {
-        await User.updateOne(
+        await UserModel.updateOne(
           { _id: user._id },
           { $push: { history__view: req.body.id } },
           { new: true }
@@ -165,12 +165,12 @@ export async function newHistoryUser(req, res) {
           .json({ message: "Успішно додано в історію переглядів" });
       } else {
         // Delete product from history and add to the first place
-        await User.updateOne(
+        await UserModel.updateOne(
           { _id: user._id },
           { $pull: { history__view: req.body.id } },
           { new: true }
         );
-        await User.updateOne(
+        await UserModel.updateOne(
           { _id: user._id },
           { $push: { history__view: req.body.id } },
           { new: true }
@@ -195,7 +195,7 @@ export async function getFavoriteAndShoppingCart(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const userData = await User.findById(token_decode.id, {
+    const userData = await UserModel.findById(token_decode.id, {
       favorite: 1,
       shoppingCart: 1,
       _id: 0,
@@ -218,7 +218,7 @@ export async function getFavorite(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const userFavorite = await User.findById(token_decode.id, {
+    const userFavorite = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 0,
     });
@@ -235,13 +235,13 @@ export async function addFavorite(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    await User.updateOne(
+    await UserModel.updateOne(
       { _id: token_decode.id },
       { $push: { favorite: req.body.id } },
       { new: true }
     );
 
-    const userFavorite = await User.findById(token_decode.id, {
+    const userFavorite = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 0,
     });
@@ -260,15 +260,15 @@ export async function removeFavorite(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
-    await User.updateOne(
+    await UserModel.updateOne(
       { _id: user._id },
       { $pull: { favorite: req.params.id } },
       { new: true }
     );
 
-    const userFavorite = await User.findById(token_decode.id, {
+    const userFavorite = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 0,
     });
@@ -287,7 +287,7 @@ export async function getWishList(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id, {
+    const user = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 1,
     });
@@ -300,7 +300,7 @@ export async function getWishList(req, res) {
 
     const wishListUser = user.favorite;
 
-    const productWishList = await Product.find(
+    const productWishList = await ProductModel.find(
       { _id: { $in: wishListUser } },
       {
         imageSrc: 1,
@@ -328,7 +328,7 @@ export async function patchWishList(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     const updatedFavoriteUser = { favorite: [] };
     user.favorite.forEach((element, idx) => {
@@ -337,18 +337,18 @@ export async function patchWishList(req, res) {
       }
     });
 
-    await User.findByIdAndUpdate(
+    await UserModel.findByIdAndUpdate(
       { _id: user._id },
       { $set: updatedFavoriteUser },
       { new: true }
     );
 
-    const favoriteUser = await User.findById(token_decode.id, {
+    const favoriteUser = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 0,
     });
 
-    const productWishList = await Product.find(
+    const productWishList = await ProductModel.find(
       { _id: { $in: favoriteUser.favorite } },
       {
         // imageSrc: 0,
@@ -385,7 +385,7 @@ export async function getShoppingCart(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const userShoppingCart = await User.findById(token_decode.id, {
+    const userShoppingCart = await UserModel.findById(token_decode.id, {
       shoppingCart: 1,
       _id: 0,
     });
@@ -404,15 +404,15 @@ export async function addShoppingCart(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
-    await User.updateOne(
+    await UserModel.updateOne(
       { _id: user._id },
       { $push: { shoppingCart: req.body.id } },
       { new: true }
     );
 
-    const userShoppingCart = await User.findById(token_decode.id, {
+    const userShoppingCart = await UserModel.findById(token_decode.id, {
       shoppingCart: 1,
       _id: 0,
     });
@@ -431,15 +431,15 @@ export async function removeShoppingCart(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
-    await User.updateOne(
+    await UserModel.updateOne(
       { _id: user._id },
       { $pull: { shoppingCart: req.params.id } },
       { new: true }
     );
 
-    const userShoppingCart = await User.findById(token_decode.id, {
+    const userShoppingCart = await UserModel.findById(token_decode.id, {
       shoppingCart: 1,
       _id: 0,
     });
@@ -458,7 +458,7 @@ export async function getShoppingCartList(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id, {
+    const user = await UserModel.findById(token_decode.id, {
       shoppingCart: 1,
       _id: 1,
     });
@@ -469,7 +469,7 @@ export async function getShoppingCartList(req, res) {
 
     const shoppingCartUser = user.shoppingCart;
 
-    const productShoppingCart = await Product.find(
+    const productShoppingCart = await ProductModel.find(
       { _id: { $in: shoppingCartUser } },
       {
         imageSrc: 1,
@@ -499,7 +499,7 @@ export async function patchShoppingCartList(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     const updatedFavoriteUser = { favorite: [] };
     user.favorite.forEach((element, idx) => {
@@ -508,17 +508,17 @@ export async function patchShoppingCartList(req, res) {
       }
     });
 
-    await User.findByIdAndUpdate(
+    await UserModel.findByIdAndUpdate(
       { _id: user._id },
       { $set: updatedFavoriteUser },
       { new: true }
     );
 
-    const favoriteUser = await User.findById(token_decode.id, {
+    const favoriteUser = await UserModel.findById(token_decode.id, {
       favorite: 1,
     });
 
-    const productWishList = await Product.find(
+    const productWishList = await ProductModel.find(
       { _id: { $in: favoriteUser.favorite } },
       {
         // imageSrc: 0,

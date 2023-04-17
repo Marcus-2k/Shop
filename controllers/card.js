@@ -1,4 +1,4 @@
-import Product from "../models/Product.js";
+import ProductModel from "../models/Product.js";
 
 import CATALOG from "../db/catalog.js";
 import CATEGORY from "../db/category.js";
@@ -7,7 +7,7 @@ export async function getByIdCard(req, res) {
   console.log("Server getByIdCard");
 
   try {
-    let product = await Product.findById(req.params.id, {
+    let product = await ProductModel.findById(req.params.id, {
       imageSrc: 1,
       name: 1,
       price: 1,
@@ -77,7 +77,7 @@ export async function getByIdCardInfo(req, res) {
   console.log("Server getByIdCardInfo");
 
   try {
-    const productInfo = await Product.findById(req.params.id, {
+    const productInfo = await ProductModel.findById(req.params.id, {
       imageSrc: 1,
       description: 1,
       _id: 0,
@@ -98,7 +98,7 @@ export async function getByIdCardCharacteristics(req, res) {
   console.log("Server getByIdCardCharacteristics");
 
   try {
-    const product = await Product.findById(req.params.id, {
+    const product = await ProductModel.findById(req.params.id, {
       category: 1,
       characteristics: 1,
       _id: 0,
@@ -139,7 +139,7 @@ export async function getByIdCardComments(req, res) {
   console.log("Server getByIdCardComments");
 
   try {
-    const productComments = await Product.findById(req.params.id, {
+    const productComments = await ProductModel.findById(req.params.id, {
       comments: 1,
       _id: 0,
     });
@@ -159,7 +159,7 @@ export async function getByIdCardQuestions(req, res) {
   console.log("Server getByIdCardQuestions");
 
   try {
-    const productQuestions = await Product.findById(req.params.id, {
+    const productQuestions = await ProductModel.findById(req.params.id, {
       questions: 1,
       _id: 0,
     });
@@ -179,7 +179,7 @@ export async function getByIdCardPhoto(req, res) {
   console.log("Server getByIdCardPhoto");
 
   try {
-    const productPhoto = await Product.findById(req.params.id, {
+    const productPhoto = await ProductModel.findById(req.params.id, {
       imageSrc: 1,
       _id: 0,
     });
@@ -199,7 +199,7 @@ export async function getByIdCardAccessories(req, res) {
   console.log("Server getByIdCardAccessories");
 
   try {
-    const productAccessories = await Product.findById(req.params.id, {
+    const productAccessories = await ProductModel.findById(req.params.id, {
       accessories: 1,
       _id: 0,
     });

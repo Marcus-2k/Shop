@@ -1,4 +1,4 @@
-import Product from "../models/Product.js";
+import ProductModel from "../models/Product.js";
 
 import fs from "fs";
 import jwt_decode from "jwt-decode";
@@ -29,7 +29,7 @@ export async function getAllProduct(req, res) {
   console.log("Server getAllUser");
 
   try {
-    const product = await Product.find({ user: req.user.id });
+    const product = await ProductModel.find({ user: req.user.id });
 
     return res.status(200).json(product);
   } catch (error) {
@@ -42,7 +42,7 @@ export async function getByIdProduct(req, res) {
   console.log("Server getByIdProduct");
 
   try {
-    let product = await Product.findById(req.params.id, {
+    let product = await ProductModel.findById(req.params.id, {
       imageSrc: 1,
       name: 1,
       price: 1,
@@ -320,7 +320,7 @@ export async function createProduct(req, res) {
       return res.status(400).json({ message: "Опис товару є обовз'язковим" });
     }
 
-    const product = await new Product({
+    const product = await new ProductModel({
       imageSrc,
       name,
       price,
@@ -352,7 +352,7 @@ export async function updateProduct(req, res) {
   console.log("Server updateProduct");
 
   try {
-    const product = await Product.findById({ _id: req.params.id });
+    const product = await ProductModel.findById({ _id: req.params.id });
     if (!product) {
       return res.status(404).json({ message: "Товар не існує" });
     }
@@ -684,7 +684,7 @@ export async function updateProduct(req, res) {
 
     if (Object.keys(updateProduct).length > 0) {
       console.log(updateProduct);
-      await Product.findByIdAndUpdate(
+      await ProductModel.findByIdAndUpdate(
         req.params.id,
         { $set: updateProduct },
         { new: true }
@@ -706,7 +706,7 @@ export async function deleteProduct(req, res) {
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    let product = await Product.findById(req.params.id, {
+    let product = await ProductModel.findById(req.params.id, {
       imageSrc: 1,
       user: 1,
     });
@@ -717,7 +717,7 @@ export async function deleteProduct(req, res) {
     product = JSON.parse(JSON.stringify(product));
 
     if (token_decode.id === product.user) {
-      await Product.deleteOne({ _id: req.params.id });
+      await ProductModel.deleteOne({ _id: req.params.id });
 
       for (let idx = 0; idx < product.imageSrc.length; idx++) {
         deleteImgFromFolder(product.imageSrc[idx]);

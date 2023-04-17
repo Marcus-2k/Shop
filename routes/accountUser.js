@@ -44,14 +44,11 @@ router.patch(
   passport.authenticate("jwt", { session: false }),
   newHistoryUser
 );
-// Universal START =================================================================================================
 router.get(
   "/favorite_and_shoppingCart/",
   passport.authenticate("jwt", { session: false }),
   getFavoriteAndShoppingCart
 );
-// Universal END ===================================================================================================
-// ==== Favorite ====================================================================================================
 router.get(
   "/favorite/",
   passport.authenticate("jwt", { session: false }),
@@ -77,8 +74,6 @@ router.patch(
   passport.authenticate("jwt", { session: false }),
   patchWishList
 );
-// ==== Favorite ====================================================================================================
-// Shopping Cart ====================================================================================================
 router.get(
   "/cart/",
   passport.authenticate("jwt", { session: false }),
@@ -104,6 +99,5 @@ router.patch(
   passport.authenticate("jwt", { session: false }),
   patchShoppingCartList
 );
-// Shopping Cart ====================================================================================================
 
 export default router;

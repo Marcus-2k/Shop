@@ -3,12 +3,6 @@ import { getByIdSeller } from "../controllers/seller.js";
 
 const router = express.Router();
 
-// Seller START =====================================================================================================================
-router.get(
-  "/:id",
-
-  getByIdSeller
-);
-// Seller END =======================================================================================================================
+router.get("/:id", getByIdSeller);
 
 export default router;
