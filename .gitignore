@@ -1,11 +1,12 @@
-# Server
+package-lock.json
 node_modules
+dist
 
-# Server > uploads folder
+# Server
+.env
 uploads/*.webp
 uploads/*.png
 uploads/*.jpg
 
 # Client
 .angular
-dist
