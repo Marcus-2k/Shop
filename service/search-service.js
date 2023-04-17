@@ -1,4 +1,4 @@
-const { CATALOG } = require("../db/catalog");
+import CATALOG from "../db/catalog.js";
 
 class SearchService {
   async searchCategoryByParams(params) {
@@ -76,4 +76,4 @@ class SearchService {
   }
 }
 
-module.exports = new SearchService();
+export default new SearchService();

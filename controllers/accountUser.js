@@ -1,12 +1,12 @@
-const bcrypt = require("bcryptjs");
-const jwt_decode = require("jwt-decode");
+import bcrypt from "bcryptjs";
+import jwt_decode from "jwt-decode";
 
-const fs = require("fs");
+import fs from "fs";
 
-const User = require("../models/User");
-const Product = require("../models/Product");
+import User from "../models/User.js";
+import Product from "../models/Product.js";
 
-module.exports.getUserInfo = async function (req, res) {
+export async function getUserInfo(req, res) {
   console.log("Server getUserInfo");
 
   try {
@@ -26,8 +26,8 @@ module.exports.getUserInfo = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.editUser = async function (req, res) {
+}
+export async function editUser(req, res) {
   console.log("Server editUser");
 
   try {
@@ -80,8 +80,8 @@ module.exports.editUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.editPasswordUser = async function (req, res) {
+}
+export async function editPasswordUser(req, res) {
   console.log("Server editPasswordUser");
 
   try {
@@ -118,9 +118,9 @@ module.exports.editPasswordUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // History =========================================================================================================
-module.exports.getHistoryUser = async function (req, res) {
+export async function getHistoryUser(req, res) {
   console.log("Server getHistoryUser");
 
   try {
@@ -145,8 +145,8 @@ module.exports.getHistoryUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.newHistoryUser = async function (req, res) {
+}
+export async function newHistoryUser(req, res) {
   console.log("Server newHistoryUser");
 
   try {
@@ -186,10 +186,10 @@ module.exports.newHistoryUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // History =========================================================================================================
 // Universal START =================================================================================================
-module.exports.getFavoriteAndShoppingCart = async function (req, res) {
+export async function getFavoriteAndShoppingCart(req, res) {
   console.log("Server getFavoriteAndShoppingCart");
 
   try {
@@ -209,10 +209,10 @@ module.exports.getFavoriteAndShoppingCart = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // Universal END ===================================================================================================
 // Favorite ========================================================================================================
-module.exports.getFavorite = async function (req, res) {
+export async function getFavorite(req, res) {
   console.log("Server getFavorite");
 
   try {
@@ -228,8 +228,8 @@ module.exports.getFavorite = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.addFavorite = async function (req, res) {
+}
+export async function addFavorite(req, res) {
   console.log("Server addFavorite");
 
   try {
@@ -253,8 +253,8 @@ module.exports.addFavorite = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.removeFavorite = async function (req, res) {
+}
+export async function removeFavorite(req, res) {
   console.log("Server removeFavorite");
 
   try {
@@ -280,8 +280,8 @@ module.exports.removeFavorite = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.getWishList = async function (req, res) {
+}
+export async function getWishList(req, res) {
   console.log("Server getWishList");
 
   try {
@@ -321,8 +321,8 @@ module.exports.getWishList = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.patchWishList = async function (req, res) {
+}
+export async function patchWishList(req, res) {
   console.log("Server pathWishList");
 
   try {
@@ -376,10 +376,10 @@ module.exports.patchWishList = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // Favorite =========================================================================================================
 // Shopping Cart ====================================================================================================
-module.exports.getShoppingCart = async function (req, res) {
+export async function getShoppingCart(req, res) {
   console.log("Server getShoppingCart");
 
   try {
@@ -397,8 +397,8 @@ module.exports.getShoppingCart = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.addShoppingCart = async function (req, res) {
+}
+export async function addShoppingCart(req, res) {
   console.log("Server addShoppingCart");
 
   try {
@@ -424,8 +424,8 @@ module.exports.addShoppingCart = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.removeShoppingCart = async function (req, res) {
+}
+export async function removeShoppingCart(req, res) {
   console.log("Server removeShoppingCart");
 
   try {
@@ -451,8 +451,8 @@ module.exports.removeShoppingCart = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.getShoppingCartList = async function (req, res) {
+}
+export async function getShoppingCartList(req, res) {
   console.log("Server getShoppingCartList");
 
   try {
@@ -492,8 +492,8 @@ module.exports.getShoppingCartList = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.patchShoppingCartList = async function (req, res) {
+}
+export async function patchShoppingCartList(req, res) {
   console.log("Server patchShoppingCartList");
 
   try {
@@ -546,7 +546,7 @@ module.exports.patchShoppingCartList = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // Shopping Cart ====================================================================================================
 
 function deleteImgFromFolder(linkImg) {

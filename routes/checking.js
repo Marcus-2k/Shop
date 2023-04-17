@@ -1,7 +1,8 @@
-const express = require("express");
-const controller = require("../controllers/checking");
+import express from "express";
+import { checkingStatusServer } from "../controllers/checking.js";
+
 const router = express.Router();
 
-router.get("/status-server", controller.checkingStatusServer);
+router.get("/status-server", checkingStatusServer);
 
-module.exports = router;
+export default router;

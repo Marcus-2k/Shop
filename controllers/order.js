@@ -1,8 +1,8 @@
-const OrderModel = require("../models/Order");
-const ProductModel = require("../models/Product");
-const UserModel = require("../models/User");
+import OrderModel from "../models/Order.js";
+import ProductModel from "../models/Product.js";
+import UserModel from "../models/User.js";
 
-module.exports.getOrdersUser = async function (req, res) {
+export async function getOrdersUser(req, res) {
   console.log("Server getOrdersUser");
 
   try {
@@ -43,9 +43,9 @@ module.exports.getOrdersUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.createOrder = async function (req, res) {
+export async function createOrder(req, res) {
   console.log("Server createOrder");
 
   try {
@@ -122,7 +122,7 @@ module.exports.createOrder = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
 function generateRandomWord() {
   const words = [

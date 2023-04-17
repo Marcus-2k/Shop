@@ -1,9 +1,9 @@
-const Product = require("../models/Product");
+import Product from "../models/Product.js";
 
-const fs = require("fs");
-const jwt_decode = require("jwt-decode");
+import fs from "fs";
+import jwt_decode from "jwt-decode";
 
-const { CATEGORY } = require("../db/category");
+import CATEGORY from "../db/category.js";
 
 const Product_Validation = {
   name: {
@@ -25,7 +25,7 @@ const Product_Validation = {
   },
 };
 
-module.exports.getAllProduct = async function (req, res) {
+export async function getAllProduct(req, res) {
   console.log("Server getAllUser");
 
   try {
@@ -36,9 +36,9 @@ module.exports.getAllProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getByIdProduct = async function (req, res) {
+export async function getByIdProduct(req, res) {
   console.log("Server getByIdProduct");
 
   try {
@@ -77,9 +77,9 @@ module.exports.getByIdProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.createProduct = async function (req, res) {
+export async function createProduct(req, res) {
   console.log("Server createProduct");
 
   try {
@@ -346,9 +346,9 @@ module.exports.createProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.updateProduct = async function (req, res) {
+export async function updateProduct(req, res) {
   console.log("Server updateProduct");
 
   try {
@@ -698,9 +698,9 @@ module.exports.updateProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.deleteProduct = async function (req, res) {
+export async function deleteProduct(req, res) {
   console.log("Server deleteProduct");
 
   try {
@@ -735,7 +735,7 @@ module.exports.deleteProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
 function validateStatus(status) {
   if (isNaN(status) === false) {

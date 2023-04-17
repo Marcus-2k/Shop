@@ -1,32 +1,36 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const pasport = require("passport");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+import express from "express";
+import mongoose from "mongoose";
+import pasport from "passport";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import cors from "cors";
+import morgan from "morgan";
+import middleware_passport from "./middleware/passport.js";
 
 // Router START
-const authRoutes = require("./routes/auth");
+import authRoutes from "./routes/auth.js";
 
-const Catalog_Routes = require("./routes/catalog");
-const Category_Routes = require("./routes/category");
+import Catalog_Routes from "./routes/catalog.js";
+import Category_Routes from "./routes/category.js";
 
-const orderRoutes = require("./routes/order");
-const productRoutes = require("./routes/product");
-const userRoutes = require("./routes/accountUser");
-const guestRoutes = require("./routes/guest");
-const sellerRoutes = require("./routes/seller");
-const newsRoutes = require("./routes/news");
-const cardRoutes = require("./routes/card");
-const searchRoutes = require("./routes/search");
-const checkingRoutes = require("./routes/checking");
+import orderRoutes from "./routes/order.js";
+import productRoutes from "./routes/product.js";
+import userRoutes from "./routes/accountUser.js";
+import guestRoutes from "./routes/guest.js";
+import sellerRoutes from "./routes/seller.js";
+import newsRoutes from "./routes/news.js";
+import cardRoutes from "./routes/card.js";
+import searchRoutes from "./routes/search.js";
+import checkingRoutes from "./routes/checking.js";
 // Router END
 
 // Swagger START
-const swaggerUI = require("swagger-ui-express");
-const swaggerJsDoc = require("swagger-jsdoc");
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 // Swagger END
 
-require("dotenv").config();
+dotenv.config();
 const app = express();
 
 const options = {
@@ -57,9 +61,9 @@ mongoose
   });
 
 app.use(pasport.initialize());
-require("./middleware/passport")(pasport);
+middleware_passport(pasport);
 
-app.use(require("morgan")("dev"));
+app.use(morgan("dev"));
 
 app.use("/uploads", express.static("uploads"));
 
@@ -67,7 +71,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(
-  require("cors")({
+  cors({
     credentials: true,
     origin: process.env.CLIENT_URL_LOCALHOST,
   })
@@ -96,4 +100,4 @@ app.use("/api/search", searchRoutes);
 app.use("/api/checking", checkingRoutes);
 // Router END ============================================================================
 
-module.exports = app;
+export default app;

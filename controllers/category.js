@@ -1,6 +1,6 @@
-const { CATEGORY } = require("../db/category");
+import CATEGORY from "../db/category.js";
 
-module.exports.getCategory = async function (req, res) {
+export async function getCategory(req, res) {
   console.log("Server getCategory");
 
   try {
@@ -9,9 +9,9 @@ module.exports.getCategory = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getCharacteristics = async function (req, res) {
+export async function getCharacteristics(req, res) {
   console.log("Server getCharacteristics");
 
   try {
@@ -39,4 +39,4 @@ module.exports.getCharacteristics = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}

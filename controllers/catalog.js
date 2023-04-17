@@ -1,6 +1,6 @@
-const { CATALOG } = require("../db/catalog");
+import CATALOG from "../db/catalog.js";
 
-module.exports.getCatalog = async function (req, res) {
+export async function getCatalog(req, res) {
   console.log("Server getCatalog");
 
   try {
@@ -9,9 +9,9 @@ module.exports.getCatalog = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getCatalogHome = async function (req, res) {
+export async function getCatalogHome(req, res) {
   console.log("Server getCatalogHome");
 
   try {
@@ -29,9 +29,9 @@ module.exports.getCatalogHome = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getCatalogSection = async function (req, res) {
+export async function getCatalogSection(req, res) {
   console.log("Server getCatalogSection");
 
   try {
@@ -64,4 +64,4 @@ module.exports.getCatalogSection = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}

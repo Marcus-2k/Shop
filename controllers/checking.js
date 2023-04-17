@@ -1,4 +1,4 @@
-module.exports.checkingStatusServer = async function (req, res) {
+export async function checkingStatusServer(req, res) {
   console.log("Server checkingStatusServer");
 
   try {
@@ -7,4 +7,4 @@ module.exports.checkingStatusServer = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}

@@ -1,9 +1,9 @@
-const Product = require("../models/Product");
+import Product from "../models/Product.js";
 
-const { CATALOG } = require("../db/catalog");
-const { CATEGORY } = require("../db/category");
+import CATALOG from "../db/catalog.js";
+import CATEGORY from "../db/category.js";
 
-module.exports.getByIdCard = async function (req, res) {
+export async function getByIdCard(req, res) {
   console.log("Server getByIdCard");
 
   try {
@@ -71,9 +71,9 @@ module.exports.getByIdCard = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getByIdCardInfo = async function (req, res) {
+export async function getByIdCardInfo(req, res) {
   console.log("Server getByIdCardInfo");
 
   try {
@@ -92,9 +92,9 @@ module.exports.getByIdCardInfo = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getByIdCardCharacteristics = async function (req, res) {
+export async function getByIdCardCharacteristics(req, res) {
   console.log("Server getByIdCardCharacteristics");
 
   try {
@@ -133,9 +133,9 @@ module.exports.getByIdCardCharacteristics = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getByIdCardComments = async function (req, res) {
+export async function getByIdCardComments(req, res) {
   console.log("Server getByIdCardComments");
 
   try {
@@ -153,9 +153,9 @@ module.exports.getByIdCardComments = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getByIdCardQuestions = async function (req, res) {
+export async function getByIdCardQuestions(req, res) {
   console.log("Server getByIdCardQuestions");
 
   try {
@@ -173,9 +173,9 @@ module.exports.getByIdCardQuestions = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getByIdCardPhoto = async function (req, res) {
+export async function getByIdCardPhoto(req, res) {
   console.log("Server getByIdCardPhoto");
 
   try {
@@ -193,9 +193,9 @@ module.exports.getByIdCardPhoto = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getByIdCardAccessories = async function (req, res) {
+export async function getByIdCardAccessories(req, res) {
   console.log("Server getByIdCardAccessories");
 
   try {
@@ -213,4 +213,4 @@ module.exports.getByIdCardAccessories = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}

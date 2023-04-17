@@ -14,7 +14,7 @@
  * 4. Component_CBA, CPU_PC, Number_of_SATA_Connectors
  */
 
-module.exports = {
+export default {
   Producer: {
     name: "Бренд",
     query_name: "producer",

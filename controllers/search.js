@@ -1,10 +1,10 @@
-const Product = require("../models/Product");
-const SearchService = require("../service/search-service");
+import Product from "../models/Product.js";
+import SearchService from "../service/search-service.js";
 
-const { CATALOG } = require("../db/catalog");
-const { CATEGORY } = require("../db/category");
+import CATALOG from "../db/catalog.js";
+import CATEGORY from "../db/category.js";
 
-module.exports.search = async function (req, res) {
+export const search = async function (req, res) {
   console.log("Server search");
 
   try {

@@ -1,6 +1,6 @@
-const ProductModel = require("../models/Product");
+import ProductModel from "../models/Product.js";
 
-module.exports.getHistoryGuest = async function (req, res) {
+export async function getHistoryGuest(req, res) {
   console.log("Server getHistoryGuest");
 
   try {
@@ -20,4 +20,4 @@ module.exports.getHistoryGuest = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}

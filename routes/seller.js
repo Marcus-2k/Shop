@@ -1,13 +1,14 @@
-const express = require("express");
-const controller = require("../controllers/seller");
+import express from "express";
+import { getByIdSeller } from "../controllers/seller.js";
+
 const router = express.Router();
 
 // Seller START =====================================================================================================================
 router.get(
   "/:id",
 
-  controller.getByIdSeller
+  getByIdSeller
 );
 // Seller END =======================================================================================================================
 
-module.exports = router;
+export default router;

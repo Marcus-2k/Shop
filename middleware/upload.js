@@ -1,5 +1,5 @@
-const multer = require("multer");
-const moment = require("moment");
+import multer from "multer";
+import moment from "moment";
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -28,4 +28,4 @@ const limits = {
   fileSize: 1024 * 1024 * 5,
 };
 
-module.exports = multer({ storage, fileFilter, limits });
+export default multer({ storage, fileFilter, limits });
