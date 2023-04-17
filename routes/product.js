@@ -1,19 +1,26 @@
-const express = require("express");
-const passport = require("passport");
-const upload = require("../middleware/upload");
-const controller = require("../controllers/product");
+import express from "express";
+import passport from "passport";
+import upload from "../middleware/upload.js";
+import {
+  getAllProduct,
+  getByIdProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "../controllers/product.js";
+
 const router = express.Router();
 
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
-  controller.getAllProduct
+  getAllProduct
 );
 
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  controller.getByIdProduct
+  getByIdProduct
 );
 
 router.patch(
@@ -29,7 +36,7 @@ router.patch(
     { name: "image-6" },
     { name: "image-7" },
   ]),
-  controller.updateProduct
+  updateProduct
 );
 
 router.post(
@@ -45,13 +52,13 @@ router.post(
     { name: "image-6" },
     { name: "image-7" },
   ]),
-  controller.createProduct
+  createProduct
 );
 
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  controller.deleteProduct
+  deleteProduct
 );
 
-module.exports = router;
+export default router;

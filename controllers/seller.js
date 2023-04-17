@@ -1,6 +1,6 @@
-const UserModel = require("../models/User");
+import UserModel from "../models/User.js";
 
-module.exports.getByIdSeller = async function (req, res) {
+export async function getByIdSeller(req, res) {
   console.log("Server getByIdSeller");
 
   try {
@@ -14,4 +14,4 @@ module.exports.getByIdSeller = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}

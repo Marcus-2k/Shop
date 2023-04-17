@@ -1,11 +1,9 @@
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
+import UserDto from "../dtos/user-dto.js";
+import UserModel from "../models/User.js";
+import TokenService from "../service/token-service.js";
 
-const UserDto = require("../dtos/user-dto");
-const UserModel = require("../models/User");
-
-const TokenService = require("../service/token-service");
-
-module.exports.login = async function (req, res) {
+export async function login(req, res) {
   console.log("Server login");
 
   try {
@@ -44,9 +42,9 @@ module.exports.login = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.register = async function (req, res) {
+export async function register(req, res) {
   console.log("Server register");
 
   try {
@@ -89,9 +87,9 @@ module.exports.register = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.checking = async function (req, res) {
+export async function checking(req, res) {
   console.log("Server checking");
 
   try {
@@ -115,9 +113,9 @@ module.exports.checking = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.refresh = async function (req, res) {
+export async function refresh(req, res) {
   console.log("Server refresh");
 
   try {
@@ -147,9 +145,9 @@ module.exports.refresh = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.logout = async function (req, res) {
+export async function logout(req, res) {
   console.log("Server logout");
 
   try {
@@ -164,4 +162,4 @@ module.exports.logout = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}

@@ -1,95 +1,103 @@
-const express = require("express");
-const passport = require("passport");
-const upload = require("../middleware/upload");
-const controller = require("../controllers/accountUser");
+import express from "express";
+import passport from "passport";
+import upload from "../middleware/upload.js";
+import {
+  getUserInfo,
+  editUser,
+  editPasswordUser,
+  getHistoryUser,
+  newHistoryUser,
+  getFavoriteAndShoppingCart,
+  getFavorite,
+  addFavorite,
+  removeFavorite,
+  getWishList,
+  patchWishList,
+  getShoppingCart,
+  addShoppingCart,
+  removeShoppingCart,
+  getShoppingCartList,
+  patchShoppingCartList,
+} from "../controllers/accountUser.js";
+
 const router = express.Router();
 
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  controller.getUserInfo
-);
+router.get("/", passport.authenticate("jwt", { session: false }), getUserInfo);
 router.patch(
   "/",
   passport.authenticate("jwt", { session: false }),
   upload.single("image"),
-  controller.editUser
+  editUser
 );
 router.patch(
   "/password/",
   passport.authenticate("jwt", { session: false }),
-  controller.editPasswordUser
+  editPasswordUser
 );
 router.get(
   "/history/",
   passport.authenticate("jwt", { session: false }),
-  controller.getHistoryUser
+  getHistoryUser
 );
 router.patch(
   "/history/",
   passport.authenticate("jwt", { session: false }),
-  controller.newHistoryUser
+  newHistoryUser
 );
-// Universal START =================================================================================================
 router.get(
   "/favorite_and_shoppingCart/",
   passport.authenticate("jwt", { session: false }),
-  controller.getFavoriteAndShoppingCart
+  getFavoriteAndShoppingCart
 );
-// Universal END ===================================================================================================
-// ==== Favorite ====================================================================================================
 router.get(
   "/favorite/",
   passport.authenticate("jwt", { session: false }),
-  controller.getFavorite
+  getFavorite
 );
 router.post(
   "/favorite/",
   passport.authenticate("jwt", { session: false }),
-  controller.addFavorite
+  addFavorite
 );
 router.delete(
   "/favorite/:id",
   passport.authenticate("jwt", { session: false }),
-  controller.removeFavorite
+  removeFavorite
 );
 router.get(
   "/wish_list/",
   passport.authenticate("jwt", { session: false }),
-  controller.getWishList
+  getWishList
 );
 router.patch(
   "/wish_list/",
   passport.authenticate("jwt", { session: false }),
-  controller.patchWishList
+  patchWishList
 );
-// ==== Favorite ====================================================================================================
-// Shopping Cart ====================================================================================================
 router.get(
   "/cart/",
   passport.authenticate("jwt", { session: false }),
-  controller.getShoppingCart
+  getShoppingCart
 );
 router.post(
   "/cart/",
   passport.authenticate("jwt", { session: false }),
-  controller.addShoppingCart
+  addShoppingCart
 );
 router.delete(
   "/cart/:id",
   passport.authenticate("jwt", { session: false }),
-  controller.removeShoppingCart
+  removeShoppingCart
 );
 router.get(
   "/shopping_cart/",
   passport.authenticate("jwt", { session: false }),
-  controller.getShoppingCartList
+  getShoppingCartList
 );
 router.patch(
   "/shopping_cart/",
   passport.authenticate("jwt", { session: false }),
-  controller.patchShoppingCartList
+  patchShoppingCartList
 );
-// Shopping Cart ====================================================================================================
 
-module.exports = router;
+export default router;

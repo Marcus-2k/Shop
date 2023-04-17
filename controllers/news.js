@@ -1,6 +1,6 @@
-const NewsModel = require("../models/News");
+import NewsModel from "../models/News.js";
 
-module.exports.getAllNews = async function (req, res) {
+export async function getAllNews(req, res) {
   console.log("Server getAllNews");
 
   try {
@@ -11,4 +11,4 @@ module.exports.getAllNews = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}

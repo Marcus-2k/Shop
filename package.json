@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "description": "server for online-store",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index",
     "server": "nodemon index",

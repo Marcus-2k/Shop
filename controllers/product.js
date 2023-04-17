@@ -1,9 +1,9 @@
-const Product = require("../models/Product");
+import ProductModel from "../models/Product.js";
 
-const fs = require("fs");
-const jwt_decode = require("jwt-decode");
+import fs from "fs";
+import jwt_decode from "jwt-decode";
 
-const { CATEGORY } = require("../db/category");
+import CATEGORY from "../db/category.js";
 
 const Product_Validation = {
   name: {
@@ -25,24 +25,24 @@ const Product_Validation = {
   },
 };
 
-module.exports.getAllProduct = async function (req, res) {
+export async function getAllProduct(req, res) {
   console.log("Server getAllUser");
 
   try {
-    const product = await Product.find({ user: req.user.id });
+    const product = await ProductModel.find({ user: req.user.id });
 
     return res.status(200).json(product);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.getByIdProduct = async function (req, res) {
+export async function getByIdProduct(req, res) {
   console.log("Server getByIdProduct");
 
   try {
-    let product = await Product.findById(req.params.id, {
+    let product = await ProductModel.findById(req.params.id, {
       imageSrc: 1,
       name: 1,
       price: 1,
@@ -77,9 +77,9 @@ module.exports.getByIdProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.createProduct = async function (req, res) {
+export async function createProduct(req, res) {
   console.log("Server createProduct");
 
   try {
@@ -320,7 +320,7 @@ module.exports.createProduct = async function (req, res) {
       return res.status(400).json({ message: "Опис товару є обовз'язковим" });
     }
 
-    const product = await new Product({
+    const product = await new ProductModel({
       imageSrc,
       name,
       price,
@@ -346,13 +346,13 @@ module.exports.createProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.updateProduct = async function (req, res) {
+export async function updateProduct(req, res) {
   console.log("Server updateProduct");
 
   try {
-    const product = await Product.findById({ _id: req.params.id });
+    const product = await ProductModel.findById({ _id: req.params.id });
     if (!product) {
       return res.status(404).json({ message: "Товар не існує" });
     }
@@ -684,7 +684,7 @@ module.exports.updateProduct = async function (req, res) {
 
     if (Object.keys(updateProduct).length > 0) {
       console.log(updateProduct);
-      await Product.findByIdAndUpdate(
+      await ProductModel.findByIdAndUpdate(
         req.params.id,
         { $set: updateProduct },
         { new: true }
@@ -698,15 +698,15 @@ module.exports.updateProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-module.exports.deleteProduct = async function (req, res) {
+export async function deleteProduct(req, res) {
   console.log("Server deleteProduct");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    let product = await Product.findById(req.params.id, {
+    let product = await ProductModel.findById(req.params.id, {
       imageSrc: 1,
       user: 1,
     });
@@ -717,7 +717,7 @@ module.exports.deleteProduct = async function (req, res) {
     product = JSON.parse(JSON.stringify(product));
 
     if (token_decode.id === product.user) {
-      await Product.deleteOne({ _id: req.params.id });
+      await ProductModel.deleteOne({ _id: req.params.id });
 
       for (let idx = 0; idx < product.imageSrc.length; idx++) {
         deleteImgFromFolder(product.imageSrc[idx]);
@@ -735,7 +735,7 @@ module.exports.deleteProduct = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
 function validateStatus(status) {
   if (isNaN(status) === false) {

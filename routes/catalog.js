@@ -1,9 +1,14 @@
-const express = require("express");
-const controller = require("../controllers/catalog");
+import express from "express";
+import {
+  getCatalog,
+  getCatalogHome,
+  getCatalogSection,
+} from "../controllers/catalog.js";
+
 const router = express.Router();
 
-router.get("/", controller.getCatalog);
-router.get("/home", controller.getCatalogHome);
-router.get("/:navigate_link", controller.getCatalogSection);
+router.get("/", getCatalog);
+router.get("/home", getCatalogHome);
+router.get("/:navigate_link", getCatalogSection);
 
-module.exports = router;
+export default router;

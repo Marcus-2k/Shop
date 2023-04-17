@@ -1,18 +1,18 @@
-const bcrypt = require("bcryptjs");
-const jwt_decode = require("jwt-decode");
+import bcrypt from "bcryptjs";
+import jwt_decode from "jwt-decode";
 
-const fs = require("fs");
+import fs from "fs";
 
-const User = require("../models/User");
-const Product = require("../models/Product");
+import UserModel from "../models/User.js";
+import ProductModel from "../models/Product.js";
 
-module.exports.getUserInfo = async function (req, res) {
+export async function getUserInfo(req, res) {
   console.log("Server getUserInfo");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id, {
+    const user = await UserModel.findById(token_decode.id, {
       avatar: 1,
       name: 1,
       lastName: 1,
@@ -26,14 +26,14 @@ module.exports.getUserInfo = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.editUser = async function (req, res) {
+}
+export async function editUser(req, res) {
   console.log("Server editUser");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     if (user) {
       const updatedUser = {};
@@ -66,7 +66,7 @@ module.exports.editUser = async function (req, res) {
         updatedUser.country = req.body.country;
       }
 
-      await User.findByIdAndUpdate(
+      await UserModel.findByIdAndUpdate(
         { _id: user._id },
         { $set: updatedUser },
         { new: true }
@@ -80,14 +80,14 @@ module.exports.editUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.editPasswordUser = async function (req, res) {
+}
+export async function editPasswordUser(req, res) {
   console.log("Server editPasswordUser");
 
   try {
     const tokenDecode = jwt_decode(req.headers.authorization); // Decode jwt
 
-    const user = await User.findOne({ email: tokenDecode.email });
+    const user = await UserModel.findOne({ email: tokenDecode.email });
 
     if (user) {
       const passwordResult = bcrypt.compareSync(
@@ -101,7 +101,7 @@ module.exports.editPasswordUser = async function (req, res) {
           password: bcrypt.hashSync(req.body.newPassword, salt),
         };
 
-        await User.findByIdAndUpdate(
+        await UserModel.findByIdAndUpdate(
           { _id: user._id },
           { $set: newPassword },
           { new: true }
@@ -118,20 +118,20 @@ module.exports.editPasswordUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // History =========================================================================================================
-module.exports.getHistoryUser = async function (req, res) {
+export async function getHistoryUser(req, res) {
   console.log("Server getHistoryUser");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     if (user) {
       let product = [];
 
       for (let i = 0; i < user.history__view.length; i++) {
-        const itemProduct = await Product.findById(user.history__view[i]);
+        const itemProduct = await ProductModel.findById(user.history__view[i]);
         product.push(itemProduct);
       }
 
@@ -145,17 +145,17 @@ module.exports.getHistoryUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.newHistoryUser = async function (req, res) {
+}
+export async function newHistoryUser(req, res) {
   console.log("Server newHistoryUser");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     if (user) {
       if (user.history__view.indexOf(req.body.id) === -1) {
-        await User.updateOne(
+        await UserModel.updateOne(
           { _id: user._id },
           { $push: { history__view: req.body.id } },
           { new: true }
@@ -165,12 +165,12 @@ module.exports.newHistoryUser = async function (req, res) {
           .json({ message: "Успішно додано в історію переглядів" });
       } else {
         // Delete product from history and add to the first place
-        await User.updateOne(
+        await UserModel.updateOne(
           { _id: user._id },
           { $pull: { history__view: req.body.id } },
           { new: true }
         );
-        await User.updateOne(
+        await UserModel.updateOne(
           { _id: user._id },
           { $push: { history__view: req.body.id } },
           { new: true }
@@ -186,16 +186,16 @@ module.exports.newHistoryUser = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // History =========================================================================================================
 // Universal START =================================================================================================
-module.exports.getFavoriteAndShoppingCart = async function (req, res) {
+export async function getFavoriteAndShoppingCart(req, res) {
   console.log("Server getFavoriteAndShoppingCart");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const userData = await User.findById(token_decode.id, {
+    const userData = await UserModel.findById(token_decode.id, {
       favorite: 1,
       shoppingCart: 1,
       _id: 0,
@@ -209,16 +209,16 @@ module.exports.getFavoriteAndShoppingCart = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // Universal END ===================================================================================================
 // Favorite ========================================================================================================
-module.exports.getFavorite = async function (req, res) {
+export async function getFavorite(req, res) {
   console.log("Server getFavorite");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const userFavorite = await User.findById(token_decode.id, {
+    const userFavorite = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 0,
     });
@@ -228,20 +228,20 @@ module.exports.getFavorite = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.addFavorite = async function (req, res) {
+}
+export async function addFavorite(req, res) {
   console.log("Server addFavorite");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    await User.updateOne(
+    await UserModel.updateOne(
       { _id: token_decode.id },
       { $push: { favorite: req.body.id } },
       { new: true }
     );
 
-    const userFavorite = await User.findById(token_decode.id, {
+    const userFavorite = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 0,
     });
@@ -253,22 +253,22 @@ module.exports.addFavorite = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.removeFavorite = async function (req, res) {
+}
+export async function removeFavorite(req, res) {
   console.log("Server removeFavorite");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
-    await User.updateOne(
+    await UserModel.updateOne(
       { _id: user._id },
       { $pull: { favorite: req.params.id } },
       { new: true }
     );
 
-    const userFavorite = await User.findById(token_decode.id, {
+    const userFavorite = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 0,
     });
@@ -280,14 +280,14 @@ module.exports.removeFavorite = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.getWishList = async function (req, res) {
+}
+export async function getWishList(req, res) {
   console.log("Server getWishList");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id, {
+    const user = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 1,
     });
@@ -300,7 +300,7 @@ module.exports.getWishList = async function (req, res) {
 
     const wishListUser = user.favorite;
 
-    const productWishList = await Product.find(
+    const productWishList = await ProductModel.find(
       { _id: { $in: wishListUser } },
       {
         imageSrc: 1,
@@ -321,14 +321,14 @@ module.exports.getWishList = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.patchWishList = async function (req, res) {
+}
+export async function patchWishList(req, res) {
   console.log("Server pathWishList");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     const updatedFavoriteUser = { favorite: [] };
     user.favorite.forEach((element, idx) => {
@@ -337,18 +337,18 @@ module.exports.patchWishList = async function (req, res) {
       }
     });
 
-    await User.findByIdAndUpdate(
+    await UserModel.findByIdAndUpdate(
       { _id: user._id },
       { $set: updatedFavoriteUser },
       { new: true }
     );
 
-    const favoriteUser = await User.findById(token_decode.id, {
+    const favoriteUser = await UserModel.findById(token_decode.id, {
       favorite: 1,
       _id: 0,
     });
 
-    const productWishList = await Product.find(
+    const productWishList = await ProductModel.find(
       { _id: { $in: favoriteUser.favorite } },
       {
         // imageSrc: 0,
@@ -376,16 +376,16 @@ module.exports.patchWishList = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // Favorite =========================================================================================================
 // Shopping Cart ====================================================================================================
-module.exports.getShoppingCart = async function (req, res) {
+export async function getShoppingCart(req, res) {
   console.log("Server getShoppingCart");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const userShoppingCart = await User.findById(token_decode.id, {
+    const userShoppingCart = await UserModel.findById(token_decode.id, {
       shoppingCart: 1,
       _id: 0,
     });
@@ -397,22 +397,22 @@ module.exports.getShoppingCart = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.addShoppingCart = async function (req, res) {
+}
+export async function addShoppingCart(req, res) {
   console.log("Server addShoppingCart");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
-    await User.updateOne(
+    await UserModel.updateOne(
       { _id: user._id },
       { $push: { shoppingCart: req.body.id } },
       { new: true }
     );
 
-    const userShoppingCart = await User.findById(token_decode.id, {
+    const userShoppingCart = await UserModel.findById(token_decode.id, {
       shoppingCart: 1,
       _id: 0,
     });
@@ -424,22 +424,22 @@ module.exports.addShoppingCart = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.removeShoppingCart = async function (req, res) {
+}
+export async function removeShoppingCart(req, res) {
   console.log("Server removeShoppingCart");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
-    await User.updateOne(
+    await UserModel.updateOne(
       { _id: user._id },
       { $pull: { shoppingCart: req.params.id } },
       { new: true }
     );
 
-    const userShoppingCart = await User.findById(token_decode.id, {
+    const userShoppingCart = await UserModel.findById(token_decode.id, {
       shoppingCart: 1,
       _id: 0,
     });
@@ -451,14 +451,14 @@ module.exports.removeShoppingCart = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.getShoppingCartList = async function (req, res) {
+}
+export async function getShoppingCartList(req, res) {
   console.log("Server getShoppingCartList");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id, {
+    const user = await UserModel.findById(token_decode.id, {
       shoppingCart: 1,
       _id: 1,
     });
@@ -469,7 +469,7 @@ module.exports.getShoppingCartList = async function (req, res) {
 
     const shoppingCartUser = user.shoppingCart;
 
-    const productShoppingCart = await Product.find(
+    const productShoppingCart = await ProductModel.find(
       { _id: { $in: shoppingCartUser } },
       {
         imageSrc: 1,
@@ -492,14 +492,14 @@ module.exports.getShoppingCartList = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
-module.exports.patchShoppingCartList = async function (req, res) {
+}
+export async function patchShoppingCartList(req, res) {
   console.log("Server patchShoppingCartList");
 
   try {
     const token_decode = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(token_decode.id);
+    const user = await UserModel.findById(token_decode.id);
 
     const updatedFavoriteUser = { favorite: [] };
     user.favorite.forEach((element, idx) => {
@@ -508,17 +508,17 @@ module.exports.patchShoppingCartList = async function (req, res) {
       }
     });
 
-    await User.findByIdAndUpdate(
+    await UserModel.findByIdAndUpdate(
       { _id: user._id },
       { $set: updatedFavoriteUser },
       { new: true }
     );
 
-    const favoriteUser = await User.findById(token_decode.id, {
+    const favoriteUser = await UserModel.findById(token_decode.id, {
       favorite: 1,
     });
 
-    const productWishList = await Product.find(
+    const productWishList = await ProductModel.find(
       { _id: { $in: favoriteUser.favorite } },
       {
         // imageSrc: 0,
@@ -546,7 +546,7 @@ module.exports.patchShoppingCartList = async function (req, res) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 // Shopping Cart ====================================================================================================
 
 function deleteImgFromFolder(linkImg) {

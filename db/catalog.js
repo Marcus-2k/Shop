@@ -1,4 +1,4 @@
-module.exports.CATALOG = [
+export default [
   {
     nameCategory: "Ноутбуки та комп'ютери",
     nameCategoryImg: "uploads/catalog/laptop.png",

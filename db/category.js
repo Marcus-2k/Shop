@@ -1,6 +1,6 @@
-const options = require("./options");
+import options from "./options.js";
 
-module.exports.CATEGORY = [
+export default [
   {
     nameCategory: "Ноутбуки та комп'ютери",
     nameListCategory: [

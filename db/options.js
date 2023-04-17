@@ -1,11 +1,11 @@
-const option = require("./option");
+import option from "./option.js";
 
 /**
  * 1. "Develop" is used by default for categories that do not have their own characteristics
  * 2.
  */
 
-module.exports = {
+export default {
   Develop: [option.Color, option.Made_in],
   Laptop: [
     option.Producer,

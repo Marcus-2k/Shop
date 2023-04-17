@@ -1,13 +1,22 @@
-const express = require("express");
-const controller = require("../controllers/card");
+import express from "express";
+import {
+  getByIdCard,
+  getByIdCardInfo,
+  getByIdCardCharacteristics,
+  getByIdCardComments,
+  getByIdCardQuestions,
+  getByIdCardPhoto,
+  getByIdCardAccessories,
+} from "../controllers/card.js";
+
 const router = express.Router();
 
-router.get("/:id", controller.getByIdCard);
-router.get("/:id/info", controller.getByIdCardInfo);
-router.get("/:id/characteristics", controller.getByIdCardCharacteristics);
-router.get("/:id/comments", controller.getByIdCardComments);
-router.get("/:id/questions", controller.getByIdCardQuestions);
-router.get("/:id/photo", controller.getByIdCardPhoto);
-router.get("/:id/accessories", controller.getByIdCardAccessories);
+router.get("/:id", getByIdCard);
+router.get("/:id/info", getByIdCardInfo);
+router.get("/:id/characteristics", getByIdCardCharacteristics);
+router.get("/:id/comments", getByIdCardComments);
+router.get("/:id/questions", getByIdCardQuestions);
+router.get("/:id/photo", getByIdCardPhoto);
+router.get("/:id/accessories", getByIdCardAccessories);
 
-module.exports = router;
+export default router;
