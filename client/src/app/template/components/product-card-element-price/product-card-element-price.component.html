@@ -1,6 +1,6 @@
 <!--  -->
 
-<div class="price">
+<div class="price" *ngIf="price !== undefined && actionPrice !== undefined">
   <p
     class="price__title price__title__active"
     [ngClass]="{ price__title__active: action }"
