@@ -4,9 +4,9 @@ dist
 
 # Server
 .env
-uploads/*.webp
-uploads/*.png
-uploads/*.jpg
+server/uploads/*.webp
+server/uploads/*.png
+server/uploads/*.jpg
 
 # Client
-.angular
+client/.angular
