@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
-import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { User_Account } from "src/app/shared/interface/interfaces";
 
@@ -15,7 +15,7 @@ import { environment } from "src/environments/environment";
 export class UserComponent implements OnInit {
   constructor(
     private requestUser: RequestUserService,
-    private showNotice: ShowNoticeService,
+    private showMessage: OpenSnackBarService,
     private renameTitle: RenameTitleService
   ) {}
 
@@ -55,7 +55,7 @@ export class UserComponent implements OnInit {
       },
       (error: Error) => {
         console.log(error);
-        this.showNotice.message(error.message);
+        this.showMessage.open(error.message, undefined);
 
         this.loader = false;
       }
@@ -195,11 +195,11 @@ export class UserComponent implements OnInit {
 
     this.requestUser.upUserInfo(updateUserInfo).subscribe(
       (response) => {
-        this.showNotice.message(response.message);
+        this.showMessage.open(response.message, undefined);
       },
       (error: Error) => {
         console.log(error);
-        this.showNotice.message(error.message);
+        this.showMessage.open(error.message, undefined);
       }
     );
   }

@@ -4,7 +4,7 @@ import { Product } from "src/app/shared/interface/interfaces";
 
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
-import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 
 @Component({
   selector: "app-product",
@@ -14,7 +14,7 @@ import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
 export class ProductComponent implements OnInit {
   constructor(
     private requestProduct: RequestProductService,
-    private showNotice: ShowNoticeService,
+    private showMessage: OpenSnackBarService,
     private renameTitle: RenameTitleService
   ) {}
 
@@ -44,7 +44,7 @@ export class ProductComponent implements OnInit {
   deleteById(event: { id: string }, index: number): void {
     this.requestProduct.deleteById(event.id).subscribe({
       next: (data) => {
-        this.showNotice.message(data.message);
+        this.showMessage.open(data.message, undefined);
         if (data.deleted) {
           this.productList.splice(index, 1);
         }
