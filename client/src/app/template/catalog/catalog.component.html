@@ -24,7 +24,9 @@
           (mouseenter)="
             windowWidth > 1024 ? mouseEnterEditActiveCategory(idx) : ''
           "
-          (click)="windowWidth <= 1024 ? clickEditActiveCategory(idx) : ''"
+          (click)="
+            windowWidth <= 1024 ? clickEditActiveCategory(idx) : closeDialog()
+          "
         >
           <a
             class="list__item-link"
@@ -65,6 +67,7 @@
         >
           <a
             class="list__item-link"
+            (click)="closeDialog()"
             [routerLink]="['/search', categoryTwo.navigate_link]"
             [ngClass]="{ disabled: categoryTwo.permissionUse === false }"
           >
@@ -82,6 +85,7 @@
             >
               <a
                 class="sublist__item-link"
+                (click)="closeDialog()"
                 [routerLink]="['/search', categoryThree.navigate_link]"
                 [queryParams]="
                   categoryThree.queryParams
