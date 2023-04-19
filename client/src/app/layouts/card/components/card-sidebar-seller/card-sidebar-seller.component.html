@@ -1,10 +1,13 @@
 <!--  -->
-<div class="seller">
-  <div class="seller__title">
-    <p class="seller__title-placeholder">Продавець:</p>
-    <p class="seller__title-name">{{ seller?.name }}</p>
+
+<ng-container *ngIf="seller">
+  <div class="seller">
+    <div class="seller__title">
+      <p class="seller__title-placeholder">Продавець:</p>
+      <p class="seller__title-name">{{ seller.name }}</p>
+    </div>
+    <div class="seller__logo">
+      <img [src]="url_server_folder + seller.avatar" [alt]="seller.name" />
+    </div>
   </div>
-  <div class="seller__logo" *ngIf="seller?.avatar !== ''">
-    <img [src]="url_server_folder + seller?.avatar" alt="" />
-  </div>
-</div>
+</ng-container>
