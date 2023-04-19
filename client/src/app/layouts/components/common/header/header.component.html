@@ -19,7 +19,7 @@
     <!--  -->
     <div class="header__content-search">
       <div class="search" #blockSearch>
-        <form
+        <div
           class="search__form"
           method="get"
           (ngSubmit)="search(searchField.value)"
@@ -27,6 +27,7 @@
           <input
             class="search__form-field"
             type="text"
+            [(ngModel)]="searchText"
             placeholder="Пошук..."
             #searchField
             [matAutocomplete]="auto"
@@ -40,7 +41,7 @@
             "
           />
 
-          <button type="submit" class="search__form-btn" #buttonSubmit>
+          <button class="search__form-btn" #buttonSubmit (click)="search()">
             Знайти
           </button>
 
@@ -65,7 +66,7 @@
               {{ history }}
             </mat-option>
           </mat-autocomplete>
-        </form>
+        </div>
       </div>
     </div>
     <!--  -->

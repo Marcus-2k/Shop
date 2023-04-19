@@ -2,7 +2,7 @@ import { Component, OnInit, DoCheck } from "@angular/core";
 
 import { MatDialog } from "@angular/material/dialog";
 
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { OpenDialogService } from "src/app/shared/service/open-dialog.service";
@@ -23,6 +23,7 @@ import { ShoppingCartActions } from "src/app/store/cart/cart.action";
 export class HeaderComponent implements OnInit, DoCheck {
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private auth: AuthService,
     private requestUser: RequestUserService,
     private openDialog: OpenDialogService,
@@ -32,6 +33,12 @@ export class HeaderComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     console.log("Start ngOnInit Header");
+
+    this.route.queryParams.subscribe((data) => {
+      if (data["search_text"]) {
+        this.searchText = data["search_text"];
+      }
+    });
 
     this.authenticatedUser = this.auth.isAuthenticated();
 
@@ -101,51 +108,55 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
   // Menu END =============================================================
   // Search START =========================================================
-  searchText: string = "";
+  searchText: string | undefined;
 
   historySearchArray: string[] = [];
 
   widthBlockForm: number = 320;
-  search(title: string) {
-    this.searchText = title;
-
-    const historyLocalStorage: string | null =
-      localStorage.getItem("history-search");
-
-    if (historyLocalStorage) {
-      let historySearch: string[] = historyLocalStorage.split(",");
-
-      let index: number = -1;
-
-      for (let idx = 0; idx < historySearch.length; idx++) {
-        if (historySearch[idx] === title) {
-          index = idx;
-          break;
-        }
-      }
-
-      if (index === -1) {
-        historySearch.unshift(title);
-      } else if (index >= 0) {
-        historySearch.splice(index, 1);
-        historySearch.unshift(title);
-      }
-
-      localStorage.setItem("history-search", historySearch.join(","));
-      this.historySearchArray = historySearch;
-    } else {
-      localStorage.setItem("history-search", title);
-      this.historySearchArray.push(title);
+  search(title?: string) {
+    if (title) {
+      this.searchText = title;
     }
 
-    this.router.navigate(["search"], {
-      queryParams: {
-        search_text: title,
-        limit: 10,
-        page: 1,
-        type_sort: 5,
-      },
-    });
+    if (this.searchText) {
+      const historyLocalStorage: string | null =
+        localStorage.getItem("history-search");
+
+      if (historyLocalStorage) {
+        let historySearch: string[] = historyLocalStorage.split(",");
+
+        let index: number = -1;
+
+        for (let idx = 0; idx < historySearch.length; idx++) {
+          if (historySearch[idx] === title) {
+            index = idx;
+            break;
+          }
+        }
+
+        if (index === -1) {
+          historySearch.unshift(this.searchText);
+        } else if (index >= 0) {
+          historySearch.splice(index, 1);
+          historySearch.unshift(this.searchText);
+        }
+
+        localStorage.setItem("history-search", historySearch.join(","));
+        this.historySearchArray = historySearch;
+      } else {
+        localStorage.setItem("history-search", this.searchText);
+        this.historySearchArray.push(this.searchText);
+      }
+
+      this.router.navigate(["search"], {
+        queryParams: {
+          search_text: this.searchText,
+          limit: 10,
+          page: 1,
+          type_sort: 5,
+        },
+      });
+    }
   }
 
   clearHistorySearch() {
