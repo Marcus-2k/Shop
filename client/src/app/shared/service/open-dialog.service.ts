@@ -9,8 +9,8 @@ import { MyOrder, Redirect } from "../interface/interfaces";
 import { ProductCard_MyOrder } from "../interface/product-card/product-card.interfaces";
 import { DialogData_ProductNewCatalog } from "../interface/dialog/dialog.interfaces";
 
-import { LoginComponent } from "src/app/layouts/login/login.component";
-import { RegisterComponent } from "src/app/layouts/register/register.component";
+import { LoginComponent } from "src/app/layouts/auth/login/login.component";
+import { RegisterComponent } from "src/app/layouts/auth/register/register.component";
 import { MyOrderDetailComponent } from "src/app/layouts/user-layouts/my-order/my-order-detail/my-order-detail.component";
 import { ProductNewCatalogComponent } from "src/app/template/dialog/product-new-catalog/product-new-catalog.component";
 

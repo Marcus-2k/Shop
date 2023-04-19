@@ -5,7 +5,7 @@ import { RouterModule, Routes } from "@angular/router";
 // Not Found 404
 import { NotFoundComponent } from "src/app/not-found/not-found.component";
 // Home page
-import { HomeComponent } from "src/app/layouts/main/home/home.component";
+import { HomeComponent } from "src/app/layouts/home/home.component";
 // Guard, Resolver
 import { AuthGuard } from "../guard/auth.guard";
 import { CardResolver } from "src/app/shared/resolver/card.resolver";
