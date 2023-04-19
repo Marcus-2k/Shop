@@ -26,24 +26,24 @@ import { NotFoundComponent } from "./not-found/not-found.component";
 // 500 Component
 import { NotConnectionComponent } from "./not-connection/not-connection.component";
 // Body Main
-import { HomeComponent } from "./layouts/main/home/home.component";
+import { HomeComponent } from "./layouts/home/home.component";
 // Body >>> Header Component
-import { HeaderComponent } from "./layouts/main/header/header.component";
+import { HeaderComponent } from "./layouts/components/common/header/header.component";
 // Body >>> Footer Component
-import { FooterComponent } from "./layouts/main/footer/footer.component";
+import { FooterComponent } from "./layouts/components/common/footer/footer.component";
 
 // Auth Layouts
-import { LoginComponent } from "./layouts/login/login.component";
-import { RegisterComponent } from "./layouts/register/register.component";
+import { LoginComponent } from "./layouts/auth/login/login.component";
+import { RegisterComponent } from "./layouts/auth/register/register.component";
 
 // Widgets
 import { WidgetBreadcrumbsComponent } from "./layouts/components/widgets/widget-breadcrumbs/widget-breadcrumbs.component";
+import { WidgetAutoPortalComponent } from "./layouts/components/widgets/widget-auto-portal/widget-auto-portal.component";
+import { WidgetSectionIdComponent } from "./layouts/components/widgets/widget-section-id/widget-section-id.component";
 
 // Page Search Product
 import { SearchComponent } from "./layouts/search/search.component";
 import { SearchEmptyComponent } from "./layouts/search/search-empty/search-empty.component";
-import { WidgetAutoPortalComponent } from "./layouts/search/widget-auto-portal/widget-auto-portal.component";
-import { WidgetSectionIdComponent } from "./layouts/search/widget-section-id/widget-section-id.component";
 
 // User Layouts
 import { AccountComponent } from "./layouts/user-layouts/account/account.component";
