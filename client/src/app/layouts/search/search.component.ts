@@ -299,6 +299,8 @@ export class SearchComponent implements OnInit {
       }
     }
 
+    this.counterActiveFilter = 0;
+
     this.searchByQuery();
   }
 
