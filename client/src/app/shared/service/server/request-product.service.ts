@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Product, ProductUpdate } from "src/app/shared/interface/interfaces";
+
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -10,29 +11,30 @@ import { environment } from "src/environments/environment";
 export class RequestProductService {
   constructor(private http: HttpClient) {}
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  private url_server: string = `http://${this.HOST}${this.PORT}/api/account`;
+  url_server: string = environment.URL_SERVER_API + "account/product/";
 
   getUserProduct(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.url_server}/product/`);
+    return this.http.get<Product[]>(`${this.url_server}`);
   }
 
   getByIdProduct(id: string): Observable<ProductUpdate> {
-    return this.http.get<ProductUpdate>(`${this.url_server}/product/${id}`);
+    return this.http.get<ProductUpdate>(`${this.url_server}${id}`);
   }
 
-  updateById(upProduct: any, id: any): Observable<any> {
-    return this.http.patch<any>(`${this.url_server}/product/${id}`, upProduct);
+  createProduct(data: FormData): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.url_server}`, data);
   }
 
-  deleteById(id: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(
-      `${this.url_server}/product/${id}`
+  updateById(data: FormData, id: string): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(
+      `${this.url_server}${id}`,
+      data
     );
   }
 
-  createProduct(product: any): Observable<Product> {
-    return this.http.post<any>(`${this.url_server}/product/`, product);
+  deleteById(id: string): Observable<{ message: string; deleted: boolean }> {
+    return this.http.delete<{ message: string; deleted: boolean }>(
+      `${this.url_server}${id}`
+    );
   }
 }

@@ -1,7 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+
 import { Observable, tap } from "rxjs";
+
 import { UserLogin, UserRegister } from "../../interface/interfaces";
+
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -12,16 +15,14 @@ export class AuthService {
 
   private token: string | null = null;
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  private url_server: string = `http://${this.HOST}${this.PORT}/api`;
+  url_server: string = environment.URL_SERVER_API + "auth/";
 
   register(
     user: UserRegister
   ): Observable<{ accessToken: string; refreshToken: string }> {
     return this.http
       .post<{ accessToken: string; refreshToken: string }>(
-        `${this.url_server}/auth/register`,
+        `${this.url_server}register`,
         user,
         { withCredentials: true }
       )
@@ -38,7 +39,7 @@ export class AuthService {
   ): Observable<{ accessToken: string; refreshToken: string }> {
     return this.http
       .post<{ accessToken: string; refreshToken: string }>(
-        `${this.url_server}/auth/login`,
+        `${this.url_server}login`,
         user,
         { withCredentials: true }
       )
@@ -50,9 +51,9 @@ export class AuthService {
       );
   }
 
-  checking(): Observable<{ authorization: boolean }> {
-    return this.http.get<{ authorization: boolean }>(
-      `${this.url_server}/auth/checking`,
+  checking(): Observable<{ authorization: boolean; message: string }> {
+    return this.http.get<{ authorization: boolean; message: string }>(
+      `${this.url_server}checking`,
       { withCredentials: true }
     );
   }
@@ -60,7 +61,7 @@ export class AuthService {
   refresh(): Observable<{ accessToken: string; refreshToken: string }> {
     return this.http
       .get<{ accessToken: string; refreshToken: string }>(
-        `${this.url_server}/auth/refresh`,
+        `${this.url_server}refresh`,
         { withCredentials: true }
       )
       .pipe(
@@ -73,7 +74,7 @@ export class AuthService {
 
   logout(): Observable<any> {
     return this.http
-      .get<any>(`${this.url_server}/auth/logout`, {
+      .get<any>(`${this.url_server}logout`, {
         withCredentials: true,
       })
       .pipe(
@@ -89,7 +90,7 @@ export class AuthService {
     this.token = token;
   }
 
-  getToken(): string | null | undefined {
+  getToken(): string | null {
     return this.token;
   }
 

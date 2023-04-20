@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Data } from "@angular/router";
-import { Options } from "src/app/shared/interface/interfaces";
+
+import { CHARACTERISTICS } from "src/app/shared/interface/interfaces";
 
 @Component({
   selector: "app-card-characteristics",
@@ -27,5 +28,5 @@ export class CardCharacteristicsComponent implements OnInit {
   loader: boolean = true;
 
   characteristics: number[][] = [];
-  characteristicsName: Options[] = [];
+  characteristicsName: CHARACTERISTICS[] = [];
 }

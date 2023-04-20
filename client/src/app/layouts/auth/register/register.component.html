@@ -1,0 +1,99 @@
+<!--  -->
+
+<div class="container-register" *ngIf="formRegister">
+  <button
+    mat-icon-button
+    class="container-register-close"
+    (click)="closeRegisterWindow(null)"
+  >
+    <span class="material-symbols-outlined">close</span>
+  </button>
+
+  <div class="navigation">
+    <a class="navigation__link" (click)="openLoginWindow()">Вхід</a>
+    <a class="navigation__link navigation__link--active">Реєстрація</a>
+  </div>
+
+  <form
+    class="container-register__form"
+    [formGroup]="formRegister"
+    (ngSubmit)="onSubmit()"
+  >
+    <mat-form-field class="container-register__form-field">
+      <mat-label>Ім'я</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        placeholder="Kaitlyn"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="formRegister.controls['name'].errors?.['minlength']">
+        Мінімальна кількість символів <strong> 4 </strong>
+      </mat-error>
+      <mat-error *ngIf="formRegister.controls['name'].errors?.['maxlength']">
+        Максимальна кількість символів <strong> 16 </strong>
+      </mat-error>
+      <mat-error *ngIf="formRegister.controls['name'].errors?.['required']">
+        Ваше ім'я є <strong>обов'язковим!</strong>
+      </mat-error>
+      <mat-error *ngIf="formRegister.controls['name'].errors?.['pattern']">
+        Дозволені літери <strong>a-z,A-Z</strong>. Всі інші символи (пробіли, _,
+        -, ...) заборонено
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="container-register__form-field">
+      <mat-label>Електронна адреса</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="email"
+        placeholder="kaitlyn_macdonald@gmail.com"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="formRegister.controls['email'].errors?.['maxlength']">
+        Максимальна кількість символів <strong> 16 </strong>
+      </mat-error>
+      <mat-error *ngIf="formRegister.controls['email'].errors?.['email']">
+        Будь ласка, введіть дійсну адресу електронної пошти
+      </mat-error>
+      <mat-error *ngIf="formRegister.controls['email'].errors?.['required']">
+        Адреса електронної пошти <strong>обов'язкова!</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="container-register__form-field">
+      <mat-label>Пароль</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="formRegister.controls['password'].errors?.['required']">
+        Поле пароль є <strong>обов'язковим!</strong>
+      </mat-error>
+      <mat-error
+        *ngIf="formRegister.controls['password'].errors?.['minlength']"
+      >
+        Мінімальна кількість символів <strong> 6 </strong>
+      </mat-error>
+      <mat-error
+        *ngIf="formRegister.controls['password'].errors?.['maxlength']"
+      >
+        Максимальна кількість символів <strong> 32 </strong>
+      </mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="container-register__form-btn"
+      [disabled]="formRegister.invalid || formRegister.disabled"
+    >
+      Зареєструватися
+    </button>
+  </form>
+</div>

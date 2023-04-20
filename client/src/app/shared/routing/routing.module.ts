@@ -1,12 +1,11 @@
 import { NgModule } from "@angular/core";
+
 import { RouterModule, Routes } from "@angular/router";
+
 // Not Found 404
 import { NotFoundComponent } from "src/app/not-found/not-found.component";
 // Home page
-import { HomeComponent } from "src/app/layouts/main/home/home.component";
-// Login, Register
-import { LoginComponent } from "src/app/layouts/login/login.component";
-import { RegisterComponent } from "src/app/layouts/register/register.component";
+import { HomeComponent } from "src/app/layouts/home/home.component";
 // Guard, Resolver
 import { AuthGuard } from "../guard/auth.guard";
 import { CardResolver } from "src/app/shared/resolver/card.resolver";
@@ -15,9 +14,11 @@ import { CardCharacteristicsResolver } from "../resolver/card-characteristics.re
 import { CardCommentsResolver } from "../resolver/card-comments.resolver";
 import { CardQuestionsResolver } from "../resolver/card-questions.resolver";
 import { CardPhotoResolver } from "../resolver/card-photo.resolver";
-// User account pages
+
+// User Pages
 import { AccountComponent } from "src/app/layouts/user-layouts/account/account.component";
 import { UserComponent } from "src/app/layouts/user-layouts/user/user.component";
+import { MyOrderComponent } from "src/app/layouts/user-layouts/my-order/my-order.component";
 import { ProductComponent } from "src/app/layouts/user-layouts/product/product.component";
 import { ProductNewComponent } from "src/app/layouts/user-layouts/product-new/product-new.component";
 import { SettingsComponent } from "src/app/layouts/user-layouts/settings/settings.component";
@@ -25,6 +26,8 @@ import { NewslettersComponent } from "src/app/layouts/user-layouts/newsletters/n
 import { WishlistComponent } from "src/app/layouts/user-layouts/wishlist/wishlist.component";
 import { CartComponent } from "src/app/layouts/user-layouts/cart/cart.component";
 import { SearchComponent } from "src/app/layouts/search/search.component";
+import { CatalogSectionComponent } from "src/app/layouts/catalog-section/catalog-section.component";
+
 // Card Component
 import { CardComponent } from "src/app/layouts/card/card.component";
 // Card Component Child === START
@@ -40,10 +43,6 @@ const routes: Routes = [
   {
     path: "",
     component: HomeComponent,
-    children: [
-      { path: "login", component: LoginComponent },
-      { path: "register", component: RegisterComponent },
-    ],
   },
   {
     path: "account",
@@ -54,6 +53,11 @@ const routes: Routes = [
         path: "user",
         canActivate: [AuthGuard],
         component: UserComponent,
+      },
+      {
+        path: "my-order",
+        canActivate: [AuthGuard],
+        component: MyOrderComponent,
       },
       {
         path: "product",
@@ -85,6 +89,7 @@ const routes: Routes = [
   { path: "wishlist", canActivate: [AuthGuard], component: WishlistComponent },
   { path: "cart", canActivate: [AuthGuard], component: CartComponent },
   { path: "search", component: SearchComponent },
+  { path: "search/:navigate_link", component: SearchComponent },
   {
     path: "card/:id",
     component: CardComponent,
@@ -133,6 +138,21 @@ const routes: Routes = [
       },
     ],
   },
+  { path: "computers-notebooks", component: CatalogSectionComponent },
+  { path: "telefony-tv-i-ehlektronika", component: CatalogSectionComponent },
+  { path: "game-zone", component: CatalogSectionComponent },
+  { path: "household-appliances", component: CatalogSectionComponent },
+  { path: "household-goods", component: CatalogSectionComponent },
+  { path: "tools-and-automotive-products", component: CatalogSectionComponent },
+  { path: "plumbing-and-repair", component: CatalogSectionComponent },
+  {
+    path: "cottage-garden-and-vegetable-garden",
+    component: CatalogSectionComponent,
+  },
+  { path: "sports-and-hobbies", component: CatalogSectionComponent },
+  { path: "clothes-shoes-and-jewelry", component: CatalogSectionComponent },
+  { path: "beauty-and-health", component: CatalogSectionComponent },
+  { path: "childrens-products", component: CatalogSectionComponent },
   {
     path: "**",
     component: NotFoundComponent,

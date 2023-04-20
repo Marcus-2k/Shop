@@ -1,73 +1,82 @@
 <!--  -->
 <div class="wish-item">
   <div class="wish-item-content">
-    <!--  -->
-    <div class="content-checkbox">
-      <mat-checkbox
-        color="primary"
-        #checkbox
-        (click)="addInList(!checkbox.checked)"
-      ></mat-checkbox>
-    </div>
-    <div class="display-none">{{ productItem?._id }}</div>
-    <!--  -->
-    <div
-      class="content-img"
-      [routerLink]="'/card/' + productItem?._id + '/info'"
-      (mouseenter)="hoverEnter(pictureLogo, pictureSubLogo)"
-    >
+    <ng-container *ngIf="productItem">
+      <!--  -->
+      <div class="content-checkbox">
+        <mat-checkbox
+          color="primary"
+          #checkbox
+          (click)="addInList(!checkbox.checked)"
+        ></mat-checkbox>
+      </div>
+      <!--  -->
+      <div class="display-none">{{ productItem._id }}</div>
+      <!--  -->
       <div
-        class="content-img-block"
-        (mouseleave)="hoverLeave(pictureLogo, pictureSubLogo)"
+        class="content-img"
+        [routerLink]="'/card/' + productItem._id + '/info'"
+        (mouseenter)="hoverEnter(pictureLogo, pictureSubLogo)"
       >
-        <img
-          class="placeholder__img display-block"
-          [src]="url_server_folder + images[0]"
-          [alt]="productItem?.name"
-          #pictureLogo
-        />
-        <img
-          class="placeholder__img display-none"
-          [src]="url_server_folder + images[1]"
-          [alt]="productItem?.name"
-          #pictureSubLogo
-        />
+        <div
+          class="content-img-block"
+          (mouseleave)="hoverLeave(pictureLogo, pictureSubLogo)"
+        >
+          <img
+            class="placeholder__img display-block"
+            [src]="url_server_folder + productItem.imageSrc[0]"
+            [alt]="productItem.name"
+            #pictureLogo
+          />
+          <img
+            class="placeholder__img display-none"
+            [src]="
+              url_server_folder +
+              (productItem.imageSrc.length > 1
+                ? productItem.imageSrc[1]
+                : productItem.imageSrc[0])
+            "
+            [alt]="productItem.name"
+            #pictureSubLogo
+          />
+        </div>
       </div>
-    </div>
-    <!--  -->
-    <div
-      class="content-title"
-      [routerLink]="'/card/' + productItem?._id + '/info'"
-    >
-      <p class="wish-item__title">{{ productItem?.name }}</p>
-    </div>
-    <!--  -->
-    <div class="content-action-price">
-      <p class="wish-item__action-price" *ngIf="productItem?.action">
-        {{ productItem?.price | price }}
-        <span class="currency">₴</span>
-      </p>
-    </div>
-    <div class="content-about">
-      <div class="content-about-price">
-        <app-product-card-element-price
-          [action]="productItem?.action"
-          [price]="productItem?.price"
-          [actionPrice]="productItem?.actionPrice"
-        ></app-product-card-element-price>
+      <!--  -->
+      <div
+        class="content-title"
+        [routerLink]="'/card/' + productItem._id + '/info'"
+      >
+        <p class="wish-item__title">{{ productItem.name }}</p>
       </div>
-      <div class="content-about-cart">
-        <app-card-shopping-cart
-          [_idProduct]="productItem?._id"
-        ></app-card-shopping-cart>
+      <!--  -->
+      <div class="content-action-price">
+        <p class="wish-item__action-price" *ngIf="productItem?.action">
+          {{ productItem.price | price }}
+          <span class="currency">₴</span>
+        </p>
       </div>
-    </div>
-    <!--  -->
-    <div class="content-status">
-      <app-product-card-element-statuses
-        [status]="productItem?.status"
-      ></app-product-card-element-statuses>
-    </div>
-    <!--  -->
+      <!--  -->
+      <div class="content-about">
+        <div class="content-about-price">
+          <app-product-card-element-price
+            [action]="productItem.action"
+            [price]="productItem.price"
+            [actionPrice]="productItem.actionPrice"
+          ></app-product-card-element-price>
+        </div>
+        <div class="content-about-cart">
+          <app-card-shopping-cart
+            [_idProduct]="productItem._id"
+          ></app-card-shopping-cart>
+        </div>
+      </div>
+      <!--  -->
+      <div class="content-status">
+        <app-product-card-element-statuses
+          [status]="productItem.status"
+        ></app-product-card-element-statuses>
+      </div>
+      <!--  -->
+    </ng-container>
   </div>
 </div>

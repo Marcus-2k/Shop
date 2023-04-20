@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 
+import { OrderAction_updatePayment } from "src/app/shared/interface/interface-action/order.interfaces";
+
 import { Store } from "@ngrx/store";
 import { OrderActions } from "src/app/store/orders/order.action";
 import { OrderSelector } from "src/app/store/orders/order.selector";
@@ -41,10 +43,12 @@ export class CartOrderPaymentComponent implements OnInit {
 
   changePayment(): void {
     if (this.sequence_number_order !== undefined) {
-      const dataPayment: { selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5 | null } & {
-        sequence_number_order: number;
-      } & { valid: boolean } = {
+      const dataPayment: OrderAction_updatePayment = {
         selectTypePayment: this.selectTypePayment,
+        selectTypePaymentText:
+          this.selectTypePayment !== null
+            ? this.typePayment[this.selectTypePayment]
+            : null,
         sequence_number_order: this.sequence_number_order,
         valid: true,
       };

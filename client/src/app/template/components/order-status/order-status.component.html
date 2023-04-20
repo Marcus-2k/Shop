@@ -1,0 +1,24 @@
+<!--  -->
+
+<div class="status">
+  <div class="status__content" *ngIf="status !== undefined">
+    <!-- // 0 - new, 1 - payment, 2 - sent , 3 - return, 4 - delivered, 5 - done -->
+    <p class="status-text status-text--new" *ngIf="status === 0">Новий</p>
+
+    <p class="status-text status-text--payment" *ngIf="status === 1">Оплата</p>
+
+    <p class="status-text status-text--sent" *ngIf="status === 2">
+      Відправлено
+    </p>
+
+    <p class="status-text status-text--return" *ngIf="status === 3">
+      Повернення
+    </p>
+
+    <p class="status-text status-text--delivered" *ngIf="status === 4">
+      Доставлено
+    </p>
+
+    <p class="status-text status-text--done" *ngIf="status === 5">Виконано</p>
+  </div>
+</div>

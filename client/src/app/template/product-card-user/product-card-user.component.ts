@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Product, ProductDelete } from "src/app/shared/interface/interfaces";
+import { Product } from "src/app/shared/interface/interfaces";
+
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -11,21 +12,21 @@ export class ProductCardUserComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log("Start ngOnInit Product-Card");
-
-    if (this.productItem) {
-      this.images = this.productItem?.imageSrc;
-    }
+    console.log("Start ngOnInit Product-Card-User");
   }
 
   @Input() productItem?: Product;
   @Output() transferDeleteProduct = new EventEmitter();
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 
-  images: string[] = []; // two images product
+  deleteProduct() {
+    if (this.productItem?._id) {
+      this.transferDeleteProduct.emit({
+        id: this.productItem._id,
+      });
+    }
+  }
 
   hoverEnter(imageLogo: HTMLImageElement, imageSubLogo: HTMLImageElement) {
     imageLogo.classList.add("display-none");
@@ -34,21 +35,11 @@ export class ProductCardUserComponent implements OnInit {
     imageSubLogo.classList.add("display-block");
     imageSubLogo.classList.remove("display-none");
   }
-
   hoverLeave(imageLogo: HTMLImageElement, imageSubLogo: HTMLImageElement) {
     imageLogo.classList.add("display-block");
     imageLogo.classList.remove("display-none");
 
     imageSubLogo.classList.add("display-none");
     imageSubLogo.classList.remove("display-block");
-  }
-
-  deleteProduct() {
-    if (this.productItem?._id) {
-      const deleteItem: ProductDelete = {
-        _id: this.productItem._id,
-      };
-      this.transferDeleteProduct.emit(deleteItem);
-    }
   }
 }

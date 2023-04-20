@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
-import { ShowNoticeService } from "src/app/shared/service/show-notice.service";
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 
 @Component({
   selector: "app-settings",
@@ -12,7 +12,7 @@ export class SettingsComponent implements OnInit {
   constructor(
     private renameTitle: RenameTitleService,
     private requestUser: RequestUserService,
-    private showNotice: ShowNoticeService
+    private showMessage: OpenSnackBarService
   ) {}
 
   ngOnInit(): void {
@@ -38,10 +38,10 @@ export class SettingsComponent implements OnInit {
       (response) => {
         console.log(response);
         if (response.message) {
-          this.showNotice.message("Пароль успішно змінено");
+          this.showMessage.open("Пароль успішно змінено", undefined);
           this.buttonValidity = false;
         } else {
-          this.showNotice.message("Пароль введено не вірно");
+          this.showMessage.open("Пароль введено не вірно", undefined);
           this.buttonValidity = false;
         }
       },

@@ -1,0 +1,52 @@
+<!--  -->
+<ng-container *ngIf="InputData_Category">
+  <div class="form-item-title">
+    <p class="title">Категорія товару*</p>
+  </div>
+
+  <div class="form-item-category">
+    <ng-container *ngIf="InputData_Category.categorySelected === false">
+      <a
+        mat-raised-button
+        color="primary"
+        class="btn not_selected"
+        (click)="openCatalog()"
+      >
+        Вибрати категорію
+      </a>
+    </ng-container>
+
+    <ng-container
+      *ngIf="
+        InputData_Category.categorySelected === true &&
+        InputData_Category.categoryName !== null
+      "
+    >
+      <a
+        mat-raised-button
+        color="primary"
+        class="btn selected"
+        (click)="openCatalog()"
+      >
+        {{ InputData_Category.categoryName[0] }}
+
+        <span class="slash">&nbsp;/&nbsp;</span>
+
+        {{ InputData_Category.categoryName[1] }}
+
+        <ng-container *ngIf="InputData_Category.categoryName.length > 2">
+          <span class="slash">&nbsp;/&nbsp;</span>
+
+          {{ InputData_Category.categoryName[2] }}
+        </ng-container>
+      </a>
+    </ng-container>
+  </div>
+
+  <div
+    class="form-item-error"
+    *ngIf="InputData_Category.categoryError === true"
+  >
+    <p class="error" style="margin: 0px">Виберіть категорію товара</p>
+  </div>
+</ng-container>

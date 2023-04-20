@@ -1,0 +1,176 @@
+<!--  -->
+<header class="header">
+  <div class="header__content">
+    <!--  -->
+    <div class="header__content-menu">
+      <div class="menu-logo">
+        <a class="logo" routerLink="/">
+          <span class="material-symbols-outlined"> home_app_logo </span>
+          <h1 class="title__site">&nbsp;Online Store</h1>
+        </a>
+      </div>
+      <div class="menu-catalog">
+        <button mat-raised-button (click)="openDialogCatalog()">
+          <span class="material-symbols-outlined">grid_view</span>
+          Каталог
+        </button>
+      </div>
+    </div>
+    <!--  -->
+    <div class="header__content-search">
+      <div class="search" #blockSearch>
+        <div
+          class="search__form"
+          method="get"
+          (ngSubmit)="search(searchField.value)"
+        >
+          <input
+            class="search__form-field"
+            type="text"
+            [(ngModel)]="searchText"
+            placeholder="Пошук..."
+            #searchField
+            [matAutocomplete]="auto"
+            (focus)="
+              searchField.classList.add('search__form-field--focus');
+              buttonSubmit.classList.add('search__form-field__input--focus')
+            "
+            (focusout)="
+              searchField.classList.remove('search__form-field--focus');
+              buttonSubmit.classList.remove('search__form-field__input--focus')
+            "
+          />
+
+          <button class="search__form-btn" #buttonSubmit (click)="search()">
+            Знайти
+          </button>
+
+          <mat-autocomplete
+            [panelWidth]="blockSearch.clientWidth"
+            #auto="matAutocomplete"
+          >
+            <li class="mat_autocomplete-clear">
+              <span
+                class="mat_autocomplete-clear-text"
+                (click)="clearHistorySearch()"
+              >
+                Очистити історію
+              </span>
+            </li>
+            <mat-option
+              *ngFor="let history of historySearchArray"
+              [value]="history"
+              (onSelectionChange)="search(history)"
+              (click)="search(history)"
+            >
+              {{ history }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    <div class="header__content-burger__menu">
+      <div
+        class="menu"
+        (click)="clickBurgerMenu()"
+        [ngClass]="{ menu__active: burgerMenu }"
+      >
+        <span class="menu__line"></span>
+      </div>
+    </div>
+    <!--  -->
+    <div class="header__content-user" [ngClass]="{ user__burger: burgerMenu }">
+      <div class="user">
+        <div class="user__header-burger" *ngIf="burgerMenu">
+          <div class="logo">
+            <a routerLink="/" class="logo__link" (click)="clickBurgerMenu()">
+              <span class="material-symbols-outlined">home_app_logo</span>
+              <h2 class="title__site">&nbsp;Online Store</h2>
+            </a>
+          </div>
+        </div>
+        <ul class="user__list">
+          <li class="user__list-link" *ngIf="authenticatedUser">
+            <a
+              routerLink="/account"
+              routerLinkActive="link-item-active"
+              class="link-item"
+              (click)="clickBurgerMenu()"
+            >
+              <span class="material-symbols-outlined google-icon">person</span>
+              <span *ngIf="burgerMenu">Персональний кабінет</span>
+            </a>
+          </li>
+          <li class="user__list-link" *ngIf="windowWidth <= 767">
+            <a class="link-item" (click)="openDialogCatalog()">
+              <span class="material-symbols-outlined google-icon"
+                >grid_view</span
+              >
+              <span *ngIf="burgerMenu">Каталог товарів</span>
+            </a>
+          </li>
+          <li class="user__list-link" *ngIf="authenticatedUser">
+            <a
+              routerLink="/wishlist"
+              routerLinkActive="link-item-active"
+              class="link-item"
+              [matBadge]="
+                lengthFavorite === 0
+                  ? ''
+                  : lengthFavorite > 99
+                  ? '99+'
+                  : lengthFavorite
+              "
+              matBadgeColor="primary"
+              matBadgeSize="medium"
+              matBadgePosition="above before"
+              (click)="clickBurgerMenu()"
+            >
+              <span class="material-symbols-outlined google-icon"
+                >favorite</span
+              >
+              <span *ngIf="burgerMenu">Вподобані товари</span>
+            </a>
+          </li>
+          <li class="user__list-link" *ngIf="authenticatedUser">
+            <a
+              routerLink="/cart"
+              routerLinkActive="link-item-active"
+              class="link-item"
+              [matBadge]="
+                lengthCart === 0 ? '' : lengthCart > 99 ? '99+' : lengthCart
+              "
+              matBadgeColor="primary"
+              matBadgeSize="medium"
+              matBadgePosition="above before"
+              (click)="clickBurgerMenu()"
+            >
+              <span class="material-symbols-outlined google-icon"
+                >shopping_cart</span
+              >
+              <span *ngIf="burgerMenu">Корзина товарів</span>
+            </a>
+          </li>
+          <li class="user__list-link" *ngIf="authenticatedUser">
+            <a
+              routerLink="/"
+              class="link-item"
+              (click)="logout(); clickBurgerMenu()"
+            >
+              <span class="material-symbols-outlined google-icon">logout</span>
+              <span *ngIf="burgerMenu">Вихід</span>
+            </a>
+          </li>
+          <li class="user__list-link" *ngIf="!authenticatedUser">
+            <a class="link-item" (click)="clickBurgerMenu(); openLoginWindow()">
+              <span class="material-symbols-outlined google-icon">login</span>
+              <span *ngIf="burgerMenu">Вхід</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--  -->
+  </div>
+</header>

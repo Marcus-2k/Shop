@@ -1,42 +1,14 @@
 <div class="card">
-  <div class="card__content">
+  <div class="card__content" *ngIf="product && widget_breadcrumbs">
     <div class="card__content-breadcrumbs">
-      <span
-        [matTooltip]="'Інтернет магазин'"
-        routerLink="/"
-        class="material-symbols-outlined breadcrumbs-item"
-      >
-        home
-      </span>
-
-      <span class="material-symbols-outlined"> navigate_next </span>
-
-      <span
-        [matTooltip]="levelOne ? levelOne : ''"
-        routerLink="/"
-        class="breadcrumbs-item"
-        >{{ levelOne }}</span
-      >
-
-      <span class="material-symbols-outlined" *ngIf="levelTwo">
-        navigate_next
-      </span>
-
-      <span
-        [matTooltip]="levelTwo ? levelTwo : ''"
-        routerLink="/"
-        class="breadcrumbs-item"
-        *ngIf="levelTwo"
-        >{{ levelTwo }}</span
-      >
-
-      <span class="material-symbols-outlined"> navigate_next </span>
-
-      <span class="breadcrumbs-item">{{ location }}</span>
+      <app-widget-breadcrumbs
+        [widget_breadcrumbs]="widget_breadcrumbs"
+        [type]="'card'"
+      ></app-widget-breadcrumbs>
     </div>
     <!--  -->
-    <div class="card__content-title">
-      <h1 class="card__title">{{ titleProduct }}</h1>
+    <div class="card__content-title" *ngIf="widget_breadcrumbs.location">
+      <h1 class="card__title">{{ widget_breadcrumbs.location.name }}</h1>
     </div>
     <!--  -->
     <div class="card__content-navigation">

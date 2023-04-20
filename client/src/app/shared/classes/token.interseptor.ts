@@ -7,13 +7,24 @@ import {
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+
 import { catchError, Observable, switchMap, tap, throwError } from "rxjs";
-import { environment } from "src/environments/environment";
+
 import { AuthService } from "../service/server/auth.service";
+
+import { OpenDialogService } from "../service/open-dialog.service";
+import { OpenSnackBarService } from "../service/open-snack-bar.service";
+
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private openDialog: OpenDialogService,
+    private openSnackBar: OpenSnackBarService
+  ) {}
 
   private HOST: string = environment.HOST;
   private PORT: string = environment.PORT;
@@ -59,15 +70,16 @@ export class TokenInterceptor implements HttpInterceptor {
         ) {
           return this.auth.logout().pipe(
             tap(() => {
-              this.router.navigate(["/login"], {
-                queryParams: {
-                  sessionFail: true,
-                },
-              });
+              this.router.navigate(["/"]);
+
+              setTimeout(() => {
+                this.openDialog.openLoginWindow();
+                this.openSnackBar.open("Потрібно авторизуватися.", undefined);
+              }, 250);
             })
           );
         } else {
-          return throwError(err);
+          return throwError(() => err);
         }
       })
     );

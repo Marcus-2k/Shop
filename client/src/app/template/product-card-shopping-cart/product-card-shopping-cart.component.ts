@@ -22,9 +22,7 @@ export class ProductCardShoppingCartComponent {
     sequence_number_card: number;
   };
 
-  private HOST: string = environment.HOST;
-  private PORT: string = environment.PORT;
-  url_server_folder: string = `http://${this.HOST}${this.PORT}/`;
+  url_server_folder: string = environment.URL_SERVER_FOLDER;
 
   updateCounter() {
     if (this.sequence_number !== undefined) {

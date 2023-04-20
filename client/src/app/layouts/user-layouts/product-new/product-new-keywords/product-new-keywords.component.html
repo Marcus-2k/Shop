@@ -1,0 +1,74 @@
+<!--  -->
+<ng-container *ngIf="InputData_Keywords">
+  <div class="form-item-title">
+    <p class="title">Ключові слова</p>
+  </div>
+
+  <mat-form-field class="form-keywords-field" [appearance]="appearance">
+    <mat-label>Ключові слова</mat-label>
+    <textarea
+      matInput
+      type="text"
+      class="input-keywords"
+      [(ngModel)]="InputData_Keywords.keywords"
+      #inputKeywords
+      (keyup)="keyupInputKeywords(inputKeywords.value)"
+      (focusout)="updateKeywordsStore()"
+    ></textarea>
+  </mat-form-field>
+
+  <div class="form-keywords-length">
+    <p
+      [ngClass]="{
+        error: lengthKeywords > InputData_Keywords.maxLengthKeywords
+      }"
+    >
+      <span>Символів&nbsp;</span>
+      <span>{{ lengthKeywords }}</span>
+      <span>/</span>
+      <span>{{ InputData_Keywords.maxLengthKeywords }}</span>
+    </p>
+  </div>
+
+  <div class="form-keywords-item">
+    <ng-container *ngFor="let word of keywordsArray">
+      <div
+        class="form-keywords-item-word"
+        *ngIf="word.length >= 1"
+        [ngClass]="{
+          error:
+            word.length < InputData_Keywords.minLengthWord ||
+            word.length > InputData_Keywords.maxLengthWord
+        }"
+        [matTooltip]="
+          word.length < InputData_Keywords.minLengthWord
+            ? 'Мінімальна кількість символів ' +
+              InputData_Keywords.minLengthWord
+            : word.length > InputData_Keywords.maxLengthWord
+            ? 'Максимальна кількість символів ' +
+              InputData_Keywords.maxLengthWord
+            : ''
+        "
+      >
+        <button
+          mat-raised-button
+          [color]="
+            word.length < InputData_Keywords.minLengthWord
+              ? 'warn'
+              : word.length > InputData_Keywords.maxLengthWord
+              ? 'warn'
+              : 'primary'
+          "
+        >
+          #{{ word }}
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="form-keywords-delete" *ngIf="!checkingValidityKeywords()">
+    <button mat-raised-button color="warn" (click)="deleteErrorKeywords()">
+      Видалити всі не правильні кілючові слова
+    </button>
+  </div>
+</ng-container>

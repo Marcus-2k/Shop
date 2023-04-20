@@ -1,0 +1,53 @@
+<!--  -->
+
+<div class="catalog-section" *ngIf="CATALOG && widget_breadcrumbs">
+  <div class="catalog-section-breadcrumbs">
+    <app-widget-breadcrumbs
+      [type]="'catalog-section'"
+      [widget_breadcrumbs]="widget_breadcrumbs"
+    ></app-widget-breadcrumbs>
+  </div>
+
+  <div class="catalog-section-title">
+    <h2 class="title">{{ widget_breadcrumbs.first.name }}</h2>
+  </div>
+
+  <div class="catalog-section-content">
+    <div class="section">
+      <ng-container *ngFor="let list of CATALOG.nameListCategory">
+        <ul class="section-list">
+          <li class="section-list-item item--title">
+            <a
+              class="item-image"
+              [routerLink]="'/search/' + list.navigate_link"
+            >
+              <ng-container *ngIf="list.image_link === 'link'">
+                <img src="../../../assets/img/250x200.webp" alt="" />
+              </ng-container>
+              <ng-container *ngIf="list.image_link !== 'link'">
+                <img [src]="url_server_folder + list.image_link" alt="" />
+              </ng-container>
+            </a>
+            <a class="item-text" [routerLink]="'/search/' + list.navigate_link">
+              {{ list.subNameCategory }}
+            </a>
+          </li>
+
+          <ng-container *ngIf="list.subNameListCategory">
+            <ng-container *ngFor="let list_sub of list.subNameListCategory">
+              <li class="section-list-item">
+                <a
+                  class="item-text"
+                  [routerLink]="'/search/' + list_sub.navigate_link"
+                  [queryParams]="list_sub.queryParams"
+                >
+                  {{ list_sub.titleSubNameListCategory }}
+                </a>
+              </li>
+            </ng-container>
+          </ng-container>
+        </ul>
+      </ng-container>
+    </div>
+  </div>
+</div>

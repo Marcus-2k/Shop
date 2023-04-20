@@ -1,0 +1,65 @@
+<!--  -->
+
+<div class="container-login" *ngIf="formLogin">
+  <button
+    mat-icon-button
+    class="container-login-close"
+    (click)="closeLoginWindow(null)"
+  >
+    <span class="material-symbols-outlined"> close </span>
+  </button>
+
+  <div class="navigation">
+    <a class="navigation__link navigation__link--active">Вхід</a>
+    <a class="navigation__link" (click)="openRegisterWindow()">Реєстрація</a>
+  </div>
+
+  <form
+    class="container-login__form"
+    [formGroup]="formLogin"
+    (ngSubmit)="onSubmit()"
+  >
+    <mat-form-field class="container-login__form-field">
+      <mat-label>Електронна адреса</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="email"
+        placeholder="kaitlyn_macdonald@gmail.com"
+        autocomplete="off"
+      />
+      <mat-error *ngIf="formLogin.controls['email'].errors?.['email']">
+        Будь ласка, введіть дійсну адресу електронної пошти
+      </mat-error>
+      <mat-error *ngIf="formLogin.controls['email'].errors?.['required']">
+        Адреса електронної пошти <strong>обов'язкова!</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="container-login__form-field">
+      <mat-label>Пароль</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        autocomplete="off"
+      />
+
+      <mat-error *ngIf="formLogin.controls['password'].errors?.['required']">
+        Поле пароль є <strong>обов'язковим!</strong>
+      </mat-error>
+      <mat-error *ngIf="formLogin.controls['password'].errors?.['minlength']">
+        Мінімальна кількість символів є 6
+      </mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="container-login__form-btn"
+      [disabled]="formLogin.invalid || formLogin.disabled"
+    >
+      Увійти
+    </button>
+  </form>
+</div>

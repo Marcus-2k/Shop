@@ -1,6 +1,12 @@
-# Server
+package-lock.json
 node_modules
+dist
+
+# Server
+.env
+server/uploads/*.webp
+server/uploads/*.png
+server/uploads/*.jpg
 
 # Client
-.angular
-dist
+client/.angular

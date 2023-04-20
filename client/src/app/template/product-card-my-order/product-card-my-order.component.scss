@@ -1,0 +1,130 @@
+.shopping__cart {
+  height: 100%;
+  &-content {
+    display: flex;
+    width: 100%;
+    height: 145px;
+    .content-item {
+      padding: 5px;
+      display: flex;
+      justify-content: center;
+    }
+    .content-image {
+      width: 15%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      &-img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+    .content-about {
+      width: 45%;
+      display: flex;
+      justify-content: start;
+      flex-direction: column;
+      .about-title {
+        width: 100%;
+        .shopping__cart-title {
+          font-size: 14px;
+          color: #313131;
+          height: 36px;
+          overflow: hidden;
+          margin: 0;
+          line-height: 20px;
+        }
+      }
+      .about-description {
+        width: 100%;
+        margin-top: 15px;
+        .shopping__cart-description {
+          font-size: 12px;
+          color: black;
+          margin: 0;
+          line-height: 20px;
+        }
+      }
+    }
+    .content-info {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: start;
+      .content-item-info {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-top: 10px;
+        &:first-child {
+          margin-top: 0px;
+        }
+        &-title {
+          width: 40%;
+        }
+        &-value {
+          width: 60%;
+        }
+      }
+      &-price {
+        &-title {
+        }
+        &-value {
+          .price__action {
+            text-align: center;
+            text-decoration: line-through;
+            font-size: calc(
+              10px + (14 - 10) * ((100vw - 320px) / (1920 - 320))
+            );
+          }
+          .price {
+            text-align: center;
+            font-size: calc(
+              14px + (20 - 14) * ((100vw - 320px) / (1920 - 320))
+            );
+          }
+        }
+      }
+      &-quantity_ordered {
+        &-title {
+        }
+        &-value {
+          text-align: center;
+        }
+      }
+      &-total_price {
+        &-title {
+        }
+        &-value {
+          text-align: center;
+          font-size: calc(14px + (20 - 14) * ((100vw - 320px) / (1920 - 320)));
+        }
+      }
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+
+// @media (max-width: 767px) {
+//   .shopping__cart {
+//     &-content {
+//       .content-about {
+//         flex-direction: column;
+//         .about-title {
+//           width: 100%;
+//           height: 50%;
+
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           text-align: center;
+//         }
+//       }
+//     }
+//   }
+// }

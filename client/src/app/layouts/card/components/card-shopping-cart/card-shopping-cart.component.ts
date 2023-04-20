@@ -25,7 +25,6 @@ export class CardShoppingCartComponent implements OnInit {
     this.store$
       .select(ShoppingCartSelector.shoppingCartList)
       .subscribe((value) => {
-        console.log(value);
         this.listShoppingCart = value;
       });
 

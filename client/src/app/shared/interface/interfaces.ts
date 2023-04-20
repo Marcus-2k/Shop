@@ -1,3 +1,6 @@
+import { Params } from "@angular/router";
+import { Widget_Breadcrumbs } from "./card/card.interfaces";
+
 // Auth START ==========================================================================================
 export interface UserRegister {
   name: string;
@@ -7,6 +10,11 @@ export interface UserRegister {
 export interface UserLogin {
   email: string;
   password: string;
+}
+export interface Redirect {
+  redirectTo: "login" | "register" | undefined;
+  error: "user_authorized" | "user_registered" | undefined;
+  success: "authorized" | "registered" | undefined;
 }
 // Auth END ============================================================================================
 // Seller START ========================================================================================
@@ -34,25 +42,14 @@ export interface Product {
   user: string;
   _id: string;
 }
-export interface ProductCard {
-  imageSrc: string[];
-  name: string;
-  price: number;
-  action: boolean;
-  actionPrice: number;
-  counter: number;
-  status: 0 | 1 | 2 | 3;
-  description: string;
-  user: string;
-  _id: string;
-}
+
 export interface ProductInfo {
   imageSrc: string[];
   description: string;
 }
 export interface ProductCharacteristics {
   characteristics: number[];
-  characteristicsName: Options[];
+  characteristicsName: CHARACTERISTICS[];
 }
 export interface ProductComments {
   comments: [];
@@ -77,9 +74,6 @@ export interface ProductSearch {
   user: string;
   _id: string;
 }
-export interface ProductDelete {
-  _id: string;
-}
 export interface ProductUpdate {
   imageSrc: string[];
   name: string;
@@ -88,7 +82,9 @@ export interface ProductUpdate {
   actionPrice: number;
   counter: number;
   category: number[];
+  categoryName: string[];
   characteristics: number[][];
+  characteristicsName: CHARACTERISTICS[];
   status: 0 | 1 | 2 | 3;
   keywords: string[];
   description: string;
@@ -127,26 +123,6 @@ export interface WishChecked {
   _id: string;
 }
 
-export interface CreateOrder {
-  info: {
-    seller: string;
-    merchant: string;
-  };
-  product: {
-    info: OrderProduct;
-  };
-  contacts: {
-    info: OrderContacts;
-  };
-  shipping: {
-    info: OrderShippingAddresses;
-    selectTypeShipping: 0 | 1 | 2 | null;
-  };
-  payment: {
-    info: OrderPayment;
-    selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5 | null;
-  };
-}
 export interface Order {
   stepper: OrderStepper;
   info: {
@@ -160,12 +136,14 @@ export interface Order {
     info: OrderContacts;
   };
   shipping: {
-    info: OrderShippingAddresses;
+    info: OrderShipping;
     selectTypeShipping: 0 | 1 | 2 | null;
+    selectTypeShippingText: string | null;
   };
   payment: {
     info: OrderPayment;
     selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5 | null;
+    selectTypePaymentText: string | null;
   };
   valid: OrderValid;
 }
@@ -188,7 +166,7 @@ export interface OrderContacts {
   email: string | null;
   tel: string | null;
 }
-export interface OrderShippingAddresses {
+export interface OrderShipping {
   addressesPresent: string | null;
   addressesMainDescription: string | null;
   addressesWarehousesDescription: string | null;
@@ -205,6 +183,51 @@ export interface DataAside {
   totalPrice: number;
   totalActionPrice: number;
 }
+
+export interface MyOrder {
+  info: {
+    seller: string;
+    sellerName: string;
+    merchant: string;
+    dateOfCreation: Date;
+    dateOfDispatch: Date | null;
+    orderID: string;
+    status: number;
+  };
+  product: {
+    info: MyOrderProduct;
+  };
+  contacts: {
+    info: MyOrderContacts;
+  };
+  shipping: {
+    info: MyOrderShipping;
+    selectTypeShipping: 0 | 1 | 2;
+    selectTypeShippingText: string;
+  };
+  payment: {
+    info: MyOrderPayment;
+    selectTypePayment: 0 | 1 | 2 | 3 | 4 | 5;
+    selectTypePaymentText: string;
+  };
+}
+export interface MyOrderProduct {
+  counter: number[];
+  totalPrice: number;
+  totalActionPrice: number;
+  totalCounterProduct: number;
+}
+export interface MyOrderContacts {
+  name: string;
+  email: string;
+  tel: string;
+}
+export interface MyOrderShipping {
+  addressesPresent: string;
+  addressesMainDescription: string;
+  addressesWarehousesDescription: string;
+}
+export interface MyOrderPayment {}
 
 // User END ============================================================================================
 // ProductCart START ===================================================================================
@@ -227,46 +250,87 @@ export interface News {
 }
 // News END ============================================================================================
 // Category START ======================================================================================
-export interface CategoryProduct {
+export interface CATALOG {
+  nameCategory: string;
+  nameCategoryImg: string;
+  navigate_link: string;
+  nameListCategory: {
+    subNameCategory: string;
+    navigate_link: string;
+    image_link: string;
+    permissionUse: boolean;
+    subNameListCategory:
+      | {
+          titleSubNameListCategory: string;
+          permissionUse: boolean;
+          navigate_link: string;
+          queryParams: Params | undefined;
+        }[]
+      | undefined;
+  }[];
+}
+export interface CATALOG_HOME {
+  nameCategory: string;
+  nameCategoryImg: string;
+  navigate_link: string;
+}
+
+export interface CATEGORY {
   nameCategory: string;
   nameListCategory: {
     subNameCategory: string;
-    subNameListCategory: {
-      titleSubNameListCategory: string | undefined;
-    }[];
+    characteristics: CHARACTERISTICS[] | any; // CHARACTERISTICS[] | undefined
+    subNameListCategory: any; // { titleSubNameListCategory: string; characteristics: CHARACTERISTICS[]; } | undefined
   }[];
 }
-export interface CategoryProduct_Characteristics {
-  nameCategory: string;
-  nameListCategory: {
-    subNameCategory: string;
-    subNameListCategory: {
-      titleSubNameListCategory: string | undefined;
-      characteristics: Options[];
-    }[];
-  }[];
-}
-export interface Options {
+export interface CHARACTERISTICS {
   name: string; // example Operating System
   query_name: string;
   htmlElement: "select"; // html tag
   select: string[]; // field for option select
   multiple: boolean;
 }
+
 // Category END ========================================================================================
 // Page Search START ===================================================================================
-export interface FilterNameParams {
-  name: string;
-  params: string[];
+export interface FoundData {
+  product: Product[];
+  filters: Filter[];
+
+  widget_auto_portal: WidgetAutoPortal[] | undefined;
+  widget_section_id: WidgetSectionId[] | undefined;
+  widget_breadcrumbs: Widget_Breadcrumbs | undefined;
+
+  number_of_product: number;
+  currentPage: number;
+  maxPage: number;
+  limit: number;
 }
-export interface ActiveFilterBlock {
-  name: string;
-  inputActive: ActiveFilter[];
-  blockActive: boolean;
+
+export interface WidgetAutoPortal {
+  titleSubNameListCategory: string;
+  navigate_link: string;
+  navigate_image: string;
 }
-export interface ActiveFilter {
-  name: string;
+export interface WidgetSectionId {
+  subNameCategory: string;
+  navigate_link: string;
+  subNameListCategory:
+    | {
+        titleSubNameListCategory: string;
+        navigate_link: string;
+      }[]
+    | undefined;
+}
+
+export interface Filter {
+  title: string;
   query_name: string;
+  show: boolean;
+  checkboxList: Checkbox[];
+}
+export interface Checkbox {
+  name: string;
   counter: number;
   active: boolean;
 }

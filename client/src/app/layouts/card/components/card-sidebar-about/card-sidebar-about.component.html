@@ -2,12 +2,15 @@
 <div class="about">
   <div class="about__content">
     <!--  -->
-    <div class="about__content-price">
+    <div
+      class="about__content-price"
+      *ngIf="price !== undefined && actionPrice !== undefined"
+    >
       <div class="price">
         <p class="price__title" [ngClass]="{ price__title__action: action }">
-          <span class="price__title-text"
-            >{{ action ? (actionPrice | price) : (price | price) }}&nbsp;</span
-          >
+          <span class="price__title-text">
+            {{ action ? (actionPrice | price) : (price | price) }}&nbsp;
+          </span>
           <span class="price__title-currency">₴</span>
         </p>
         <p class="price__action" *ngIf="action">{{ price | price }}&nbsp;₴</p>

@@ -1,0 +1,49 @@
+<!--  -->
+
+<div class="breadcrumbs" *ngIf="widget_breadcrumbs">
+  <span
+    [matTooltip]="'Інтернет магазин'"
+    routerLink="/"
+    class="material-symbols-outlined breadcrumbs-item"
+  >
+    home
+  </span>
+  <span class="material-symbols-outlined"> navigate_next </span>
+
+  <a
+    [matTooltip]="widget_breadcrumbs.first.name"
+    [routerLink]="'/' + widget_breadcrumbs.first.link"
+    class="breadcrumbs-item"
+  >
+    {{ widget_breadcrumbs.first.name }}
+  </a>
+
+  <ng-container *ngIf="type === 'card' || type === 'search'">
+    <span class="material-symbols-outlined"> navigate_next </span>
+    <a
+      [matTooltip]="widget_breadcrumbs.second.name"
+      [routerLink]="'/search/' + widget_breadcrumbs.second.link"
+      class="breadcrumbs-item"
+    >
+      {{ widget_breadcrumbs.second.name }}
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="widget_breadcrumbs.third">
+    <span class="material-symbols-outlined"> navigate_next </span>
+    <a
+      [matTooltip]="widget_breadcrumbs.third.name"
+      [routerLink]="'/search/' + widget_breadcrumbs.third.link"
+      class="breadcrumbs-item"
+    >
+      {{ widget_breadcrumbs.third.name }}
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="widget_breadcrumbs.location && type === 'card'">
+    <span class="material-symbols-outlined"> navigate_next </span>
+    <a class="breadcrumbs-item">
+      {{ widget_breadcrumbs.location.name }}
+    </a>
+  </ng-container>
+</div>

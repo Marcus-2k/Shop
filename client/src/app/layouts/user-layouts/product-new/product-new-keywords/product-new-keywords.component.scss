@@ -1,0 +1,33 @@
+.form-item-title {
+  .title {
+    font-size: 18px;
+  }
+}
+
+.form-keywords-field {
+  width: 100%;
+  font-size: 18px;
+  .input-keywords {
+    min-height: 100px;
+    max-height: 250px;
+  }
+}
+
+.form-keywords-length {
+  font-size: 16px;
+}
+
+.form-keywords-item {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-bottom: 12px;
+  &-word {
+    margin-top: 5px;
+    margin-right: 10px;
+  }
+}
+
+.form-keywords-delete {
+  margin-bottom: 12px;
+}

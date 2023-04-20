@@ -34,7 +34,7 @@ body {
   &.active__catalog {
     overflow: hidden;
   }
-  &.active__filter {
+  &.active--filter {
     overflow: hidden;
     padding: 0 10px 0 0;
     @media (max-width: 1000px) {
@@ -46,6 +46,18 @@ body {
     padding: 0 10px 0 0;
     @media (max-width: 1000px) {
       padding: 0;
+    }
+  }
+  &.active--load_data {
+    &::before {
+      content: "";
+      position: fixed;
+      z-index: 1000;
+
+      background-color: rgba(255, 255, 255, 0.75);
+
+      width: 100%;
+      height: 100%;
     }
   }
   &.placeholder__background {
@@ -96,78 +108,20 @@ body {
   padding-top: 25px;
 }
 
-.toast {
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-}
-
-#toast-container {
-  display: block;
-  position: fixed;
-  z-index: 10000;
-}
-
-@media only screen and (max-width: 600px) {
-  #toast-container {
-    min-width: 100%;
-    bottom: 0%;
+.disabled-spin-button {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 
-@media only screen and (min-width: 601px) and (max-width: 992px) {
-  #toast-container {
-    left: 5%;
-    bottom: 7%;
-    max-width: 90%;
-  }
+.ok {
+  color: #349948;
 }
-
-@media only screen and (min-width: 993px) {
-  #toast-container {
-    top: 10%;
-    right: 7%;
-    max-width: 86%;
-  }
-}
-
-.toast {
-  border-radius: 2px;
-  top: 35px;
-  width: auto;
-  margin-top: 10px;
-  position: relative;
-  max-width: 100%;
-  height: auto;
-  min-height: 48px;
-  line-height: 1.5em;
-  background-color: #323232;
-  padding: 10px 25px;
-  font-size: 1.1rem;
-  font-weight: 400;
-  font-family: "Mont";
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: default;
-}
-
-.toast .toast-action {
-  color: #eeff41;
-  font-weight: 500;
-  margin-right: -25px;
-  margin-left: 3rem;
-}
-
-.toast.rounded {
-  border-radius: 24px;
-}
-
-@media only screen and (max-width: 600px) {
-  .toast {
-    width: 100%;
-    border-radius: 0;
-  }
+.error {
+  color: #f44336;
 }
 
 @import "scss/other__style.scss";

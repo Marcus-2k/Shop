@@ -1,0 +1,17 @@
+.search__empty {
+  width: 100%;
+  height: 90vh;
+  &-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+    &-title {
+      color: #535353;
+    }
+    &-img {
+    }
+  }
+}

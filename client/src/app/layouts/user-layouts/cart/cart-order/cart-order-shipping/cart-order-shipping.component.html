@@ -22,6 +22,7 @@
     <mat-radio-group
       class="form__type_shipping-group"
       [(ngModel)]="selectTypeShipping"
+      (ngModelChange)="updateShippingInStore()"
     >
       <mat-radio-button
         class="form__type_shipping-group-radio"
