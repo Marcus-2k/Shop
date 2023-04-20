@@ -8,6 +8,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 
 import { Redirect } from "src/app/shared/interface/interfaces";
 
@@ -20,6 +21,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private renameTitle: RenameTitleService,
+    private showMessage: OpenSnackBarService,
     public dialogRef: MatDialogRef<RegisterComponent>,
     public dialog: MatDialog
   ) {}
@@ -38,16 +40,19 @@ export class RegisterComponent implements OnInit {
     this.formRegister = new UntypedFormGroup({
       name: new UntypedFormControl(null, [
         Validators.required,
-        Validators.pattern("[a-zA-Z ]*"),
+        Validators.pattern("^[a-zA-Z]+$"),
         Validators.minLength(4),
+        Validators.maxLength(16),
       ]),
       email: new UntypedFormControl(null, [
         Validators.required,
         Validators.email,
+        Validators.maxLength(16),
       ]),
       password: new UntypedFormControl(null, [
         Validators.required,
         Validators.minLength(6),
+        Validators.maxLength(32),
       ]),
     });
 
@@ -76,8 +81,8 @@ export class RegisterComponent implements OnInit {
     if (this.formRegister) {
       this.formRegister.disable();
 
-      this.auth.register(this.formRegister.value).subscribe(
-        (response) => {
+      this.auth.register(this.formRegister.value).subscribe({
+        next: (response) => {
           console.log(response);
           this.closeRegisterWindow({
             redirectTo: undefined,
@@ -85,14 +90,16 @@ export class RegisterComponent implements OnInit {
             success: "registered",
           });
         },
-        (error) => {
+        error: (error) => {
           console.log(error);
 
+          this.showMessage.open(error.error.message, "ОК");
           if (this.formRegister) {
             this.formRegister.enable();
           }
-        }
-      );
+        },
+        complete: () => {},
+      });
     }
   }
 }

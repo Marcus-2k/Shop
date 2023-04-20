@@ -23,9 +23,9 @@ export class AppComponent implements OnInit {
 
     const potentialToken = localStorage.getItem("auth-token");
     this.auth.setToken(potentialToken);
-    // the user is authorized in the system
-    console.log("The user is authorized in the system");
     if (potentialToken !== null) {
+      // the user is authorized in the system
+      console.log("The user is authorized in the system");
       this.auth.checking().subscribe({
         next: (response) => {
           console.log(response);
