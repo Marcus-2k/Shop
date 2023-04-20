@@ -18,6 +18,9 @@ import {
 } from "../../shared/interface/interfaces";
 
 export namespace OrderActions {
+  // Clear Data
+  export const clearOrder = createAction("clearOrder");
+
   // Record Data
   export const recordOrder = createAction(
     "recordOrder",

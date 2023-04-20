@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+
 import { AuthService } from "src/app/shared/service/server/auth.service";
+
 import { Store } from "@ngrx/store";
 import { ShoppingCartActions } from "src/app/store/cart/cart.action";
 import { ShoppingCartSelector } from "src/app/store/cart/cart.selector";
+import { OrderActions } from "src/app/store/orders/order.action";
 
 @Component({
   selector: "app-card-shopping-cart",
@@ -47,12 +50,14 @@ export class CardShoppingCartComponent implements OnInit {
           this.store$.dispatch(
             ShoppingCartActions.addShoppingCart({ id: this._idProduct })
           );
+          this.store$.dispatch(OrderActions.clearOrder());
           this.buttonDisabled = false;
           // if the item was not liked
         } else if (this.listShoppingCart.indexOf(this._idProduct) >= 0) {
           this.store$.dispatch(
             ShoppingCartActions.removeShoppingCart({ id: this._idProduct })
           );
+          this.store$.dispatch(OrderActions.clearOrder());
           this.buttonDisabled = false;
         }
       }
