@@ -39,9 +39,9 @@ export class CartOrderContactsComponent implements OnInit {
               ]),
               tel: new UntypedFormControl(stateContacts.info.tel, [
                 Validators.required,
-                Validators.minLength(13),
-                Validators.maxLength(13),
-                Validators.pattern("[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"),
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("[0-9]{10}"),
               ]),
             });
           }
