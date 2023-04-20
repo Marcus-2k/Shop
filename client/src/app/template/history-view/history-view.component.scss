@@ -4,8 +4,11 @@
   flex-wrap: wrap;
   width: 100%;
   .history__list-item {
-    width: 25%;
+    width: 20%;
     height: 450px;
+    @media (max-width: 1400px) {
+      width: 25%;
+    }
     @media (max-width: 1250px) {
       width: 33.3%;
     }

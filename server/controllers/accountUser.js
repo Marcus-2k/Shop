@@ -135,7 +135,7 @@ export async function getHistoryUser(req, res) {
         product.push(itemProduct);
       }
 
-      product.reverse();
+      product.reverse().splice(9);
 
       return res.status(200).json({ history__view: product });
     } else {
