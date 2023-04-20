@@ -16,7 +16,7 @@ export class OpenSnackBarService {
   private verticalPosition: MatSnackBarVerticalPosition = "top";
   private duration: number = 5;
 
-  open(message: string, action: string | undefined) {
+  open(message: string, action: string | undefined = "ОК") {
     this._snackBar.open(message, action, {
       duration: this.duration * 1000,
       horizontalPosition: this.horizontalPosition,

@@ -8,6 +8,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 
 import { Store } from "@ngrx/store";
 import { FavoriteActions } from "src/app/store/favorite/favorite.action";
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private renameTitle: RenameTitleService,
+    private showMessage: OpenSnackBarService,
     private store$: Store,
     public dialogRef: MatDialogRef<LoginComponent>,
     public dialog: MatDialog
@@ -73,8 +75,8 @@ export class LoginComponent implements OnInit {
     if (this.formLogin) {
       this.formLogin.disable();
 
-      this.auth.login(this.formLogin.value).subscribe(
-        (response) => {
+      this.auth.login(this.formLogin.value).subscribe({
+        next: (response) => {
           console.log(response);
 
           this.initAfterLogin();
@@ -84,14 +86,16 @@ export class LoginComponent implements OnInit {
             success: "authorized",
           });
         },
-        (error) => {
+        error: (error) => {
           console.log(error);
+          this.showMessage.open(error.error.message, "ОК");
 
           if (this.formLogin) {
             this.formLogin.enable();
           }
-        }
-      );
+        },
+        complete: () => {},
+      });
     }
   }
 
