@@ -29,13 +29,17 @@
         autocomplete="off"
       />
       <mat-error *ngIf="formRegister.controls['name'].errors?.['minlength']">
-        Мінімальна кількість символів 4
+        Мінімальна кількість символів <strong> 4 </strong>
+      </mat-error>
+      <mat-error *ngIf="formRegister.controls['name'].errors?.['maxlength']">
+        Максимальна кількість символів <strong> 16 </strong>
       </mat-error>
       <mat-error *ngIf="formRegister.controls['name'].errors?.['required']">
         Ваше ім'я є <strong>обов'язковим!</strong>
       </mat-error>
       <mat-error *ngIf="formRegister.controls['name'].errors?.['pattern']">
-        Дозволені літери <strong>a-z,A-Z</strong>
+        Дозволені літери <strong>a-z,A-Z</strong>. Всі інші символи (пробіли, _,
+        -, ...) заборонено
       </mat-error>
     </mat-form-field>
 
@@ -48,6 +52,9 @@
         placeholder="kaitlyn_macdonald@gmail.com"
         autocomplete="off"
       />
+      <mat-error *ngIf="formRegister.controls['email'].errors?.['maxlength']">
+        Максимальна кількість символів <strong> 16 </strong>
+      </mat-error>
       <mat-error *ngIf="formRegister.controls['email'].errors?.['email']">
         Будь ласка, введіть дійсну адресу електронної пошти
       </mat-error>
@@ -71,7 +78,12 @@
       <mat-error
         *ngIf="formRegister.controls['password'].errors?.['minlength']"
       >
-        Мінімальна кількість символів є 6
+        Мінімальна кількість символів <strong> 6 </strong>
+      </mat-error>
+      <mat-error
+        *ngIf="formRegister.controls['password'].errors?.['maxlength']"
+      >
+        Максимальна кількість символів <strong> 32 </strong>
       </mat-error>
     </mat-form-field>
 
