@@ -4,6 +4,14 @@ import { OrderActions, initialStateOrder, OrderState } from "./order.action";
 export const OrderReducer = createReducer(
   initialStateOrder,
 
+  // CLear Data
+  on(OrderActions.clearOrder, (state) => {
+    return {
+      orders: null,
+      productCard_shoppingCart: null,
+    };
+  }),
+
   // Record Data to Store
   on(OrderActions.recordOrder, (state, props) => {
     const stateClone: OrderState = JSON.parse(JSON.stringify(state));
