@@ -18,7 +18,11 @@ export class ProductNewPriceComponent implements OnInit {
   @Input() appearance: MatFormFieldAppearance = "fill";
   @Input() update: boolean = false; // Default value = false
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("Start ngOnInit Product-New-Price");
+
+    this.procentActionNumber();
+  }
 
   procentActionNumber() {
     console.log("Start procentActionNumber");
