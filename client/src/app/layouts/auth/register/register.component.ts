@@ -65,8 +65,6 @@ export class RegisterComponent implements OnInit {
   }
 
   closeRegisterWindow(config: Redirect | null) {
-    this.renameTitle.renameTitleSite("Інтернет-магазин");
-
     if (config) {
       this.dialogRef.close(config);
     } else {

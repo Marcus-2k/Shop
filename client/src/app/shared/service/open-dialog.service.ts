@@ -14,6 +14,7 @@ import { RegisterComponent } from "src/app/layouts/auth/register/register.compon
 import { MyOrderDetailComponent } from "src/app/layouts/user-layouts/my-order/my-order-detail/my-order-detail.component";
 import { ProductNewCatalogComponent } from "src/app/template/dialog/product-new-catalog/product-new-catalog.component";
 
+import { RenameTitleService } from "./rename-title.service";
 import { OpenSnackBarService } from "./open-snack-bar.service";
 
 @Injectable({
@@ -23,6 +24,7 @@ export class OpenDialogService {
   constructor(
     private routre: Router,
     public dialog: MatDialog,
+    private renameTitle: RenameTitleService,
     private openSnackBar: OpenSnackBarService
   ) {}
 
@@ -37,6 +39,7 @@ export class OpenDialogService {
         });
 
       dialogRef.afterClosed().subscribe((result) => {
+        this.renameTitle.renameTitleSite("Інтернет-магазин");
         this.openLogin = false;
 
         if (result) {
@@ -63,6 +66,8 @@ export class OpenDialogService {
       });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.renameTitle.renameTitleSite("Інтернет-магазин");
+
       if (result) {
         if (result.redirectTo === "login") {
           this.openLoginWindow();

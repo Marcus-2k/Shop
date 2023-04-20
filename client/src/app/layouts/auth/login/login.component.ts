@@ -62,8 +62,6 @@ export class LoginComponent implements OnInit {
   }
 
   closeLoginWindow(config: Redirect | null) {
-    this.renameTitle.renameTitleSite("Інтернет-магазин");
-
     if (config) {
       this.dialogRef.close(config);
     } else {
