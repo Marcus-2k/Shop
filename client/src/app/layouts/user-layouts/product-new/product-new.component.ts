@@ -209,7 +209,9 @@ export class ProductNewComponent implements OnInit, OnDestroy {
     });
   }
 
+  functionWorks: boolean = false;
   createProduct() {
+    this.functionWorks = true;
     let productState: ProductNewState | undefined;
 
     this.store$
@@ -449,6 +451,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
               ) => {
                 console.log(response);
                 if (response.status === 400) {
+                  this.functionWorks = false;
                   this.showMessage.open(response.error.message, undefined);
                 }
               },
@@ -466,6 +469,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
             ) => {
               console.log(response);
               if (response.status === 400) {
+                this.functionWorks = false;
                 this.showMessage.open(response.error.message, undefined);
               }
             },
@@ -478,9 +482,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
             `[ ${messageError.join(", ")} ]`,
           undefined
         );
+        this.functionWorks = false;
       }
     } else {
-      // !
+      this.functionWorks = false;
     }
   }
 }

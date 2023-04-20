@@ -79,6 +79,7 @@
           color="primary"
           type="submit"
           *ngIf="!update"
+          [disabled]="functionWorks"
           (click)="createProduct()"
         >
           Створити
@@ -89,6 +90,7 @@
           color="primary"
           type="submit"
           *ngIf="update"
+          [disabled]="functionWorks"
           (click)="createProduct()"
         >
           Зберегти
