@@ -14,6 +14,7 @@ import {
   ProductNewActions,
   ProductNewState,
 } from "src/app/store/product-new/product-new.action";
+import { UserProductActions } from "src/app/store/product/product.action";
 import { ProductNewSelector } from "src/app/store/product-new/product-new.selector";
 
 @Component({
@@ -442,6 +443,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
               next: (data) => {
                 console.log(data);
                 this.showMessage.open(data.message, undefined);
+                this.store$.dispatch(
+                  UserProductActions.setUserProduct({ product_list: null })
+                );
+
                 this.router.navigate(["/account/product"]);
               },
               error: (
@@ -459,6 +464,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
             next: (data) => {
               console.log(data);
               this.showMessage.open(data.message, undefined);
+              this.store$.dispatch(
+                UserProductActions.setUserProduct({ product_list: null })
+              );
+
               this.router.navigate(["/account/product"]);
             },
             error: (

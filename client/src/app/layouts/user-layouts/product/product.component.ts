@@ -66,6 +66,9 @@ export class ProductComponent implements OnInit {
         this.showMessage.open(data.message, undefined);
         if (data.deleted) {
           this.productList.splice(index, 1);
+          this.store$.dispatch(
+            UserProductActions.setUserProduct({ product_list: null })
+          );
         }
       },
       error: (error) => {

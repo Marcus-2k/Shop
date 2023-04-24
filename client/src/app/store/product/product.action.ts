@@ -6,7 +6,7 @@ export namespace UserProductActions {
   export const getUserProduct = createAction("[PRODUCT] getUserProduct");
   export const setUserProduct = createAction(
     "[PRODUCT] setUserProduct",
-    props<{ product_list: Product[] }>()
+    props<{ product_list: Product[] | null }>()
   );
 }
 
