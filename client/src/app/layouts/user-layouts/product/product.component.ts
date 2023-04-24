@@ -6,6 +6,10 @@ import { RenameTitleService } from "src/app/shared/service/rename-title.service"
 import { RequestProductService } from "src/app/shared/service/server/request-product.service";
 import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 
+import { Store } from "@ngrx/store";
+import { UserProductActions } from "src/app/store/product/product.action";
+import { UserProductSelector } from "src/app/store/product/product.selector";
+
 @Component({
   selector: "app-product",
   templateUrl: "./product.component.html",
@@ -15,24 +19,39 @@ export class ProductComponent implements OnInit {
   constructor(
     private requestProduct: RequestProductService,
     private showMessage: OpenSnackBarService,
-    private renameTitle: RenameTitleService
+    private renameTitle: RenameTitleService,
+    private store$: Store
   ) {}
 
   ngOnInit(): void {
     console.log("Start ngOnInit Product");
 
-    this.requestProduct.getUserProduct().subscribe(
-      (response) => {
-        console.log(response);
-
-        this.productList = response;
-
-        this.loader = false;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.store$
+      .select(UserProductSelector.getUserProduct)
+      .subscribe((state) => {
+        if (state.products) {
+          console.log("We have data");
+          this.productList = state.products;
+          this.loader = false;
+        } else {
+          console.log("We have no data");
+          this.requestProduct.getUserProduct().subscribe({
+            next: (response) => {
+              console.log(response);
+              this.store$.dispatch(
+                UserProductActions.setUserProduct({ product_list: response })
+              );
+              this.productList = response;
+              this.loader = false;
+            },
+            error: (error) => {
+              console.log(error);
+            },
+            complete: () => {},
+          });
+        }
+      })
+      .unsubscribe();
 
     this.renameTitle.renameTitleSite("Мої товари");
   }
