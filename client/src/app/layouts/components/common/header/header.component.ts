@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { OpenDialogService } from "src/app/shared/service/open-dialog.service";
+import { GuestLocalStorageService } from "src/app/shared/service/guest-local-storage.service";
 
 import { CatalogComponent } from "src/app/template/catalog/catalog.component";
 
@@ -26,6 +27,7 @@ export class HeaderComponent implements OnInit, DoCheck {
     private route: ActivatedRoute,
     private auth: AuthService,
     private requestUser: RequestUserService,
+    private GuestLocalStorage: GuestLocalStorageService,
     private openDialog: OpenDialogService,
     private store$: Store,
     public dialog: MatDialog
@@ -54,18 +56,22 @@ export class HeaderComponent implements OnInit, DoCheck {
         },
         complete: () => {},
       });
-    }
 
-    this.store$
-      .select(FavoriteSelector.favoriteNumber)
-      .subscribe((counter: number) => {
-        this.lengthFavorite = counter;
+      this.store$
+        .select(FavoriteSelector.favoriteNumber)
+        .subscribe((counter: number) => {
+          this.lengthFavorite = counter;
+        });
+      this.store$
+        .select(ShoppingCartSelector.shoppingCartNumber)
+        .subscribe((counter: number) => {
+          this.lengthCart = counter;
+        });
+    } else {
+      this.GuestLocalStorage.number_of_carts.subscribe((carts_id) => {
+        this.lengthCart = carts_id.length;
       });
-    this.store$
-      .select(ShoppingCartSelector.shoppingCartNumber)
-      .subscribe((counter: number) => {
-        this.lengthCart = counter;
-      });
+    }
 
     const history = localStorage.getItem("history-search");
     if (history) {
