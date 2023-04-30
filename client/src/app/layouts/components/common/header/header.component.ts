@@ -1,8 +1,9 @@
 import { Component, OnInit, DoCheck } from "@angular/core";
-
+import { ActivatedRoute, Router } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
 
-import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs";
+
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { RequestUserService } from "src/app/shared/service/server/request-user.service";
 import { OpenDialogService } from "src/app/shared/service/open-dialog.service";
@@ -57,21 +58,24 @@ export class HeaderComponent implements OnInit, DoCheck {
         complete: () => {},
       });
 
-      this.store$
-        .select(FavoriteSelector.favoriteNumber)
-        .subscribe((counter: number) => {
-          this.lengthFavorite = counter;
-        });
-      this.store$
+      this.subscriptionCart = this.store$
         .select(ShoppingCartSelector.shoppingCartNumber)
         .subscribe((counter: number) => {
           this.lengthCart = counter;
         });
     } else {
-      this.GuestLocalStorage.number_of_carts.subscribe((carts_id) => {
-        this.lengthCart = carts_id.length;
-      });
+      this.subscriptionCart = this.GuestLocalStorage.number_of_carts.subscribe(
+        (carts_id) => {
+          this.lengthCart = carts_id.length;
+        }
+      );
     }
+
+    this.subscriptionFavorite = this.store$
+      .select(FavoriteSelector.favoriteNumber)
+      .subscribe((counter: number) => {
+        this.lengthFavorite = counter;
+      });
 
     const history = localStorage.getItem("history-search");
     if (history) {
@@ -91,6 +95,31 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
+    if (
+      this.authenticatedUser !== this.auth.isAuthenticated() &&
+      this.authenticatedUser === false
+    ) {
+      /** User Login */
+      this.subscriptionCart?.unsubscribe();
+      this.subscriptionCart = this.store$
+        .select(ShoppingCartSelector.shoppingCartNumber)
+        .subscribe((counter: number) => {
+          this.lengthCart = counter;
+        });
+    }
+    if (
+      this.authenticatedUser !== this.auth.isAuthenticated() &&
+      this.authenticatedUser === true
+    ) {
+      /** User logout */
+      this.subscriptionCart?.unsubscribe();
+      this.subscriptionCart = this.GuestLocalStorage.number_of_carts.subscribe(
+        (carts_id) => {
+          this.lengthCart = carts_id.length;
+        }
+      );
+    }
+
     this.authenticatedUser = this.auth.isAuthenticated();
   }
 
@@ -172,6 +201,9 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
   // Search END ===========================================================
   // User START ===========================================================
+  subscriptionFavorite: Subscription | undefined;
+  subscriptionCart: Subscription | undefined;
+
   lengthFavorite: number = 0;
   lengthCart: number = 0;
 
