@@ -127,7 +127,7 @@ export interface Order {
   stepper: OrderStepper;
   info: {
     seller: string;
-    merchant: string;
+    merchant: string | null;
   };
   product: {
     info: OrderProduct;

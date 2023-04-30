@@ -5,13 +5,16 @@ import { Observable, tap } from "rxjs";
 
 import { UserLogin, UserRegister } from "../../interface/interfaces";
 
+import { Store } from "@ngrx/store";
+
 import { environment } from "src/environments/environment";
+import { OrderActions } from "src/app/store/orders/order.action";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store$: Store) {}
 
   private token: string | null = null;
 
@@ -47,6 +50,8 @@ export class AuthService {
         tap(({ accessToken }) => {
           localStorage.setItem("auth-token", accessToken);
           this.setToken(accessToken);
+
+          this.store$.dispatch(OrderActions.clearOrder());
         })
       );
   }
@@ -80,8 +85,11 @@ export class AuthService {
       .pipe(
         tap(() => {
           this.setToken(null);
+
           localStorage.removeItem("auth-token");
           localStorage.removeItem("_id");
+
+          this.store$.dispatch(OrderActions.clearOrder());
         })
       );
   }

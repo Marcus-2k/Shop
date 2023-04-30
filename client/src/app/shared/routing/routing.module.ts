@@ -87,7 +87,7 @@ const routes: Routes = [
     ],
   },
   { path: "wishlist", canActivate: [AuthGuard], component: WishlistComponent },
-  { path: "cart", canActivate: [AuthGuard], component: CartComponent },
+  { path: "cart", component: CartComponent },
   { path: "search", component: SearchComponent },
   { path: "search/:navigate_link", component: SearchComponent },
   {
