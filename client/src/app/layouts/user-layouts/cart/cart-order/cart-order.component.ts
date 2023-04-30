@@ -5,6 +5,9 @@ import { OrderValid, OrderStepper } from "src/app/shared/interface/interfaces";
 
 import { Subscription } from "rxjs";
 
+import { AuthService } from "src/app/shared/service/server/auth.service";
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
+
 import { Store } from "@ngrx/store";
 import { OrderActions } from "src/app/store/orders/order.action";
 import { OrderSelector } from "src/app/store/orders/order.selector";
@@ -15,7 +18,11 @@ import { OrderSelector } from "src/app/store/orders/order.selector";
   styleUrls: ["./cart-order.component.scss"],
 })
 export class CartOrderComponent implements OnInit, OnDestroy {
-  constructor(private store$: Store) {}
+  constructor(
+    private store$: Store,
+    private auth: AuthService,
+    private showMessage: OpenSnackBarService
+  ) {}
 
   @Input() sequence_number_order?: number;
 
@@ -73,11 +80,17 @@ export class CartOrderComponent implements OnInit, OnDestroy {
 
   toOrder(): void {
     if (this.sequence_number_order !== undefined) {
-      this.store$.dispatch(
-        OrderActions.toOrder({
-          sequence_number_order: this.sequence_number_order,
-        })
-      );
+      if (this.auth.isAuthenticated()) {
+        this.store$.dispatch(
+          OrderActions.toOrder({
+            sequence_number_order: this.sequence_number_order,
+          })
+        );
+      } else {
+        this.showMessage.open(
+          "Щоб створити замовлення для початку авторизуйтеся."
+        );
+      }
     }
   }
 }
