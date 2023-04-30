@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, DoCheck } from "@angular/core";
+
+import { Subscription } from "rxjs";
 
 import { AuthService } from "src/app/shared/service/server/auth.service";
 import { GuestLocalStorageService } from "src/app/shared/service/guest-local-storage.service";
@@ -13,7 +15,7 @@ import { OrderActions } from "src/app/store/orders/order.action";
   templateUrl: "./card-shopping-cart.component.html",
   styleUrls: ["./card-shopping-cart.component.scss"],
 })
-export class CardShoppingCartComponent implements OnInit {
+export class CardShoppingCartComponent implements OnInit, DoCheck {
   constructor(
     private auth: AuthService,
     private GuestLocalStorage: GuestLocalStorageService,
@@ -26,19 +28,59 @@ export class CardShoppingCartComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.isAuthenticated()) {
-      this.store$
+      this.subscriptionCart = this.store$
         .select(ShoppingCartSelector.shoppingCartList)
         .subscribe((value) => {
           this.listShoppingCart = value;
         });
     } else {
-      this.getListShoppingCart();
+      this.subscriptionCart = this.GuestLocalStorage.number_of_carts.subscribe(
+        (carts_id) => {
+          this.listShoppingCart = carts_id;
+        }
+      );
     }
+
+    this.authenticatedUser = this.auth.isAuthenticated();
 
     if (this.type) {
       this.typeBtn = this.type;
     }
   }
+
+  ngDoCheck(): void {
+    // console.log("Start ngDoCheck id = ", this._idProduct);
+    if (
+      this.authenticatedUser !== this.auth.isAuthenticated() &&
+      this.authenticatedUser === false
+    ) {
+      /** User Login */
+      // console.log("/** User Login */");
+      this.subscriptionCart?.unsubscribe();
+      this.subscriptionCart = this.store$
+        .select(ShoppingCartSelector.shoppingCartList)
+        .subscribe((carts_id) => {
+          this.listShoppingCart = carts_id;
+        });
+    }
+    if (
+      this.authenticatedUser !== this.auth.isAuthenticated() &&
+      this.authenticatedUser === true
+    ) {
+      /** User logout */
+      // console.log("/** User logout */");
+      this.subscriptionCart?.unsubscribe();
+      this.subscriptionCart = this.GuestLocalStorage.number_of_carts.subscribe(
+        (carts_id) => {
+          this.listShoppingCart = carts_id;
+        }
+      );
+    }
+
+    this.authenticatedUser = this.auth.isAuthenticated();
+  }
+
+  authenticatedUser: boolean = false;
 
   typeBtn: number = 0; // 0 = icon, 1 = icon + text;
 
@@ -67,8 +109,6 @@ export class CardShoppingCartComponent implements OnInit {
         } else if (this.listShoppingCart.indexOf(this._idProduct) >= 0) {
           this.GuestLocalStorage.removeShoppingCart(this._idProduct);
         }
-
-        this.getListShoppingCart();
       }
     }
 
@@ -76,6 +116,7 @@ export class CardShoppingCartComponent implements OnInit {
     this.store$.dispatch(OrderActions.clearOrder());
   }
 
+  subscriptionCart: Subscription | undefined;
   listShoppingCart: string[] = [];
   checkingShoppingCart(): boolean {
     if (this._idProduct) {
@@ -86,16 +127,6 @@ export class CardShoppingCartComponent implements OnInit {
       }
     } else {
       return false;
-    }
-  }
-
-  getListShoppingCart() {
-    const list = this.GuestLocalStorage.getShoppingCart();
-
-    if (list) {
-      this.listShoppingCart = list;
-    } else {
-      this.listShoppingCart = [];
     }
   }
 }
