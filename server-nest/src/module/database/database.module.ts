@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 // Mongo
 import { MongooseModule } from "@nestjs/mongoose";
@@ -12,6 +13,16 @@ import { NewsSchema } from "src/shared/schemas/News.schema";
 
 @Module({
   imports: [
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => {
+        return {
+          uri: config.get<string>("CONNECTION_STRING_MONGO_DB"),
+          dbName: config.get<string>("DB_NAME"),
+        };
+      },
+    }),
     MongooseModule.forFeature([
       { name: "user", schema: UserSchema },
       { name: "token", schema: TokenSchema },
