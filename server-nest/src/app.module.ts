@@ -8,9 +8,13 @@ import { AppController } from "./app.controller";
 
 // Services
 import { AppService } from "./app.service";
+import { DatabaseModule } from "./module/database/database.module";
 
 @Module({
-  imports: [MongooseModule.forRoot("mongodb://127.0.0.1:27017/Marketplace")],
+  imports: [
+    MongooseModule.forRoot("mongodb://127.0.0.1:27017/Marketplace"),
+    DatabaseModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
