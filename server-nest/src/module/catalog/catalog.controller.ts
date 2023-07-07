@@ -7,10 +7,14 @@ import {
   ValidationPipe,
 } from "@nestjs/common";
 import { Response } from "express";
-import { Catalog } from "src/shared/interfaces/catalog";
 import { CATALOG } from "src/shared/db/catalog";
 import { GetCatalogSectionDto } from "./catalog.dto";
+
+/** Interface */
+import { Catalog } from "src/shared/interfaces/catalog";
 import { Breadcrumbs } from "src/shared/interfaces/breadcrumbs";
+import { MessageRes } from "src/shared/interfaces/res/message";
+import { CatalogSection } from "./catalog.interface.response";
 
 @Controller("catalog")
 /** Pipes */
@@ -28,6 +32,7 @@ export class CatalogController {
     @Res() response: Response<Catalog[]>
   ): Promise<Response<Catalog[]>> {
     let sidebar_list = [];
+
     for (let idx = 0; idx < CATALOG.length; idx++) {
       sidebar_list.push({
         nameCategory: CATALOG[idx].nameCategory,
@@ -41,24 +46,9 @@ export class CatalogController {
 
   @Get("/:navigate_link")
   async getCatalogSection(
-    @Res()
-    response: Response<
-      | {
-          widget_breadcrumbs: Breadcrumbs;
-          catalog_section: Catalog;
-        }
-      | { message: string }
-    >,
+    @Res() response: Response<CatalogSection | MessageRes>,
     @Param() param: GetCatalogSectionDto
-  ): Promise<
-    Response<
-      | {
-          widget_breadcrumbs: Breadcrumbs;
-          catalog_section: Catalog;
-        }
-      | { message: string }
-    >
-  > {
+  ): Promise<Response<CatalogSection | MessageRes>> {
     const CLONE_CATALOG: Catalog[] = JSON.parse(JSON.stringify(CATALOG));
 
     for (let idx = 0; idx < CLONE_CATALOG.length; idx++) {
