@@ -1,7 +1,10 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ConfigService } from "@nestjs/config";
+
+import * as path from "path";
 import * as dotenv from "dotenv";
+import * as express from "express";
 
 async function bootstrap() {
   dotenv.config();
@@ -11,6 +14,8 @@ async function bootstrap() {
   const PORT: number = config.get<number>("SERVER_PORT") || 2000;
 
   const GlobalPrefix: string = "api";
+
+  app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
   app.enableCors();
   app.setGlobalPrefix(GlobalPrefix);
