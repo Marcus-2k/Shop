@@ -8,13 +8,13 @@ export interface Category {
         permissionUse: boolean;
 
         characteristics: Option[];
-        // subNameListCategory: undefined;
+        subNameListCategory?: undefined;
       }
     | {
         subNameCategory: string;
         permissionUse: boolean;
 
-        // characteristics: undefined;
+        characteristics?: undefined;
         subNameListCategory: {
           titleSubNameListCategory: string;
           characteristics: Option[];
