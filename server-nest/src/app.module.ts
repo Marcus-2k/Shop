@@ -14,6 +14,7 @@ import { OrderModule } from "./module/order/order.module";
 import { ProductModule } from "./module/product/product.module";
 import { SearchModule } from "./module/search/search.module";
 import { SellerModule } from "./module/seller/seller.module";
+import { TokenModule } from './module/token/token.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SellerModule } from "./module/seller/seller.module";
     ProductModule,
     SearchModule,
     SellerModule,
+    TokenModule,
   ],
   controllers: [],
   providers: [],
