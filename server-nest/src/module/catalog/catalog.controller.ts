@@ -27,7 +27,7 @@ export class CatalogController {
     return response.status(200).json(CATALOG);
   }
 
-  @Get("/home")
+  @Get("home")
   async getCatalogHome(
     @Res() response: Response<Catalog[]>
   ): Promise<Response<Catalog[]>> {
@@ -44,7 +44,7 @@ export class CatalogController {
     return response.status(200).json(sidebar_list);
   }
 
-  @Get("/:navigate_link")
+  @Get(":navigate_link")
   async getCatalogSection(
     @Res() response: Response<CatalogSection | MessageRes>,
     @Param() param: GetCatalogSectionDto
