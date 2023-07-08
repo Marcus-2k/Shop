@@ -5,6 +5,7 @@ import {
   Param,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
 import { CATALOG } from "src/shared/db/catalog";
@@ -15,10 +16,13 @@ import { Catalog } from "src/shared/interfaces/catalog";
 import { Breadcrumbs } from "src/shared/interfaces/breadcrumbs";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { CatalogSection } from "./catalog.interface.response";
+import { JwtAuthGuard } from "src/shared/guards/jwt.guard";
 
 @Controller("catalog")
-/** Pipes */
+/** Pipe */
 @UsePipes(new ValidationPipe({ transform: true }))
+/** Guard */
+@UseGuards(JwtAuthGuard)
 export class CatalogController {
   @Get()
   async getCatalog(

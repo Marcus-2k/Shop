@@ -1,9 +1,11 @@
-import { Controller, Get, Res } from "@nestjs/common";
+import { Controller, Get, Res, UsePipes, ValidationPipe } from "@nestjs/common";
 import { Response } from "express";
 import { NewsService } from "./news.service";
 import { News } from "src/shared/interfaces/schemas/News";
 
 @Controller("news")
+/** Pipes */
+@UsePipes(new ValidationPipe({ transform: true }))
 export class NewsController {
   constructor(private newsService: NewsService) {}
 

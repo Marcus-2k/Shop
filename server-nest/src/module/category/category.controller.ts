@@ -6,6 +6,7 @@ import {
   Body,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
 import { CATEGORY } from "src/shared/db/category";
@@ -13,10 +14,13 @@ import { Category } from "src/shared/interfaces/category";
 import { GetCharacteristicsDto } from "./category.dto";
 import { Option } from "src/shared/interfaces/option";
 import { MessageRes } from "src/shared/interfaces/res/message";
+import { JwtAuthGuard } from "src/shared/guards/jwt.guard";
 
 @Controller("category")
-/** Pipes */
+/** Pipe */
 @UsePipes(new ValidationPipe({ transform: true }))
+/** Guard */
+@UseGuards(JwtAuthGuard)
 export class CategoryController {
   @Get() async getCategory(
     @Res() response: Response
