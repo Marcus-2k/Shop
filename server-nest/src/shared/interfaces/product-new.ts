@@ -1,6 +1,4 @@
-import { Document } from "mongoose";
-
-export interface Product extends Document {
+export interface ProductNew {
   imageSrc: string[];
   name: string;
   price: number;
