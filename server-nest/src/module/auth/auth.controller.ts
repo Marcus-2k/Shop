@@ -68,7 +68,7 @@ export class AuthController {
     }
   }
 
-  @Get("register")
+  @Post("register")
   async register(
     @Res() response: Response<any>,
     @Body() body: RegisterDto
