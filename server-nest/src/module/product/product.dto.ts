@@ -88,10 +88,17 @@ export class CreateProductDto {
 
 export class UpdateProduct {
   @IsOptional()
+  @Transform(({ value }: { value: string }) => {
+    return value.split("?");
+  })
+  @IsString({ each: true })
+  imageSrc?: string[];
+
+  @IsOptional()
   @IsString()
   @MinLength(12)
   @MaxLength(50)
-  name: string | undefined;
+  name?: string;
 
   @IsOptional()
   @Transform(({ value }) => {
@@ -100,7 +107,7 @@ export class UpdateProduct {
   @IsNumber()
   @Min(0)
   @Max(10000000)
-  price: number | undefined;
+  price?: number;
 
   @IsOptional()
   @Transform(({ value }) => {
@@ -111,13 +118,13 @@ export class UpdateProduct {
     }
   })
   @IsBoolean()
-  action: boolean | undefined;
+  action?: boolean;
 
   @IsOptional()
   @Transform(({ value }) => {
     return Number(value);
   })
-  actionPrice: number | undefined;
+  actionPrice?: number;
 
   @IsOptional()
   @Transform(({ value }) => {
@@ -125,14 +132,14 @@ export class UpdateProduct {
   })
   @IsNumber()
   @Min(0)
-  counter: number | undefined;
+  counter?: number;
 
   @IsOptional()
   @Transform(({ value }) => {
     return Number(value);
   })
   @IsNumber()
-  status: number | undefined;
+  status?: number;
 
   @IsOptional()
   @Transform(({ value }) => {
@@ -156,11 +163,11 @@ export class UpdateProduct {
   @IsString({ each: true })
   @MinLength(2, { each: true })
   @MaxLength(10, { each: true })
-  keywords: string[] | undefined;
+  keywords?: string[];
 
   @IsOptional()
   @IsString()
   @MinLength(60)
   @MaxLength(5000)
-  description: string | undefined;
+  description?: string;
 }
