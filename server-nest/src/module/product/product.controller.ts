@@ -18,7 +18,6 @@ import { Response } from "express";
 import { JwtAuthGuard } from "src/shared/guards/jwt.guard";
 import { ProductService } from "./product.service";
 import { Product } from "src/shared/interfaces/schemas/Product";
-import { CATEGORY } from "src/shared/db/category";
 import { User } from "src/shared/decorators/user.decorator";
 import { TokenData } from "src/shared/interfaces/token-data";
 import { IdDto } from "src/shared/dto/id";
@@ -26,6 +25,7 @@ import { upload } from "src/shared/middleware/upload.middleware";
 import { CreateProductDto, UpdateProduct } from "./product.dto";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { ProductUpdate } from "src/shared/interfaces/product-update";
+import { CategoryService } from "../category/category.service";
 
 @Controller("product")
 /** Pipe */
@@ -33,7 +33,10 @@ import { ProductUpdate } from "src/shared/interfaces/product-update";
 /** Guard */
 @UseGuards(JwtAuthGuard)
 export class ProductController {
-  public constructor(private readonly productService: ProductService) {}
+  public constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService
+  ) {}
 
   private minActionProcent: number = -5;
 
@@ -52,17 +55,8 @@ export class ProductController {
   ): Promise<Response<any>> {
     let product: Product = await this.productService.findById(param.id);
 
-    let characteristicsName;
-
-    if (product.category.length === 3) {
-      characteristicsName =
-        CATEGORY[product.category[0]].nameListCategory[product.category[1]]
-          .subNameListCategory[product.category[2]].characteristics;
-    } else if (product.category.length === 2) {
-      characteristicsName =
-        CATEGORY[product.category[0]].nameListCategory[product.category[1]]
-          .characteristics;
-    }
+    let characteristicsName: any =
+      this.categoryService.getCharacteristicsByCategory(product.category);
 
     product = JSON.parse(JSON.stringify(product));
     product.characteristicsName = characteristicsName;
