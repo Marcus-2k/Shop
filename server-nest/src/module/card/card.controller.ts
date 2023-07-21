@@ -13,28 +13,70 @@ import { CATEGORY } from "src/shared/db/category";
 import { Product } from "src/shared/interfaces/schemas/Product";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { Option } from "src/shared/interfaces/option";
+import { Breadcrumbs } from "src/shared/interfaces/breadcrumbs";
+import { CATALOG } from "src/shared/db/catalog";
+import { CategoryService } from "../category/category.service";
+import { CategoryNumber } from "src/shared/interfaces/category-number";
 
 @Controller("card")
 /** Pipe */
 @UsePipes(new ValidationPipe({ transform: true }))
 export class CardController {
-  public constructor(private readonly productService: ProductService) {}
+  public constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService
+  ) {}
 
   @Get(":id")
   public async getByIdCard(
-    @Res() response: Response<Product | MessageRes>,
+    @Res()
+    response: Response<
+      { product: Product; widget_breadcrumbs: Breadcrumbs } | MessageRes
+    >,
     @Param() param: IdDto
-  ): Promise<Response<Product | MessageRes>> {
+  ): Promise<Response> {
     const productInfo: Product | null = await this.productService.findById(
       param.id,
+
       {
         imageSrc: true,
-        description: true,
+        name: true,
+        price: true,
+        action: true,
+        actionPrice: true,
+        counter: true,
+        category: true,
+        status: true,
+        user: true,
       }
     );
 
     if (productInfo) {
-      return response.status(200).json(productInfo);
+      const categoryNumber: CategoryNumber | MessageRes =
+        this.categoryService.getCategoryNumberByCategory(productInfo.category);
+
+      if (!Array.isArray(categoryNumber)) {
+        return response.status(404).json({ message: "Такий товар не існує" });
+      }
+
+      const widget_breadcrumbs: Breadcrumbs = {
+        first: {
+          name: CATALOG[categoryNumber[0]].nameCategory,
+          link: CATALOG[categoryNumber[0]].navigate_link,
+        },
+        second: {
+          name: CATALOG[categoryNumber[0]].nameListCategory[categoryNumber[1]]
+            .subNameCategory,
+          link: CATALOG[categoryNumber[0]].nameListCategory[categoryNumber[1]]
+            .navigate_link,
+        },
+        third: undefined,
+        location: { name: productInfo.name, link: productInfo.name },
+      };
+
+      return response
+        .status(200)
+        .json({ product: productInfo, widget_breadcrumbs: widget_breadcrumbs });
     } else {
       return response.status(404).json({ message: "Такий товар не існує" });
     }
@@ -44,10 +86,10 @@ export class CardController {
   public async getByIdCardInfo(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
-  ): Promise<Response<Product | MessageRes>> {
+  ): Promise<Response> {
     const productComments: Product | null = await this.productService.findById(
       param.id,
-      { comments: true }
+      { imageSrc: true, description: true }
     );
 
     if (productComments) {
@@ -68,15 +110,7 @@ export class CardController {
       | MessageRes
     >,
     @Param() param: IdDto
-  ): Promise<
-    Response<
-      | {
-          characteristics: number[][];
-          characteristicsName: Option[];
-        }
-      | MessageRes
-    >
-  > {
+  ): Promise<Response> {
     const product: Product | null = await this.productService.findById(
       param.id,
       {
@@ -86,16 +120,11 @@ export class CardController {
     );
 
     if (product) {
-      let characteristicsName: Option[] = [];
+      const characteristicsName: Option[] | MessageRes =
+        this.categoryService.getCharacteristicsByCategory(product.category);
 
-      if (product.category.length === 3) {
-        characteristicsName =
-          CATEGORY[product.category[0]].nameListCategory[product.category[1]]
-            .subNameListCategory[product.category[2]].characteristics;
-      } else if (product.category.length === 2) {
-        characteristicsName =
-          CATEGORY[product.category[0]].nameListCategory[product.category[1]]
-            .characteristics;
+      if (!Array.isArray(characteristicsName)) {
+        return response.status(404).json({ message: "Такий товар не існує" });
       }
 
       return response.status(200).json({
@@ -111,7 +140,7 @@ export class CardController {
   public async getByIdCardComments(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
-  ): Promise<Response<Product | MessageRes>> {
+  ): Promise<Response> {
     const productComments: Product | null = await this.productService.findById(
       param.id,
       { comments: true }
@@ -128,7 +157,7 @@ export class CardController {
   public async getByIdCardQuestions(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
-  ): Promise<Response<Product | MessageRes>> {
+  ): Promise<Response> {
     const productQuestions: Product | null = await this.productService.findById(
       param.id,
       { questions: true }
@@ -145,12 +174,10 @@ export class CardController {
   public async getByIdCardPhoto(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
-  ): Promise<Response<Product | MessageRes>> {
+  ): Promise<Response> {
     const productPhoto: Product | null = await this.productService.findById(
       param.id,
-      {
-        imageSrc: true,
-      }
+      { imageSrc: true }
     );
 
     if (productPhoto) {
@@ -164,7 +191,7 @@ export class CardController {
   public async getByIdCardAccessories(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
-  ): Promise<Response<Product | MessageRes>> {
+  ): Promise<Response> {
     const productAccessories: Product | null =
       await this.productService.findById(param.id, { accessories: true });
 

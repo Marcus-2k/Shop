@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CATEGORY } from "src/shared/db/category";
+import { CategoryNumber } from "src/shared/interfaces/category-number";
 
 import { Option } from "src/shared/interfaces/option";
 import { MessageRes } from "src/shared/interfaces/res/message";
@@ -43,7 +44,7 @@ export class CategoryService {
 
   public getCategoryNumberByCategory(
     category: string
-  ): [number, number] | [number, number, number] | MessageRes {
+  ): CategoryNumber | MessageRes {
     for (let index = 0; index < CATEGORY.length; index++) {
       for (let idx = 0; idx < CATEGORY[index].nameListCategory.length; idx++) {
         if (CATEGORY[index].nameListCategory[idx].characteristics) {
