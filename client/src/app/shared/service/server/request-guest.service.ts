@@ -22,7 +22,7 @@ export class RequestGuestService {
     };
     const query = new URLSearchParams(queryParams);
     return this.http.get<{ history__view: Product[] }>(
-      `${this.url_server}history/?${query.toString()}`
+      `${this.url_server}history?${query.toString()}`
     );
   }
 

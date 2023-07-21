@@ -11,7 +11,7 @@ import { environment } from "src/environments/environment";
 export class RequestProductService {
   constructor(private http: HttpClient) {}
 
-  url_server: string = environment.URL_SERVER_API + "account/product/";
+  url_server: string = environment.URL_SERVER_API + "product/";
 
   getUserProduct(): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.url_server}`);
