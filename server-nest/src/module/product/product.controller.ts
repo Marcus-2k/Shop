@@ -42,7 +42,6 @@ export class ProductController {
     @Res() response: Response<Product[]>
   ): Promise<Response<Product[]>> {
     const product: Product[] = await this.productService.find();
-
     return response.status(200).json(product);
   }
 
@@ -125,9 +124,13 @@ export class ProductController {
     if (body.category && body.characteristics) {
       updateProduct.category = body.category;
 
-      updateProduct.categoryName = this.productService.createCategoryName(
-        body.category
-      );
+      const categoryName: [string, string] | [string, string, string] | string =
+        this.productService.createCategoryName(body.category);
+
+      if (!Array.isArray(categoryName)) {
+        return response.status(200).json({ message: categoryName });
+      }
+      updateProduct.categoryName = categoryName;
     }
 
     // Characteristics
@@ -229,9 +232,13 @@ export class ProductController {
     const status: number = body.status;
 
     // Category
-    const category: [number, number] | [number, number, number] = body.category;
-    const categoryName: [string, string] | [string, string, string] =
-      this.productService.createCategoryName(category);
+    const category: string = body.category;
+    const categoryName: [string, string] | [string, string, string] | string =
+      this.productService.createCategoryName(body.category);
+
+    if (!Array.isArray(categoryName)) {
+      return response.status(200).json({ message: categoryName });
+    }
 
     // Characteristics
     const characteristics:

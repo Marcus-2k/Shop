@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, SchemaType, SchemaTypes } from "mongoose";
 
 export const ProductSchema = new Schema({
   imageSrc: {
@@ -30,7 +30,7 @@ export const ProductSchema = new Schema({
     required: true,
   },
   category: {
-    type: Array, // [ 1, 2, 9 ]
+    type: SchemaTypes.String, // notebooks
     required: true,
   },
   categoryName: {

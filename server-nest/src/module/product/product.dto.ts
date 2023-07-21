@@ -7,11 +7,9 @@ import {
   MinLength,
   MaxLength,
   IsBoolean,
-  IsInt,
-  ArrayMaxSize,
-  ArrayMinSize,
   IsOptional,
   Validate,
+  IsNotEmpty,
 } from "class-validator";
 
 import { CharacteristicsValidator } from "src/shared/validator/characteristics.validator";
@@ -58,15 +56,9 @@ export class CreateProductDto {
   @IsNumber()
   status: number;
 
-  @Transform(({ value }) => {
-    return value.split(" ").map((value: string) => {
-      return Number(value);
-    });
-  })
-  @ArrayMinSize(2)
-  @ArrayMaxSize(3)
-  @IsInt({ each: true })
-  category: [number, number] | [number, number, number];
+  @IsString()
+  @IsNotEmpty()
+  category: string;
 
   @Validate(CharacteristicsValidator)
   characteristics: string;
@@ -142,15 +134,9 @@ export class UpdateProduct {
   status?: number;
 
   @IsOptional()
-  @Transform(({ value }) => {
-    return value.split(" ").map((value: string) => {
-      return Number(value);
-    });
-  })
-  @ArrayMinSize(2)
-  @ArrayMaxSize(3)
-  @IsInt({ each: true })
-  category: [number, number] | [number, number, number] | undefined;
+  @IsString()
+  @IsNotEmpty()
+  category: string | undefined;
 
   @IsOptional()
   @Validate(CharacteristicsValidator)

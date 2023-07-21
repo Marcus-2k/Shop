@@ -8,7 +8,7 @@ export interface Product extends Document {
   actionPrice: number;
   counter: number;
   status: number;
-  category: [number, number] | [number, number, number];
+  category: string;
   categoryName: [string, string] | [string, string, string];
   characteristics: number[][];
   characteristicsName: {

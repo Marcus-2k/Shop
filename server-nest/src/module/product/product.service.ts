@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, ProjectionType } from "mongoose";
+import { Model, ProjectionType, QueryOptions } from "mongoose";
 import { DeleteResult } from "mongodb";
 import { Product } from "src/shared/interfaces/schemas/Product";
 import { unlink } from "fs";
@@ -8,11 +8,14 @@ import { CATEGORY } from "src/shared/db/category";
 import { Option } from "src/shared/interfaces/option";
 import { ProductUpdate } from "src/shared/interfaces/product-update";
 import { ProductNew } from "src/shared/interfaces/product-new";
+import { MessageRes } from "src/shared/interfaces/res/message";
+import { CategoryService } from "../category/category.service";
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel("product") private readonly ProductModel: Model<Product>
+    @InjectModel("product") private readonly ProductModel: Model<Product>,
+    private categoryService: CategoryService
   ) {}
 
   public async find(): Promise<Product[]> {
@@ -21,9 +24,10 @@ export class ProductService {
 
   public async findById(
     id: string,
-    projection?: ProjectionType<Product>
+    projection?: ProjectionType<Product>,
+    options?: QueryOptions<Product>
   ): Promise<Product | null> {
-    return await this.ProductModel.findById(id);
+    return await this.ProductModel.findById(id, projection, options);
   }
 
   public async findByIds(ids: string[]): Promise<Product[]> {
@@ -56,7 +60,7 @@ export class ProductService {
   }
 
   public createCharacteristics(
-    category: [number, number] | [number, number, number],
+    category: string,
     value: string
   ):
     | string
@@ -70,17 +74,12 @@ export class ProductService {
       });
     });
 
-    let characteristics!: Option[];
-    if (category.length === 2) {
-      characteristics =
-        CATEGORY[category[0]].nameListCategory[category[1]].characteristics;
+    const characteristics: Option[] | MessageRes =
+      this.categoryService.getCharacteristicsByCategory(category);
+    if (!Array.isArray(characteristics)) {
+      return characteristics.message;
     }
-    if (category.length === 3) {
-      characteristics =
-        CATEGORY[category[0]].nameListCategory[category[1]].subNameListCategory[
-          category[2]
-        ].characteristics;
-    }
+
     if (characteristicsNumber.length !== characteristics.length) {
       return (
         "Вибрано " +
@@ -133,18 +132,26 @@ export class ProductService {
   }
 
   public createCategoryName(
-    category: [number, number] | [number, number, number]
-  ): [string, string] | [string, string, string] {
+    category: string
+  ): [string, string] | [string, string, string] | string {
+    const categoryNumber:
+      | [number, number]
+      | [number, number, number]
+      | MessageRes = this.categoryService.getCategoryNumberByCategory(category);
+    if (!Array.isArray(categoryNumber)) {
+      return categoryNumber.message;
+    }
+
     const categoryName: [string, string] | [string, string, string] = [
-      CATEGORY[category[0]].nameCategory,
-      CATEGORY[category[0]].nameListCategory[category[1]].subNameCategory,
+      CATEGORY[categoryNumber[0]].nameCategory,
+      CATEGORY[categoryNumber[0]].nameListCategory[categoryNumber[1]]
+        .subNameCategory,
     ];
 
     if (category.length === 3) {
       categoryName.push(
-        CATEGORY[category[0]].nameListCategory[category[1]].subNameListCategory[
-          category[2]
-        ].titleSubNameListCategory
+        CATEGORY[categoryNumber[0]].nameListCategory[categoryNumber[1]]
+          .subNameListCategory[categoryNumber[2]].titleSubNameListCategory
       );
     }
 
