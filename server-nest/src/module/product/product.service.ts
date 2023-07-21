@@ -18,6 +18,10 @@ export class ProductService {
     private categoryService: CategoryService
   ) {}
 
+  public async findByUser(user_id: string): Promise<Product[] | null> {
+    return await this.ProductModel.find({ user: user_id });
+  }
+
   public async findById(
     id: string,
     projection?: ProjectionType<Product>,

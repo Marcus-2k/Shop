@@ -40,6 +40,16 @@ export class ProductController {
 
   private minActionProcent: number = -5;
 
+  @Get()
+  public async getByUserProduct(
+    @Res() response: Response<Product[]>,
+    @User() user: TokenData
+  ): Promise<Response> {
+    let product: Product[] = await this.productService.findByUser(user.id);
+
+    return response.status(200).json(product);
+  }
+
   @Get(":id")
   public async getByIdProduct(
     @Res() response: Response<any>,
