@@ -23,7 +23,7 @@ import { CategoryService } from "./category.service";
 /** Guard */
 @UseGuards(JwtAuthGuard)
 export class CategoryController {
-  constructor(private service: CategoryService) {}
+  public constructor(private service: CategoryService) {}
 
   @Get()
   public async getCategory(

@@ -13,7 +13,7 @@ import { CategoryService } from "../category/category.service";
 
 @Injectable()
 export class ProductService {
-  constructor(
+  public constructor(
     @InjectModel("product") private readonly ProductModel: Model<Product>,
     private categoryService: CategoryService
   ) {}

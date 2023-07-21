@@ -21,7 +21,7 @@ export class CardController {
   public constructor(private readonly productService: ProductService) {}
 
   @Get(":id")
-  async getByIdCard(
+  public async getByIdCard(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
   ): Promise<Response<Product | MessageRes>> {
@@ -41,7 +41,7 @@ export class CardController {
   }
 
   @Get(":id/info")
-  async getByIdCardInfo(
+  public async getByIdCardInfo(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
   ): Promise<Response<Product | MessageRes>> {
@@ -58,7 +58,7 @@ export class CardController {
   }
 
   @Get(":id/characteristics")
-  async getByIdCardCharacteristics(
+  public async getByIdCardCharacteristics(
     @Res()
     response: Response<
       | {
@@ -108,7 +108,7 @@ export class CardController {
   }
 
   @Get(":id/comments")
-  async getByIdCardComments(
+  public async getByIdCardComments(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
   ): Promise<Response<Product | MessageRes>> {
@@ -125,7 +125,7 @@ export class CardController {
   }
 
   @Get(":id/questions")
-  async getByIdCardQuestions(
+  public async getByIdCardQuestions(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
   ): Promise<Response<Product | MessageRes>> {
@@ -142,7 +142,7 @@ export class CardController {
   }
 
   @Get(":id/photo")
-  async getByIdCardPhoto(
+  public async getByIdCardPhoto(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
   ): Promise<Response<Product | MessageRes>> {
@@ -161,7 +161,7 @@ export class CardController {
   }
 
   @Get(":id/accessories")
-  async getByIdCardAccessories(
+  public async getByIdCardAccessories(
     @Res() response: Response<Product | MessageRes>,
     @Param() param: IdDto
   ): Promise<Response<Product | MessageRes>> {

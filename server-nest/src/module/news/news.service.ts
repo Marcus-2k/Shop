@@ -5,9 +5,11 @@ import { News } from "src/shared/interfaces/schemas/News";
 
 @Injectable()
 export class NewsService {
-  constructor(@InjectModel("news") private readonly NewsModel: Model<News>) {}
+  public constructor(
+    @InjectModel("news") private readonly NewsModel: Model<News>
+  ) {}
 
-  async find(): Promise<News[]> {
+  public async find(): Promise<News[]> {
     return await this.NewsModel.find();
   }
 }

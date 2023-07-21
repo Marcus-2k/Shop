@@ -23,14 +23,14 @@ import { JwtAuthGuard } from "src/shared/guards/jwt.guard";
 @UsePipes(new ValidationPipe({ transform: true }))
 export class CatalogController {
   @Get()
-  async getCatalog(
+  public async getCatalog(
     @Res() response: Response<Catalog[]>
   ): Promise<Response<Catalog[]>> {
     return response.status(200).json(CATALOG);
   }
 
   @Get("home")
-  async getCatalogHome(
+  public async getCatalogHome(
     @Res() response: Response<Catalog[]>
   ): Promise<Response<Catalog[]>> {
     let sidebar_list = [];
@@ -47,7 +47,7 @@ export class CatalogController {
   }
 
   @Get(":navigate_link")
-  async getCatalogSection(
+  public async getCatalogSection(
     @Res() response: Response<CatalogSection | MessageRes>,
     @Param() param: GetCatalogSectionDto
   ): Promise<Response<CatalogSection | MessageRes>> {

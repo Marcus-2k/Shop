@@ -15,9 +15,10 @@ import { Response } from "express";
 /** Pipes */
 @UsePipes(new ValidationPipe({ transform: true }))
 export class SellerController {
-  constructor(private sellerService: SellerService) {}
+  public constructor(private sellerService: SellerService) {}
 
-  @Get(":id") async getSellerById(
+  @Get(":id")
+  public async getSellerById(
     @Res() response: Response<User>,
     @Param() param: GetSellerByIdDto
   ): Promise<Response<User>> {

@@ -6,7 +6,7 @@ import { MessageRes } from "src/shared/interfaces/res/message";
 
 @Injectable()
 export class CategoryService {
-  constructor() {}
+  public constructor() {}
 
   public getCharacteristicsByCategory(category: string): Option[] | MessageRes {
     for (let index = 0; index < CATEGORY.length; index++) {

@@ -11,7 +11,7 @@ import { OrderShipping } from "src/shared/interfaces/schemas/order/order-shippin
 
 @Injectable()
 export class OrderService {
-  constructor(
+  public constructor(
     @InjectModel("order") private readonly OrderModel: Model<Order>
   ) {}
 

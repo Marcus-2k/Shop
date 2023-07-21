@@ -11,7 +11,7 @@ import { TokenPayload } from "src/shared/interfaces/token-payload";
 
 @Injectable()
 export class TokenService {
-  constructor(
+  public constructor(
     @InjectModel("token") private readonly TokenModel: Model<Token>,
     private readonly jwtService: JwtService
   ) {}

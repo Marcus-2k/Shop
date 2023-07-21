@@ -40,7 +40,7 @@ export class AccountUserController {
   ) {}
 
   @Get()
-  async getUserInfo(
+  public async getUserInfo(
     @Res() response: Response<User>,
     @UserData() userData: TokenData
   ): Promise<Response<User>> {
@@ -53,7 +53,7 @@ export class AccountUserController {
 
   @Patch()
   @UseInterceptors(FilesInterceptor("image", 1, upload))
-  async editUser(
+  public async editUser(
     @Res() response: Response<MessageRes>,
     @UserData() userData: TokenData,
     @Body() body: UpdateUserDto,
@@ -110,7 +110,7 @@ export class AccountUserController {
   }
 
   @Patch("password")
-  async changePassword(
+  public async changePassword(
     @Res() response: Response<{ message: boolean }>,
     @UserData() userData: TokenData,
     @Body() body: ChangePasswordUserDto
@@ -142,7 +142,7 @@ export class AccountUserController {
   }
 
   @Get("history")
-  async getHistoryUser(
+  public async getHistoryUser(
     @Res() response: Response<any>,
     @UserData() userData: TokenData
   ): Promise<Response<any>> {
@@ -169,7 +169,7 @@ export class AccountUserController {
   }
 
   @Patch("history")
-  async newHistoryUser(
+  public async newHistoryUser(
     @Res() response: Response<MessageRes>,
     @UserData() userData: TokenData,
     @Body() body: IdDto
@@ -200,7 +200,7 @@ export class AccountUserController {
   }
 
   @Get("favorite_and_shoppingCart")
-  async getFavoriteAndShoppingCart(
+  public async getFavoriteAndShoppingCart(
     @Res() response: Response<{ favorite: string[]; shoppingCart: string[] }>,
     @UserData() userData: TokenData
   ): Promise<Response<{ favorite: string[]; shoppingCart: string[] }>> {
@@ -219,7 +219,7 @@ export class AccountUserController {
   }
 
   @Get("favorite")
-  async getFavorite(
+  public async getFavorite(
     @Res() response: Response<{ favorite: string[] }>,
     @UserData() userData: TokenData
   ): Promise<Response<{ favorite: string[] }>> {
@@ -235,7 +235,7 @@ export class AccountUserController {
   }
 
   @Post("favorite")
-  async addFavorite(
+  public async addFavorite(
     @Res() response: Response<{ favorite: string[] }>,
     @UserData() userData: TokenData,
     @Body() body: IdDto
@@ -259,7 +259,7 @@ export class AccountUserController {
   }
 
   @Delete("favorite/:id")
-  async removeFavorite(
+  public async removeFavorite(
     @Res() response: Response<{ favorite: string[] }>,
     @UserData() userData: TokenData,
     @Param() param: IdDto
@@ -281,7 +281,7 @@ export class AccountUserController {
   }
 
   @Get("wish_list")
-  async getWishList(
+  public async getWishList(
     @Res() response: Response<any>,
     @UserData() userData: TokenData
   ): Promise<Response<any>> {
@@ -305,7 +305,7 @@ export class AccountUserController {
   }
 
   @Patch("wish_list")
-  async patchWishList(
+  public async patchWishList(
     @Res() response: Response<any>,
     @UserData() userData: TokenData,
     @Body() body: string[]
@@ -342,7 +342,7 @@ export class AccountUserController {
   }
 
   @Get("cart")
-  async getShoppingCart(
+  public async getShoppingCart(
     @Res() response: Response<{ shoppingCart: string[] }>,
     @UserData() userData: TokenData
   ): Promise<Response<{ shoppingCart: string[] }>> {
@@ -358,7 +358,7 @@ export class AccountUserController {
   }
 
   @Post("cart")
-  async addShoppingCart(
+  public async addShoppingCart(
     @Res() response: Response<{ shoppingCart: string[] }>,
     @UserData() userData: TokenData,
     @Body() body: IdDto
@@ -380,7 +380,7 @@ export class AccountUserController {
   }
 
   @Delete("cart/:id")
-  async removeShoppingCart(
+  public async removeShoppingCart(
     @Res() response: Response<{ shoppingCart: string[] }>,
     @UserData() userData: TokenData,
     @Param() param: IdDto
@@ -402,7 +402,7 @@ export class AccountUserController {
   }
 
   @Get("shopping_cart")
-  async getShoppingCartList(
+  public async getShoppingCartList(
     @Res() response: Response<any>,
     @UserData() userData: TokenData
   ): Promise<Response<any>> {
@@ -426,7 +426,7 @@ export class AccountUserController {
   }
 
   @Patch("shopping_cart")
-  async patchShoppingCartList(
+  public async patchShoppingCartList(
     @Res() response: Response<any>,
     @UserData() userData: TokenData,
     @Body() body: string[]

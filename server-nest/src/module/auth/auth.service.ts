@@ -6,7 +6,9 @@ import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel("user") private readonly UserModel: Model<User>) {}
+  public constructor(
+    @InjectModel("user") private readonly UserModel: Model<User>
+  ) {}
 
   private saltRounds: number = 10;
 

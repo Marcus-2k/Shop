@@ -34,14 +34,14 @@ import { MessageRes } from "src/shared/interfaces/res/message";
 /** Guard */
 @UseGuards(JwtAuthGuard)
 export class OrderController {
-  constructor(
+  public constructor(
     private readonly orderService: OrderService,
     private readonly productService: ProductService,
     @InjectModel("user") private readonly UserModel: Model<User>
   ) {}
 
   @Get()
-  async getOrdersByUser(
+  public async getOrdersByUser(
     @Res()
     response: Response<{ MyOrder: Order[]; ProductCard_MyOrder: Product[] }>,
     @UserData() user: TokenData
@@ -81,7 +81,7 @@ export class OrderController {
   }
 
   @Post()
-  async createOrder(
+  public async createOrder(
     @Res() response: Response<MessageRes>,
     @Body() body: CreateOrderDto
   ): Promise<Response<MessageRes>> {

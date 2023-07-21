@@ -15,9 +15,10 @@ import { ProductService } from "../product/product.service";
 /** Pipe */
 @UsePipes(new ValidationPipe({ transform: true }))
 export class GuestController {
-  constructor(private readonly productService: ProductService) {}
+  public constructor(private readonly productService: ProductService) {}
 
-  @Get("history") async getHistoryGuest(
+  @Get("history")
+  public async getHistoryGuest(
     @Res() response: Response<{ history__view: Product[] }>,
     @Query() query: GetHistoryGuestDto
   ): Promise<Response<{ history__view: Product[] }>> {
@@ -28,7 +29,8 @@ export class GuestController {
     return response.status(200).json({ history__view });
   }
 
-  @Get() async getGuestCart(
+  @Get()
+  public async getGuestCart(
     @Res() response: Response<any>,
     @Query() query: GetGuestCartDto
   ): Promise<Response<any>> {

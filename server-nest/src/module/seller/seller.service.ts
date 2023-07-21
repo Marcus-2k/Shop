@@ -5,9 +5,11 @@ import { User } from "src/shared/interfaces/schemas/User";
 
 @Injectable()
 export class SellerService {
-  constructor(@InjectModel("user") private readonly SellerModel: Model<User>) {}
+  public constructor(
+    @InjectModel("user") private readonly SellerModel: Model<User>
+  ) {}
 
-  async findById(id: string): Promise<User> {
+  public async findById(id: string): Promise<User> {
     return await this.SellerModel.findById(id, {
       avatar: true,
       name: true,

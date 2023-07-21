@@ -7,9 +7,10 @@ import { News } from "src/shared/interfaces/schemas/News";
 /** Pipes */
 @UsePipes(new ValidationPipe({ transform: true }))
 export class NewsController {
-  constructor(private newsService: NewsService) {}
+  public constructor(private newsService: NewsService) {}
 
-  @Get() async getNews(
+  @Get()
+  public async getNews(
     @Res() response: Response<News[]>
   ): Promise<Response<News[]>> {
     const news: News[] = await this.newsService.find();

@@ -38,7 +38,7 @@ export class ProductController {
   private minActionProcent: number = -5;
 
   @Get()
-  async getProductList(
+  public async getProductList(
     @Res() response: Response<Product[]>
   ): Promise<Response<Product[]>> {
     const product: Product[] = await this.productService.find();
@@ -46,7 +46,7 @@ export class ProductController {
   }
 
   @Get(":id")
-  async getByIdProduct(
+  public async getByIdProduct(
     @Res() response: Response<any>,
     @Param() param: IdDto
   ): Promise<Response<any>> {
@@ -72,7 +72,7 @@ export class ProductController {
 
   @Patch(":id")
   @UseInterceptors(FilesInterceptor("images", 8, upload))
-  async updateProduct(
+  public async updateProduct(
     @Res() response: Response<any>,
     @Param() param: IdDto,
     @Body() body: UpdateProduct,
@@ -174,7 +174,7 @@ export class ProductController {
 
   @Post()
   @UseInterceptors(FilesInterceptor("images", 8, upload))
-  async createProduct(
+  public async createProduct(
     @Res() response: Response<MessageRes>,
     @Body() body: CreateProductDto,
     @User() user: TokenData,
@@ -285,7 +285,7 @@ export class ProductController {
   }
 
   @Delete(":id")
-  async deleteProduct(
+  public async deleteProduct(
     @Res() response: Response<any>,
     @Param() param: IdDto,
     @User() user: TokenData
