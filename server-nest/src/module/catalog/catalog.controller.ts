@@ -21,8 +21,6 @@ import { JwtAuthGuard } from "src/shared/guards/jwt.guard";
 @Controller("catalog")
 /** Pipe */
 @UsePipes(new ValidationPipe({ transform: true }))
-/** Guard */
-@UseGuards(JwtAuthGuard)
 export class CatalogController {
   @Get()
   async getCatalog(

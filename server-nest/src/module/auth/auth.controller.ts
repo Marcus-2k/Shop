@@ -30,7 +30,7 @@ export class AuthController {
   ) {}
 
   @Post("login")
-  async login(
+  public async login(
     @Res() response: Response<any>,
     @Body() body: LoginDto
   ): Promise<Response<any>> {
@@ -69,7 +69,7 @@ export class AuthController {
   }
 
   @Post("register")
-  async register(
+  public async register(
     @Res() response: Response<any>,
     @Body() body: RegisterDto
   ): Promise<Response<any>> {
@@ -105,14 +105,14 @@ export class AuthController {
   }
 
   @Get("checking")
-  async checking(
+  public async checking(
     @Res() response: Response<{ authorization: boolean }>,
     @Req() request: Request
   ): Promise<Response<{ authorization: boolean }>> {
     const { refreshToken }: { refreshToken: string | undefined } =
       request.cookies;
 
-    const accessToken: string = request.headers.authorization.split(" ")[1];
+    const accessToken: string = request.headers.authorization;
 
     const validateAccess: TokenData | null =
       this.tokenService.validateAccessToken(accessToken);
@@ -132,7 +132,7 @@ export class AuthController {
   }
 
   @Get("refresh")
-  async refresh(
+  public async refresh(
     @Res() response: Response<Tokens | MessageRes>,
     @Req() request: Request
   ): Promise<Response<Tokens>> {
@@ -176,7 +176,7 @@ export class AuthController {
   }
 
   @Get("logout")
-  async logout(
+  public async logout(
     @Res() response: Response<{ deletedCount: number }>,
     @Req() request: Request
   ): Promise<Response<{ deletedCount: number }>> {

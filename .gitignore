@@ -7,6 +7,9 @@ dist
 server/uploads/*.webp
 server/uploads/*.png
 server/uploads/*.jpg
+server-nest/uploads/*.webp
+server-nest/uploads/*.png
+server-nest/uploads/*.jpg
 
 # Client
 client/.angular

@@ -22,13 +22,17 @@ import { JwtAuthGuard } from "src/shared/guards/jwt.guard";
 /** Guard */
 @UseGuards(JwtAuthGuard)
 export class CategoryController {
-  @Get() async getCategory(
+  constructor() {}
+
+  @Get()
+  public async getCategory(
     @Res() response: Response
   ): Promise<Response<Category[]>> {
     return response.status(200).json(CATEGORY);
   }
 
-  @Post("characteristics") async getCharacteristics(
+  @Post("characteristics")
+  public async getCharacteristics(
     @Res() response: Response<Option[] | MessageRes>,
     @Body() body: GetCharacteristicsDto
   ): Promise<Response<Option[] | MessageRes>> {
