@@ -8,11 +8,11 @@ export const CATEGORY: Category[] = [
       {
         subNameCategory: "Ноутбуки",
         characteristics: options.Laptop,
-        navigate_link: "link",
+        navigate_link: "notebooks",
       },
       {
         subNameCategory: "Аксесуари для ноутбуків і ПК",
-        navigate_link: "link",
+        navigate_link: "computers-notebooks-accessories",
         subNameListCategory: [
           {
             titleSubNameListCategory: "Флеш пам'ять USB",
@@ -48,7 +48,7 @@ export const CATEGORY: Category[] = [
       },
       {
         subNameCategory: "Аксесуари для планшетів",
-        navigate_link: "link",
+        navigate_link: "tablet-covers",
         subNameListCategory: [
           {
             titleSubNameListCategory: "Чохли та клавіатури для планшетів",
@@ -65,62 +65,62 @@ export const CATEGORY: Category[] = [
       {
         subNameCategory: "Електронні книги",
         characteristics: options.Develop,
-        navigate_link: "link",
+        navigate_link: "e-books",
       },
       {
         subNameCategory: "Комплектуючі",
-        navigate_link: "link",
+        navigate_link: "computer-components",
         subNameListCategory: [
           {
             titleSubNameListCategory: "Відеокарта",
             characteristics: options.Videocards,
-            navigate_link: "link",
+            navigate_link: "videocards",
           },
           {
             titleSubNameListCategory: "Процесори",
             characteristics: options.CPU_PC,
-            navigate_link: "link",
+            navigate_link: "cpu",
           },
           {
             titleSubNameListCategory: "SSD",
             characteristics: options.SSD,
-            navigate_link: "link",
+            navigate_link: "ssd",
           },
           {
             titleSubNameListCategory: "HDD",
             characteristics: options.HDD,
-            navigate_link: "link",
+            navigate_link: "hdd",
           },
           {
             titleSubNameListCategory: "ОЗП",
             characteristics: options.RAM,
-            navigate_link: "link",
+            navigate_link: "ram",
           },
           {
             titleSubNameListCategory: "Материнські плати",
             characteristics: options.Motherboards,
-            navigate_link: "link",
+            navigate_link: "motherboards",
           },
           {
             titleSubNameListCategory: "Блоки живлення",
             characteristics: options.PSU,
-            navigate_link: "link",
+            navigate_link: "psu",
           },
           {
             titleSubNameListCategory: "Корпуси",
             characteristics: options.Cases,
-            navigate_link: "link",
+            navigate_link: "cases",
           },
           {
             titleSubNameListCategory: "Системне охолодження",
             characteristics: options.Coolers,
-            navigate_link: "link",
+            navigate_link: "coolers",
           },
         ],
       },
       {
         subNameCategory: "Комп'ютери",
-        navigate_link: "link",
+        navigate_link: "computers",
         subNameListCategory: [
           {
             titleSubNameListCategory: "Монітори",
@@ -146,7 +146,7 @@ export const CATEGORY: Category[] = [
       },
       {
         subNameCategory: "Оргтехніка",
-        navigate_link: "link",
+        navigate_link: "office-equipment",
         subNameListCategory: [
           {
             titleSubNameListCategory: "БФП/Принтери",
@@ -172,7 +172,7 @@ export const CATEGORY: Category[] = [
       },
       {
         subNameCategory: "Програмне забезпечення",
-        navigate_link: "link",
+        navigate_link: "soft",
         subNameListCategory: [
           {
             titleSubNameListCategory: "Операційні системи",
@@ -193,7 +193,7 @@ export const CATEGORY: Category[] = [
       },
       {
         subNameCategory: "Товари для геймерів",
-        navigate_link: "link",
+        navigate_link: "game-zone",
         subNameListCategory: [
           {
             titleSubNameListCategory: "Play Station",
@@ -224,7 +224,7 @@ export const CATEGORY: Category[] = [
       },
       {
         subNameCategory: "Мережеве обладнання",
-        navigate_link: "link",
+        navigate_link: "network-equipment",
         subNameListCategory: [
           {
             titleSubNameListCategory: "Патч-корди",
@@ -261,7 +261,7 @@ export const CATEGORY: Category[] = [
       {
         subNameCategory: "Телефони",
         characteristics: options.Smartphone,
-        navigate_link: "link",
+        navigate_link: "mobile-smartphones",
       },
       {
         subNameCategory: "Аксесуари для мобільних телефонів",
