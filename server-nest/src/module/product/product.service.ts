@@ -18,10 +18,6 @@ export class ProductService {
     private categoryService: CategoryService
   ) {}
 
-  public async find(): Promise<Product[]> {
-    return await this.ProductModel.find();
-  }
-
   public async findById(
     id: string,
     projection?: ProjectionType<Product>,

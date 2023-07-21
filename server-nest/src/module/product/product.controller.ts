@@ -40,14 +40,6 @@ export class ProductController {
 
   private minActionProcent: number = -5;
 
-  @Get()
-  public async getProductList(
-    @Res() response: Response<Product[]>
-  ): Promise<Response<Product[]>> {
-    const product: Product[] = await this.productService.find();
-    return response.status(200).json(product);
-  }
-
   @Get(":id")
   public async getByIdProduct(
     @Res() response: Response<any>,
