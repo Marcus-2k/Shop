@@ -53,7 +53,7 @@ export namespace ProductNewActions {
   export const updateCategory = createAction(
     "updateCategoryStore",
     props<{
-      categoryNumberValue: number[] | null;
+      categoryValue: string | null;
       categoryNameValue: string[] | null;
       categorySelected: boolean;
       categoryError: boolean | null;
@@ -63,7 +63,7 @@ export namespace ProductNewActions {
   export const getCharacteristics = createAction(
     "getCharacteristics",
     props<{
-      categoryNumber: number[];
+      category: string;
     }>()
   );
   export const getCharacteristicsData = createAction(
@@ -119,8 +119,8 @@ export interface ProductNewState {
       status_present: 0 | 1 | 2 | 3 | null;
     };
     categoryData: {
-      categoryNumber_original: number[] | null;
-      categoryNumber_present: number[] | null;
+      category_original: string | null;
+      category_present: string | null;
       categoryName_original: string[] | null;
       categoryName_present: string[] | null;
 

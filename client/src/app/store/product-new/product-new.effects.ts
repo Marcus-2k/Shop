@@ -19,7 +19,7 @@ export class ProductNewEffects {
       ofType(ProductNewActions.getCharacteristics),
       mergeMap((actionData) => {
         return this.requestCategory
-          .getCharacteristics(actionData.categoryNumber)
+          .getCharacteristics(actionData.category)
           .pipe(
             map((data) => {
               return ProductNewActions.getCharacteristicsData({

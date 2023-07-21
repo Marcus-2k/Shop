@@ -80,6 +80,9 @@ export class ProductNewCatalogComponent implements OnInit {
       this.categoryList[this.oneIndex].nameListCategory[this.twoIndex]
         .subNameCategory
     );
+    let selectCategory: string =
+      this.categoryList[this.oneIndex].nameListCategory[this.twoIndex]
+        .navigate_link;
 
     if (this.threeIndex !== -1) {
       this.categoryNumber.push(this.threeIndex);
@@ -87,11 +90,15 @@ export class ProductNewCatalogComponent implements OnInit {
         this.categoryList[this.oneIndex].nameListCategory[this.twoIndex]
           .subNameListCategory[this.threeIndex].titleSubNameListCategory
       );
+
+      selectCategory =
+        this.categoryList[this.oneIndex].nameListCategory[this.twoIndex]
+          .subNameListCategory[this.threeIndex].navigate_link;
     }
 
     this.dialogRef.close({
+      category: selectCategory,
       categoryListName,
-      categoryListNumber: this.categoryNumber,
     });
   } // Create "categoryNumber" >>> [ 1, 0, 3 ] || [ 1, 2 ]
 }

@@ -32,7 +32,7 @@ export interface Product {
   action: boolean;
   actionPrice: number;
   counter: number;
-  category: number[];
+  category: string;
   characteristics: number[];
   status: 0 | 1 | 2 | 3;
   keywords: string[];
@@ -69,7 +69,7 @@ export interface ProductSearch {
   price: number;
   action: boolean;
   actionPrice: number;
-  category: number[];
+  category: string;
   characteristics: number[];
   user: string;
   _id: string;
@@ -81,7 +81,7 @@ export interface ProductUpdate {
   action: boolean;
   actionPrice: number;
   counter: number;
-  category: number[];
+  category: string;
   categoryName: string[];
   characteristics: number[][];
   characteristicsName: CHARACTERISTICS[];
@@ -279,8 +279,10 @@ export interface CATEGORY {
   nameCategory: string;
   nameListCategory: {
     subNameCategory: string;
+    navigate_link: string;
+
     characteristics: CHARACTERISTICS[] | any; // CHARACTERISTICS[] | undefined
-    subNameListCategory: any; // { titleSubNameListCategory: string; characteristics: CHARACTERISTICS[]; } | undefined
+    subNameListCategory: any; // { titleSubNameListCategory: string; navigate_link: string; characteristics: CHARACTERISTICS[]; } | undefined
   }[];
 }
 export interface CHARACTERISTICS {

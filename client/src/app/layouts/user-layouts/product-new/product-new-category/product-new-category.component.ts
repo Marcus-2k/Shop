@@ -16,7 +16,7 @@ export class ProductNewCategoryComponent implements OnInit {
   constructor(private openDialog: OpenDialogService, private store$: Store) {}
 
   @Input() InputData_Category: InputData_Category | undefined;
-  @Input() update: boolean = false; // Default value = false
+  @Input() update: boolean = false;
 
   ngOnInit(): void {}
 
@@ -29,7 +29,7 @@ export class ProductNewCategoryComponent implements OnInit {
 
       if (this.InputData_Category) {
         if (data) {
-          this.InputData_Category.categoryNumber = data.categoryListNumber;
+          this.InputData_Category.category = data.category;
           this.InputData_Category.categoryName = data.categoryListName;
 
           this.InputData_Category.categorySelected = true;
@@ -37,7 +37,7 @@ export class ProductNewCategoryComponent implements OnInit {
 
           this.updateCategoryStore();
         } else {
-          this.InputData_Category.categoryNumber = null;
+          this.InputData_Category.category = null;
           this.InputData_Category.categoryName = null;
 
           this.InputData_Category.categorySelected = false;
@@ -53,17 +53,17 @@ export class ProductNewCategoryComponent implements OnInit {
     if (this.InputData_Category) {
       this.store$.dispatch(
         ProductNewActions.updateCategory({
-          categoryNumberValue: this.InputData_Category.categoryNumber,
+          categoryValue: this.InputData_Category.category,
           categoryNameValue: this.InputData_Category.categoryName,
           categorySelected: this.InputData_Category.categorySelected,
           categoryError: this.InputData_Category.categoryError,
         })
       );
 
-      if (this.InputData_Category.categoryNumber) {
+      if (this.InputData_Category.category) {
         this.store$.dispatch(
           ProductNewActions.getCharacteristics({
-            categoryNumber: this.InputData_Category.categoryNumber,
+            category: this.InputData_Category.category,
           })
         );
 

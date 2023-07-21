@@ -36,7 +36,7 @@ export interface InputData_Status {
   status: 0 | 1 | 2 | 3 | null;
 }
 export interface InputData_Category {
-  categoryNumber: number[] | null;
+  category: string | null;
   categoryName: string[] | null;
   categorySelected: boolean;
   categoryError: boolean | null;

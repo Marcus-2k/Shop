@@ -102,7 +102,7 @@ export class OpenDialogService {
     > = this.dialog.open(ProductNewCatalogComponent, {
       width: "100%",
       height: "60%",
-      data: { categoryListNumber: [0], categoryListName: [""] },
+      data: { category: "", categoryListName: [""] },
     });
 
     return dialogRef.afterClosed();

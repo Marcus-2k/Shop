@@ -1,4 +1,4 @@
 export interface DialogData_ProductNewCatalog {
-  categoryListNumber: number[];
+  category: string;
   categoryListName: string[];
 }

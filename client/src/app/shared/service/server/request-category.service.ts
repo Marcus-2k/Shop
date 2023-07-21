@@ -17,10 +17,10 @@ export class RequestCategoryService {
   getCategory(): Observable<CATEGORY[]> {
     return this.http.get<CATEGORY[]>(`${this.url_server}`);
   }
-  getCharacteristics(categoryNumber: number[]): Observable<CHARACTERISTICS[]> {
+  getCharacteristics(category: string): Observable<CHARACTERISTICS[]> {
     return this.http.post<CHARACTERISTICS[]>(
       `${this.url_server}characteristics`,
-      { categoryNumber: categoryNumber }
+      { category: category }
     );
   }
 }

@@ -36,25 +36,41 @@ export class CategoryController {
     @Res() response: Response<Option[] | MessageRes>,
     @Body() body: GetCharacteristicsDto
   ): Promise<Response<Option[] | MessageRes>> {
-    let characteristics: Option[] = [];
-
-    if (
-      body.categoryNumber.length === 3 &&
-      CATEGORY[body.categoryNumber[0]].nameListCategory[body.categoryNumber[1]]
-    ) {
-      characteristics =
-        CATEGORY[body.categoryNumber[0]].nameListCategory[
-          body.categoryNumber[1]
-        ].subNameListCategory[body.categoryNumber[2]].characteristics;
-    } else if (body.categoryNumber.length === 2) {
-      characteristics =
-        CATEGORY[body.categoryNumber[0]].nameListCategory[
-          body.categoryNumber[1]
-        ].characteristics;
-    } else {
-      return response.status(404).json({ message: "Розділ каталогу не існує" });
+    for (let index = 0; index < CATEGORY.length; index++) {
+      for (let idx = 0; idx < CATEGORY[index].nameListCategory.length; idx++) {
+        if (CATEGORY[index].nameListCategory[idx].characteristics) {
+          if (
+            CATEGORY[index].nameListCategory[idx].navigate_link ===
+              body.category &&
+            CATEGORY[index].nameListCategory[idx].characteristics
+          ) {
+            return response
+              .status(200)
+              .json(CATEGORY[index].nameListCategory[idx].characteristics);
+          }
+        } else {
+          for (
+            let i = 0;
+            i <
+            CATEGORY[index].nameListCategory[idx].subNameListCategory.length;
+            i++
+          ) {
+            if (
+              CATEGORY[index].nameListCategory[idx].subNameListCategory[i]
+                .navigate_link === body.category
+            ) {
+              return response
+                .status(200)
+                .json(
+                  CATEGORY[index].nameListCategory[idx].subNameListCategory[i]
+                    .characteristics
+                );
+            }
+          }
+        }
+      }
     }
 
-    return response.status(200).json(characteristics);
+    return response.status(404).json({ message: "Розділ каталогу не існує" });
   }
 }

@@ -5,20 +5,21 @@ export interface Category {
   nameListCategory: (
     | {
         subNameCategory: string;
-        permissionUse: boolean;
+        navigate_link: string;
 
         characteristics: Option[];
         subNameListCategory?: undefined;
       }
     | {
         subNameCategory: string;
-        permissionUse: boolean;
+        navigate_link: string;
 
         characteristics?: undefined;
         subNameListCategory: {
           titleSubNameListCategory: string;
+          navigate_link: string;
+
           characteristics: Option[];
-          permissionUse: boolean;
         }[];
       }
   )[];

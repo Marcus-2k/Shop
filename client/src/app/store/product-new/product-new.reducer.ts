@@ -35,8 +35,8 @@ export const ProductNewReducer = createReducer(
           status_present: props.data.status,
         },
         categoryData: {
-          categoryNumber_original: props.data.category,
-          categoryNumber_present: props.data.category,
+          category_original: props.data.category,
+          category_present: props.data.category,
           categoryName_original: props.data.categoryName,
           categoryName_present: props.data.categoryName,
           categorySelected: true,
@@ -84,8 +84,8 @@ export const ProductNewReducer = createReducer(
           status_present: null,
         },
         categoryData: {
-          categoryNumber_original: null,
-          categoryNumber_present: null,
+          category_original: null,
+          category_present: null,
           categoryName_original: null,
           categoryName_present: null,
           categorySelected: false,
@@ -177,8 +177,8 @@ export const ProductNewReducer = createReducer(
     const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
 
     if (stateClone.dataProduct !== null) {
-      stateClone.dataProduct.categoryData.categoryNumber_present =
-        props.categoryNumberValue;
+      stateClone.dataProduct.categoryData.category_present =
+        props.categoryValue;
       stateClone.dataProduct.categoryData.categoryName_present =
         props.categoryNameValue;
       stateClone.dataProduct.categoryData.categorySelected =
