@@ -22,6 +22,7 @@ export interface Catalog {
         type: 1;
         image_link: string;
         permissionUse: boolean;
+        subNameListCategory?: undefined;
       }
     | {
         subNameCategory: string;
