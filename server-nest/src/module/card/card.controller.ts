@@ -13,7 +13,7 @@ import { CATEGORY } from "src/shared/db/category";
 import { Product } from "src/shared/interfaces/schemas/Product";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { Option } from "src/shared/interfaces/option";
-import { Breadcrumbs } from "src/shared/interfaces/breadcrumbs";
+import { Breadcrumbs } from "src/shared/interfaces/widget/breadcrumbs";
 import { CATALOG } from "src/shared/db/catalog";
 import { CategoryService } from "../category/category.service";
 import { CategoryNumber } from "src/shared/interfaces/category-number";

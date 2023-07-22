@@ -13,7 +13,7 @@ import { GetCatalogSectionDto } from "./catalog.dto";
 
 /** Interface */
 import { Catalog } from "src/shared/interfaces/catalog";
-import { Breadcrumbs } from "src/shared/interfaces/breadcrumbs";
+import { Breadcrumbs } from "src/shared/interfaces/widget/breadcrumbs";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { CatalogSection } from "./catalog.interface.response";
 import { JwtAuthGuard } from "src/shared/guards/jwt.guard";
