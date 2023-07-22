@@ -21,6 +21,7 @@ import { TypeSortNumber } from "src/shared/interfaces/type/sort/type-sort-number
 import { CatalogService } from "../catalog/catalog.service";
 import { CategoryNumber } from "src/shared/interfaces/category-number";
 import { MessageRes } from "src/shared/interfaces/res/message";
+import { CatalogSubNameListCategory } from "src/shared/interfaces/catalog";
 
 @Controller("search")
 /** Pipes */
@@ -74,6 +75,15 @@ export class SearchController {
       return response.status(200).json({ message: categoryNumber.message });
     }
 
+    // Widgets ===============================================================
+    let widget_auto_portal!: CatalogSubNameListCategory[];
+
+    let widget_section_id: any;
+
+    const widget_breadcrumbs: Breadcrumbs =
+      this.catalogService.createWidgetBreadcrumbs(categoryNumber);
+    // Widgets ===============================================================
+
     // MongoDB Query =========================================================
     const FilterQuery: FilterQuery<Product> = {};
     const Projection: ProjectionType<Product> = {};
@@ -86,18 +96,11 @@ export class SearchController {
       FilterQuery.category = navigate_link;
     } else {
       FilterQuery.category = { $in: typeCatalog.category };
+
+      widget_auto_portal =
+        this.catalogService.createWidgetAutoPortal(categoryNumber);
     }
     // MongoDB Query =========================================================
-
-    // Widgets ===============================================================
-    const widget_auto_portal =
-      this.catalogService.createWidgetAutoPortal(categoryNumber);
-
-    let widget_section_id: any;
-
-    const widget_breadcrumbs: Breadcrumbs =
-      this.catalogService.createWidgetBreadcrumbs(categoryNumber);
-    // Widgets ===============================================================
 
     const product: Product[] = await this.service.search(
       FilterQuery,
@@ -119,8 +122,8 @@ export class SearchController {
     }
 
     return response.status(200).json({
-      product, //
-      filters,
+      product,
+      filters: filters.filters,
       widget_auto_portal,
       widget_section_id,
       widget_breadcrumbs,

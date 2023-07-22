@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { CATALOG } from "src/shared/db/catalog";
-import { Catalog } from "src/shared/interfaces/catalog";
+import {
+  Catalog,
+  CatalogSubNameListCategory,
+} from "src/shared/interfaces/catalog";
 import { CategoryNumber } from "src/shared/interfaces/category-number";
 import { Breadcrumbs } from "src/shared/interfaces/widget/breadcrumbs";
 
@@ -35,8 +38,11 @@ export class CatalogService {
 
     return widget;
   }
-  public createWidgetAutoPortal(categoryNumber: CategoryNumber) {
-    const widget =
+
+  public createWidgetAutoPortal(
+    categoryNumber: CategoryNumber
+  ): CatalogSubNameListCategory[] {
+    const widget: CatalogSubNameListCategory[] =
       CATALOG[categoryNumber[0]].nameListCategory[categoryNumber[1]]
         .subNameListCategory;
 

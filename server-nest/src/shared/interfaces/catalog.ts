@@ -9,12 +9,7 @@ export interface Catalog {
         type: 1;
         image_link: string;
         permissionUse: boolean;
-        subNameListCategory: {
-          titleSubNameListCategory: string;
-          navigate_link: string;
-          queryParams: { [key: string]: string };
-          permissionUse: boolean;
-        }[];
+        subNameListCategory: CatalogSubNameListCategory[];
       }
     | {
         subNameCategory: string;
@@ -30,13 +25,22 @@ export interface Catalog {
         type: 2;
         image_link: string;
         permissionUse: boolean;
-        subNameListCategory: {
-          titleSubNameListCategory: string;
-          navigate_link: string;
-          navigate_image: string;
-          type: 1;
-          permissionUse: boolean;
-        }[];
+        subNameListCategory: CatalogSubNameListCategory[];
       }
   )[];
 }
+
+export type CatalogSubNameListCategory =
+  | {
+      titleSubNameListCategory: string;
+      navigate_link: string;
+      navigate_image: string;
+      type: 1;
+      permissionUse: boolean;
+    }
+  | {
+      titleSubNameListCategory: string;
+      navigate_link: string;
+      queryParams: { [key: string]: string };
+      permissionUse: boolean;
+    };
