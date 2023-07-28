@@ -13,14 +13,27 @@ export class CategoryService {
   public getCharacteristicsByCategory(category: string): Option[] | MessageRes {
     for (let index = 0; index < CATEGORY.length; index++) {
       for (let idx = 0; idx < CATEGORY[index].nameListCategory.length; idx++) {
-        if (CATEGORY[index].nameListCategory[idx].characteristics) {
-          if (
-            CATEGORY[index].nameListCategory[idx].navigate_link === category &&
-            CATEGORY[index].nameListCategory[idx].characteristics
-          ) {
+        if (CATEGORY[index].nameListCategory[idx].navigate_link === category) {
+          if (CATEGORY[index].nameListCategory[idx].characteristics) {
             return CATEGORY[index].nameListCategory[idx].characteristics;
+          } else {
+            const characteristics: Option[] = [];
+
+            for (
+              let l = 0;
+              l <
+              CATEGORY[index].nameListCategory[idx].subNameListCategory.length;
+              l++
+            ) {
+              characteristics.push(
+                ...CATEGORY[index].nameListCategory[idx].subNameListCategory[l]
+                  .characteristics,
+              );
+            }
+
+            return characteristics;
           }
-        } else {
+        } else if (CATEGORY[index].nameListCategory[idx].subNameListCategory) {
           for (
             let i = 0;
             i <
@@ -44,7 +57,7 @@ export class CategoryService {
   }
 
   public getCategoryNumberByCategory(
-    category: string
+    category: string,
   ): CategoryNumber | MessageRes {
     for (let index = 0; index < CATEGORY.length; index++) {
       for (let idx = 0; idx < CATEGORY[index].nameListCategory.length; idx++) {
@@ -74,7 +87,7 @@ export class CategoryService {
   }
 
   public getTypeCatalogByCategory(
-    category: string
+    category: string,
   ): { type: 1 } | { category: string[]; type: 2 } | string {
     for (let index = 0; index < CATALOG.length; index++) {
       for (let idx = 0; idx < CATALOG[index].nameListCategory.length; idx++) {
@@ -94,7 +107,7 @@ export class CategoryService {
             ) {
               categoryList.push(
                 CATALOG[index].nameListCategory[idx].subNameListCategory[i]
-                  .navigate_link
+                  .navigate_link,
               );
             }
 

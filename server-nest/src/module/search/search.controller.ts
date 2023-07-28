@@ -22,6 +22,9 @@ import { CatalogService } from "../catalog/catalog.service";
 import { CategoryNumber } from "src/shared/interfaces/category-number";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { CatalogSubNameListCategory } from "src/shared/interfaces/catalog";
+import { Filter } from "src/shared/interfaces/filter";
+import { ProductCharacteristics } from "src/shared/interfaces/schemas/product/product-characteristics";
+import { LanguageShort } from "src/shared/interfaces/language/language";
 
 @Controller("search")
 /** Pipes */
@@ -30,13 +33,13 @@ export class SearchController {
   public constructor(
     private service: SearchService,
     private categoryService: CategoryService,
-    private catalogService: CatalogService
+    private catalogService: CatalogService,
   ) {}
 
   @Get()
   public async searchByText(
     @Res() response: Response<any>,
-    @Query() query: SearchByTextDto
+    @Query() query: SearchByTextDto,
   ): Promise<Response> {
     return response.status(200).json({ query });
   }
@@ -45,9 +48,10 @@ export class SearchController {
   public async searchByLink(
     @Res() response: Response<any>,
     @Query() query: SearchQueryDto,
-    @Param() param: SearchByLinkDto
+    @Param() param: SearchByLinkDto,
   ): Promise<Response> {
     const navigate_link: string = param.navigate_link;
+    const language: LanguageShort = "en";
 
     // Pagination START ============================================================================
     const limit: number = query.limit;
@@ -66,17 +70,17 @@ export class SearchController {
       this.categoryService.getTypeCatalogByCategory(navigate_link);
 
     if (typeof typeCatalog === "string") {
-      return response.status(200).json({ message: typeCatalog });
+      return response.status(400).json({ message: typeCatalog });
     }
 
     const categoryNumber: CategoryNumber | MessageRes =
       this.categoryService.getCategoryNumberByCategory(navigate_link);
     if (!Array.isArray(categoryNumber)) {
-      return response.status(200).json({ message: categoryNumber.message });
+      return response.status(400).json({ message: categoryNumber.message });
     }
 
     // Widgets ===============================================================
-    let widget_auto_portal!: CatalogSubNameListCategory[];
+    let widget_auto_portal: CatalogSubNameListCategory[] | undefined;
 
     let widget_section_id: any;
 
@@ -105,11 +109,25 @@ export class SearchController {
     const product: Product[] = await this.service.search(
       FilterQuery,
       Projection,
-      Options
+      Options,
     );
 
     // Filters ===============================================================
-    let filters: any;
+    const productCharacteristics: ProductCharacteristics[] =
+      await this.service.search(FilterQuery, {
+        characteristics: true,
+        characteristicsName: true,
+      });
+    const filters: Filter[] | MessageRes = this.service.createFilters(
+      navigate_link,
+      productCharacteristics,
+      typeCatalog.type,
+      language,
+    );
+
+    if ("message" in filters) {
+      return response.status(400).json({ message: filters.message });
+    }
     // Filters ===============================================================
 
     // Pagination ============================================================
@@ -123,7 +141,7 @@ export class SearchController {
 
     return response.status(200).json({
       product,
-      filters: filters.filters,
+      filters,
       widget_auto_portal,
       widget_section_id,
       widget_breadcrumbs,
