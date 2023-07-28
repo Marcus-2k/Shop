@@ -79,6 +79,7 @@ export class TokenInterceptor implements HttpInterceptor {
             })
           );
         } else {
+          console.log(err);
           return throwError(() => err);
         }
       })

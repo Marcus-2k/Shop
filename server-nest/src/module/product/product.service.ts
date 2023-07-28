@@ -15,7 +15,7 @@ import { CategoryService } from "../category/category.service";
 export class ProductService {
   public constructor(
     @InjectModel("product") private readonly ProductModel: Model<Product>,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
   ) {}
 
   public async findByUser(user_id: string): Promise<Product[] | null> {
@@ -25,7 +25,7 @@ export class ProductService {
   public async findById(
     id: string,
     projection?: ProjectionType<Product>,
-    options?: QueryOptions<Product>
+    options?: QueryOptions<Product>,
   ): Promise<Product | null> {
     return await this.ProductModel.findById(id, projection, options);
   }
@@ -50,18 +50,18 @@ export class ProductService {
 
   public async updateProduct(
     id: string,
-    updateProduct: ProductUpdate
+    updateProduct: ProductUpdate,
   ): Promise<Product> {
     return await this.ProductModel.findByIdAndUpdate<Product>(
       id,
       { $set: updateProduct },
-      { new: true }
+      { new: true },
     );
   }
 
   public createCharacteristics(
     category: string,
-    value: string
+    value: string,
   ):
     | string
     | {
@@ -92,17 +92,18 @@ export class ProductService {
 
     const characteristicsName: { [key: string]: string[] } = {};
     for (let i = 0; i < characteristics.length; i++) {
-      characteristicsName[characteristics[i].query_name] = [];
+      characteristicsName[characteristics[i].query_title] = [];
 
       if (characteristics[i].multiple) {
         for (let idx = 0; idx < characteristicsNumber[i].length; idx++) {
-          characteristicsName[characteristics[i].query_name].push(
+          characteristicsName[characteristics[i].query_title].push(
             characteristics[i].select[characteristicsNumber[i][idx]]
+              .query_value,
           );
         }
       } else {
-        characteristicsName[characteristics[i].query_name].push(
-          characteristics[i].select[characteristicsNumber[i][0]]
+        characteristicsName[characteristics[i].query_title].push(
+          characteristics[i].select[characteristicsNumber[i][0]].query_value,
         );
       }
     }
@@ -132,7 +133,7 @@ export class ProductService {
   }
 
   public createCategoryName(
-    category: string
+    category: string,
   ): [string, string] | [string, string, string] | string {
     const categoryNumber:
       | [number, number]
@@ -151,7 +152,7 @@ export class ProductService {
     if (category.length === 3) {
       categoryName.push(
         CATEGORY[categoryNumber[0]].nameListCategory[categoryNumber[1]]
-          .subNameListCategory[categoryNumber[2]].titleSubNameListCategory
+          .subNameListCategory[categoryNumber[2]].titleSubNameListCategory,
       );
     }
 
