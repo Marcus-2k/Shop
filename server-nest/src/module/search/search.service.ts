@@ -79,7 +79,7 @@ export class SearchService {
             const checkbox: Checkbox = {
               name: characteristics[index].select[
                 product[idx].characteristics[index][i]
-              ].name.ua,
+              ].name[language],
 
               query_value:
                 characteristics[index].select[
