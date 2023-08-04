@@ -361,7 +361,7 @@ export class SearchComponent implements OnInit {
 
       this.counterActiveFilter++;
       this.searchByQuery();
-    } else if (checked === false) {
+    } else {
       const nameQueryForServer: string = nameQuery;
 
       let deleteSubString: string[] =

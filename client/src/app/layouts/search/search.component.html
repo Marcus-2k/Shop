@@ -69,8 +69,8 @@
                         mat-stroked-button
                         (click)="
                           filterSearch(
-                            filterItem.name,
-                            filter.query_name,
+                            filterItem.query_value,
+                            filter.query_title,
                             false
                           )
                         "
@@ -174,12 +174,14 @@
                     </span>
                     <h2 class="category__header-title">Фільтри</h2>
                   </div>
+
                   <div class="category__block" *ngIf="widget_section_id">
                     <app-widget-section-id
                       [widget_section_id]="widget_section_id"
                       [number_of_product]="number_of_product"
                     ></app-widget-section-id>
                   </div>
+
                   <div
                     class="category__block"
                     *ngFor="let filter of listFilter; let i = index"
@@ -219,8 +221,8 @@
                         <mat-checkbox
                           (click)="
                             filterSearch(
-                              filterItem.name,
-                              filter.query_name,
+                              filterItem.query_value,
+                              filter.query_title,
                               !checkboxInput.checked
                             )
                           "
@@ -281,9 +283,9 @@
               <!-- Pagination END -->
             </ng-container>
 
-            <ng-container *ngIf="productList.length === 0"
-              ><app-search-empty></app-search-empty
-            ></ng-container>
+            <ng-container *ngIf="productList.length === 0">
+              <app-search-empty></app-search-empty>
+            </ng-container>
           </div>
         </div>
       </div>
