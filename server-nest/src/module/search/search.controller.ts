@@ -8,9 +8,9 @@ import {
   Param,
 } from "@nestjs/common";
 import { Response } from "express";
-import { FilterQuery, ProjectionType, QueryOptions } from "mongoose";
+import { FilterQuery, QueryOptions } from "mongoose";
 
-import { SearchByLinkDto, SearchByTextDto, SearchQueryDto } from "./search.dto";
+import { ParamDto, QueryDto } from "./search.dto";
 
 import { SearchService } from "./search.service";
 import { CategoryService } from "../category/category.service";
@@ -21,7 +21,10 @@ import { TypeSortNumber } from "src/shared/interfaces/type/sort/type-sort-number
 import { CatalogService } from "../catalog/catalog.service";
 import { CategoryNumber } from "src/shared/interfaces/category-number";
 import { MessageRes } from "src/shared/interfaces/res/message";
-import { CatalogSubNameListCategory } from "src/shared/interfaces/catalog";
+import {
+  CatalogNameListCategory,
+  CatalogSubNameListCategory,
+} from "src/shared/interfaces/catalog";
 import { Filter } from "src/shared/interfaces/filter";
 import { ProductCharacteristics } from "src/shared/interfaces/schemas/product/product-characteristics";
 import { LanguageShort } from "src/shared/interfaces/language/language";
@@ -36,21 +39,22 @@ export class SearchController {
     private catalogService: CatalogService,
   ) {}
 
-  @Get()
-  public async searchByText(
-    @Res() response: Response<any>,
-    @Query() query: SearchByTextDto,
-  ): Promise<Response> {
-    return response.status(200).json({ query });
-  }
-
-  @Get(":navigate_link")
+  @Get([":navigate_link", ""])
   public async searchByLink(
     @Res() response: Response<any>,
-    @Query() query: SearchQueryDto,
-    @Param() param: SearchByLinkDto,
+    @Query() query: QueryDto,
+    @Param() param: ParamDto,
   ): Promise<Response> {
-    const navigate_link: string = param.navigate_link;
+    const search_text: string | undefined = query.search_text;
+    const navigate_link: string | undefined = param.navigate_link;
+
+    console.log("search_text = ", search_text);
+    console.log("navigate_link = ", navigate_link);
+
+    if (navigate_link === undefined && search_text === undefined) {
+      return response.status(404).json({ message: "Invalid request" });
+    }
+
     const language: LanguageShort = "en";
 
     // Pagination START ============================================================================
@@ -66,84 +70,134 @@ export class SearchController {
     const type_sort: TypeSortNumber = query.type_sort;
     // Search Query ================================================================================
 
-    const typeCatalog: { type: 1 } | { category: string[]; type: 2 } | string =
-      this.categoryService.getTypeCatalogByCategory(navigate_link);
+    // Widgets =====================================================================================
+    let widget_breadcrumbs: Breadcrumbs | undefined;
+    let widget_autoPortal: CatalogSubNameListCategory[] | undefined;
+    let widget_sectionId: undefined | CatalogNameListCategory[];
+    // Widgets =====================================================================================
 
-    if (typeof typeCatalog === "string") {
-      return response.status(400).json({ message: typeCatalog });
-    }
-
-    const categoryNumber: CategoryNumber | MessageRes =
-      this.categoryService.getCategoryNumberByCategory(navigate_link);
-    if (!Array.isArray(categoryNumber)) {
-      return response.status(400).json({ message: categoryNumber.message });
-    }
-
-    // Widgets ===============================================================
-    let widget_auto_portal: CatalogSubNameListCategory[] | undefined;
-
-    let widget_section_id: any;
-
-    const widget_breadcrumbs: Breadcrumbs =
-      this.catalogService.createWidgetBreadcrumbs(categoryNumber);
-    // Widgets ===============================================================
-
-    // MongoDB Query =========================================================
+    // MongoDB Query ===============================================================================
     const FilterQuery: FilterQuery<Product> = {};
-    const Projection: ProjectionType<Product> = {};
     const Options: QueryOptions<Product> = {
       limit: limit,
       skip: (currentPage - 1) * limit,
     };
 
-    if (typeCatalog.type === 1) {
-      FilterQuery.category = navigate_link;
-    } else {
-      FilterQuery.category = { $in: typeCatalog.category };
+    // MongoDB Query ===============================================================================
 
-      widget_auto_portal =
-        this.catalogService.createWidgetAutoPortal(categoryNumber);
-    }
-    // MongoDB Query =========================================================
+    let product!: Product[];
 
-    const product: Product[] = await this.service.search(
-      FilterQuery,
-      Projection,
-      Options,
-    );
+    let productCharacteristics!: ProductCharacteristics[];
 
-    // Filters ===============================================================
-    const productCharacteristics: ProductCharacteristics[] =
-      await this.service.search(FilterQuery, {
+    let typeCatalog:
+      | { type: 1 }
+      | { category: string[]; type: 2 }
+      | string
+      | null = null;
+
+    /**
+     * if navigate link >>> string
+     * else search_text >>> string
+     */
+    if (navigate_link) {
+      /**
+       * NAVIGATE LING ====================================================================================================
+       */
+
+      typeCatalog =
+        this.categoryService.getTypeCatalogByCategory(navigate_link);
+      if (typeof typeCatalog === "string") {
+        return response.status(400).json({ message: typeCatalog });
+      }
+
+      /**
+       * Category Number >>> [number, number] | [number, number, number];
+       */
+      const categoryNumber: CategoryNumber | MessageRes =
+        this.categoryService.getCategoryNumberByCategory(navigate_link);
+      if (!Array.isArray(categoryNumber)) {
+        return response.status(400).json({ message: categoryNumber.message });
+      }
+
+      if (typeCatalog.type === 1) {
+        FilterQuery.category = navigate_link;
+      } else {
+        FilterQuery.category = { $in: typeCatalog.category };
+
+        widget_autoPortal =
+          this.catalogService.createWidgetAutoPortal(categoryNumber);
+      }
+
+      productCharacteristics = await this.service.search(FilterQuery, {
+        category: true,
         characteristics: true,
         characteristicsName: true,
       });
+    } else {
+      /**
+       * SEARCH TEXT   ====================================================================================================
+       */
+
+      FilterQuery.name = { $regex: search_text, $options: "i" };
+
+      productCharacteristics = await this.service.search(FilterQuery, {
+        category: true,
+        characteristics: true,
+        characteristicsName: true,
+      });
+
+      const category: string[] = [];
+      for (let idx = 0; idx < productCharacteristics.length; idx++) {
+        category.push(productCharacteristics[idx].category);
+      }
+
+      const sectionId: CatalogNameListCategory[] | MessageRes =
+        this.catalogService.createWidgetSectionId(category);
+      if (!Array.isArray(sectionId)) {
+        return response.status(404).json({ message: "Invalid request" });
+      }
+      widget_sectionId = sectionId;
+    }
+
+    // Filters =====================================================================================
     const filters: Filter[] | MessageRes = this.service.createFilters(
-      navigate_link,
       productCharacteristics,
-      typeCatalog.type,
+      typeCatalog !== null && typeof typeCatalog !== "string"
+        ? typeCatalog.type
+        : null,
       language,
     );
 
     if ("message" in filters) {
       return response.status(400).json({ message: filters.message });
     }
-    // Filters ===============================================================
+    // Filters =====================================================================================
 
-    // Pagination ============================================================
+    // MongoDB Query ===============================================================================
+    const MongoQueryFromQueryDto: FilterQuery<Product> =
+      this.service.createQueryParams(query);
+    Object.assign(FilterQuery, FilterQuery, MongoQueryFromQueryDto);
+
+    // MongoDB Query ===============================================================================
+
+    // Pagination ==================================================================================
     count = await this.service.countBySearch(FilterQuery);
     maxPage = Math.ceil(count / limit);
-    // Pagination ============================================================
 
     if (limit === maxPage * limit) {
       currentPage = 1;
     }
+    // Pagination ==================================================================================
+
+    // FIND RESULT =================================================================================
+    product = await this.service.search(FilterQuery, null, Options);
+    // FIND RESULT =================================================================================
 
     return response.status(200).json({
       product,
       filters,
-      widget_auto_portal,
-      widget_section_id,
+      widget_auto_portal: widget_autoPortal,
+      widget_section_id: widget_sectionId,
       widget_breadcrumbs,
       number_of_product: count,
       currentPage,

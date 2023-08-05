@@ -11,12 +11,20 @@ import {
 import { Pagination } from "src/shared/dto/pagination";
 import { TypeSortNumber } from "src/shared/interfaces/type/sort/type-sort-number";
 
-export class SearchByLinkDto {
+export class ParamDto {
+  @IsOptional()
   @IsString()
-  navigate_link: string;
+  navigate_link: string | undefined = undefined;
 }
 
-export class SearchQueryDto extends Pagination {
+export class SearchQueryDto extends Pagination {}
+
+export class QueryDto extends SearchQueryDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  search_text: string | undefined = undefined;
+
   @IsOptional()
   @Transform(({ value }) => {
     return Number(value);
@@ -24,10 +32,4 @@ export class SearchQueryDto extends Pagination {
   @IsInt()
   @IsIn([0, 1, 2, 3, 4, 5])
   type_sort: TypeSortNumber = 5;
-}
-
-export class SearchByTextDto extends SearchQueryDto {
-  @IsString()
-  @IsNotEmpty()
-  search_text: string;
 }

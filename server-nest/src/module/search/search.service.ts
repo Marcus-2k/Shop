@@ -11,6 +11,7 @@ import { Checkbox, Filter } from "src/shared/interfaces/filter";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { ProductCharacteristics } from "src/shared/interfaces/schemas/product/product-characteristics";
 import { LanguageShort } from "src/shared/interfaces/language/language";
+import { QueryDto } from "./search.dto";
 
 @Injectable()
 export class SearchService {
@@ -190,5 +191,24 @@ export class SearchService {
     }
 
     return filters;
+  }
+
+  public createQueryParams(query: QueryDto): FilterQuery<Product> {
+    const queryParams = Object.assign({}, query);
+
+    delete queryParams.search_text;
+    delete queryParams.limit;
+    delete queryParams.page;
+    delete queryParams.type_sort;
+
+    const FilterQuery: FilterQuery<Product> = {};
+
+    for (let param in queryParams) {
+      FilterQuery["characteristicsName." + param] = {
+        $in: queryParams[param].split(","),
+      };
+    }
+
+    return FilterQuery;
   }
 }

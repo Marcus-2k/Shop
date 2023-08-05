@@ -51,7 +51,9 @@ export class CatalogService {
     return widget;
   }
 
-  public createWidgetSectionId(category: string[]): MessageRes | any {
+  public createWidgetSectionId(
+    category: string[],
+  ): CatalogNameListCategory[] | MessageRes {
     const categoryNumber: CategoryNumber[] = [];
     for (let idx = 0; idx < category.length; idx++) {
       const result: CategoryNumber | MessageRes =
