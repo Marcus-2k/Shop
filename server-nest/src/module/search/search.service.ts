@@ -68,23 +68,41 @@ export class SearchService {
   }
 
   public createFilters(
-    category: string,
     product: ProductCharacteristics[],
-    type_catalog: 1 | 2,
+    type_catalog: 1 | 2 | null,
     language: LanguageShort,
   ): Filter[] | MessageRes {
-    const options: Option[][] | MessageRes = JSON.parse(
-      JSON.stringify(
-        this.categoryService.getCharacteristicsByCategory(category),
-      ),
-    );
+    const category: string[] = [];
+
+    for (let idx = 0; idx < product.length; idx++) {
+      if (category.includes(product[idx].category) === false) {
+        category.push(product[idx].category);
+      }
+    }
+
+    let options!: Option[][] | MessageRes;
+
+    if (category.length === 1) {
+      options = JSON.parse(
+        JSON.stringify(
+          this.categoryService.getCharacteristicsByCategory(category[0]),
+        ),
+      );
+    } else {
+      options = JSON.parse(
+        JSON.stringify(
+          this.categoryService.getCharacteristicsByCategories(category),
+        ),
+      );
+    }
+
     if (!Array.isArray(options)) {
       return options;
     }
 
     let characteristics!: Option[];
 
-    if (type_catalog === 2) {
+    if (type_catalog === 2 || type_catalog === null) {
       const count_of_category: number = Number(options.length);
       const count_of_duplicate: { [key: string]: number } = {};
 

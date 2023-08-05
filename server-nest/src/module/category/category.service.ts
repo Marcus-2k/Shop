@@ -59,6 +59,29 @@ export class CategoryService {
     return { message: "Розділ каталогу не існує" };
   }
 
+  public getCharacteristicsByCategories(
+    category: string[],
+  ): Option[][] | MessageRes {
+    if (category.length === 0) {
+      return { message: "Розділ каталогу не існує" };
+    }
+
+    const characteristics: Option[][] = [];
+    for (let idx = 0; idx < category.length; idx++) {
+      let option: Option[] | MessageRes = this.getCharacteristicsByCategory(
+        category[idx],
+      )[0];
+
+      if (!Array.isArray(option)) {
+        return { message: option.message };
+      }
+
+      characteristics.push(option);
+    }
+
+    return characteristics;
+  }
+
   public getCategoryNumberByCategory(
     category: string,
   ): CategoryNumber | MessageRes {
