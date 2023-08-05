@@ -24,7 +24,7 @@ import { CategoryNumber } from "src/shared/interfaces/category-number";
 export class CardController {
   public constructor(
     private productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
   ) {}
 
   @Get(":id")
@@ -33,7 +33,7 @@ export class CardController {
     response: Response<
       { product: Product; widget_breadcrumbs: Breadcrumbs } | MessageRes
     >,
-    @Param() param: IdDto
+    @Param() param: IdDto,
   ): Promise<Response> {
     const productInfo: Product | null = await this.productService.findById(
       param.id,
@@ -48,7 +48,7 @@ export class CardController {
         category: true,
         status: true,
         user: true,
-      }
+      },
     );
 
     if (productInfo) {
@@ -85,11 +85,11 @@ export class CardController {
   @Get(":id/info")
   public async getByIdCardInfo(
     @Res() response: Response<Product | MessageRes>,
-    @Param() param: IdDto
+    @Param() param: IdDto,
   ): Promise<Response> {
     const productComments: Product | null = await this.productService.findById(
       param.id,
-      { imageSrc: true, description: true }
+      { imageSrc: true, description: true },
     );
 
     if (productComments) {
@@ -109,19 +109,19 @@ export class CardController {
         }
       | MessageRes
     >,
-    @Param() param: IdDto
+    @Param() param: IdDto,
   ): Promise<Response> {
     const product: Product | null = await this.productService.findById(
       param.id,
       {
         category: true,
         characteristics: true,
-      }
+      },
     );
 
     if (product) {
       const characteristicsName: Option[] | MessageRes =
-        this.categoryService.getCharacteristicsByCategory(product.category);
+        this.categoryService.getCharacteristicsByCategory(product.category)[0];
 
       if (!Array.isArray(characteristicsName)) {
         return response.status(404).json({ message: "Такий товар не існує" });
@@ -139,11 +139,11 @@ export class CardController {
   @Get(":id/comments")
   public async getByIdCardComments(
     @Res() response: Response<Product | MessageRes>,
-    @Param() param: IdDto
+    @Param() param: IdDto,
   ): Promise<Response> {
     const productComments: Product | null = await this.productService.findById(
       param.id,
-      { comments: true }
+      { comments: true },
     );
 
     if (productComments) {
@@ -156,11 +156,11 @@ export class CardController {
   @Get(":id/questions")
   public async getByIdCardQuestions(
     @Res() response: Response<Product | MessageRes>,
-    @Param() param: IdDto
+    @Param() param: IdDto,
   ): Promise<Response> {
     const productQuestions: Product | null = await this.productService.findById(
       param.id,
-      { questions: true }
+      { questions: true },
     );
 
     if (productQuestions) {
@@ -173,11 +173,11 @@ export class CardController {
   @Get(":id/photo")
   public async getByIdCardPhoto(
     @Res() response: Response<Product | MessageRes>,
-    @Param() param: IdDto
+    @Param() param: IdDto,
   ): Promise<Response> {
     const productPhoto: Product | null = await this.productService.findById(
       param.id,
-      { imageSrc: true }
+      { imageSrc: true },
     );
 
     if (productPhoto) {
@@ -190,7 +190,7 @@ export class CardController {
   @Get(":id/accessories")
   public async getByIdCardAccessories(
     @Res() response: Response<Product | MessageRes>,
-    @Param() param: IdDto
+    @Param() param: IdDto,
   ): Promise<Response> {
     const productAccessories: Product | null =
       await this.productService.findById(param.id, { accessories: true });

@@ -10,14 +10,16 @@ import { MessageRes } from "src/shared/interfaces/res/message";
 export class CategoryService {
   public constructor() {}
 
-  public getCharacteristicsByCategory(category: string): Option[] | MessageRes {
+  public getCharacteristicsByCategory(
+    category: string,
+  ): Option[][] | MessageRes {
     for (let index = 0; index < CATEGORY.length; index++) {
       for (let idx = 0; idx < CATEGORY[index].nameListCategory.length; idx++) {
         if (CATEGORY[index].nameListCategory[idx].navigate_link === category) {
           if (CATEGORY[index].nameListCategory[idx].characteristics) {
-            return CATEGORY[index].nameListCategory[idx].characteristics;
+            return [CATEGORY[index].nameListCategory[idx].characteristics];
           } else {
-            const characteristics: Option[] = [];
+            const characteristics: Option[][] = [];
 
             for (
               let l = 0;
@@ -26,7 +28,7 @@ export class CategoryService {
               l++
             ) {
               characteristics.push(
-                ...CATEGORY[index].nameListCategory[idx].subNameListCategory[l]
+                CATEGORY[index].nameListCategory[idx].subNameListCategory[l]
                   .characteristics,
               );
             }
@@ -44,9 +46,10 @@ export class CategoryService {
               CATEGORY[index].nameListCategory[idx].subNameListCategory[i]
                 .navigate_link === category
             ) {
-              return CATEGORY[index].nameListCategory[idx].subNameListCategory[
-                i
-              ].characteristics;
+              return [
+                CATEGORY[index].nameListCategory[idx].subNameListCategory[i]
+                  .characteristics,
+              ];
             }
           }
         }

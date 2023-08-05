@@ -75,7 +75,7 @@ export class ProductService {
     });
 
     const characteristics: Option[] | MessageRes =
-      this.categoryService.getCharacteristicsByCategory(category);
+      this.categoryService.getCharacteristicsByCategory(category)[0];
     if (!Array.isArray(characteristics)) {
       return characteristics.message;
     }

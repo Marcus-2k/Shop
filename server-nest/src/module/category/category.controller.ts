@@ -27,7 +27,7 @@ export class CategoryController {
 
   @Get()
   public async getCategory(
-    @Res() response: Response
+    @Res() response: Response,
   ): Promise<Response<Category[]>> {
     return response.status(200).json(CATEGORY);
   }
@@ -35,10 +35,10 @@ export class CategoryController {
   @Post("characteristics")
   public async getCharacteristics(
     @Res() response: Response<Option[] | MessageRes>,
-    @Body() body: GetCharacteristicsDto
+    @Body() body: GetCharacteristicsDto,
   ): Promise<Response<Option[] | MessageRes>> {
     const data: Option[] | MessageRes =
-      this.service.getCharacteristicsByCategory(body.category);
+      this.service.getCharacteristicsByCategory(body.category)[0];
 
     if (Array.isArray(data)) {
       return response.status(404).json(data);
