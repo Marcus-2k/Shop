@@ -12,7 +12,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
   const config: ConfigService = app.get(ConfigService);
-  const PORT: number = config.get<number>("SERVER_PORT") || 2000;
+  const PORT: number = Number(config.get<String>("SERVER_PORT")) || 3000;
 
   const GlobalPrefix: string = "api";
 
