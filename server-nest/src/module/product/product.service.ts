@@ -6,8 +6,8 @@ import { Product } from "src/shared/interfaces/schemas/Product";
 import { unlink } from "fs";
 import { CATEGORY } from "src/shared/db/category";
 import { Option } from "src/shared/interfaces/option";
-import { ProductUpdate } from "src/shared/interfaces/product-update";
-import { ProductNew } from "src/shared/interfaces/product-new";
+import { ProductUpdate } from "src/shared/interfaces/schemas/product/product-update";
+import { ProductNew } from "src/shared/interfaces/schemas/product/product-new";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { CategoryService } from "../category/category.service";
 

@@ -2,8 +2,7 @@ export interface ProductNew {
   imageSrc: string[];
   name: string;
   price: number;
-  action: boolean;
-  actionPrice: number;
+  actionPrice: number | null;
   counter: number;
   status: number;
   category: string;

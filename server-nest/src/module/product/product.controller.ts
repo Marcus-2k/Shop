@@ -24,7 +24,7 @@ import { IdDto } from "src/shared/dto/id";
 import { upload } from "src/shared/middleware/upload.middleware";
 import { CreateProductDto, UpdateProduct } from "./product.dto";
 import { MessageRes } from "src/shared/interfaces/res/message";
-import { ProductUpdate } from "src/shared/interfaces/product-update";
+import { ProductUpdate } from "src/shared/interfaces/schemas/product/product-update";
 import { CategoryService } from "../category/category.service";
 
 @Controller("product")
@@ -35,7 +35,7 @@ import { CategoryService } from "../category/category.service";
 export class ProductController {
   public constructor(
     private productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
   ) {}
 
   private minActionProcent: number = -5;
@@ -43,7 +43,7 @@ export class ProductController {
   @Get()
   public async getByUserProduct(
     @Res() response: Response<Product[]>,
-    @User() user: TokenData
+    @User() user: TokenData,
   ): Promise<Response> {
     let product: Product[] = await this.productService.findByUser(user.id);
 
@@ -53,7 +53,7 @@ export class ProductController {
   @Get(":id")
   public async getByIdProduct(
     @Res() response: Response<any>,
-    @Param() param: IdDto
+    @Param() param: IdDto,
   ): Promise<Response<any>> {
     let product: Product = await this.productService.findById(param.id);
 
@@ -72,10 +72,10 @@ export class ProductController {
     @Res() response: Response<any>,
     @Param() param: IdDto,
     @Body() body: UpdateProduct,
-    @UploadedFiles() files: Array<Express.Multer.File>
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<Response<any>> {
     const product: Product | null = await this.productService.findById(
-      param.id
+      param.id,
     );
 
     if (!product) {
@@ -99,13 +99,13 @@ export class ProductController {
     }
 
     // Discount
-    if (body.action === true || body.action === false) {
-      if (body.action) {
-        updateProduct.action = body.action;
-      } else {
-        updateProduct.actionPrice = -1;
-      }
-    }
+    // if (body.action === true || body.action === false) {
+    //   if (body.action) {
+    //     updateProduct.action = body.action;
+    //   } else {
+    //     updateProduct.actionPrice = -1;
+    //   }
+    // }
 
     // Counter & Status
     if (body.counter) {
@@ -138,7 +138,7 @@ export class ProductController {
             characteristicsName: { [key: string]: string[] };
           } = this.productService.createCharacteristics(
         body.category,
-        body.characteristics
+        body.characteristics,
       );
 
       if (typeof characteristics === "string") {
@@ -174,7 +174,7 @@ export class ProductController {
     @Res() response: Response<MessageRes>,
     @Body() body: CreateProductDto,
     @User() user: TokenData,
-    @UploadedFiles() files: Array<Express.Multer.File>
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<Response<MessageRes>> {
     // Images
     const imageSrc: string[] = [];
@@ -244,7 +244,7 @@ export class ProductController {
           characteristicsName: { [key: string]: string[] };
         } = this.productService.createCharacteristics(
       category,
-      body.characteristics
+      body.characteristics,
     );
 
     if (typeof characteristics === "string") {
@@ -261,7 +261,6 @@ export class ProductController {
       imageSrc,
       name,
       price,
-      action,
       actionPrice,
       counter,
       status,
@@ -284,7 +283,7 @@ export class ProductController {
   public async deleteProduct(
     @Res() response: Response<any>,
     @Param() param: IdDto,
-    @User() user: TokenData
+    @User() user: TokenData,
   ): Promise<Response<any>> {
     let product = await this.productService.findById(param.id);
 

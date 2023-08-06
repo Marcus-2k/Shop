@@ -1,44 +1,53 @@
-import { Schema, SchemaType, SchemaTypes } from "mongoose";
+import { Schema, SchemaTypes } from "mongoose";
 
 export const ProductSchema = new Schema({
   imageSrc: {
-    type: Array, // [ 'product.jpg', 'product.jpg', 'product.jpg' ]
+    type: SchemaTypes.Array,
     required: true,
   },
   name: {
-    type: String, // Samsung S21 32ГБ
+    type: SchemaTypes.String,
     required: true,
   },
   price: {
-    type: Number, // 30000
-    required: true,
-  },
-  action: {
-    type: Boolean, // true / false
+    type: SchemaTypes.Number,
     required: true,
   },
   actionPrice: {
-    type: Number, // action === true >>> 27000 | action === false >>> -1
+    type: SchemaTypes.Mixed, // Number | null
     required: false,
+    validate: {
+      validator: function (value: number | null) {
+        if (value === null) {
+          return true;
+        }
+
+        if (isNaN(value) === false && Number() >= 0) {
+          return true;
+        }
+
+        return false;
+      },
+    },
   },
   counter: {
-    type: Number, // 15
+    type: SchemaTypes.Number,
     required: true,
   },
   status: {
-    type: Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується',
+    type: SchemaTypes.Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується',
     required: true,
   },
   category: {
-    type: SchemaTypes.String, // notebooks
+    type: SchemaTypes.String,
     required: true,
   },
   categoryName: {
-    type: Array, // [ "Ноутбуки та комп'ютери", 'Комплектуючі', 'SSD' ]
+    type: SchemaTypes.Array,
     required: true,
   },
   characteristics: {
-    type: Array, // [ [0], [8], [21, 3, 4] ]
+    type: SchemaTypes.Array, // [ [0], [8], [21, 3, 4] ]
     required: true,
   },
   characteristicsName: {
@@ -46,27 +55,28 @@ export const ProductSchema = new Schema({
     required: true,
   },
   keywords: {
-    type: Array, // [ 'phone', 'телефон', 'samsung']
+    type: SchemaTypes.Array,
   },
   description: {
-    type: String,
-    required: true, // ....
+    type: SchemaTypes.String,
+    required: true,
   },
   comments: {
-    type: Array,
-    required: true, // ....
+    type: SchemaTypes.Array,
+    required: true,
   },
   questions: {
-    type: Array,
-    required: true, // ....
+    type: SchemaTypes.Array,
+    required: true,
   },
   accessories: {
-    type: Array,
-    required: true, // ....
+    type: SchemaTypes.Array,
+    required: true,
   },
   user: {
     ref: "users",
     type: Schema.Types.ObjectId,
+    require: true,
   },
 });
 
