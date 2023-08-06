@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, FilterQuery, ProjectionType, QueryOptions } from "mongoose";
+import { Model, PipelineStage } from "mongoose";
 
 import { Product } from "src/shared/interfaces/schemas/Product";
 
@@ -18,54 +18,19 @@ export class SearchService {
   public constructor(
     @InjectModel("product") private readonly ProductModel: Model<Product>,
     private categoryService: CategoryService,
-  ) {
-    // this.test();
+  ) {}
+
+  public async search(...PipelineStage: PipelineStage[]): Promise<Product[]> {
+    return await this.ProductModel.aggregate(PipelineStage);
   }
 
-  async test() {
-    const product = await this.ProductModel.find();
-
-    // console.log("product = ", product.characteristicsName);
-
-    for (let index = 0; index < product.length; index++) {
-      let characteristics: Option[] =
-        this.categoryService.getCharacteristicsByCategory(
-          product[index].category,
-        )[0];
-
-      const obj = {};
-      for (let idx = 0; idx < characteristics.length; idx++) {
-        obj[characteristics[idx].query_title] = [];
-
-        for (let i = 0; i < product[index].characteristics[idx].length; i++) {
-          obj[characteristics[idx].query_title].push(
-            characteristics[idx].select[product[index].characteristics[idx][i]]
-              .query_value,
-          );
-        }
-      }
-      console.log("before = ", product[index].characteristicsName);
-      console.log("after = ", obj);
-
-      const result = await this.ProductModel.updateOne(
-        { _id: product[index]._id },
-        { characteristicsName: obj },
-      );
-
-      console.log("result = ", result);
-    }
-  }
-
-  public async search(
-    filter: FilterQuery<Product>,
-    projection?: ProjectionType<Product> | null | undefined,
-    options?: QueryOptions<Product> | null | undefined,
-  ): Promise<Product[]> {
-    return await this.ProductModel.find(filter, projection, options);
-  }
-
-  public async countBySearch(filter: FilterQuery<Product>): Promise<any> {
-    return await this.ProductModel.count(filter);
+  public async countBySearch(
+    ...PipelineStage: PipelineStage[]
+  ): Promise<{ count: number }[]> {
+    return await this.ProductModel.aggregate([
+      ...PipelineStage,
+      { $count: "count" },
+    ]);
   }
 
   public createFilters(
@@ -193,7 +158,7 @@ export class SearchService {
     return filters;
   }
 
-  public createQueryParams(query: QueryDto): FilterQuery<Product> {
+  public createQueryParams(query: QueryDto): PipelineStage | null {
     const queryParams = Object.assign({}, query);
 
     delete queryParams.search_text;
@@ -201,14 +166,20 @@ export class SearchService {
     delete queryParams.page;
     delete queryParams.type_sort;
 
-    const FilterQuery: FilterQuery<Product> = {};
+    const FilterQuery: PipelineStage = { $match: {} };
 
+    let count = 0;
     for (let param in queryParams) {
-      FilterQuery["characteristicsName." + param] = {
+      FilterQuery.$match["characteristicsName." + param] = {
         $in: queryParams[param].split(","),
       };
+
+      count += 1;
     }
 
+    if (count === 0) {
+      return null;
+    }
     return FilterQuery;
   }
 }

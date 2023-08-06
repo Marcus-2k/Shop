@@ -8,7 +8,7 @@ import {
   Param,
 } from "@nestjs/common";
 import { Response } from "express";
-import { FilterQuery, QueryOptions } from "mongoose";
+import { PipelineStage } from "mongoose";
 
 import { ParamDto, QueryDto } from "./search.dto";
 
@@ -77,11 +77,7 @@ export class SearchController {
     // Widgets =====================================================================================
 
     // MongoDB Query ===============================================================================
-    const FilterQuery: FilterQuery<Product> = {};
-    const Options: QueryOptions<Product> = {
-      limit: limit,
-      skip: (currentPage - 1) * limit,
-    };
+    const FilterQuery: PipelineStage[] = [];
 
     // MongoDB Query ===============================================================================
 
@@ -120,30 +116,43 @@ export class SearchController {
       }
 
       if (typeCatalog.type === 1) {
-        FilterQuery.category = navigate_link;
+        FilterQuery.unshift({
+          $match: { category: navigate_link },
+        });
       } else {
-        FilterQuery.category = { $in: typeCatalog.category };
+        FilterQuery.unshift({
+          $match: { category: { $in: typeCatalog.category } },
+        });
 
         widget_autoPortal =
           this.catalogService.createWidgetAutoPortal(categoryNumber);
       }
 
-      productCharacteristics = await this.service.search(FilterQuery, {
-        category: true,
-        characteristics: true,
-        characteristicsName: true,
+      productCharacteristics = await this.service.search(...FilterQuery, {
+        $project: {
+          category: true,
+          characteristics: true,
+          characteristicsName: true,
+        },
       });
+
+      widget_breadcrumbs =
+        this.catalogService.createWidgetBreadcrumbs(categoryNumber);
     } else {
       /**
        * SEARCH TEXT   ====================================================================================================
        */
 
-      FilterQuery.name = { $regex: search_text, $options: "i" };
+      FilterQuery.unshift({
+        $match: { name: { $regex: search_text, $options: "i" } },
+      });
 
-      productCharacteristics = await this.service.search(FilterQuery, {
-        category: true,
-        characteristics: true,
-        characteristicsName: true,
+      productCharacteristics = await this.service.search(...FilterQuery, {
+        $project: {
+          category: true,
+          characteristics: true,
+          characteristicsName: true,
+        },
       });
 
       const category: string[] = [];
@@ -174,23 +183,60 @@ export class SearchController {
     // Filters =====================================================================================
 
     // MongoDB Query ===============================================================================
-    const MongoQueryFromQueryDto: FilterQuery<Product> =
+    const MongoQueryFromQueryDto: PipelineStage | null =
       this.service.createQueryParams(query);
-    Object.assign(FilterQuery, FilterQuery, MongoQueryFromQueryDto);
+    if (MongoQueryFromQueryDto) {
+      FilterQuery.unshift(MongoQueryFromQueryDto);
+    }
+
+    if (type_sort === 0) {
+      // Сheap
+      FilterQuery.unshift(
+        { $addFields: { sortPrice: { $ifNull: ["$actionPrice", "$price"] } } },
+        { $sort: { sortPrice: 1 } },
+      );
+    }
+    if (type_sort === 1) {
+      // Expensive
+      FilterQuery.unshift(
+        { $addFields: { sortPrice: { $ifNull: ["$actionPrice", "$price"] } } },
+        { $sort: { sortPrice: -1 } },
+      );
+    }
+    if (type_sort === 2) {
+      // Popularity <Disabled Client>
+    }
+    if (type_sort === 3) {
+      // Novelty <Disabled Client>
+    }
+    if (type_sort === 4) {
+      // Action
+      FilterQuery.unshift({ $sort: { actionPrice: -1 } });
+    }
+    if (type_sort === 5) {
+      // Grade (default)
+    }
 
     // MongoDB Query ===============================================================================
 
-    // Pagination ==================================================================================
-    count = await this.service.countBySearch(FilterQuery);
+    // RESULT Pagination ===========================================================================
+    const countBySearch: { count: number }[] = await this.service.countBySearch(
+      ...FilterQuery,
+    );
+    count = countBySearch[0].count;
     maxPage = Math.ceil(count / limit);
 
     if (limit === maxPage * limit) {
       currentPage = 1;
     }
-    // Pagination ==================================================================================
+    // RESULT Pagination ===========================================================================
 
     // FIND RESULT =================================================================================
-    product = await this.service.search(FilterQuery, null, Options);
+    product = await this.service.search(
+      ...FilterQuery,
+      { $skip: (currentPage - 1) * limit },
+      { $limit: limit },
+    );
     // FIND RESULT =================================================================================
 
     return response.status(200).json({
