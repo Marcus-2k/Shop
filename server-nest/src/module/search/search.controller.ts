@@ -76,12 +76,19 @@ export class SearchController {
 
     // MongoDB Query ===============================================================================
     const FilterQuery: PipelineStage[] = [];
+    const Project: PipelineStage = {
+      $project: {
+        category: true,
+        characteristics: true,
+        characteristicsName: true,
+      },
+    };
 
     // MongoDB Query ===============================================================================
 
     let product!: Product[];
 
-    let productCharacteristics!: ProductCharacteristics[];
+    let product_characteristics!: ProductCharacteristics[];
 
     let typeCatalog:
       | { type: 1 }
@@ -126,13 +133,10 @@ export class SearchController {
           this.catalogService.createWidgetAutoPortal(categoryNumber);
       }
 
-      productCharacteristics = await this.service.search(...FilterQuery, {
-        $project: {
-          category: true,
-          characteristics: true,
-          characteristicsName: true,
-        },
-      });
+      product_characteristics = await this.service.search(
+        ...FilterQuery,
+        Project,
+      );
 
       widget_breadcrumbs =
         this.catalogService.createWidgetBreadcrumbs(categoryNumber);
@@ -145,17 +149,14 @@ export class SearchController {
         $match: { name: { $regex: search_text, $options: "i" } },
       });
 
-      productCharacteristics = await this.service.search(...FilterQuery, {
-        $project: {
-          category: true,
-          characteristics: true,
-          characteristicsName: true,
-        },
-      });
+      product_characteristics = await this.service.search(
+        ...FilterQuery,
+        Project,
+      );
 
       const category: string[] = [];
-      for (let idx = 0; idx < productCharacteristics.length; idx++) {
-        category.push(productCharacteristics[idx].category);
+      for (let idx = 0; idx < product_characteristics.length; idx++) {
+        category.push(product_characteristics[idx].category);
       }
 
       const sectionId: CatalogNameListCategory[] | MessageRes =
@@ -166,9 +167,38 @@ export class SearchController {
       widget_sectionId = sectionId;
     }
 
+    // MongoDB Query ===============================================================================
+    const [MongoQuery, MongoQueryList, count_query]:
+      | [null, null, 0]
+      | [PipelineStage, null, 1]
+      | [PipelineStage, PipelineStage[], number] =
+      this.service.createQueryParams(query);
+    if (MongoQuery) {
+      FilterQuery.unshift(MongoQuery);
+    }
+
+    const product_by_query: Product[] = await this.service.search(
+      ...FilterQuery,
+      Project,
+    );
+
+    let product_by_divided_query: Product[][] | null;
+
+    if (count_query > 1 && MongoQueryList) {
+      const promises = MongoQueryList.map(
+        (pipeline) => this.service.search(pipeline),
+        //.catch(err => [])
+      );
+      product_by_divided_query = await Promise.all(promises);
+    }
+
     // Filters =====================================================================================
     const filters: Filter[] | MessageRes = this.service.createFilters(
-      productCharacteristics,
+      product_characteristics,
+      product_by_query,
+      product_by_divided_query,
+      count_query,
+      query,
       typeCatalog !== null && typeof typeCatalog !== "string"
         ? typeCatalog.type
         : null,
@@ -179,13 +209,6 @@ export class SearchController {
       return response.status(400).json({ message: filters.message });
     }
     // Filters =====================================================================================
-
-    // MongoDB Query ===============================================================================
-    const MongoQueryFromQueryDto: PipelineStage | null =
-      this.service.createQueryParams(query);
-    if (MongoQueryFromQueryDto) {
-      FilterQuery.unshift(MongoQueryFromQueryDto);
-    }
 
     if (type_sort === 0) {
       // Сheap
@@ -214,27 +237,32 @@ export class SearchController {
     if (type_sort === 5) {
       // Grade (default)
     }
-
     // MongoDB Query ===============================================================================
 
-    // RESULT Pagination ===========================================================================
+    // FIND RESULT =================================================================================
+    // Pagination ==================================================================================
     const countBySearch: { count: number }[] = await this.service.countBySearch(
       ...FilterQuery,
     );
-    count = countBySearch[0].count;
+    if (countBySearch.length === 0) {
+      count = 0;
+    } else {
+      count = countBySearch[0].count;
+    }
     maxPage = Math.ceil(count / limit);
 
     if (limit === maxPage * limit) {
       currentPage = 1;
     }
-    // RESULT Pagination ===========================================================================
 
-    // FIND RESULT =================================================================================
+    // Pagination ==================================================================================
+    // PRODUCT =====================================================================================
     product = await this.service.search(
       ...FilterQuery,
       { $skip: (currentPage - 1) * limit },
       { $limit: limit },
     );
+    // PRODUCT =====================================================================================
     // FIND RESULT =================================================================================
 
     return response.status(200).json({

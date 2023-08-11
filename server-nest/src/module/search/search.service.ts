@@ -34,7 +34,13 @@ export class SearchService {
   }
 
   public createFilters(
-    product: ProductCharacteristics[],
+    product: ProductCharacteristics[], // by (navigate_link or search_text)
+    product_by_query: ProductCharacteristics[], // by (navigate_link or search_text) and select filter
+    product_by_divided_query: ProductCharacteristics[][] | null, // by (navigate_link or search_text) and all filter without one filter
+
+    count_query: number,
+    query: QueryDto,
+
     type_catalog: 1 | 2 | null,
     language: LanguageShort,
   ): Filter[] | MessageRes {
@@ -97,7 +103,8 @@ export class SearchService {
       characteristics = options[0];
     }
 
-    const filters: Filter[] = [];
+    let position_select_filter: number = -1;
+    let Filters: Filter[] = [];
     for (let index = 0; index < characteristics.length; index++) {
       const filter: Filter = {
         title: characteristics[index].name[language],
@@ -105,6 +112,13 @@ export class SearchService {
         show: true,
         checkboxList: [],
       };
+
+      if (
+        query.hasOwnProperty(characteristics[index].query_title) &&
+        position_select_filter === -1
+      ) {
+        position_select_filter = index;
+      }
 
       for (let idx = 0; idx < product.length; idx++) {
         for (
@@ -152,13 +166,181 @@ export class SearchService {
           }
         }
       }
-      filters.push(filter);
+
+      Filters.push(filter);
     }
 
-    return filters;
+    if (count_query === 0) {
+      return Filters;
+    }
+
+    let FiltersByQuery: Filter[] = [];
+    for (let index = 0; index < characteristics.length; index++) {
+      const FilterByQuery: Filter = {
+        title: characteristics[index].name[language],
+        query_title: characteristics[index].query_title,
+        show: true,
+        checkboxList: [],
+      };
+
+      for (let idx = 0; idx < product_by_query.length; idx++) {
+        for (
+          let i = 0;
+          i <
+          product_by_query[idx].characteristicsName[
+            characteristics[index].query_title
+          ].length;
+          i++
+        ) {
+          for (let j = 0; j < characteristics[index].select.length; j++) {
+            if (
+              characteristics[index].select[j].query_value ===
+              product_by_query[idx].characteristicsName[
+                characteristics[index].query_title
+              ][i]
+            ) {
+              let find_duplicate: boolean = false;
+
+              for (let l = 0; l < FilterByQuery.checkboxList.length; l++) {
+                if (
+                  FilterByQuery.checkboxList[l].query_value ===
+                  characteristics[index].select[j].query_value
+                ) {
+                  FilterByQuery.checkboxList[l].counter += 1;
+
+                  find_duplicate = true;
+
+                  break;
+                }
+              }
+
+              if (find_duplicate === false) {
+                const checkbox: Checkbox = {
+                  name: characteristics[index].select[j].name[language],
+                  query_value: characteristics[index].select[j].query_value,
+                  active: false,
+                  counter: 0,
+                };
+
+                FilterByQuery.checkboxList.push(checkbox);
+              }
+
+              break;
+            }
+          }
+        }
+      }
+
+      FiltersByQuery.push(FilterByQuery);
+    }
+
+    [Filters, FiltersByQuery] = [FiltersByQuery, Filters];
+
+    if (count_query === 1) {
+      Filters[position_select_filter] = FiltersByQuery[position_select_filter];
+
+      return Filters;
+    }
+
+    if (count_query > 1) {
+      let FiltersByDividedQuery: Filter[][] = [];
+
+      const position_select_filters: number[] = [];
+      for (let k = 0; k < product_by_divided_query.length; k++) {
+        const filters_divided: Filter[] = [];
+
+        let findSelectBlock: boolean = false;
+
+        for (let index = 0; index < characteristics.length; index++) {
+          const FilterByDivided: Filter = {
+            title: characteristics[index].name[language],
+            query_title: characteristics[index].query_title,
+            show: true,
+            checkboxList: [],
+          };
+
+          if (
+            query.hasOwnProperty(characteristics[index].query_title) &&
+            !findSelectBlock &&
+            position_select_filters.includes(index) === false
+          ) {
+            findSelectBlock = true;
+            position_select_filters.push(index);
+          }
+
+          for (let idx = 0; idx < product_by_divided_query[k].length; idx++) {
+            for (
+              let i = 0;
+              i <
+              product_by_divided_query[k][idx].characteristicsName[
+                characteristics[index].query_title
+              ].length;
+              i++
+            ) {
+              for (let j = 0; j < characteristics[index].select.length; j++) {
+                if (
+                  characteristics[index].select[j].query_value ===
+                  product_by_divided_query[k][idx].characteristicsName[
+                    characteristics[index].query_title
+                  ][i]
+                ) {
+                  let find_duplicate: boolean = false;
+
+                  for (
+                    let l = 0;
+                    l < FilterByDivided.checkboxList.length;
+                    l++
+                  ) {
+                    if (
+                      FilterByDivided.checkboxList[l].query_value ===
+                      characteristics[index].select[j].query_value
+                    ) {
+                      FilterByDivided.checkboxList[l].counter += 1;
+
+                      find_duplicate = true;
+
+                      break;
+                    }
+                  }
+
+                  if (find_duplicate === false) {
+                    const checkbox: Checkbox = {
+                      name: characteristics[index].select[j].name[language],
+                      query_value: characteristics[index].select[j].query_value,
+                      active: false,
+                      counter: 0,
+                    };
+
+                    FilterByDivided.checkboxList.push(checkbox);
+                  }
+
+                  break;
+                }
+              }
+            }
+          }
+
+          filters_divided.push(FilterByDivided);
+        }
+
+        FiltersByDividedQuery.push(filters_divided);
+      }
+
+      for (let idx = 0; idx < position_select_filters.length; idx++) {
+        Filters[position_select_filters[idx]] =
+          FiltersByDividedQuery[idx][position_select_filters[idx]];
+      }
+
+      return Filters;
+    }
   }
 
-  public createQueryParams(query: QueryDto): PipelineStage | null {
+  public createQueryParams(
+    query: QueryDto,
+  ):
+    | [null, null, 0]
+    | [PipelineStage, null, 1]
+    | [PipelineStage, PipelineStage[], number] {
     const queryParams = Object.assign({}, query);
 
     delete queryParams.search_text;
@@ -177,9 +359,30 @@ export class SearchService {
       count += 1;
     }
 
-    if (count === 0) {
-      return null;
+    const FilterQueryList: PipelineStage[] = [];
+    const FilterQueryCLone: PipelineStage = {
+      $match: JSON.parse(JSON.stringify(FilterQuery.$match)),
+    };
+
+    if (count > 1) {
+      for (const key in FilterQueryCLone.$match) {
+        const MongoQuery: PipelineStage = {
+          $match: JSON.parse(JSON.stringify(FilterQuery.$match)),
+        };
+
+        delete MongoQuery.$match[key];
+
+        FilterQueryList.push(MongoQuery);
+      }
     }
-    return FilterQuery;
+
+    /* Return */
+    if (count === 0) {
+      return [null, null, 0];
+    }
+    if (count === 1) {
+      return [FilterQuery, null, 1];
+    }
+    return [FilterQuery, FilterQueryList, count];
   }
 }
