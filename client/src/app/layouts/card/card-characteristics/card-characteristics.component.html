@@ -11,7 +11,7 @@
         *ngFor="let option of characteristicsName; let idx = index"
       >
         <div class="params__item-title">
-          <p class="title title-option">{{ option.name }}</p>
+          <p class="title title-option">{{ option.name.en }}</p>
           <p class="line"></p>
         </div>
         <div class="params__item-info">
@@ -19,7 +19,7 @@
             *ngFor="let params of characteristics[idx]; let i = index"
           >
             <p class="title title-info">
-              {{ option.select[params] }}
+              {{ option.select[params].name.en }}
             </p>
           </ng-container>
         </div>
