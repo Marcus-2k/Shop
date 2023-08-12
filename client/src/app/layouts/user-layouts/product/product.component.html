@@ -27,7 +27,7 @@
         </li>
       </ul>
       <!--  -->
-      <div class="pagination">
+      <div class="pagination" *ngIf="productList.length > 0">
         <mat-paginator
           [length]="maxPage * limit"
           [pageSize]="limit"
