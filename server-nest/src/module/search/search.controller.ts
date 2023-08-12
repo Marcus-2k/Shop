@@ -185,7 +185,7 @@ export class SearchController {
     let product_by_divided_query: Product[][] | null;
 
     if (count_query > 1 && MongoQueryList) {
-      const promises = MongoQueryList.map(
+      const promises: Promise<Product[]>[] = MongoQueryList.map(
         (pipeline) => this.service.search(pipeline),
         //.catch(err => [])
       );

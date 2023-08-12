@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer";
 import { IsIn, IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { Pagination } from "src/shared/dto/pagination";
+import { PaginationDto } from "src/shared/dto/pagination";
 import { TypeSortNumber } from "src/shared/interfaces/type/sort/type-sort-number";
 
 export class ParamDto {
@@ -9,7 +9,7 @@ export class ParamDto {
   navigate_link: string | undefined = undefined;
 }
 
-export class QueryDto extends Pagination {
+export class QueryDto extends PaginationDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()

@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
 import { IsInt, Max, Min } from "class-validator";
 
-export class Pagination {
+export class PaginationDto {
   @Transform(({ value }) => {
     return Number(value);
   })

@@ -12,6 +12,7 @@ import {
   Res,
   UseInterceptors,
   UploadedFiles,
+  Query,
 } from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { Response } from "express";
@@ -26,6 +27,8 @@ import { CreateProductDto, UpdateProduct } from "./product.dto";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { ProductUpdate } from "src/shared/interfaces/schemas/product/product-update";
 import { CategoryService } from "../category/category.service";
+import { PaginationDto } from "src/shared/dto/pagination";
+import { PaginationRes } from "src/shared/interfaces/res/pagintaion";
 
 @Controller("product")
 /** Pipe */
@@ -34,7 +37,7 @@ import { CategoryService } from "../category/category.service";
 @UseGuards(JwtAuthGuard)
 export class ProductController {
   public constructor(
-    private productService: ProductService,
+    private service: ProductService,
     private categoryService: CategoryService,
   ) {}
 
@@ -42,12 +45,36 @@ export class ProductController {
 
   @Get()
   public async getByUserProduct(
-    @Res() response: Response<Product[]>,
+    @Res() response: Response<{ products: Product[] } & PaginationRes>,
+    @Query() query: PaginationDto,
     @User() user: TokenData,
   ): Promise<Response> {
-    let product: Product[] = await this.productService.findByUser(user.id);
+    // Pagination START ============================================================================
+    const limit: number = query.limit;
 
-    return response.status(200).json(product);
+    let currentPage: number = query.page;
+
+    const count: number = await this.service.countByUser(user.id);
+    let maxPage!: number;
+    // Pagination END ==============================================================================
+
+    const products: Product[] = await this.service.findByUser(user.id, {
+      limit: query.limit,
+      page: query.page,
+    });
+
+    maxPage = Math.ceil(count / limit);
+
+    if (limit === maxPage * limit) {
+      currentPage = 1;
+    }
+
+    return response.status(200).json({
+      products,
+      maxPage: maxPage,
+      currentPage: currentPage,
+      limit: query.limit,
+    });
   }
 
   @Get(":id")
@@ -55,7 +82,7 @@ export class ProductController {
     @Res() response: Response<any>,
     @Param() param: IdDto,
   ): Promise<Response<any>> {
-    let product: Product = await this.productService.findById(param.id);
+    let product: Product = await this.service.findById(param.id);
 
     let characteristicsName: any =
       this.categoryService.getCharacteristicsByCategory(product.category);
@@ -74,9 +101,7 @@ export class ProductController {
     @Body() body: UpdateProduct,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<Response<any>> {
-    const product: Product | null = await this.productService.findById(
-      param.id,
-    );
+    const product: Product | null = await this.service.findById(param.id);
 
     if (!product) {
       return response.status(404).json({ message: "Товар не існує" });
@@ -121,7 +146,7 @@ export class ProductController {
       updateProduct.category = body.category;
 
       const categoryName: [string, string] | [string, string, string] | string =
-        this.productService.createCategoryName(body.category);
+        this.service.createCategoryName(body.category);
 
       if (!Array.isArray(categoryName)) {
         return response.status(200).json({ message: categoryName });
@@ -136,7 +161,7 @@ export class ProductController {
         | {
             characteristicsNumber: number[][];
             characteristicsName: { [key: string]: string[] };
-          } = this.productService.createCharacteristics(
+          } = this.service.createCharacteristics(
         body.category,
         body.characteristics,
       );
@@ -160,7 +185,7 @@ export class ProductController {
     }
 
     if (Object.keys(updateProduct).length > 0) {
-      await this.productService.updateProduct(param.id, updateProduct);
+      await this.service.updateProduct(param.id, updateProduct);
 
       return response.status(200).json({ message: "Товар успішно змінено" });
     } else {
@@ -230,7 +255,7 @@ export class ProductController {
     // Category
     const category: string = body.category;
     const categoryName: [string, string] | [string, string, string] | string =
-      this.productService.createCategoryName(body.category);
+      this.service.createCategoryName(body.category);
 
     if (!Array.isArray(categoryName)) {
       return response.status(200).json({ message: categoryName });
@@ -242,10 +267,7 @@ export class ProductController {
       | {
           characteristicsNumber: number[][];
           characteristicsName: { [key: string]: string[] };
-        } = this.productService.createCharacteristics(
-      category,
-      body.characteristics,
-    );
+        } = this.service.createCharacteristics(category, body.characteristics);
 
     if (typeof characteristics === "string") {
       return response.status(200).json({ message: characteristics });
@@ -257,7 +279,7 @@ export class ProductController {
     // Description
     const description: string = body.description;
 
-    await this.productService.createProduct({
+    await this.service.createProduct({
       imageSrc,
       name,
       price,
@@ -285,16 +307,16 @@ export class ProductController {
     @Param() param: IdDto,
     @User() user: TokenData,
   ): Promise<Response<any>> {
-    let product = await this.productService.findById(param.id);
+    let product = await this.service.findById(param.id);
 
     if (!product) {
       return response.status(200).json({ message: "Товар не існує" });
     }
 
     if (user.id === product.user) {
-      // await this.productService.deleteById(param.id);
+      // await this.service.deleteById(param.id);
 
-      // await this.productService.deleteImgFromFolder(product.imageSrc);
+      // await this.service.deleteImgFromFolder(product.imageSrc);
 
       return response
         .status(200)

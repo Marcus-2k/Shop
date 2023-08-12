@@ -16,10 +16,90 @@ export class ProductService {
   public constructor(
     @InjectModel("product") private readonly ProductModel: Model<Product>,
     private categoryService: CategoryService,
-  ) {}
+  ) {
+    // this.test();
+  }
 
-  public async findByUser(user_id: string): Promise<Product[] | null> {
-    return await this.ProductModel.find({ user: user_id });
+  public async test() {
+    const start = new Date();
+    console.log("START = ", start.toISOString());
+    console.log("START = ", start.getTime());
+
+    const notebooks: Option[][] | MessageRes =
+      this.categoryService.getCharacteristicsByCategory("notebooks");
+
+    if (!Array.isArray(notebooks)) {
+      return;
+    }
+
+    const characteristics: Option[] = notebooks[0];
+
+    for (let i = 0; i < 10000; i++) {
+      console.log("START CREATE PRODUCT");
+
+      let value: string = "";
+      for (let idx = 0; idx < characteristics.length; idx++) {
+        const min = 0;
+        const max = Number(characteristics[idx].select.length) - 1;
+
+        const random = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        if (idx === 0) {
+          value = value + String(random);
+        } else value = value + "-" + random;
+      }
+
+      const info = this.createCharacteristics("notebooks", value);
+
+      if (typeof info === "string") {
+        return;
+      }
+
+      const data = await this.createProduct({
+        imageSrc: [
+          "uploads/06022023-143314 707-175333147.webp",
+          "uploads/06022023-143314 711-175333148.webp",
+        ],
+        name: "Acer Aspire 7 A715-42G-R3EZ (NH.QBFEU.00C) Charcoal Black",
+        price: 39999,
+        actionPrice: 11000,
+        counter: 11,
+        status: 0,
+        category: "notebooks",
+        categoryName: ["Ноутбуки та комп'ютери", "Ноутбуки"],
+        characteristics: info.characteristicsNumber,
+        characteristicsName: info.characteristicsName,
+        keywords: ["ноут", "laptop"],
+        description:
+          "Екран 15.6' IPS (1920x1080) Full HD, матовий / AMD Ryzen 5 5500U (2.1 - 4.0 ГГц) / RAM 16 ГБ / SSD 512 ГБ / nVidia GeForce GTX 1650, 4 ГБ / без ОД / LAN / Wi-Fi / Bluetooth / веб-камера / без ОС / 2.15 кг / чорний",
+        comments: [],
+        questions: [],
+        accessories: [],
+        user: "63dee8e3d56e71f4d09a4510",
+      });
+      console.log("data = ", data);
+      console.log("END CREATE PRODUCT");
+    }
+
+    const end = new Date();
+    console.log("END = ", end.toISOString());
+    console.log("END = ", end.getTime());
+    console.log("==============================");
+    console.log("RESULT = ", end.getTime() - start.getTime());
+  }
+
+  public async findByUser(
+    user_id: string,
+    pagination: { limit: number; page: number },
+  ): Promise<Product[] | null> {
+    return await this.ProductModel.find({ user: user_id }, null, {
+      limit: pagination.limit,
+      skip: (pagination.page - 1) * pagination.limit,
+    });
+  }
+
+  public async countByUser(user_id: string): Promise<number> {
+    return await this.ProductModel.count({ user: user_id });
   }
 
   public async findById(
