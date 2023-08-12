@@ -14,6 +14,10 @@ export const UserProductReducer = createReducer(
   on(UserProductActions.setUserProduct, (state, props) => {
     const STATE: UserProductState = {
       products: props.product_list,
+
+      maxPage: props.maxPage,
+      currentPage: props.currentPage,
+      limit: props.limit,
     };
 
     return STATE;

@@ -118,15 +118,17 @@ export class SearchComponent implements OnInit {
         next: (response) => {
           // ==============================================================================================
           console.log("=====================================================");
-          console.log(response.product);
-          console.log(response.filters);
-          console.log(response.widget_auto_portal);
-          console.log(response.widget_section_id);
+          console.log("Товари", response.product);
+          console.log("Фільтри", response.filters);
+          console.log("Віджет авто-портал", response.widget_auto_portal);
+          console.log("Віджет секція-айді", response.widget_section_id);
+
+          console.log("Хлібні крихти", response.widget_breadcrumbs);
+
           console.log("Відкрита сторінка", response.currentPage);
           console.log("Кількість сторінок", response.maxPage);
           console.log("Товарів на сторінку", response.limit);
           console.log("Загальна кількість товарів", response.number_of_product);
-          console.log("Хлібні крихти", response.widget_breadcrumbs);
           console.log("=====================================================");
           // ==============================================================================================
           this.productList = response.product;
@@ -160,7 +162,7 @@ export class SearchComponent implements OnInit {
               ) {
                 if (
                   onlyQueryParamsFilter[key].indexOf(
-                    this.listFilter[i].checkboxList[idx].name
+                    this.listFilter[i].checkboxList[idx].query_value
                   ) !== -1
                 ) {
                   this.counterActiveFilter++;
@@ -247,6 +249,8 @@ export class SearchComponent implements OnInit {
           console.log("Загальна кількість товарів", response.number_of_product);
           console.log("=====================================================");
           this.productList = response.product;
+          // this.listFilter = response.filters;
+
           this.number_of_product = response.number_of_product;
 
           this.currentPage = response.currentPage;
@@ -318,6 +322,8 @@ export class SearchComponent implements OnInit {
   // Header END ===================================================================================
   // Sidebar START ================================================================================
   listFilter: Filter[] = [];
+  // listFilter2: Filter[] = [];
+  // listFilter3: Filter[][] = [];
 
   queryParams: Params = {};
   params: Params = {};

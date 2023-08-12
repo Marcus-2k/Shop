@@ -285,11 +285,25 @@ export interface CATEGORY {
     subNameListCategory: any; // { titleSubNameListCategory: string; navigate_link: string; characteristics: CHARACTERISTICS[]; } | undefined
   }[];
 }
+
+export type LanguageShort = "en" | "ua";
+
+export type LanguageLong = "English" | "Ukrainian";
+
 export interface CHARACTERISTICS {
-  name: string; // example Operating System
-  query_name: string;
-  htmlElement: "select"; // html tag
-  select: string[]; // field for option select
+  name: {
+    [key in LanguageShort]: string;
+  };
+  query_title: string;
+
+  html_element: "select";
+  select: {
+    name: {
+      [key in LanguageShort]: string;
+    };
+    query_value: string;
+  }[];
+
   multiple: boolean;
 }
 

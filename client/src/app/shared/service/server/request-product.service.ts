@@ -1,9 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Params } from "@angular/router";
 import { Observable } from "rxjs";
 import { Product, ProductUpdate } from "src/app/shared/interface/interfaces";
 
 import { environment } from "src/environments/environment";
+import { Pagination } from "../../interface/pagination";
 
 @Injectable({
   providedIn: "root",
@@ -13,8 +15,16 @@ export class RequestProductService {
 
   url_server: string = environment.URL_SERVER_API + "product/";
 
-  getUserProduct(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.url_server}`);
+  getUserProduct(
+    queryParams: Params
+  ): Observable<{ products: Product[] } & Pagination> {
+    const query: URLSearchParams = new URLSearchParams(queryParams);
+
+    console.log("get user product");
+
+    return this.http.get<{ products: Product[] } & Pagination>(
+      `${this.url_server}?${query.toString()}`
+    );
   }
 
   getByIdProduct(id: string): Observable<ProductUpdate> {

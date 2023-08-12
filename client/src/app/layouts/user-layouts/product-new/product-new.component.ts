@@ -444,7 +444,12 @@ export class ProductNewComponent implements OnInit, OnDestroy {
                 console.log(data);
                 this.showMessage.open(data.message, undefined);
                 this.store$.dispatch(
-                  UserProductActions.setUserProduct({ product_list: null })
+                  UserProductActions.setUserProduct({
+                    product_list: null,
+                    maxPage: 1,
+                    currentPage: 1,
+                    limit: 10,
+                  })
                 );
 
                 this.router.navigate(["/account/product"]);
@@ -466,7 +471,12 @@ export class ProductNewComponent implements OnInit, OnDestroy {
               console.log(data);
               this.showMessage.open(data.message, undefined);
               this.store$.dispatch(
-                UserProductActions.setUserProduct({ product_list: null })
+                UserProductActions.setUserProduct({
+                  product_list: null,
+                  maxPage: 1,
+                  currentPage: 1,
+                  limit: 10,
+                })
               );
 
               this.router.navigate(["/account/product"]);
