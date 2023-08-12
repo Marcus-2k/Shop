@@ -41,7 +41,7 @@ export class CategoryController {
       this.service.getCharacteristicsByCategory(body.category)[0];
 
     if (Array.isArray(data)) {
-      return response.status(404).json(data);
+      return response.status(200).json(data);
     } else {
       return response.status(404).json({ message: data.message });
     }

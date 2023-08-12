@@ -14,10 +14,11 @@
       <div class="item">
         <mat-form-field
           [appearance]="appearance"
-          [matTooltip]="'№' + idx + '&nbsp;' + options.name"
+          [matTooltip]="'№' + idx + '&nbsp;' + options.name.en"
           [matTooltipPosition]="'above'"
         >
-          <mat-label>{{ options.name }}</mat-label>
+          <mat-label>{{ options.name.en }}</mat-label>
+
           <ng-container *ngIf="options.multiple">
             <mat-select
               [(ngModel)]="characteristicsNumber[idx]"
@@ -30,7 +31,7 @@
               >
                 <mat-option [value]="i">
                   <!-- {{ "№" + i }} -->
-                  {{ option }}
+                  {{ option.name.en }}
                 </mat-option>
               </ng-container>
             </mat-select>
@@ -47,14 +48,14 @@
               >
                 <mat-option [value]="i">
                   <!-- {{ "№" + i }} -->
-                  {{ option }}
+                  {{ option.name.en }}
                 </mat-option>
               </ng-container>
             </mat-select>
           </ng-container>
 
           <mat-error *ngIf="characteristicsNumber[idx][0] === undefined">
-            Характеристика <strong>{{ options.name }}</strong> є обов'язковою
+            Характеристика <strong>{{ options.name.en }}</strong> є обов'язковою
           </mat-error>
         </mat-form-field>
       </div>
