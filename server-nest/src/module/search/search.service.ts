@@ -24,7 +24,7 @@ export class SearchService {
     return await this.ProductModel.aggregate(PipelineStage);
   }
 
-  public async countBySearch(
+  public async countByQuery(
     ...PipelineStage: PipelineStage[]
   ): Promise<{ count: number }[]> {
     return await this.ProductModel.aggregate([
@@ -240,9 +240,7 @@ export class SearchService {
       Filters[position_select_filter] = FiltersByQuery[position_select_filter];
 
       return Filters;
-    }
-
-    if (count_query > 1) {
+    } else {
       let FiltersByDividedQuery: Filter[][] = [];
 
       const position_select_filters: number[] = [];

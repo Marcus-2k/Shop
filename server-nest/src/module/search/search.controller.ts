@@ -58,7 +58,7 @@ export class SearchController {
     // Pagination START ============================================================================
     const limit: number = query.limit;
 
-    let currentPage = query.page;
+    let currentPage: number = query.page;
 
     let count!: number;
     let maxPage!: number;
@@ -216,38 +216,33 @@ export class SearchController {
         { $addFields: { sortPrice: { $ifNull: ["$actionPrice", "$price"] } } },
         { $sort: { sortPrice: 1 } },
       );
-    }
-    if (type_sort === 1) {
+    } else if (type_sort === 1) {
       // Expensive
       FilterQuery.unshift(
         { $addFields: { sortPrice: { $ifNull: ["$actionPrice", "$price"] } } },
         { $sort: { sortPrice: -1 } },
       );
-    }
-    if (type_sort === 2) {
+    } else if (type_sort === 2) {
       // Popularity <Disabled Client>
-    }
-    if (type_sort === 3) {
+    } else if (type_sort === 3) {
       // Novelty <Disabled Client>
-    }
-    if (type_sort === 4) {
+    } else if (type_sort === 4) {
       // Action
       FilterQuery.unshift({ $sort: { actionPrice: -1 } });
-    }
-    if (type_sort === 5) {
+    } else if (type_sort === 5) {
       // Grade (default)
     }
     // MongoDB Query ===============================================================================
 
     // FIND RESULT =================================================================================
     // Pagination ==================================================================================
-    const countBySearch: { count: number }[] = await this.service.countBySearch(
+    const countByQuery: { count: number }[] = await this.service.countByQuery(
       ...FilterQuery,
     );
-    if (countBySearch.length === 0) {
+    if (countByQuery.length === 0) {
       count = 0;
     } else {
-      count = countBySearch[0].count;
+      count = countByQuery[0].count;
     }
     maxPage = Math.ceil(count / limit);
 
