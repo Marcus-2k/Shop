@@ -92,7 +92,9 @@
                   color="primary"
                   (click)="onFilterSidebar()"
                 >
-                  <span class="material-symbols-outlined"> filter_alt </span>
+                  <span class="material-symbols-outlined" translate="no">
+                    filter_alt
+                  </span>
                   <span class="filter__button-text">Фільтри</span>
                 </button>
               </div>
@@ -169,7 +171,7 @@
                     *ngIf="widthWindow <= 1000"
                     (click)="offFilterSidebar()"
                   >
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined" translate="no">
                       arrow_back_ios
                     </span>
                     <h2 class="category__header-title">Фільтри</h2>
@@ -200,7 +202,10 @@
                           class="arrow"
                           [ngClass]="{ active__arrow: filter.show }"
                         >
-                          <span class="material-symbols-outlined">
+                          <span
+                            class="material-symbols-outlined"
+                            translate="no"
+                          >
                             expand_more
                           </span>
                         </p>

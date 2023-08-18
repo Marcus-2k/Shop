@@ -55,7 +55,9 @@
             (click)="deletePhotoByIdx(idx)"
             *ngIf="image"
           >
-            <span class="material-symbols-outlined"> delete </span>
+            <span class="material-symbols-outlined" translate="no">
+              delete
+            </span>
           </a>
         </div>
       </div>
@@ -76,7 +78,9 @@
         (click)="triggerClick()"
       >
         <span>Завантажити фото</span>
-        <span class="material-symbols-outlined"> file_download </span>
+        <span class="material-symbols-outlined" translate="no">
+          file_download
+        </span>
       </a>
 
       <a
@@ -86,7 +90,7 @@
         (click)="deletePhoto()"
       >
         <span>Видалити фото</span>
-        <span class="material-symbols-outlined"> delete </span>
+        <span class="material-symbols-outlined" translate="no"> delete </span>
       </a>
 
       <a class="btn-photo btn-info" mat-raised-button color="primary">

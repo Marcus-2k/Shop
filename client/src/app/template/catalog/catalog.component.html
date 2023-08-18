@@ -13,7 +13,9 @@
       <div class="category-first-return">
         <p class="return-to-home" (click)="closeDialog()">
           <span>Повернутися назад</span>
-          <span class="material-symbols-outlined"> keyboard_return </span>
+          <span class="material-symbols-outlined" translate="no">
+            keyboard_return
+          </span>
         </p>
       </div>
       <ul class="category-first-list">
@@ -36,14 +38,18 @@
             <span class="list__item-link-text">
               {{ categoryOne.nameCategory }}
             </span>
-            <span class="material-symbols-outlined"> expand_more </span>
+            <span class="material-symbols-outlined" translate="no">
+              expand_more
+            </span>
           </a>
           <ng-template #mobileCatalogTitle>
             <p class="list__item-link">
               <span class="list__item-link-text">
                 {{ categoryOne.nameCategory }}
               </span>
-              <span class="material-symbols-outlined"> expand_more </span>
+              <span class="material-symbols-outlined" translate="no">
+                expand_more
+              </span>
             </p>
           </ng-template>
         </li>
@@ -54,7 +60,9 @@
       <div class="category-subfirst-return">
         <p class="return-to-selection" (click)="returnToCategorySelection()">
           <span>Повернутися на вибір</span>
-          <span class="material-symbols-outlined"> keyboard_return </span>
+          <span class="material-symbols-outlined" translate="no">
+            keyboard_return
+          </span>
         </p>
       </div>
       <ul

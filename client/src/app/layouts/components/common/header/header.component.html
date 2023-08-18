@@ -5,13 +5,17 @@
     <div class="header__content-menu">
       <div class="menu-logo">
         <a class="logo" routerLink="/">
-          <span class="material-symbols-outlined"> home_app_logo </span>
+          <span class="material-symbols-outlined" translate="no">
+            home_app_logo
+          </span>
           <h1 class="title__site">&nbsp;Online Store</h1>
         </a>
       </div>
       <div class="menu-catalog">
         <button mat-raised-button (click)="openDialogCatalog()">
-          <span class="material-symbols-outlined">grid_view</span>
+          <span class="material-symbols-outlined" translate="no"
+            >grid_view</span
+          >
           Каталог
         </button>
       </div>
@@ -85,7 +89,9 @@
         <div class="user__header-burger" *ngIf="burgerMenu">
           <div class="logo">
             <a routerLink="/" class="logo__link" (click)="clickBurgerMenu()">
-              <span class="material-symbols-outlined">home_app_logo</span>
+              <span class="material-symbols-outlined" translate="no"
+                >home_app_logo</span
+              >
               <h2 class="title__site">&nbsp;Online Store</h2>
             </a>
           </div>
@@ -98,13 +104,18 @@
               class="link-item"
               (click)="clickBurgerMenu()"
             >
-              <span class="material-symbols-outlined google-icon">person</span>
+              <span class="material-symbols-outlined google-icon" translate="no"
+                >person</span
+              >
               <span *ngIf="burgerMenu">Персональний кабінет</span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="windowWidth <= 767">
             <a class="link-item" (click)="openDialogCatalog()">
-              <span class="material-symbols-outlined google-icon">
+              <span
+                class="material-symbols-outlined google-icon"
+                translate="no"
+              >
                 grid_view
               </span>
               <span *ngIf="burgerMenu">Каталог товарів</span>
@@ -127,7 +138,10 @@
               matBadgePosition="above before"
               (click)="clickBurgerMenu()"
             >
-              <span class="material-symbols-outlined google-icon">
+              <span
+                class="material-symbols-outlined google-icon"
+                translate="no"
+              >
                 favorite
               </span>
               <span *ngIf="burgerMenu">Вподобані товари</span>
@@ -146,7 +160,10 @@
               matBadgePosition="above before"
               (click)="clickBurgerMenu()"
             >
-              <span class="material-symbols-outlined google-icon">
+              <span
+                class="material-symbols-outlined google-icon"
+                translate="no"
+              >
                 shopping_cart
               </span>
               <span *ngIf="burgerMenu">Корзина товарів</span>
@@ -158,13 +175,17 @@
               class="link-item"
               (click)="logout(); clickBurgerMenu()"
             >
-              <span class="material-symbols-outlined google-icon">logout</span>
+              <span class="material-symbols-outlined google-icon" translate="no"
+                >logout</span
+              >
               <span *ngIf="burgerMenu">Вихід</span>
             </a>
           </li>
           <li class="user__list-link" *ngIf="!authenticatedUser">
             <a class="link-item" (click)="clickBurgerMenu(); openLoginWindow()">
-              <span class="material-symbols-outlined google-icon">login</span>
+              <span class="material-symbols-outlined google-icon" translate="no"
+                >login</span
+              >
               <span *ngIf="burgerMenu">Вхід</span>
             </a>
           </li>

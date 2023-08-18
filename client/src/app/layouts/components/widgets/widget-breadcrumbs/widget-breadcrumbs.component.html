@@ -8,7 +8,7 @@
   >
     home
   </span>
-  <span class="material-symbols-outlined"> navigate_next </span>
+  <span class="material-symbols-outlined" translate="no"> navigate_next </span>
 
   <a
     [matTooltip]="widget_breadcrumbs.first.name"
@@ -19,7 +19,9 @@
   </a>
 
   <ng-container *ngIf="type === 'card' || type === 'search'">
-    <span class="material-symbols-outlined"> navigate_next </span>
+    <span class="material-symbols-outlined" translate="no">
+      navigate_next
+    </span>
     <a
       [matTooltip]="widget_breadcrumbs.second.name"
       [routerLink]="'/search/' + widget_breadcrumbs.second.link"
@@ -30,7 +32,9 @@
   </ng-container>
 
   <ng-container *ngIf="widget_breadcrumbs.third">
-    <span class="material-symbols-outlined"> navigate_next </span>
+    <span class="material-symbols-outlined" translate="no">
+      navigate_next
+    </span>
     <a
       [matTooltip]="widget_breadcrumbs.third.name"
       [routerLink]="'/search/' + widget_breadcrumbs.third.link"
@@ -41,7 +45,9 @@
   </ng-container>
 
   <ng-container *ngIf="widget_breadcrumbs.location && type === 'card'">
-    <span class="material-symbols-outlined"> navigate_next </span>
+    <span class="material-symbols-outlined" translate="no">
+      navigate_next
+    </span>
     <a class="breadcrumbs-item">
       {{ widget_breadcrumbs.location.name }}
     </a>
