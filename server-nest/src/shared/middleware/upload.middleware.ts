@@ -1,3 +1,4 @@
+import { BadRequestException } from "@nestjs/common";
 import * as multer from "multer";
 import * as moment from "moment";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
@@ -16,7 +17,7 @@ const storage: MulterOptions["storage"] = multer.diskStorage({
 const fileFilter: MulterOptions["fileFilter"] = (
   req: any,
   file,
-  cb: (error: Error | null, acceptFile: boolean) => void
+  cb: (error: Error | null, acceptFile: boolean) => void,
 ): void => {
   if (
     file.mimetype === "image/png" ||
@@ -25,7 +26,13 @@ const fileFilter: MulterOptions["fileFilter"] = (
   ) {
     cb(null, true);
   } else {
-    cb(null, false);
+    cb(
+      new BadRequestException(null, {
+        description:
+          "Prohibited file format. The following types are allowed: png, jpeg, webp",
+      }),
+      false,
+    );
   }
 };
 
