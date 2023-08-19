@@ -22,12 +22,12 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./product-new-photo.component.scss"],
 })
 export class ProductNewPhotoComponent implements OnInit {
-  constructor(private showMessage: OpenSnackBarService) {}
+  public constructor(private showMessage: OpenSnackBarService) {}
 
   @Input() InputData_Photo: InputData_Photo | undefined;
   @Input() update: boolean = false; // Default value = false
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     console.log("Start ngOnInit Product-New-Photo");
 
     if (this.InputData_Photo) {
@@ -76,25 +76,40 @@ export class ProductNewPhotoComponent implements OnInit {
   imagesValidation: boolean = false;
   numberPhoto: number = 0;
 
-  drop(event: CdkDragDrop<string[]>) {
+  public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.imagePreview, event.previousIndex, event.currentIndex);
     moveItemInArray(this.images, event.previousIndex, event.currentIndex);
     this.sendPhotosToParentComponent();
   }
 
-  triggerClick() {
+  public triggerClick() {
     if (this.images.indexOf(undefined) >= 0) {
       this.inputFile?.nativeElement.click();
     }
   } // Click button "Download photo"
 
-  onFileUpload(event: any) {
+  public async onFileUpload(event: any) {
     if (this.InputData_Photo) {
       const fileList: File[] = Array.from(event.target.files);
 
       for (const file of fileList) {
         if (this.acceptImage.includes(file.type)) {
-          //
+          const image: HTMLImageElement = new Image();
+          image.src = URL.createObjectURL(file);
+
+          await new Promise((resolve, reject) => {
+            image.onload = () => resolve(image);
+            image.onerror = (error) => reject(error);
+          });
+
+          if (image.width < 300 || image.height < 300) {
+            this.showMessage.open(
+              "Мінімальний розмір файлів 300px x 300px",
+              undefined
+            );
+            continue;
+          }
+
           if (this.images.indexOf(undefined) >= 0) {
             const placeholderImages = this.images.indexOf(undefined);
             this.images[placeholderImages] = file;
@@ -102,12 +117,16 @@ export class ProductNewPhotoComponent implements OnInit {
             const reader = new FileReader();
             reader.onload = (e: ProgressEvent<FileReader>) => {
               if (e.target) {
-                const fileContent = e.target.result;
+                if (e.total > 3000000) {
+                  this.showMessage.open("Файл не більше 3MB", undefined);
+                } else {
+                  const fileContent = e.target.result;
 
-                const placeholderIdx = this.imagePreview.indexOf(undefined);
-                this.imagePreview[placeholderIdx] = fileContent;
+                  const placeholderIdx = this.imagePreview.indexOf(undefined);
+                  this.imagePreview[placeholderIdx] = fileContent;
 
-                this.numberPhoto++;
+                  this.numberPhoto++;
+                }
               }
             };
 
@@ -120,6 +139,10 @@ export class ProductNewPhotoComponent implements OnInit {
             "Дозволений тип фото " + `[ ${this.acceptImage.join(", ")} ]`,
             undefined
           );
+          this.showMessage.open(
+            "Дозволені типи фото " + `[ ${this.acceptImage.join(", ")} ]`,
+            undefined
+          );
         }
       }
 
@@ -127,7 +150,7 @@ export class ProductNewPhotoComponent implements OnInit {
     }
   }
 
-  deletePhoto() {
+  public deletePhoto() {
     if (this.InputData_Photo) {
       this.images = [];
 
@@ -151,7 +174,7 @@ export class ProductNewPhotoComponent implements OnInit {
     }
   }
 
-  deletePhotoByIdx(id: number) {
+  public deletePhotoByIdx(id: number) {
     this.images.splice(id, 1);
     this.imagePreview.splice(id, 1);
 
@@ -162,11 +185,11 @@ export class ProductNewPhotoComponent implements OnInit {
     this.sendPhotosToParentComponent();
   }
 
-  sendPhotosToParentComponent() {
+  public sendPhotosToParentComponent() {
     this.sendPhoto.emit(this.images);
   }
 
-  isString(idx: number): boolean {
+  public isString(idx: number): boolean {
     if (typeof this.images[idx] === "string") {
       return true;
     } else {
