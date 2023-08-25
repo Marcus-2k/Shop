@@ -13,7 +13,7 @@ export const ProductSchema: Schema = new Schema({
     type: SchemaTypes.Number,
     required: true,
   },
-  actionPrice: {
+  discountPrice: {
     type: SchemaTypes.Mixed, // Number | null
     required: false,
     validate: {
