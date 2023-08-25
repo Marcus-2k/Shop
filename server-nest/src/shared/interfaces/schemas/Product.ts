@@ -4,7 +4,7 @@ export interface Product extends Document {
   imageSrc: string[];
   name: string;
   price: number;
-  actionPrice: number;
+  discountPrice: number |null;
   counter: number;
   status: number;
   category: string;

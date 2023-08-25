@@ -125,9 +125,10 @@ export class CartComponent implements OnInit, OnDestroy {
               product_id: [element._id],
               counter: [1],
               totalPrice: element.price,
-              totalActionPrice: element.action
-                ? element.actionPrice
-                : element.price,
+              totalActionPrice:
+                element.discountPrice !== null
+                  ? element.discountPrice
+                  : element.price,
               totalCounterProduct: 1,
             },
           },
@@ -176,9 +177,10 @@ export class CartComponent implements OnInit, OnDestroy {
                 itemOrder.product.info.totalPrice;
               orders[index].product.info.totalCounterProduct +=
                 itemOrder.product.info.totalCounterProduct;
-              orders[index].product.info.totalActionPrice += element.action
-                ? itemOrder.product.info.totalActionPrice
-                : itemOrder.product.info.totalPrice;
+              orders[index].product.info.totalActionPrice +=
+                element.discountPrice !== null
+                  ? itemOrder.product.info.totalActionPrice
+                  : itemOrder.product.info.totalPrice;
 
               shoppingCart[index].push(data[idx]);
               break;

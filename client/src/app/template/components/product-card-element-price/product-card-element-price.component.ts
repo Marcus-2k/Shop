@@ -9,6 +9,5 @@ export class ProductCardElementPriceComponent {
   constructor() {}
 
   @Input() price?: number;
-  @Input() action?: boolean;
-  @Input() actionPrice?: number;
+  @Input() discountPrice?: number | null;
 }

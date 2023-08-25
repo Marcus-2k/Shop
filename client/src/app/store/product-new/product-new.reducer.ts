@@ -23,10 +23,10 @@ export const ProductNewReducer = createReducer(
         priceData: {
           price_original: props.data.price,
           price_present: props.data.price,
-          action_original: props.data.action,
-          action_present: props.data.action,
-          actionPrice_original: props.data.actionPrice,
-          actionPrice_present: props.data.actionPrice,
+          action_original: props.data.discountPrice !== null ? true : false,
+          action_present: props.data.discountPrice !== null ? true : false,
+          discountPrice_original: props.data.discountPrice,
+          discountPrice_present: props.data.discountPrice,
         },
         statusData: {
           counter_original: props.data.counter,
@@ -74,8 +74,8 @@ export const ProductNewReducer = createReducer(
           price_present: null,
           action_original: false,
           action_present: false,
-          actionPrice_original: null,
-          actionPrice_present: null,
+          discountPrice_original: null,
+          discountPrice_present: null,
         },
         statusData: {
           counter_original: null,
@@ -146,7 +146,7 @@ export const ProductNewReducer = createReducer(
     const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
 
     if (stateClone.dataProduct !== null) {
-      stateClone.dataProduct.priceData.actionPrice_present =
+      stateClone.dataProduct.priceData.discountPrice_present =
         props.actionPriceValue;
     }
 
@@ -212,9 +212,6 @@ export const ProductNewReducer = createReducer(
 
   on(ProductNewActions.updateCharacteristics, (state, props) => {
     const stateClone: ProductNewState = JSON.parse(JSON.stringify(state));
-
-    console.log("reducer", props.type);
-    console.log("prods - data = ", props);
 
     if (stateClone.dataProduct !== null) {
       stateClone.dataProduct.characteristicsData.characteristics_present =

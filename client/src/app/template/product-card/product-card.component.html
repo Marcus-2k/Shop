@@ -9,7 +9,12 @@
         <app-card-favorite [_idProduct]="productItem._id"></app-card-favorite>
       </div>
       <div class="content-action">
-        <p class="product-card__action" *ngIf="productItem.action">Акція</p>
+        <p
+          class="product-card__action"
+          *ngIf="productItem.discountPrice !== null"
+        >
+          Акція
+        </p>
       </div>
       <!--  -->
       <div
@@ -49,7 +54,10 @@
       </div>
       <!--  -->
       <div class="content-action-price">
-        <p class="product-card__action-price" *ngIf="productItem.action">
+        <p
+          class="product-card__action-price"
+          *ngIf="productItem.discountPrice !== null"
+        >
           {{ productItem.price | price }}
           <span class="currency">₴</span>
         </p>
@@ -58,9 +66,8 @@
       <div class="content-about">
         <div class="content-about-price">
           <app-product-card-element-price
-            [action]="productItem.action"
             [price]="productItem.price"
-            [actionPrice]="productItem.actionPrice"
+            [discountPrice]="productItem.discountPrice"
           ></app-product-card-element-price>
         </div>
         <div class="content-about-cart">

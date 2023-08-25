@@ -1,11 +1,11 @@
 <!--  -->
 
-<div class="price" *ngIf="price !== undefined && actionPrice !== undefined">
+<div class="price" *ngIf="price !== undefined && discountPrice !== undefined">
   <p
     class="price__title price__title__active"
-    [ngClass]="{ price__title__active: action }"
+    [ngClass]="{ price__title__active: discountPrice !== null }"
   >
-    {{ action ? (actionPrice | price) : (price | price) }}
+    {{ discountPrice !== null ? (discountPrice | price) : (price | price) }}
 
     <span class="price__title-currency">₴</span>
   </p>

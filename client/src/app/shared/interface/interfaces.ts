@@ -29,8 +29,7 @@ export interface Product {
   imageSrc: string[];
   name: string;
   price: number;
-  action: boolean;
-  actionPrice: number;
+  discountPrice: number | null;
   counter: number;
   category: string;
   characteristics: number[];
@@ -67,8 +66,7 @@ export interface ProductSearch {
   imageSrc: [string, string];
   name: string;
   price: number;
-  action: boolean;
-  actionPrice: number;
+  discountPrice: number | null;
   category: string;
   characteristics: number[];
   user: string;
@@ -78,8 +76,7 @@ export interface ProductUpdate {
   imageSrc: string[];
   name: string;
   price: number;
-  action: boolean;
-  actionPrice: number;
+  discountPrice: number | null;
   counter: number;
   category: string;
   categoryName: string[];
@@ -113,8 +110,7 @@ export interface Wish {
   imageSrc: [string, string];
   name: string;
   price: number;
-  action: boolean;
-  actionPrice: number;
+  discountPrice: number | null;
   status: 0 | 1 | 2 | 3;
   _id: string;
 }
@@ -235,8 +231,7 @@ export interface ProductCard_ShoppingCart {
   imageSrc: [string];
   name: string;
   price: number;
-  action: boolean;
-  actionPrice: number;
+  discountPrice: number | null;
   counter: number;
   status: 0 | 1 | 2 | 3;
   user: string;

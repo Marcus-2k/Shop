@@ -6,7 +6,12 @@
       <div class="display-none">{{ productItem._id }}</div>
       <!--  -->
       <div class="content-action">
-        <p class="user-card__action" *ngIf="productItem?.action">Акція</p>
+        <p
+          class="user-card__action"
+          *ngIf="productItem?.discountPrice !== null"
+        >
+          Акція
+        </p>
       </div>
       <!--  -->
       <div
@@ -46,7 +51,10 @@
       </div>
       <!--  -->
       <div class="content-action-price">
-        <p class="user-card__action-price" *ngIf="productItem.action">
+        <p
+          class="user-card__action-price"
+          *ngIf="productItem.discountPrice !== null"
+        >
           {{ productItem.price | price }}
           <span class="currency">₴</span>
         </p>
@@ -55,9 +63,8 @@
       <div class="content-about">
         <div class="content-about-price">
           <app-product-card-element-price
-            [action]="productItem.action"
             [price]="productItem.price"
-            [actionPrice]="productItem.actionPrice"
+            [discountPrice]="productItem.discountPrice"
           ></app-product-card-element-price>
         </div>
       </div>

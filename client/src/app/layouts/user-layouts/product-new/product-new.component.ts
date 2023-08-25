@@ -164,7 +164,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       this.InputData.priceData.action =
         data.dataProduct.priceData.action_present;
       this.InputData.priceData.actionPrice =
-        data.dataProduct.priceData.actionPrice_present;
+        data.dataProduct.priceData.discountPrice_present;
 
       // Status
       this.InputData.statusData.counter =
@@ -292,10 +292,10 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       if (productState.dataProduct.priceData.action_present) {
         formData.append("action", "1");
 
-        if (productState.dataProduct.priceData.actionPrice_present) {
+        if (productState.dataProduct.priceData.discountPrice_present) {
           formData.append(
             "actionPrice",
-            productState.dataProduct.priceData.actionPrice_present.toString()
+            productState.dataProduct.priceData.discountPrice_present.toString()
           );
         } else {
           validData = false;

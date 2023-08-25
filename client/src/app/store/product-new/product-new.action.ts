@@ -109,8 +109,8 @@ export interface ProductNewState {
       price_present: number | null;
       action_original: boolean;
       action_present: boolean;
-      actionPrice_original: number | null;
-      actionPrice_present: number | null;
+      discountPrice_original: number | null;
+      discountPrice_present: number | null;
     };
     statusData: {
       counter_original: number | null;

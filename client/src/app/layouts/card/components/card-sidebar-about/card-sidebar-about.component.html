@@ -4,16 +4,25 @@
     <!--  -->
     <div
       class="about__content-price"
-      *ngIf="price !== undefined && actionPrice !== undefined"
+      *ngIf="price !== undefined && discountPrice !== undefined"
     >
       <div class="price">
-        <p class="price__title" [ngClass]="{ price__title__action: action }">
+        <p
+          class="price__title"
+          [ngClass]="{ price__title__action: discountPrice !== null }"
+        >
           <span class="price__title-text">
-            {{ action ? (actionPrice | price) : (price | price) }}&nbsp;
+            {{
+              discountPrice !== null
+                ? (discountPrice | price)
+                : (price | price)
+            }}&nbsp;
           </span>
           <span class="price__title-currency">₴</span>
         </p>
-        <p class="price__action" *ngIf="action">{{ price | price }}&nbsp;₴</p>
+        <p class="price__action" *ngIf="discountPrice !== null">
+          {{ price | price }}&nbsp;₴
+        </p>
       </div>
     </div>
     <div class="about__content-btn">

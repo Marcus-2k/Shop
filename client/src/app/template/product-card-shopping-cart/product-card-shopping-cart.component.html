@@ -48,17 +48,19 @@
     </div>
 
     <div class="content-price content-item">
-      <p class="price__action" *ngIf="productItem.action">
+      <p class="price__action" *ngIf="productItem.discountPrice !== null">
         {{ productItem.price * counter_order | price }}
         <span class="currency">₴</span>
       </p>
       <p
         class="price"
-        [ngStyle]="{ color: productItem.action ? 'red' : 'black' }"
+        [ngStyle]="{
+          color: productItem.discountPrice !== null ? 'red' : 'black'
+        }"
       >
         {{
-          productItem.action
-            ? (productItem.actionPrice * counter_order | price)
+          productItem.discountPrice !== null
+            ? (productItem.discountPrice * counter_order | price)
             : (productItem.price * counter_order | price)
         }}
         <span class="currency">₴</span>

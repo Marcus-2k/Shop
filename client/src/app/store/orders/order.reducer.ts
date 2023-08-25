@@ -102,14 +102,13 @@ export const OrderReducer = createReducer(
       if (
         stateClone.productCard_shoppingCart[props.sequence_number_order][
           props.sequence_number_card
-        ].action
+        ].discountPrice !== null
       ) {
         stateClone.orders[
           props.sequence_number_order
-        ].product.info.totalActionPrice +=
-          stateClone.productCard_shoppingCart[props.sequence_number_order][
-            props.sequence_number_card
-          ].actionPrice;
+        ].product.info.totalActionPrice += stateClone.productCard_shoppingCart[
+          props.sequence_number_order
+        ][props.sequence_number_card].discountPrice as any;
       } else {
         stateClone.orders[
           props.sequence_number_order
@@ -169,14 +168,13 @@ export const OrderReducer = createReducer(
       if (
         stateClone.productCard_shoppingCart[props.sequence_number_order][
           props.sequence_number_card
-        ].action
+        ].discountPrice !== null
       ) {
         stateClone.orders[
           props.sequence_number_order
-        ].product.info.totalActionPrice -=
-          stateClone.productCard_shoppingCart[props.sequence_number_order][
-            props.sequence_number_card
-          ].actionPrice;
+        ].product.info.totalActionPrice -= stateClone.productCard_shoppingCart[
+          props.sequence_number_order
+        ][props.sequence_number_card].discountPrice as any;
       } else {
         stateClone.orders[
           props.sequence_number_order
@@ -229,14 +227,14 @@ export const OrderReducer = createReducer(
         if (
           stateClone.productCard_shoppingCart[props.sequence_number_order][
             props.sequence_number_card
-          ].action
+          ].discountPrice !== null
         ) {
           stateClone.orders[
             props.sequence_number_order
           ].product.info.totalActionPrice -=
-            stateClone.productCard_shoppingCart[props.sequence_number_order][
+            (stateClone.productCard_shoppingCart[props.sequence_number_order][
               props.sequence_number_card
-            ].actionPrice * counterDeletedProduct;
+            ].discountPrice as any) * counterDeletedProduct;
         } else {
           stateClone.orders[
             props.sequence_number_order

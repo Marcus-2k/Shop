@@ -50,7 +50,10 @@
       </div>
       <!--  -->
       <div class="content-action-price">
-        <p class="wish-item__action-price" *ngIf="productItem?.action">
+        <p
+          class="wish-item__action-price"
+          *ngIf="productItem?.discountPrice !== null"
+        >
           {{ productItem.price | price }}
           <span class="currency">₴</span>
         </p>
@@ -59,9 +62,8 @@
       <div class="content-about">
         <div class="content-about-price">
           <app-product-card-element-price
-            [action]="productItem.action"
             [price]="productItem.price"
-            [actionPrice]="productItem.actionPrice"
+            [discountPrice]="productItem.discountPrice"
           ></app-product-card-element-price>
         </div>
         <div class="content-about-cart">

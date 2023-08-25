@@ -44,8 +44,8 @@ export class WishlistComponent implements OnInit {
     this.totolPriceAction = 0;
     this.totolPrice = 0;
     this.wishList.forEach((item) => {
-      if (item.action) {
-        this.totolPrice = this.totolPrice + item.actionPrice;
+      if (item.discountPrice !== null) {
+        this.totolPrice = this.totolPrice + item.discountPrice;
       } else {
         this.totolPrice = this.totolPrice + item.price;
       }

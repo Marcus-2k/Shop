@@ -6,11 +6,8 @@ import { Component, Input } from "@angular/core";
   styleUrls: ["./card-sidebar-about.component.scss"],
 })
 export class CardSidebarAboutComponent {
-  constructor() {}
-
-  @Input() price?: number;
-  @Input() action?: boolean;
-  @Input() actionPrice?: number;
   @Input() _id?: string;
+  @Input() price?: number;
+  @Input() discountPrice?: number | null;
   @Input() counter?: number;
 }
