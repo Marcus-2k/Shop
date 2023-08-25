@@ -10,6 +10,8 @@ import { ProductUpdate } from "src/shared/interfaces/schemas/product/product-upd
 import { ProductNew } from "src/shared/interfaces/schemas/product/product-new";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { CategoryService } from "../category/category.service";
+import { CategoryName } from "src/shared/interfaces/category-name";
+import { CategoryNumber } from "src/shared/interfaces/category-number";
 
 @Injectable()
 export class ProductService {
@@ -142,18 +144,14 @@ export class ProductService {
     }
   }
 
-  public createCategoryName(
-    category: string,
-  ): [string, string] | [string, string, string] | string {
-    const categoryNumber:
-      | [number, number]
-      | [number, number, number]
-      | MessageRes = this.categoryService.getCategoryNumberByCategory(category);
+  public createCategoryName(category: string): CategoryName | string {
+    const categoryNumber: CategoryNumber | MessageRes =
+      this.categoryService.getCategoryNumberByCategory(category);
     if (!Array.isArray(categoryNumber)) {
       return categoryNumber.message;
     }
 
-    const categoryName: [string, string] | [string, string, string] = [
+    const categoryName: CategoryName = [
       CATEGORY[categoryNumber[0]].nameCategory,
       CATEGORY[categoryNumber[0]].nameListCategory[categoryNumber[1]]
         .subNameCategory,

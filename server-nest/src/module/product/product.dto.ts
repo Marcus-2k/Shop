@@ -29,19 +29,13 @@ export class CreateProductDto {
   price: number;
 
   @Transform(({ value }) => {
-    if (value === "1") {
-      return true;
+    if (value === "null") {
+      return null;
     } else {
-      return false;
+      return Number(value) > 0 ? Number(value) : null;
     }
   })
-  @IsBoolean()
-  action: boolean;
-
-  @Transform(({ value }) => {
-    return Number(value);
-  })
-  actionPrice: number;
+  discountPrice: number | null;
 
   @Transform(({ value }) => {
     return Number(value);
@@ -103,20 +97,13 @@ export class UpdateProduct {
 
   @IsOptional()
   @Transform(({ value }) => {
-    if (value === "1") {
-      return true;
+    if (value === "null") {
+      return null;
     } else {
-      return false;
+      return Number(value) > 0 ? Number(value) : null;
     }
   })
-  @IsBoolean()
-  action?: boolean;
-
-  @IsOptional()
-  @Transform(({ value }) => {
-    return Number(value);
-  })
-  actionPrice?: number;
+  discountPrice?: number | null;
 
   @IsOptional()
   @Transform(({ value }) => {

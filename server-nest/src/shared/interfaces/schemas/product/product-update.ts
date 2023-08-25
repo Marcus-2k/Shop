@@ -2,7 +2,7 @@ export interface ProductUpdate {
   imageSrc?: string[];
   name?: string;
   price?: number;
-  actionPrice?: number | null;
+  discountPrice?: number | null;
   counter?: number;
   status?: number;
   category?: string;

@@ -29,6 +29,8 @@ import { ProductUpdate } from "src/shared/interfaces/schemas/product/product-upd
 import { CategoryService } from "../category/category.service";
 import { PaginationDto } from "src/shared/dto/pagination";
 import { PaginationRes } from "src/shared/interfaces/res/pagintaion";
+import { CategoryName } from "src/shared/interfaces/category-name";
+import { SuccessRes } from "src/shared/interfaces/res/success";
 
 @Controller("product")
 /** Pipe */
@@ -79,9 +81,9 @@ export class ProductController {
 
   @Get(":id")
   public async getByIdProduct(
-    @Res() response: Response<any>,
+    @Res() response: Response<Product>,
     @Param() param: IdDto,
-  ): Promise<Response<any>> {
+  ): Promise<Response> {
     let product: Product = await this.service.findById(param.id);
 
     let characteristicsName: any =
@@ -96,15 +98,17 @@ export class ProductController {
   @Patch(":id")
   @UseInterceptors(FilesInterceptor("images", 8, upload))
   public async updateProduct(
-    @Res() response: Response<any>,
+    @Res() response: Response<MessageRes & SuccessRes>,
     @Param() param: IdDto,
     @Body() body: UpdateProduct,
     @UploadedFiles() files: Array<Express.Multer.File>,
-  ): Promise<Response<any>> {
+  ): Promise<Response> {
     const product: Product | null = await this.service.findById(param.id);
 
     if (!product) {
-      return response.status(404).json({ message: "Товар не існує" });
+      return response
+        .status(404)
+        .json({ message: "Товар не існує", success: false });
     }
 
     const updateProduct: ProductUpdate = {};
@@ -153,13 +157,9 @@ export class ProductController {
     }
 
     // Discount
-    // if (body.action === true || body.action === false) {
-    //   if (body.action) {
-    //     updateProduct.action = body.action;
-    //   } else {
-    //     updateProduct.actionPrice = -1;
-    //   }
-    // }
+    if (body.discountPrice !== undefined) {
+      updateProduct.discountPrice = body.discountPrice;
+    }
 
     // Counter & Status
     if (body.counter) {
@@ -174,11 +174,13 @@ export class ProductController {
     if (body.category && body.characteristics) {
       updateProduct.category = body.category;
 
-      const categoryName: [string, string] | [string, string, string] | string =
+      const categoryName: CategoryName | string =
         this.service.createCategoryName(body.category);
 
       if (!Array.isArray(categoryName)) {
-        return response.status(200).json({ message: categoryName });
+        return response
+          .status(200)
+          .json({ message: categoryName, success: false });
       }
       updateProduct.categoryName = categoryName;
     }
@@ -196,7 +198,9 @@ export class ProductController {
       );
 
       if (typeof characteristics === "string") {
-        return response.status(200).json({ message: characteristics });
+        return response
+          .status(200)
+          .json({ message: characteristics, success: false });
       }
 
       updateProduct.characteristics = characteristics.characteristicsNumber;
@@ -216,27 +220,31 @@ export class ProductController {
     if (Object.keys(updateProduct).length > 0) {
       await this.service.updateProduct(param.id, updateProduct);
 
-      return response.status(200).json({ message: "Товар успішно змінено" });
+      return response
+        .status(200)
+        .json({ message: "Товар успішно змінено", success: true });
     } else {
-      return response.status(200).json({ message: "Нових змін не відбулося" });
+      return response
+        .status(200)
+        .json({ message: "Нових змін не відбулося", success: true });
     }
   }
 
   @Post()
   @UseInterceptors(FilesInterceptor("images", 8, upload))
   public async createProduct(
-    @Res() response: Response<MessageRes>,
+    @Res() response: Response<MessageRes & SuccessRes>,
     @Body() body: CreateProductDto,
     @User() user: TokenData,
     @UploadedFiles() files: Array<Express.Multer.File>,
-  ): Promise<Response<MessageRes>> {
+  ): Promise<Response> {
     // Images
     const imageSrc: string[] = [];
 
     if (files.length === 0) {
       return response
         .status(400)
-        .json({ message: "Фото товару є обовз'язковим" });
+        .json({ message: "Фото товару є обовз'язковим", success: false });
     }
 
     for (let idx = 0; idx < files.length; idx++) {
@@ -250,29 +258,19 @@ export class ProductController {
     const price: number = body.price;
 
     // Discount
-    const action: boolean = body.action;
+    const discountPrice: number | null = body.discountPrice;
 
-    // Discount price
-    let actionPrice: number = body.actionPrice;
+    if (discountPrice !== null) {
+      const actionProcent: number = ((discountPrice - price) / price) * 100;
 
-    if (action) {
-      if (actionPrice >= 0) {
-        const actionProcent: number = ((actionPrice - price) / price) * 100;
-
-        if (actionProcent > this.minActionProcent) {
-          return response.status(400).json({
-            message: `Акційна ціна повинна бути меншою за ціну на ${
-              this.minActionProcent
-            }%. Ваш відсоток знижки = ${actionProcent.toFixed(2)}%`,
-          });
-        }
-      } else {
-        return response
-          .status(400)
-          .json({ message: "Ви не вказали акційну ціну" });
+      if (actionProcent > this.minActionProcent) {
+        return response.status(400).json({
+          message: `Акційна ціна повинна бути меншою за ціну на ${
+            this.minActionProcent
+          }%. Ваш відсоток знижки = ${actionProcent.toFixed(2)}%`,
+          success: false,
+        });
       }
-    } else {
-      actionPrice = -1;
     }
 
     // Counter
@@ -283,11 +281,14 @@ export class ProductController {
 
     // Category
     const category: string = body.category;
-    const categoryName: [string, string] | [string, string, string] | string =
-      this.service.createCategoryName(body.category);
+    const categoryName: CategoryName | string = this.service.createCategoryName(
+      body.category,
+    );
 
     if (!Array.isArray(categoryName)) {
-      return response.status(200).json({ message: categoryName });
+      return response
+        .status(200)
+        .json({ message: categoryName, success: false });
     }
 
     // Characteristics
@@ -299,7 +300,9 @@ export class ProductController {
         } = this.service.createCharacteristics(category, body.characteristics);
 
     if (typeof characteristics === "string") {
-      return response.status(200).json({ message: characteristics });
+      return response
+        .status(200)
+        .json({ message: characteristics, success: false });
     }
 
     // Keywords
@@ -312,7 +315,7 @@ export class ProductController {
       imageSrc,
       name,
       price,
-      actionPrice,
+      discountPrice,
       counter,
       status,
       category,
@@ -327,19 +330,23 @@ export class ProductController {
       user: user.id,
     });
 
-    return response.status(201).json({ message: "Товар успішно створено" });
+    return response
+      .status(201)
+      .json({ message: "Товар успішно створено", success: false });
   }
 
   @Delete(":id")
   public async deleteProduct(
-    @Res() response: Response<any>,
+    @Res() response: Response<MessageRes & { deleted: boolean }>,
     @Param() param: IdDto,
     @User() user: TokenData,
-  ): Promise<Response<any>> {
+  ): Promise<Response> {
     let product = await this.service.findById(param.id);
 
     if (!product) {
-      return response.status(200).json({ message: "Товар не існує" });
+      return response
+        .status(200)
+        .json({ message: "Товар не існує", deleted: false });
     }
 
     if (user.id === product.user) {
