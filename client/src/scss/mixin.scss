@@ -1,4 +1,4 @@
-// Адаптив c 1920 до 360px
+// From 1920 to 360px
 // @include adaptiv-font(20, 10);
 @mixin adaptiv-font($pcSize, $mobSize) {
   $addSize: $pcSize - $mobSize;
@@ -8,7 +8,7 @@
   );
 }
 
-// Адаптив c 1920 до 768px
+// From 1920px to 768px
 // @include adaptiv-font2(20, 10);
 @mixin adaptiv-font2($pcSize2, $mobSize2) {
   $addSize2: $pcSize2 - $mobSize2;
@@ -18,7 +18,7 @@
   );
 }
 
-// Адаптив c 768 до 360px
+// From 768px to 360px
 // @include adaptiv-font3(18, 16);
 @mixin adaptiv-font3($pcSize3, $mobSize3) {
   $addSize3: $pcSize3 - $mobSize3;

@@ -116,7 +116,7 @@ export class ProductController {
         (item) => !body.imageSrc.includes(item),
       );
 
-      // this.service.deleteImgFromFolder(deletedImageFromLocal)
+      this.service.deleteImgFromFolder(deletedImageFromLocal);
 
       const imageSrc: string[] = [];
       let number_photo: number = 0;
@@ -138,7 +138,7 @@ export class ProductController {
 
         updateProduct.imageSrc = body.imageSrc;
 
-        // this.service.deleteImgFromFolder(deletedImageFromLocal)
+        this.service.deleteImgFromFolder(deletedImageFromLocal);
       }
     }
 
