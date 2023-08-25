@@ -1,9 +1,9 @@
-package-lock.json
-node_modules
-dist
+*/*package*.json
+*/node_modules
+*dist
+*.vscode
 
 # Server
-.env
 server/uploads/*.webp
 server/uploads/*.png
 server/uploads/*.jpg
@@ -13,3 +13,6 @@ server-nest/uploads/*.jpg
 
 # Client
 client/.angular
+
+# Else
+*/*.env
