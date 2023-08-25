@@ -226,7 +226,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
       let messageError: string[] = [];
       let imageSrc: string[] = [];
 
-      // Photo
+      // Image
       if (this.images.length > 0) {
         const separatorPhoto = "?";
 
@@ -270,7 +270,7 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         messageError.push("Назва");
       }
 
-      // Price & Discount
+      // Price
       if (productState.dataProduct.priceData.price_present) {
         if (
           productState.dataProduct.priceData.price_present > 0 &&
@@ -289,20 +289,17 @@ export class ProductNewComponent implements OnInit, OnDestroy {
         validData = false;
         messageError.push("Ціна");
       }
-      if (productState.dataProduct.priceData.action_present) {
-        formData.append("action", "1");
 
+      // Discount
+      if (productState.dataProduct.priceData.action_present) {
         if (productState.dataProduct.priceData.discountPrice_present) {
           formData.append(
-            "actionPrice",
+            "discountPrice",
             productState.dataProduct.priceData.discountPrice_present.toString()
           );
         } else {
-          validData = false;
-          messageError.push("Акційна ціна");
+          formData.append("discountPrice", "null");
         }
-      } else {
-        formData.append("action", "0");
       }
 
       // Status & Counter

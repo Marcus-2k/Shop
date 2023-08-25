@@ -261,13 +261,13 @@ export class ProductController {
     const discountPrice: number | null = body.discountPrice;
 
     if (discountPrice !== null) {
-      const actionProcent: number = ((discountPrice - price) / price) * 100;
+      const discountProcent: number = ((discountPrice - price) / price) * 100;
 
-      if (actionProcent > this.minActionProcent) {
+      if (discountProcent > this.minActionProcent) {
         return response.status(400).json({
           message: `Акційна ціна повинна бути меншою за ціну на ${
             this.minActionProcent
-          }%. Ваш відсоток знижки = ${actionProcent.toFixed(2)}%`,
+          }%. Ваш відсоток знижки = ${discountProcent.toFixed(2)}%`,
           success: false,
         });
       }

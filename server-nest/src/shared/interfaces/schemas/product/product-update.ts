@@ -1,3 +1,5 @@
+import { CategoryName } from "../../category-name";
+
 export interface ProductUpdate {
   imageSrc?: string[];
   name?: string;
@@ -6,7 +8,7 @@ export interface ProductUpdate {
   counter?: number;
   status?: number;
   category?: string;
-  categoryName?: [string, string] | [string, string, string];
+  categoryName?: CategoryName;
   characteristics?: number[][];
   characteristicsName?: {
     [key: string]: string[];
