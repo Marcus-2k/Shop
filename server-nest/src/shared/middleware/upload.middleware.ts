@@ -9,7 +9,7 @@ const storage: MulterOptions["storage"] = multer.diskStorage({
   },
 
   filename(req, file, cb) {
-    const date = moment().format("DDMMYYYY-HHmmss SSS");
+    const date = moment().format("DDMMYYYY-HHmmss-SSS");
     cb(null, `${date}-${file.originalname}`);
   },
 });
@@ -21,6 +21,7 @@ const fileFilter: MulterOptions["fileFilter"] = (
 ): void => {
   if (
     file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/webp"
   ) {
@@ -29,7 +30,7 @@ const fileFilter: MulterOptions["fileFilter"] = (
     cb(
       new BadRequestException(null, {
         description:
-          "Prohibited file format. The following types are allowed: png, jpeg, webp",
+          "Prohibited file format. The following types are allowed: png, jpeg, jpg, webp",
       }),
       false,
     );
