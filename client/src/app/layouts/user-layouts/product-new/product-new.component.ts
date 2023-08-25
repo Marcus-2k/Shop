@@ -235,10 +235,9 @@ export class ProductNewComponent implements OnInit, OnDestroy {
             if (typeof value === "string") {
               imageSrc.push(value);
             } else {
-              formData.append("image-" + idx, value, value.name);
+              imageSrc.push("file");
+              formData.append("images", value, value.name);
             }
-
-            console.log("image-" + idx, formData.get("image-" + idx));
           }
         });
 
