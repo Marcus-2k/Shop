@@ -88,7 +88,7 @@ export class ProductController {
       this.categoryService.getCharacteristicsByCategory(product.category);
 
     product = JSON.parse(JSON.stringify(product));
-    product.characteristicsName = characteristicsName;
+    product.characteristicsName = characteristicsName[0];
 
     return response.status(200).json(product);
   }
@@ -108,10 +108,39 @@ export class ProductController {
     }
 
     const updateProduct: ProductUpdate = {};
+    // Images
+    if (files.length > 0) {
+      /* Add if body.imageSrc (request from postman) */
 
-    // Photo
-    // const imageSrc: string[] = product.imageSrc;
-    // const imageSrcLink: string[] = body.imageSrc;
+      const deletedImageFromLocal: string[] = product.imageSrc.filter(
+        (item) => !body.imageSrc.includes(item),
+      );
+
+      // this.service.deleteImgFromFolder(deletedImageFromLocal)
+
+      const imageSrc: string[] = [];
+      let number_photo: number = 0;
+      for (let idx = 0; idx < body.imageSrc.length; idx++) {
+        if (body.imageSrc[idx] === "file") {
+          imageSrc[idx] = files[number_photo].path;
+
+          number_photo += 1;
+        } else {
+          imageSrc[idx] = body.imageSrc[idx];
+        }
+      }
+      updateProduct.imageSrc = imageSrc;
+    } else {
+      if (body.imageSrc) {
+        const deletedImageFromLocal: string[] = product.imageSrc.filter(
+          (item) => !body.imageSrc.includes(item),
+        );
+
+        updateProduct.imageSrc = body.imageSrc;
+
+        // this.service.deleteImgFromFolder(deletedImageFromLocal)
+      }
+    }
 
     // Name
     if (body.name) {

@@ -1,6 +1,6 @@
 import { Schema, SchemaTypes } from "mongoose";
 
-export const ProductSchema = new Schema({
+export const ProductSchema: Schema = new Schema({
   imageSrc: {
     type: SchemaTypes.Array,
     required: true,
@@ -22,7 +22,7 @@ export const ProductSchema = new Schema({
           return true;
         }
 
-        if (isNaN(value) === false && Number() >= 0) {
+        if (isNaN(value) === false && value >= 0) {
           return true;
         }
 
@@ -35,7 +35,7 @@ export const ProductSchema = new Schema({
     required: true,
   },
   status: {
-    type: SchemaTypes.Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується',
+    type: SchemaTypes.Number, // 0 = 'В наявності', 1 = 'Очікується постачання', 2 = 'Немає в наявності', 3 = 'Закінчується'
     required: true,
   },
   category: {
@@ -56,6 +56,8 @@ export const ProductSchema = new Schema({
   },
   keywords: {
     type: SchemaTypes.Array,
+    require: true,
+    default: [],
   },
   description: {
     type: SchemaTypes.String,
@@ -64,14 +66,17 @@ export const ProductSchema = new Schema({
   comments: {
     type: SchemaTypes.Array,
     required: true,
+    default: [],
   },
   questions: {
     type: SchemaTypes.Array,
     required: true,
+    default: [],
   },
   accessories: {
     type: SchemaTypes.Array,
     required: true,
+    default: [],
   },
   user: {
     ref: "users",
