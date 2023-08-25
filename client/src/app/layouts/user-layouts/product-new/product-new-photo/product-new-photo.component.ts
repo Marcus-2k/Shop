@@ -136,10 +136,6 @@ export class ProductNewPhotoComponent implements OnInit {
           }
         } else {
           this.showMessage.open(
-            "Дозволений тип фото " + `[ ${this.acceptImage.join(", ")} ]`,
-            undefined
-          );
-          this.showMessage.open(
             "Дозволені типи фото " + `[ ${this.acceptImage.join(", ")} ]`,
             undefined
           );
