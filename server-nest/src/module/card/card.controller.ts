@@ -9,7 +9,6 @@ import {
 import { Response } from "express";
 import { IdDto } from "src/shared/dto/id";
 import { ProductService } from "../product/product.service";
-import { CATEGORY } from "src/shared/db/category";
 import { Product } from "src/shared/interfaces/schemas/Product";
 import { MessageRes } from "src/shared/interfaces/res/message";
 import { Option } from "src/shared/interfaces/option";
@@ -37,13 +36,12 @@ export class CardController {
   ): Promise<Response> {
     const productInfo: Product | null = await this.productService.findById(
       param.id,
-
       {
         imageSrc: true,
         name: true,
         price: true,
         action: true,
-        actionPrice: true,
+        discountPrice: true,
         counter: true,
         category: true,
         status: true,
