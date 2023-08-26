@@ -163,7 +163,10 @@ export class HeaderComponent implements OnInit, DoCheck {
         let index: number = -1;
 
         for (let idx = 0; idx < historySearch.length; idx++) {
-          if (historySearch[idx] === title) {
+          if (
+            historySearch[idx] === title ||
+            historySearch[idx] === this.searchText
+          ) {
             index = idx;
             break;
           }
