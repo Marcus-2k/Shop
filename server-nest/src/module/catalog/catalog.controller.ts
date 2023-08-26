@@ -5,34 +5,31 @@ import {
   Param,
   UsePipes,
   ValidationPipe,
-  UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
 import { CATALOG } from "src/shared/db/catalog";
 import { GetCatalogSectionDto } from "./catalog.dto";
 
-/** Interface */
+/* Interface */
 import { Catalog } from "src/shared/interfaces/catalog";
 import { Breadcrumbs } from "src/shared/interfaces/widget/breadcrumbs";
 import { MessageRes } from "src/shared/interfaces/res/message";
-import { CatalogSection } from "./catalog.interface.response";
-import { JwtAuthGuard } from "src/shared/guards/jwt.guard";
 
 @Controller("catalog")
-/** Pipe */
+/* Pipe */
 @UsePipes(new ValidationPipe({ transform: true }))
 export class CatalogController {
   @Get()
   public async getCatalog(
-    @Res() response: Response<Catalog[]>
+    @Res() response: Response<Catalog[]>,
   ): Promise<Response<Catalog[]>> {
     return response.status(200).json(CATALOG);
   }
 
   @Get("home")
   public async getCatalogHome(
-    @Res() response: Response<Catalog[]>
-  ): Promise<Response<Catalog[]>> {
+    @Res() response: Response<Catalog[]>,
+  ): Promise<Response> {
     let sidebar_list = [];
 
     for (let idx = 0; idx < CATALOG.length; idx++) {
@@ -48,9 +45,12 @@ export class CatalogController {
 
   @Get(":navigate_link")
   public async getCatalogSection(
-    @Res() response: Response<CatalogSection | MessageRes>,
-    @Param() param: GetCatalogSectionDto
-  ): Promise<Response<CatalogSection | MessageRes>> {
+    @Res()
+    response: Response<
+      { widget_breadcrumbs: Breadcrumbs; catalog_section: Catalog } | MessageRes
+    >,
+    @Param() param: GetCatalogSectionDto,
+  ): Promise<Response> {
     const CLONE_CATALOG: Catalog[] = JSON.parse(JSON.stringify(CATALOG));
 
     for (let idx = 0; idx < CLONE_CATALOG.length; idx++) {
