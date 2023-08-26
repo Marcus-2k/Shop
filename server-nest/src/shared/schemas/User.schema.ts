@@ -1,27 +1,27 @@
-import { Schema } from "mongoose";
+import { Schema, SchemaTypes } from "mongoose";
 
 export const UserSchema = new Schema({
   avatar: {
-    type: String || null,
+    type: SchemaTypes.Mixed, // String || null
     default: null,
-    required: false,
+    required: true,
   },
   name: {
-    type: String,
+    type: SchemaTypes.String,
     required: true,
   },
   lastName: {
-    type: String || null,
+    type: SchemaTypes.Mixed, // String || null
     default: null,
     required: false,
   },
   email: {
-    type: String,
+    type: SchemaTypes.String,
     required: true,
     unique: true,
   },
   birthday: {
-    type: Date || null,
+    type: SchemaTypes.Date,
     default: null,
     required: false,
   },
@@ -31,21 +31,21 @@ export const UserSchema = new Schema({
     required: false,
   },
   password: {
-    type: String,
+    type: SchemaTypes.String,
     required: true,
   },
   history__view: {
-    type: [String],
+    type: [SchemaTypes.ObjectId],
     default: [],
     required: true,
   },
   favorite: {
-    type: [String],
+    type: [SchemaTypes.ObjectId],
     default: [],
     require: true,
   },
   shoppingCart: {
-    type: [String],
+    type: [SchemaTypes.ObjectId],
     default: [],
     require: true,
   },
