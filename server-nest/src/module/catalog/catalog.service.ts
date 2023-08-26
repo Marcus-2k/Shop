@@ -98,6 +98,18 @@ export class CatalogService {
           sectionId[position_duplicate].subNameListCategory.push(
             ...section.subNameListCategory,
           );
+
+          sectionId[position_duplicate].subNameListCategory = sectionId[
+            position_duplicate
+          ].subNameListCategory.filter((value, idx, array) => {
+            return (
+              array.findIndex(
+                (item) =>
+                  item.titleSubNameListCategory ===
+                  value.titleSubNameListCategory,
+              ) === idx
+            );
+          });
         } else {
           sectionId.push(section);
         }
