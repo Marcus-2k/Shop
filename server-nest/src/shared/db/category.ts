@@ -1,7 +1,6 @@
 import { options } from "./options.js";
-import { Category } from "../interfaces/category.js";
 
-export const CATEGORY: Category[] = [
+export const CATEGORY: any[] = [
   {
     nameCategory: "Ноутбуки та комп'ютери",
     nameListCategory: [

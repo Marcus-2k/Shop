@@ -1,18 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { ActivatedRoute, Params, Router } from "@angular/router";
-
+import { Widget_Breadcrumbs } from "src/app/shared/interface/card/card.interfaces";
 import {
-  Product,
   Filter,
+  Product,
   WidgetAutoPortal,
   WidgetSectionId,
 } from "src/app/shared/interface/interfaces";
-import { Widget_Breadcrumbs } from "src/app/shared/interface/card/card.interfaces";
-
+import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 import { RenameTitleService } from "src/app/shared/service/rename-title.service";
 import { RequestSearchService } from "src/app/shared/service/server/request-search.service";
-import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.service";
 
 @Component({
   selector: "app-search",
@@ -20,7 +18,7 @@ import { OpenSnackBarService } from "src/app/shared/service/open-snack-bar.servi
   styleUrls: ["./search.component.scss"],
 })
 export class SearchComponent implements OnInit {
-  constructor(
+  public constructor(
     private route: ActivatedRoute,
     private router: Router,
     private searchService: RequestSearchService,
@@ -28,7 +26,7 @@ export class SearchComponent implements OnInit {
     private renameTitle: RenameTitleService
   ) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     console.log("Start ngOnInit Search");
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -172,6 +170,8 @@ export class SearchComponent implements OnInit {
             }
           }
           // ==============================================================================================
+
+          this.loader = false;
         },
         error: (error) => {
           console.log(error);
@@ -210,17 +210,17 @@ export class SearchComponent implements OnInit {
     console.log(this.params);
   }
   // Сommon START =================================================================================
-  body: HTMLBodyElement = document.getElementsByTagName("body")[0];
+  public body: HTMLBodyElement = document.getElementsByTagName("body")[0];
 
-  search_text: string | undefined;
+  public search_text: string | undefined;
 
-  loader: boolean = true;
-  searchEmpty: boolean = false;
-  loaderNewData: boolean = false;
+  public loader: boolean = true;
+  public searchEmpty: boolean = false;
+  public loaderNewData: boolean = false;
 
-  number_of_product: number | undefined;
+  public number_of_product: number | undefined;
 
-  searchByQuery() {
+  public searchByQuery() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => true;
 
     if (this.params.hasOwnProperty("navigate_link")) {
@@ -276,21 +276,21 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  startLoadData() {
+  public startLoadData() {
     this.loaderNewData = true;
     this.body.classList.add("active--load_data");
   }
-  endLoadData() {
+  public endLoadData() {
     this.loaderNewData = false;
     this.body.classList.remove("active--load_data");
   }
   // Сommon END ===================================================================================
   // Header START =================================================================================
-  type_sort: number = 0;
-  type_tile: "large" | "small" = "small";
+  public type_sort: number = 0;
+  public type_tile: "large" | "small" = "small";
 
-  counterActiveFilter: number = 0;
-  resetAllFilter() {
+  public counterActiveFilter: number = 0;
+  public resetAllFilter() {
     for (const key in this.queryParams) {
       if (key !== "type_sort" && key !== "limit" && key !== "page") {
         delete this.queryParams[key];
@@ -308,7 +308,7 @@ export class SearchComponent implements OnInit {
     this.searchByQuery();
   }
 
-  productSort() {
+  public productSort() {
     if (this.queryParams.hasOwnProperty("type_sort")) {
       delete this.queryParams["type_sort"];
     }
@@ -316,23 +316,23 @@ export class SearchComponent implements OnInit {
 
     this.searchByQuery();
   }
-  tileChange() {
+  public tileChange() {
     localStorage.setItem("type_tile", this.type_tile);
   }
   // Header END ===================================================================================
   // Sidebar START ================================================================================
-  listFilter: Filter[] = [];
+  public listFilter: Filter[] = [];
   // listFilter2: Filter[] = [];
   // listFilter3: Filter[][] = [];
 
-  queryParams: Params = {};
-  params: Params = {};
+  public queryParams: Params = {};
+  public params: Params = {};
 
-  widget_auto_portal: WidgetAutoPortal[] | undefined;
-  widget_section_id: WidgetSectionId[] | undefined;
-  widget_breadcrumbs: Widget_Breadcrumbs | undefined;
+  public widget_auto_portal: WidgetAutoPortal[] | undefined;
+  public widget_section_id: WidgetSectionId[] | undefined;
+  public widget_breadcrumbs: Widget_Breadcrumbs | undefined;
 
-  filterSearch(nameInput: string, nameQuery: string, checked: boolean) {
+  public filterSearch(nameInput: string, nameQuery: string, checked: boolean) {
     if (checked === true) {
       const nameQueryForServer: string = nameQuery;
 
@@ -411,17 +411,17 @@ export class SearchComponent implements OnInit {
   }
   // Sidebar END ==================================================================================
   // Main Product START ===========================================================================
-  productList: Product[] = []; // List Product
+  public productList: Product[] = []; // List Product
 
-  currentPage: number = 1;
-  maxPage: number = 1;
+  public currentPage: number = 1;
+  public maxPage: number = 1;
 
-  limit: number = 10; // number of products per page
+  public limit: number = 10; // number of products per page
 
-  pageSizeOptions: number[] = [10, 25, 50, 100]; // select (number of products per page)
+  public pageSizeOptions: number[] = [10, 25, 50, 100]; // select (number of products per page)
 
-  pageEvent?: PageEvent;
-  onPaginateChange(event: PageEvent) {
+  public pageEvent?: PageEvent;
+  public onPaginateChange(event: PageEvent) {
     if (this.queryParams.hasOwnProperty("page")) {
       delete this.queryParams["page"];
     }
@@ -436,14 +436,14 @@ export class SearchComponent implements OnInit {
   }
   // Main Product END =============================================================================
   // Media Adaptability START =====================================================================
-  widthWindow: number = window.innerWidth;
-  showFilter: boolean = false;
+  public widthWindow: number = window.innerWidth;
+  public showFilter: boolean = false;
 
-  onFilterSidebar() {
+  public onFilterSidebar() {
     this.showFilter = true;
     this.body.classList.add("active--filter");
   }
-  offFilterSidebar() {
+  public offFilterSidebar() {
     this.showFilter = false;
     this.body.classList.remove("active--filter");
   }

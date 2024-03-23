@@ -1,19 +1,19 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { News } from "../../interface/interfaces";
-
+import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
+import { News } from "../../interface/interfaces";
+import { NEWS } from "../db/news";
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: "root" })
 export class RequestNewsService {
-  constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {}
 
-  url_server: string = environment.URL_SERVER_API + "news/";
+  public url_server: string = environment.URL_SERVER_API + "news/";
 
-  getAllNews(): Observable<News[]> {
+  public getAllNews(): Observable<News[]> {
+    return new BehaviorSubject(NEWS as any);
+
     return this.http.get<News[]>(`${this.url_server}`);
   }
 }

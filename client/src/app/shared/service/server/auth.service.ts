@@ -10,9 +10,7 @@ import { Store } from "@ngrx/store";
 import { environment } from "src/environments/environment";
 import { OrderActions } from "src/app/store/orders/order.action";
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: "root" })
 export class AuthService {
   constructor(private http: HttpClient, private store$: Store) {}
 

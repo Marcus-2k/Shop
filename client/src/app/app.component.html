@@ -9,13 +9,7 @@
 </div>
 
 <div *ngIf="loader === false">
-  <div class="body" *ngIf="connectingServer === true">
-    <app-header></app-header>
-    <router-outlet></router-outlet>
-    <app-footer></app-footer>
-  </div>
-
-  <section class="error__server" *ngIf="connectingServer === false">
-    <app-not-connection></app-not-connection>
-  </section>
+  <app-header></app-header>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
 </div>

@@ -1,27 +1,30 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-
-import { CATALOG, CATALOG_HOME } from "../../interface/interfaces";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { environment } from "../../../../environments/environment";
 import { Widget_Breadcrumbs } from "../../interface/card/card.interfaces";
+import { CATALOG, CATALOG_HOME } from "../../interface/interfaces";
+import { CATALOG as catalog } from "../db/catalog";
 
-import { environment } from "src/environments/environment";
-
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: "root" })
 export class RequestCatalogService {
-  constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {}
 
-  url_server: string = environment.URL_SERVER_API + "catalog/";
+  private url_server: string = environment.URL_SERVER_API + "catalog/";
 
-  getCatalog(): Observable<CATALOG[]> {
-    return this.http.get<CATALOG[]>(`${this.url_server}`);
+  public getCatalog(): Observable<CATALOG[]> {
+    return new BehaviorSubject(catalog as any);
+
+    // return this.http.get<CATALOG[]>(`${this.url_server}`);
   }
-  getCatalogHome(): Observable<CATALOG_HOME[]> {
-    return this.http.get<CATALOG_HOME[]>(`${this.url_server}home`);
+
+  public getCatalogHome(): Observable<CATALOG_HOME[]> {
+    return new BehaviorSubject(catalog as any);
+
+    // return this.http.get<CATALOG_HOME[]>(`${this.url_server}home`);
   }
-  getCatalogSection(navigate_link: string): Observable<{
+
+  public getCatalogSection(navigate_link: string): Observable<{
     widget_breadcrumbs: Widget_Breadcrumbs;
     catalog_section: CATALOG;
   }> {

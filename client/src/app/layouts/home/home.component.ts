@@ -75,7 +75,8 @@ export class HomeComponent implements OnInit {
 
     this.requestCatalog.getCatalogHome().subscribe({
       next: (response) => {
-        console.log(response);
+        console.log("response", response);
+
         this.categoryProductList = response;
       },
       error: (error) => {

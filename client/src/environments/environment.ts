@@ -13,8 +13,8 @@ const HISTORY_VIEW_START: string | undefined = undefined;
 export const environment = {
   production: false,
 
-  URL_SERVER_API: `${PROTOCOL}://${HOST}${PORT}/api/`,
-  URL_SERVER_FOLDER: `${PROTOCOL}://${HOST}${PORT}/`,
+  URL_SERVER_API: "http://localhost:4200/api/",
+  URL_SERVER_FOLDER: "http://localhost:4200/assets/",
 
   PROTOCOL: PROTOCOL,
 

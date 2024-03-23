@@ -16,9 +16,7 @@ export class QueryDto extends PaginationDto {
   search_text: string | undefined = undefined;
 
   @IsOptional()
-  @Transform(({ value }) => {
-    return Number(value);
-  })
+  @Transform(({ value }) => Number(value))
   @IsInt()
   @IsIn([0, 1, 2, 3, 4, 5])
   type_sort: TypeSortNumber = 5;
