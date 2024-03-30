@@ -1,54 +1,89 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
+import { BehaviorSubject, Observable } from "rxjs";
+import { environment } from "../../../../environments/environment";
+import { Card } from "../../interface/card/card.interfaces";
 import {
-  ProductInfo,
+  ProductAccessories,
   ProductCharacteristics,
   ProductComments,
-  ProductQuestions,
-  ProductAccessories,
+  ProductInfo,
   ProductPhoto,
+  ProductQuestions,
 } from "../../interface/interfaces";
-import { Card } from "../../interface/card/card.interfaces";
+import { PRODUCTS } from "../db/products";
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: "root" })
 export class RequestCardService {
-  constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {}
 
-  url_server: string = environment.URL_SERVER_API + "card/";
+  private url_server: string = environment.URL_SERVER_API + "card/";
 
   getByIdCard(id: string): Observable<Card> {
-    return this.http.get<Card>(`${this.url_server}${id}`);
+    const product: any = PRODUCTS.find((item) => item._id === id);
+
+    return new BehaviorSubject({
+      widget_breadcrumbs: {
+        first: { name: "Ноутбуки та комп'ютери", link: "" },
+        second: { name: "Ноутбуки", link: "" },
+        third: undefined,
+        location: product ? { name: product.name, link: "" } : undefined,
+      },
+      product: product,
+    } as Card);
+
+    // return this.http.get<Card>(`${this.url_server}${id}`);
   }
 
   getByIdCardInfo(id: string): Observable<ProductInfo> {
-    return this.http.get<ProductInfo>(`${this.url_server}${id}/info`);
+    const product: any = PRODUCTS.find((item) => item._id === id);
+
+    return new BehaviorSubject(product);
+    // return this.http.get<ProductInfo>(`${this.url_server}${id}/info`);
   }
 
   getByIdCardCharacteristics(id: string): Observable<ProductCharacteristics> {
-    return this.http.get<ProductCharacteristics>(
-      `${this.url_server}${id}/characteristics`
-    );
+    const product: any = PRODUCTS.find((item) => item._id === id);
+
+    return new BehaviorSubject(product);
+
+    // const characteristicsName = []
+    // this.categoryService.getCharacteristicsByCategory(product.category)[0];
+
+    // return new BehaviorSubject({characteristics: product.characteristics,characteristicsName: });
+
+    // return this.http.get<ProductCharacteristics>(
+    //   `${this.url_server}${id}/characteristics`
+    // );
   }
 
   getByIdCardComments(id: string): Observable<ProductComments> {
-    return this.http.get<ProductComments>(`${this.url_server}${id}/comments`);
+    const product: any = PRODUCTS.find((item) => item._id === id);
+
+    return new BehaviorSubject(product);
+    // return this.http.get<ProductComments>(`${this.url_server}${id}/comments`);
   }
 
   getByIdCardQuestions(id: string): Observable<ProductQuestions> {
-    return this.http.get<ProductQuestions>(`${this.url_server}${id}/questions`);
+    const product: any = PRODUCTS.find((item) => item._id === id);
+
+    return new BehaviorSubject(product);
+    // return this.http.get<ProductQuestions>(`${this.url_server}${id}/questions`);
   }
 
   getByIdCardPhoto(id: string): Observable<ProductPhoto> {
-    return this.http.get<ProductPhoto>(`${this.url_server}${id}/photo`);
+    const product: any = PRODUCTS.find((item) => item._id === id);
+
+    return new BehaviorSubject(product);
+    // return this.http.get<ProductPhoto>(`${this.url_server}${id}/photo`);
   }
 
   getByIdCardAccessories(id: string): Observable<ProductAccessories> {
-    return this.http.get<ProductAccessories>(
-      `${this.url_server}${id}/accessories`
-    );
+    const product: any = PRODUCTS.find((item) => item._id === id);
+
+    return new BehaviorSubject(product);
+    // return this.http.get<ProductAccessories>(
+    //   `${this.url_server}${id}/accessories`
+    // );
   }
 }
