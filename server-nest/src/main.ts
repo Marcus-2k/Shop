@@ -19,10 +19,7 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.enableCors({
-    origin: ["http://localhost:4200"],
-    credentials: true,
-  });
+  app.enableCors()
   app.setGlobalPrefix(GlobalPrefix);
 
   await app.listen(PORT, () => {
