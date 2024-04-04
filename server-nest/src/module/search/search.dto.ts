@@ -22,4 +22,6 @@ export class QueryDto extends PaginationDto {
   @IsInt()
   @IsIn([0, 1, 2, 3, 4, 5])
   type_sort: TypeSortNumber = 5;
+
+  language: string;
 }

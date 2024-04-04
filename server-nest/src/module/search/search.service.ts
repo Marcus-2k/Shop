@@ -1,24 +1,56 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, PipelineStage } from "mongoose";
-
-import { Product } from "src/shared/interfaces/schemas/Product";
-
+import { Checkbox, Filter } from "../../shared/interfaces/filter";
+import { LanguageShort } from "../../shared/interfaces/language/language";
+import { Option } from "../../shared/interfaces/option";
+import { MessageRes } from "../../shared/interfaces/res/message";
+import { Product } from "../../shared/interfaces/schemas/Product";
+import { ProductCharacteristics } from "../../shared/interfaces/schemas/product/product-characteristics";
 import { CategoryService } from "../category/category.service";
-
-import { Option } from "src/shared/interfaces/option";
-import { Checkbox, Filter } from "src/shared/interfaces/filter";
-import { MessageRes } from "src/shared/interfaces/res/message";
-import { ProductCharacteristics } from "src/shared/interfaces/schemas/product/product-characteristics";
-import { LanguageShort } from "src/shared/interfaces/language/language";
 import { QueryDto } from "./search.dto";
+// import { writeFile } from "fs";
+// import { option } from "../../shared/db/option";
+// import { products as PRODUCTS } from "../../shared/db/products";
 
 @Injectable()
 export class SearchService {
   public constructor(
     @InjectModel("product") private readonly ProductModel: Model<Product>,
     private categoryService: CategoryService,
-  ) {}
+  ) {
+    // this.test();
+  }
+
+  // public async test() {
+  //   const products = JSON.parse(JSON.stringify(PRODUCTS));
+
+  //   for (let idx = 0; idx < products.length; idx++) {
+  //     const product = products[idx];
+
+  //     for (const key in product.characteristicsName) {
+  //       // operating_system_pc
+  //       for (const k in option) {
+  //         // Producer
+  //         if (option[k].query_title === key) {
+  //           for (let i = 0; i < product.characteristicsName[key].length; i++) {
+  //             for (let l = 0; l < option[k].select.length; l++) {
+  //               if (
+  //                 option[k].select[l].name.ua ===
+  //                 product.characteristicsName[key][i]
+  //               ) {
+  //                 product.characteristicsName[key][i] =
+  //                   option[k].select[l].query_value;
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   writeFile("./products.json", JSON.stringify(products), (err) => {});
+  // }
 
   public async search(...PipelineStage: PipelineStage[]): Promise<Product[]> {
     return await this.ProductModel.aggregate(PipelineStage);

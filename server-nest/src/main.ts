@@ -1,11 +1,10 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
 import { ConfigService } from "@nestjs/config";
-
-import * as path from "path";
+import { NestFactory } from "@nestjs/core";
+import * as cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
 import * as express from "express";
-import * as cookieParser from "cookie-parser";
+import * as path from "path";
+import { AppModule } from "./app.module";
 
 async function bootstrap() {
   dotenv.config();
@@ -16,7 +15,6 @@ async function bootstrap() {
 
   const GlobalPrefix: string = "api";
 
-  /** Use */
   app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
   app.use(cookieParser());
@@ -31,4 +29,5 @@ async function bootstrap() {
     console.log("The server is running on the", PORT, "th port");
   });
 }
+
 bootstrap();

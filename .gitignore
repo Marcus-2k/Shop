@@ -15,4 +15,4 @@ server-nest/uploads/*.jpg
 client/.angular
 
 # Else
-*/*.env
+*/.env

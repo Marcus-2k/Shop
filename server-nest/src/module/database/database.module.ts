@@ -1,15 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-
-// Mongo
 import { MongooseModule } from "@nestjs/mongoose";
-
-// Schemas
-import { UserSchema } from "src/shared/schemas/User.schema";
-import { TokenSchema } from "src/shared/schemas/Token.schema";
-import { ProductSchema } from "src/shared/schemas/Product.schema";
-import { OrderSchema } from "src/shared/schemas/Order.schema";
-import { NewsSchema } from "src/shared/schemas/News.schema";
+import { NewsSchema } from "../../shared/schemas/News.schema";
+import { OrderSchema } from "../../shared/schemas/Order.schema";
+import { ProductSchema } from "../../shared/schemas/Product.schema";
+import { TokenSchema } from "../../shared/schemas/Token.schema";
+import { UserSchema } from "../../shared/schemas/User.schema";
 
 @Module({
   imports: [

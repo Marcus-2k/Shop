@@ -1,37 +1,33 @@
 import {
   Controller,
-  UsePipes,
-  ValidationPipe,
   Get,
+  Param,
   Query,
   Res,
-  Param,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { Response } from "express";
 import { PipelineStage } from "mongoose";
-/* DTO */
-import { ParamDto, QueryDto } from "./search.dto";
-/* Service */
-import { SearchService } from "./search.service";
-import { CatalogService } from "../catalog/catalog.service";
-import { CategoryService } from "../category/category.service";
-/* Interface */
-import { Product } from "src/shared/interfaces/schemas/Product";
-import { Breadcrumbs } from "src/shared/interfaces/widget/breadcrumbs";
-import { TypeSortNumber } from "src/shared/interfaces/type/sort/type-sort-number";
-import { CategoryNumber } from "src/shared/interfaces/category-number";
-import { MessageRes } from "src/shared/interfaces/res/message";
 import {
   CatalogNameListCategory,
   CatalogSubNameListCategory,
-} from "src/shared/interfaces/catalog";
-import { Filter } from "src/shared/interfaces/filter";
-import { ProductCharacteristics } from "src/shared/interfaces/schemas/product/product-characteristics";
-import { LanguageShort } from "src/shared/interfaces/language/language";
-import { SearchRes } from "src/shared/interfaces/res/search";
+} from "../../shared/interfaces/catalog";
+import { CategoryNumber } from "../../shared/interfaces/category-number";
+import { Filter } from "../../shared/interfaces/filter";
+import { LanguageShort } from "../../shared/interfaces/language/language";
+import { MessageRes } from "../../shared/interfaces/res/message";
+import { SearchRes } from "../../shared/interfaces/res/search";
+import { Product } from "../../shared/interfaces/schemas/Product";
+import { ProductCharacteristics } from "../../shared/interfaces/schemas/product/product-characteristics";
+import { TypeSortNumber } from "../../shared/interfaces/type/sort/type-sort-number";
+import { Breadcrumbs } from "../../shared/interfaces/widget/breadcrumbs";
+import { CatalogService } from "../catalog/catalog.service";
+import { CategoryService } from "../category/category.service";
+import { ParamDto, QueryDto } from "./search.dto";
+import { SearchService } from "./search.service";
 
 @Controller("search")
-/** Pipes */
 @UsePipes(new ValidationPipe({ transform: true }))
 export class SearchController {
   public constructor(
@@ -46,6 +42,10 @@ export class SearchController {
     @Query() query: QueryDto,
     @Param() param: ParamDto,
   ): Promise<Response> {
+    console.log(query);
+
+    console.log("today", new Date());
+
     const search_text: string | undefined = query.search_text;
     const navigate_link: string | undefined = param.navigate_link;
 
@@ -53,8 +53,13 @@ export class SearchController {
       return response.status(404).json({ message: "Invalid request" });
     }
 
-    const language: LanguageShort = "en";
+    let language: LanguageShort = "en";
 
+    if (query.language === "ua" || query.language === "en") {
+      language = query.language;
+    }
+
+    delete query.language;
     // Pagination START ============================================================================
     const limit: number = query.limit;
 
@@ -182,7 +187,7 @@ export class SearchController {
       Project,
     );
 
-    let product_by_divided_query: Product[][] | null;
+    let product_by_divided_query: Product[][] | null = null;
 
     if (count_query > 1 && MongoQueryList) {
       const promises: Promise<Product[]>[] = MongoQueryList.map(

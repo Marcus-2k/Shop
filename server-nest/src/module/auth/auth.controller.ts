@@ -1,45 +1,44 @@
 import {
+  Body,
   Controller,
   Get,
   Post,
-  Res,
   Req,
-  Body,
-  ValidationPipe,
+  Res,
   UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { Request, Response } from "express";
-import { AuthService } from "./auth.service";
+import { MessageRes } from "../../shared/interfaces/res/message";
+import { Token } from "../../shared/interfaces/schemas/Token";
+import { User } from "../../shared/interfaces/schemas/User";
+import { TokenData } from "../../shared/interfaces/token-data";
+import { Tokens } from "../../shared/interfaces/tokens";
+import { AccountUserService } from "../account-user/account-user.service";
 import { TokenService } from "../token/token.service";
 import { LoginDto, RegisterDto } from "./auth.dto";
-import { AccountUserService } from "../account-user/account-user.service";
-import { User } from "src/shared/interfaces/schemas/User";
-import { Tokens } from "src/shared/interfaces/tokens";
-import { Token } from "src/shared/interfaces/schemas/Token";
-import { TokenData } from "src/shared/interfaces/token-data";
-import { MessageRes } from "src/shared/interfaces/res/message";
+import { AuthService } from "./auth.service";
 
 @Controller("auth")
-/** Pipes */
 @UsePipes(new ValidationPipe({ transform: true }))
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly tokenService: TokenService,
-    private readonly userService: AccountUserService
+    private readonly userService: AccountUserService,
   ) {}
 
   @Post("login")
   public async login(
     @Res() response: Response<any>,
-    @Body() body: LoginDto
+    @Body() body: LoginDto,
   ): Promise<Response<any>> {
     const user: User | null = await this.userService.findByEmail(body.email);
 
     if (user) {
       const passwordValid: boolean = await this.authService.passwordCompare(
         body.password,
-        user.password
+        user.password,
       );
 
       if (passwordValid) {
@@ -71,7 +70,7 @@ export class AuthController {
   @Post("register")
   public async register(
     @Res() response: Response<any>,
-    @Body() body: RegisterDto
+    @Body() body: RegisterDto,
   ): Promise<Response<any>> {
     const user: User = await this.userService.findByEmail(body.email);
 
@@ -85,7 +84,7 @@ export class AuthController {
       const user = await this.userService.create(
         body.name,
         body.email,
-        hashPassword
+        hashPassword,
       );
 
       const tokens: Tokens = this.tokenService.generateTokens({
@@ -107,10 +106,9 @@ export class AuthController {
   @Get("checking")
   public async checking(
     @Res() response: Response<{ authorization: boolean }>,
-    @Req() request: Request
-  ): Promise<Response<{ authorization: boolean }>> {
-    const { refreshToken }: { refreshToken: string | undefined } =
-      request.cookies;
+    @Req() request: Request,
+  ): Promise<Response> {
+    const { refreshToken } = request.cookies;
 
     const accessToken: string = request.headers.authorization;
 
@@ -121,7 +119,7 @@ export class AuthController {
       this.tokenService.validateRefreshToken(refreshToken);
 
     const refreshTokenDB: Token = await this.tokenService.findToken(
-      refreshToken
+      refreshToken,
     );
 
     if (!validateAccess || !validateRefresh || !refreshTokenDB) {
@@ -134,10 +132,9 @@ export class AuthController {
   @Get("refresh")
   public async refresh(
     @Res() response: Response<Tokens | MessageRes>,
-    @Req() request: Request
+    @Req() request: Request,
   ): Promise<Response<Tokens>> {
-    const { refreshToken }: { refreshToken: string | undefined } =
-      request.cookies;
+    const { refreshToken } = request.cookies;
 
     if (!refreshToken) {
       return response
@@ -149,7 +146,7 @@ export class AuthController {
       this.tokenService.validateRefreshToken(refreshToken);
 
     const refreshTokenDB: Token = await this.tokenService.findToken(
-      refreshToken
+      refreshToken,
     );
 
     if (!tokenData || !refreshTokenDB) {
@@ -178,13 +175,12 @@ export class AuthController {
   @Get("logout")
   public async logout(
     @Res() response: Response<{ deletedCount: number }>,
-    @Req() request: Request
-  ): Promise<Response<{ deletedCount: number }>> {
-    const { refreshToken }: { refreshToken: string | undefined } =
-      request.cookies;
+    @Req() request: Request,
+  ): Promise<Response> {
+    const { refreshToken } = request.cookies;
 
     const token: { deletedCount: number } = await this.tokenService.removeToken(
-      refreshToken
+      refreshToken,
     );
 
     response.clearCookie("refreshToken");

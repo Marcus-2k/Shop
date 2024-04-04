@@ -1,14 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { User } from "src/shared/interfaces/schemas/User";
 import * as bcrypt from "bcrypt";
+import { Model } from "mongoose";
+import { User } from "../../shared/interfaces/schemas/User";
 
 @Injectable()
 export class AuthService {
-  public constructor(
-    @InjectModel("user") private readonly UserModel: Model<User>
-  ) {}
+  public constructor(@InjectModel("user") private UserModel: Model<User>) {}
 
   private saltRounds: number = 10;
 
@@ -20,11 +18,11 @@ export class AuthService {
 
   public async passwordCompare(
     password: string,
-    hashedPassword: string
+    hashedPassword: string,
   ): Promise<boolean> {
     const passwordValid: boolean = await bcrypt.compare(
       password,
-      hashedPassword
+      hashedPassword,
     );
 
     return passwordValid;
