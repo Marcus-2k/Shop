@@ -20,11 +20,19 @@ export class GuestController {
   @Get("history")
   public async getHistoryGuest(
     @Res() response: Response<{ history__view: Product[] }>,
-    @Query() query: GetHistoryGuestDto
+    @Query() query: GetHistoryGuestDto,
   ): Promise<Response<{ history__view: Product[] }>> {
-    const history__view: Product[] = await this.productService.findByIds(
-      query.history_view
-    );
+    const history__view: Product[] = [];
+
+    for (let idx = 0; idx < query.history_view.length; idx++) {
+      const product = await this.productService.findById(
+        query.history_view[idx],
+      );
+
+      if (product) {
+        history__view.push(product);
+      }
+    }
 
     return response.status(200).json({ history__view });
   }
@@ -32,10 +40,10 @@ export class GuestController {
   @Get()
   public async getGuestCart(
     @Res() response: Response<any>,
-    @Query() query: GetGuestCartDto
+    @Query() query: GetGuestCartDto,
   ): Promise<Response<any>> {
     const products: Product[] = await this.productService.findByIds(
-      query.carts_id
+      query.carts_id,
     );
 
     for (let idx = 0; idx < products.length; idx++) {
