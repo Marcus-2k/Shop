@@ -19,7 +19,11 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.enableCors()
+  app.enableCors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type, Accept",
+  });
   app.setGlobalPrefix(GlobalPrefix);
 
   await app.listen(PORT, () => {
