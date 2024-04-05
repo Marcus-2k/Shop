@@ -1,11 +1,57 @@
-.footer {
+:host {
+  margin-top: 20px;
+
+  display: block;
   background-color: #349948;
-  height: 50px;
-  display: none;
-  &__content {
-    &-links {
-    }
-    &-trademark {
+
+  padding: 10px;
+
+  .footer {
+    &__content {
+      display: flex;
+      flex-direction: column;
+
+      &-links {
+        h3 {
+          text-align: center;
+          margin: 0;
+
+          color: white;
+          font-weight: 500;
+          font-size: 24px;
+        }
+
+        .list {
+          text-align: center;
+
+          &__item {
+            a {
+              color: white;
+
+              font-weight: 400;
+              font-size: 16px;
+
+              transition: 0.4s;
+              cursor: pointer;
+
+              &:hover {
+                transition: 0.4s;
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+
+      &-trademark {
+        padding-top: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: white;
+      }
     }
   }
 }
