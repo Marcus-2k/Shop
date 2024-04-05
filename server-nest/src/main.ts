@@ -20,9 +20,10 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type, Accept",
+    origin: (origin, callback) => {
+      callback(null, true);
+    },
+    credentials: true,
   });
   app.setGlobalPrefix(GlobalPrefix);
 
